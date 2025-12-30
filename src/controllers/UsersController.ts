@@ -467,11 +467,7 @@ export class UserController {
             include: {
               company: true, // ✅ Mapea los detalles de la compañía
             },
-          },
-          assignedEquipments: true,
-          assignedMaintenances: true,
-          createdCompanies: true,
-          assignedNetworks: true,
+          }
         },
       });
 
