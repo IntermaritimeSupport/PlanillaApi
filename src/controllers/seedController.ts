@@ -11,7 +11,6 @@ export class SeedController {
   }
 
   async runSeed(req: Request, res: Response) {
-    // 1. Protección de seguridad rápida
     const auth = req.headers.authorization;
     const SECRET = process.env.SEED_SECRET || 'mi-seed-key';
 
@@ -20,12 +19,12 @@ export class SeedController {
     }
 
     try {
-      console.time('🚀 ExecutionTime');
-      
-      // OPTIMIZACIÓN 1: Hashear la contraseña una sola vez (Bcrypt es lento)
+      console.log('🚀 Iniciando Seed...');
+
+      // 1. Hashear contraseña una sola vez para ahorrar CPU
       const commonHashedPassword = await bcrypt.hash('password123', 10);
 
-      // OPTIMIZACIÓN 2: Parámetros legales con createMany (Súper rápido)
+      // 2. Parámetros Legales: Usamos Promise.all con upsert para máxima compatibilidad
       const legalParameters = [
         { key: 'legal_parameters_sss_employee', value: JSON.stringify({ percentage: 8.75, category: 'social_security' }), description: 'SSS Empleado' },
         { key: 'legal_parameters_sss_employer', value: JSON.stringify({ percentage: 12.25, category: 'social_security' }), description: 'SSS Patrono' },
@@ -36,28 +35,34 @@ export class SeedController {
         { key: 'legal_parameters_isr_tramo4', value: JSON.stringify({ percentage: 25, range: { min: 60001, max: 999999 } }), description: 'ISR Tramo 4' }
       ];
 
-      await prisma.systemConfig.createMany({
-        data: legalParameters,
-        skipDuplicates: true, // Si ya existen, no fallará ni tardará nada
-      });
+      await Promise.all(legalParameters.map(param => 
+        prisma.systemConfig.upsert({
+          where: { key: param.key },
+          update: { value: param.value, description: param.description },
+          create: param
+        })
+      ));
 
-      // OPTIMIZACIÓN 3: Compañías en paralelo
+      // 3. Compañías y Departamentos
       const companyData = [
         { name: 'Intermaritime', code: 'COMP-IM', ruc: '8-111-1111' },
         { name: 'PMTS', code: 'COMP-PM', ruc: '8-222-2222' }
       ];
 
+      // Creamos compañías
       const companyResults = await Promise.all(companyData.map(c => 
         prisma.company.upsert({
           where: { name: c.name },
-          update: { code: c.code },
+          update: { code: c.code, ruc: c.ruc },
           create: { ...c, isActive: true }
         })
       ));
 
-      // Crear departamentos por defecto rápidamente
-      const depts = await Promise.all(companyResults.map(company => 
-        prisma.department.upsert({
+      // Creamos departamentos y empleados de forma secuencial para evitar race conditions
+      for (let i = 0; i < companyResults.length; i++) {
+        const company = companyResults[i];
+        
+        const dept = await prisma.department.upsert({
           where: { id: `dept-gen-${company.id}` },
           update: {},
           create: {
@@ -66,81 +71,75 @@ export class SeedController {
             companyId: company.id,
             isActive: true
           }
-        })
-      ));
+        });
 
-      // 4. Empleados y Personas
-      const employeesData = [
-        { cedula: '8-123-4567', firstName: 'Carlos', lastName: 'Sanchez', email: 'david@intermaritime.org', salary: 2500, companyIdx: 0 },
-        { cedula: '8-999-0000', firstName: 'Maria', lastName: 'Sosa', email: 'maria.sosa@test.com', salary: 3000, companyIdx: 1 }
-      ];
+        const empData = i === 0 
+          ? { cedula: '8-123-4567', firstName: 'Carlos', lastName: 'Sanchez', email: 'david@intermaritime.org', role: 'SUPER_ADMIN' }
+          : { cedula: '8-999-0000', firstName: 'Maria', lastName: 'Sosa', email: 'maria.sosa@test.com', role: 'MODERATOR' };
 
-      for (const emp of employeesData) {
-        const targetCompany = companyResults[emp.companyIdx];
-        const targetDept = depts[emp.companyIdx];
-
-        // Upsert de Usuario (Ya tiene el hash calculado)
         const user = await prisma.user.upsert({
-          where: { email: emp.email },
-          update: { role: emp.companyIdx === 0 ? 'SUPER_ADMIN' : 'MODERATOR' },
+          where: { email: empData.email },
+          update: { role: empData.role as any },
           create: {
-            email: emp.email,
-            username: `${emp.firstName.toLowerCase()}.${emp.lastName.toLowerCase()}${Math.floor(Math.random() * 99)}`,
+            email: empData.email,
+            username: `${empData.firstName.toLowerCase()}.${empData.lastName.toLowerCase()}`,
             password: commonHashedPassword,
-            role: emp.companyIdx === 0 ? 'SUPER_ADMIN' : 'MODERATOR',
+            role: empData.role as any,
             isActive: true,
           }
         });
 
-        // Conectar Usuario con Compañía
         await prisma.userCompany.upsert({
-          where: { userId_companyId: { userId: user.id, companyId: targetCompany.id } },
+          where: { userId_companyId: { userId: user.id, companyId: company.id } },
           update: {},
-          create: { userId: user.id, companyId: targetCompany.id }
+          create: { userId: user.id, companyId: company.id }
         });
 
-        // Crear Empleado
         await prisma.employee.upsert({
-          where: { cedula: emp.cedula },
-          update: { salary: new Decimal(emp.salary) },
+          where: { cedula: empData.cedula },
+          update: { companyId: company.id },
           create: {
-            cedula: emp.cedula,
-            firstName: emp.firstName,
-            lastName: emp.lastName,
-            email: emp.email,
-            salary: new Decimal(emp.salary),
+            cedula: empData.cedula,
+            firstName: empData.firstName,
+            lastName: empData.lastName,
+            email: empData.email,
+            salary: new Decimal(2500 + (i * 500)),
             userId: user.id,
-            companyId: targetCompany.id,
+            companyId: company.id,
             status: 'ACTIVE',
             hireDate: new Date(),
             position: 'Analista'
           }
         });
 
-        // Crear registro en Person
         await prisma.person.upsert({
           where: { userId: user.id },
-          update: { companyId: targetCompany.id, departmentId: targetDept.id },
+          update: { companyId: company.id, departmentId: dept.id },
           create: {
             userId: user.id,
-            firstName: emp.firstName,
-            lastName: emp.lastName,
-            fullName: `${emp.firstName} ${emp.lastName}`,
-            userCode: this.generateNextUserCode(),
+            firstName: empData.firstName,
+            lastName: empData.lastName,
+            fullName: `${empData.firstName} ${empData.lastName}`,
+            userCode: `USR-${Math.floor(100000 + Math.random() * 900000)}`,
             status: 'Activo',
-            companyId: targetCompany.id,
-            departmentId: targetDept.id,
+            companyId: company.id,
+            departmentId: dept.id,
             position: 'Analista de Operaciones'
           }
         });
       }
 
-      console.timeEnd('🚀 ExecutionTime');
-      return res.status(200).json({ message: '🎉 Seed ultra-rápido ejecutado con éxito' });
+      return res.status(200).json({ message: '🎉 Seed completado con éxito' });
 
     } catch (err: any) {
-      console.error('❌ Error:', err);
-      return res.status(500).json({ error: 'Fallo en la semilla', details: err.message });
+      // LOG DETALLADO para Vercel
+      console.error('❌ ERROR EN SEED:', JSON.stringify(err, null, 2));
+      return res.status(500).json({ 
+        error: 'Fallo en la semilla', 
+        message: err.message,
+        code: err.code,
+        meta: err.meta 
+      });
     }
   }
 }
