@@ -8,6 +8,7 @@ export function generateNextUserCode(): string {
 }
 
 async function hashPassword(password: string) {
+  // 10 rounds es el equilibrio perfecto entre seguridad y velocidad en Vercel
   return await bcrypt.hash(password, 10);
 }
 
@@ -21,7 +22,7 @@ async function getAvailableUserForEmployee(
   const hashedPassword = await hashPassword('password123');
   const user = await prisma.user.upsert({
     where: { email },
-    update: {},
+    update: { role }, // Actualizamos el rol por si cambió
     create: {
       email,
       username: `${firstName.toLowerCase()}.${lastName.toLowerCase()}${Math.floor(Math.random() * 100)}`,
@@ -44,124 +45,37 @@ async function seedLegalParameters() {
   console.log('📋 Inicializando parámetros legales...');
 
   const legalParameters = [
-    {
-      key: 'legal_parameters_sss_employee',
-      value: JSON.stringify({
-        name: 'Aporte del Empleado al SSS',
-        type: 'employee',
-        percentage: 8.75,
-        effectiveDate: new Date().toISOString().split('T')[0],
-        status: 'active',
-        category: 'social_security',
-      }),
-      description: 'Aporte obligatorio del empleado al Seguro Social',
-    },
-    {
-      key: 'legal_parameters_sss_employer',
-      value: JSON.stringify({
-        name: 'Aporte del Patrono al SSS',
-        type: 'employer',
-        percentage: 12.25,
-        effectiveDate: new Date().toISOString().split('T')[0],
-        status: 'active',
-        category: 'social_security',
-      }),
-      description: 'Aporte obligatorio del patrono al Seguro Social',
-    },
-    {
-      key: 'legal_parameters_educational',
-      value: JSON.stringify({
-        name: 'Seguro Educativo',
-        type: 'employer',
-        percentage: 1.25,
-        effectiveDate: new Date().toISOString().split('T')[0],
-        status: 'active',
-        category: 'educational_insurance',
-      }),
-      description: 'Aporte del patrono para seguro educativo',
-    },
-    {
-      key: 'legal_parameters_isr_tramo1',
-      value: JSON.stringify({
-        name: 'Tramo 1: Exento',
-        type: 'employee',
-        percentage: 0,
-        range: { min: 0, max: 12000 },
-        effectiveDate: new Date().toISOString().split('T')[0],
-        status: 'active',
-        category: 'isr',
-      }),
-      description: 'Rango exento de ISR en Panamá',
-    },
-    {
-      key: 'legal_parameters_isr_tramo2',
-      value: JSON.stringify({
-        name: 'Tramo 2: 15%',
-        type: 'employee',
-        percentage: 15,
-        range: { min: 12001, max: 36000 },
-        effectiveDate: new Date().toISOString().split('T')[0],
-        status: 'active',
-        category: 'isr',
-      }),
-      description: 'Rango 15% de ISR en Panamá',
-    },
-    {
-      key: 'legal_parameters_isr_tramo3',
-      value: JSON.stringify({
-        name: 'Tramo 3: 20%',
-        type: 'employee',
-        percentage: 20,
-        range: { min: 36001, max: 60000 },
-        effectiveDate: new Date().toISOString().split('T')[0],
-        status: 'active',
-        category: 'isr',
-      }),
-      description: 'Rango 20% de ISR en Panamá',
-    },
-    {
-      key: 'legal_parameters_isr_tramo4',
-      value: JSON.stringify({
-        name: 'Tramo 4: 25%',
-        type: 'employee',
-        percentage: 25,
-        range: { min: 60001, max: 999999 },
-        effectiveDate: new Date().toISOString().split('T')[0],
-        status: 'active',
-        category: 'isr',
-      }),
-      description: 'Rango 25% de ISR en Panamá',
-    },
+    { key: 'legal_parameters_sss_employee', value: JSON.stringify({ name: 'Aporte del Empleado al SSS', type: 'employee', percentage: 8.75, effectiveDate: new Date().toISOString().split('T')[0], status: 'active', category: 'social_security' }), description: 'Aporte obligatorio del empleado al Seguro Social' },
+    { key: 'legal_parameters_sss_employer', value: JSON.stringify({ name: 'Aporte del Patrono al SSS', type: 'employer', percentage: 12.25, effectiveDate: new Date().toISOString().split('T')[0], status: 'active', category: 'social_security' }), description: 'Aporte obligatorio del patrono al Seguro Social' },
+    { key: 'legal_parameters_educational', value: JSON.stringify({ name: 'Seguro Educativo', type: 'employer', percentage: 1.25, effectiveDate: new Date().toISOString().split('T')[0], status: 'active', category: 'educational_insurance' }), description: 'Aporte del patrono para seguro educativo' },
+    { key: 'legal_parameters_isr_tramo1', value: JSON.stringify({ name: 'Tramo 1: Exento', type: 'employee', percentage: 0, range: { min: 0, max: 12000 }, effectiveDate: new Date().toISOString().split('T')[0], status: 'active', category: 'isr' }), description: 'Rango exento de ISR en Panamá' },
+    { key: 'legal_parameters_isr_tramo2', value: JSON.stringify({ name: 'Tramo 2: 15%', type: 'employee', percentage: 15, range: { min: 12001, max: 36000 }, effectiveDate: new Date().toISOString().split('T')[0], status: 'active', category: 'isr' }), description: 'Rango 15% de ISR en Panamá' },
+    { key: 'legal_parameters_isr_tramo3', value: JSON.stringify({ name: 'Tramo 3: 20%', type: 'employee', percentage: 20, range: { min: 36001, max: 60000 }, effectiveDate: new Date().toISOString().split('T')[0], status: 'active', category: 'isr' }), description: 'Rango 20% de ISR en Panamá' },
+    { key: 'legal_parameters_isr_tramo4', value: JSON.stringify({ name: 'Tramo 4: 25%', type: 'employee', percentage: 25, range: { min: 60001, max: 999999 }, effectiveDate: new Date().toISOString().split('T')[0], status: 'active', category: 'isr' }), description: 'Rango 25% de ISR en Panamá' },
   ];
 
-  let createdCount = 0;
-  for (const param of legalParameters) {
-    const existing = await prisma.systemConfig.findUnique({
-      where: { key: param.key },
-    });
+  // OPTIMIZACIÓN CLAVE: Ejecución paralela con upsert directo
+  // Esto evita el error findUnique() invocation ETIMEDOUT
+  await Promise.all(
+    legalParameters.map((param) =>
+      prisma.systemConfig.upsert({
+        where: { key: param.key },
+        update: { value: param.value, description: param.description },
+        create: param,
+      })
+    )
+  );
 
-    if (!existing) {
-      await prisma.systemConfig.create({
-        data: param,
-      });
-      createdCount++;
-    }
-  }
-
-  console.log(`✅ ${createdCount} parámetros legales inicializados.`);
+  console.log(`✅ Parámetros legales sincronizados.`);
 }
 
 async function main() {
   console.log('🚀 Iniciando Seed...');
 
-  /* ============================
-      1. PARÁMETROS LEGALES
-  ============================ */
+  // 1. Parámetros Legales
   await seedLegalParameters();
 
-  /* ============================
-      2. COMPAÑÍAS Y DEPARTAMENTOS
-  ============================ */
+  // 2. Compañías y Departamentos
   const companyData = [
     { name: 'Intermaritime', code: 'COMP-IM', ruc: '8-111-1111' },
     { name: 'PMTS', code: 'COMP-PM', ruc: '8-222-2222' }
@@ -178,7 +92,6 @@ async function main() {
     });
     companies[data.name] = company;
 
-    // Crear un departamento por defecto para cada empresa
     const dept = await prisma.department.upsert({
       where: { id: `dept-gen-${company.id}` },
       update: {},
@@ -193,40 +106,22 @@ async function main() {
     departments[company.name] = dept;
   }
 
-  /* ============================
-      3. EMPLEADOS Y PERSONAS (Con Dept)
-  ============================ */
+  // 3. Empleados y Personas
   const employeesData = [
-    {
-      cedula: '8-123-4567',
-      firstName: 'Carlos',
-      lastName: 'Sanchez',
-      email: 'david@intermaritime.org',
-      salary: 2500,
-      companyName: 'Intermaritime',
-      role: 'SUPER_ADMIN'
-    },
-    {
-      cedula: '8-999-0000',
-      firstName: 'Maria',
-      lastName: 'Sosa',
-      email: 'maria.sosa@test.com',
-      salary: 3000,
-      companyName: 'PMTS',
-      role: 'MODERATOR'
-    }
+    { cedula: '8-123-4567', firstName: 'Carlos', lastName: 'Sanchez', email: 'david@intermaritime.org', salary: 2500, companyName: 'Intermaritime', role: 'SUPER_ADMIN' },
+    { cedula: '8-999-0000', firstName: 'Maria', lastName: 'Sosa', email: 'maria.sosa@test.com', salary: 3000, companyName: 'PMTS', role: 'MODERATOR' }
   ];
 
+  // Usamos un bucle for tradicional aquí para no saturar las conexiones de la DB al crear usuarios (bcrypt)
   for (const emp of employeesData) {
     const targetCompany = companies[emp.companyName];
     const targetDept = departments[emp.companyName];
 
     const user = await getAvailableUserForEmployee(emp.email, emp.firstName, emp.lastName, targetCompany.id, emp.role);
 
-    // Crear/Actualizar Employee
     await prisma.employee.upsert({
       where: { cedula: emp.cedula },
-      update: { companyId: targetCompany.id },
+      update: { companyId: targetCompany.id, salary: new Decimal(emp.salary) },
       create: {
         cedula: emp.cedula,
         firstName: emp.firstName,
@@ -241,13 +136,9 @@ async function main() {
       }
     });
 
-    // Crear/Actualizar Person con departmentId
     await prisma.person.upsert({
       where: { userId: user.id },
-      update: { 
-        companyId: targetCompany.id,
-        departmentId: targetDept.id 
-      },
+      update: { companyId: targetCompany.id, departmentId: targetDept.id },
       create: {
         userId: user.id,
         firstName: emp.firstName,
@@ -260,7 +151,7 @@ async function main() {
         position: 'Analista de Operaciones'
       }
     });
-    console.log(`✅ ${emp.firstName} vinculado a ${emp.companyName} en Dept: ${targetDept.name}`);
+    console.log(`✅ ${emp.firstName} procesado.`);
   }
 
   console.log('\n🎉 Seed finalizado correctamente.');
