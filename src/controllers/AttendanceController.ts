@@ -1,16 +1,14 @@
 import { Request, Response } from 'express';
 import { prisma } from '../../lib/prisma.js';
+import { Decimal } from '@prisma/client/runtime/client';
 
 export class AttendanceController {
   async recordAttendance(req: Request, res: Response) {
-    const { employeeId, date, checkInTime, checkOutTime, status, notes } =
-      req.body;
+    const { employeeId, date, checkInTime, checkOutTime, status, notes } = req.body;
 
     try {
       if (!employeeId || !date) {
-        return res.status(400).json({
-          error: 'Empleado y fecha son obligatorios.',
-        });
+        return res.status(400).json({ error: 'Empleado y fecha son obligatorios.' });
       }
 
       const employee = await prisma.employee.findUnique({
@@ -21,46 +19,40 @@ export class AttendanceController {
         return res.status(404).json({ error: 'Empleado no encontrado.' });
       }
 
-      // Verificar si ya existe registro para esa fecha
+      const recordDate = new Date(date);
       const existingRecord = await prisma.attendanceRecord.findUnique({
         where: {
           employeeId_date: {
             employeeId,
-            date: new Date(date),
+            date: recordDate,
           },
         },
       });
 
-      let hoursWorked = null;
+      let hoursWorked: number | null = null;
       if (checkInTime && checkOutTime) {
         const checkIn = new Date(checkInTime);
         const checkOut = new Date(checkOutTime);
         hoursWorked = (checkOut.getTime() - checkIn.getTime()) / (1000 * 60 * 60);
       }
 
+      const data = {
+        checkInTime: checkInTime ? new Date(checkInTime) : undefined,
+        checkOutTime: checkOutTime ? new Date(checkOutTime) : undefined,
+        hoursWorked: hoursWorked ? new Decimal(hoursWorked) : undefined,
+        status: status || 'PRESENT',
+        notes,
+      };
+
       if (existingRecord) {
-        // Actualizar registro existente
         const updated = await prisma.attendanceRecord.update({
           where: {
-            employeeId_date: {
-              employeeId,
-              date: new Date(date),
-            },
+            employeeId_date: { employeeId, date: recordDate },
           },
-          data: {
-            checkInTime: checkInTime ? new Date(checkInTime) : undefined,
-            checkOutTime: checkOutTime ? new Date(checkOutTime) : undefined,
-            hoursWorked,
-            status: status || 'PRESENT',
-            notes,
-          },
+          data,
           include: {
             employee: {
-              select: {
-                cedula: true,
-                firstName: true,
-                lastName: true,
-              },
+              select: { cedula: true, firstName: true, lastName: true },
             },
           },
         });
@@ -69,22 +61,15 @@ export class AttendanceController {
 
       const newRecord = await prisma.attendanceRecord.create({
         data: {
+          ...data,
           employeeId,
           companyId: employee.companyId,
-          date: new Date(date),
-          checkInTime: checkInTime ? new Date(checkInTime) : null,
-          checkOutTime: checkOutTime ? new Date(checkOutTime) : null,
-          hoursWorked,
-          status: status || 'PRESENT',
-          notes,
+          date: recordDate,
+          hoursWorked: hoursWorked ? new Decimal(hoursWorked) : null,
         },
         include: {
           employee: {
-            select: {
-              cedula: true,
-              firstName: true,
-              lastName: true,
-            },
+            select: { cedula: true, firstName: true, lastName: true },
           },
         },
       });
@@ -92,10 +77,7 @@ export class AttendanceController {
       return res.status(201).json(newRecord);
     } catch (error: any) {
       console.error('Error recording attendance:', error);
-      return res.status(500).json({
-        error: 'Error al registrar la asistencia.',
-        details: error.message,
-      });
+      return res.status(500).json({ error: 'Error al registrar la asistencia.', details: error.message });
     }
   }
 
@@ -103,7 +85,6 @@ export class AttendanceController {
     try {
       const { employeeId } = req.params;
       const { startDate, endDate } = req.query;
-
       const where: any = { employeeId };
 
       if (startDate || endDate) {
@@ -116,12 +97,7 @@ export class AttendanceController {
         where,
         include: {
           employee: {
-            select: {
-              cedula: true,
-              firstName: true,
-              lastName: true,
-              position: true,
-            },
+            select: { cedula: true, firstName: true, lastName: true, position: true },
           },
         },
         orderBy: { date: 'desc' },
@@ -129,11 +105,7 @@ export class AttendanceController {
 
       return res.status(200).json(records);
     } catch (error: any) {
-      console.error('Error fetching attendance records:', error);
-      return res.status(500).json({
-        error: 'Error al obtener registros de asistencia.',
-        details: error.message,
-      });
+      return res.status(500).json({ error: 'Error al obtener registros.', details: error.message });
     }
   }
 
@@ -141,31 +113,20 @@ export class AttendanceController {
     try {
       const { companyId } = req.params;
       const { date } = req.query;
-
       const where: any = { companyId };
 
       if (date) {
         const targetDate = new Date(date as string);
         const nextDay = new Date(targetDate);
         nextDay.setDate(nextDay.getDate() + 1);
-
-        where.date = {
-          gte: targetDate,
-          lt: nextDay,
-        };
+        where.date = { gte: targetDate, lt: nextDay };
       }
 
       const records = await prisma.attendanceRecord.findMany({
         where,
         include: {
           employee: {
-            select: {
-              cedula: true,
-              firstName: true,
-              lastName: true,
-              position: true,
-              department: true,
-            },
+            select: { cedula: true, firstName: true, lastName: true, position: true, department: true },
           },
         },
         orderBy: [{ date: 'desc' }, { employee: { lastName: 'asc' } }],
@@ -173,11 +134,7 @@ export class AttendanceController {
 
       return res.status(200).json(records);
     } catch (error: any) {
-      console.error('Error fetching company attendance:', error);
-      return res.status(500).json({
-        error: 'Error al obtener asistencia de la compañía.',
-        details: error.message,
-      });
+      return res.status(500).json({ error: 'Error al obtener asistencia.', details: error.message });
     }
   }
 
@@ -185,24 +142,17 @@ export class AttendanceController {
     try {
       const { employeeId, year, month } = req.query;
 
-      const startDate = new Date(
-        parseInt(year as string),
-        parseInt(month as string) - 1,
-        1
-      );
-      const endDate = new Date(
-        parseInt(year as string),
-        parseInt(month as string),
-        0
-      );
+      if (!employeeId || !year || !month) {
+        return res.status(400).json({ error: 'employeeId, year y month son requeridos.' });
+      }
+
+      const startDate = new Date(Number(year), Number(month) - 1, 1);
+      const endDate = new Date(Number(year), Number(month), 0);
 
       const records = await prisma.attendanceRecord.findMany({
         where: {
           employeeId: employeeId as string,
-          date: {
-            gte: startDate,
-            lte: endDate,
-          },
+          date: { gte: startDate, lte: endDate },
         },
         orderBy: { date: 'asc' },
       });
@@ -218,26 +168,21 @@ export class AttendanceController {
 
       records.forEach((record) => {
         switch (record.status) {
-          case 'PRESENT':
-            summary.present++;
-            break;
-          case 'ABSENT':
-            summary.absent++;
-            break;
-          case 'LATE':
-            summary.late++;
-            break;
-          case 'HALF_DAY':
-            summary.halfDay++;
-            break;
-          case 'EXCUSED':
-            summary.excused++;
-            break;
+          case 'PRESENT': summary.present++; break;
+          case 'ABSENT': summary.absent++; break;
+          case 'LATE': summary.late++; break;
+          case 'HALF_DAY': summary.halfDay++; break;
+          case 'EXCUSED': summary.excused++; break;
         }
+        
         if (record.hoursWorked) {
-          summary.totalHours += record.hoursWorked;
+          // Corrección del error TS2365 convirtiendo Decimal a number
+          summary.totalHours += Number(record.hoursWorked);
         }
       });
+
+      // Redondeo para evitar problemas de precisión en la respuesta JSON
+      summary.totalHours = parseFloat(summary.totalHours.toFixed(2));
 
       return res.status(200).json({
         month: `${year}-${String(month).padStart(2, '0')}`,
@@ -245,11 +190,7 @@ export class AttendanceController {
         records,
       });
     } catch (error: any) {
-      console.error('Error fetching monthly summary:', error);
-      return res.status(500).json({
-        error: 'Error al obtener resumen mensual.',
-        details: error.message,
-      });
+      return res.status(500).json({ error: 'Error al obtener resumen mensual.', details: error.message });
     }
   }
 }
