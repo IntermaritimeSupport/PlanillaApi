@@ -13,6 +13,7 @@ import { errorMiddleware } from './middlewares/errorHandler.js';
 import PayrollRouter from './routes/PayrollRoutes.js';
 import SystemRouter from './routes/SystemConfigRoutes.js';
 import EmployeeRouter from './routes/EmployeeRoutes.js';
+import SeedRouter from './routes/SeedRoutes.js';
 
 dotenv.config({ path: '.env' });
 
@@ -66,7 +67,7 @@ app.use('/api/companies', CompaniesRouter);
 app.use('/api/system', SystemRouter);
 app.use('/api/payroll', PayrollRouter);
 app.use('/api/payroll', EmployeeRouter);
-
+app.use('/api/seed', SeedRouter);
 app.use(errorMiddleware);
 
 app.listen(port, () => {
