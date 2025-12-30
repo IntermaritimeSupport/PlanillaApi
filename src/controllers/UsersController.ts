@@ -1,7 +1,10 @@
 import bcrypt from 'bcryptjs';
 import { Request, Response } from 'express';
 import { prisma } from '../../lib/prisma.js';
-import { generateNextUserCode } from '../../prisma/seed.js';
+
+export function generateNextUserCode(): string {
+  return `USR-${Math.floor(100000 + Math.random() * 900000)}`;
+}
 
 // Define el orden jerárquico de roles
 const ROLE_HIERARCHY: Record<string, number> = {

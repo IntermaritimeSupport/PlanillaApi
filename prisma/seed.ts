@@ -3,163 +3,94 @@ import prisma from '../lib/prisma.js'
 import bcrypt from 'bcryptjs'
 import { Decimal } from '@prisma/client/runtime/client.js';
 
-export function generateNextUserCode(): string {
-  return `USR-${Math.floor(100000 + Math.random() * 900000)}`;
-}
+async function main() {
+  console.time('⏱️ Tiempo total de Seed');
+  console.log('🚀 Iniciando Seed Ultra-Rápido...');
 
-async function hashPassword(password: string) {
-  // 10 rounds es el equilibrio perfecto entre seguridad y velocidad en Vercel
-  return await bcrypt.hash(password, 10);
-}
+  // 1. Hashear contraseñas en paralelo ANTES de tocar la DB
+  // Hacer esto antes evita bloquear el event loop durante las consultas
+  const hashedPw = await bcrypt.hash('password123', 10);
 
-async function getAvailableUserForEmployee(
-  email: string, 
-  firstName: string, 
-  lastName: string, 
-  companyId: string, 
-  role: any = 'USER'
-) {
-  const hashedPassword = await hashPassword('password123');
-  const user = await prisma.user.upsert({
-    where: { email },
-    update: { role }, // Actualizamos el rol por si cambió
-    create: {
-      email,
-      username: `${firstName.toLowerCase()}.${lastName.toLowerCase()}${Math.floor(Math.random() * 100)}`,
-      password: hashedPassword,
-      role: role,
-      isActive: true,
-    },
-  });
-
-  await prisma.userCompany.upsert({
-    where: { userId_companyId: { userId: user.id, companyId } },
-    update: {},
-    create: { userId: user.id, companyId }
-  });
-
-  return user;
-}
-
-async function seedLegalParameters() {
-  console.log('📋 Inicializando parámetros legales...');
-
+  // 2. PARÁMETROS LEGALES (Uso de createMany para 1 sola transacción)
+  // Nota: createMany con skipDuplicates es lo más rápido que existe en Prisma
   const legalParameters = [
-    { key: 'legal_parameters_sss_employee', value: JSON.stringify({ name: 'Aporte del Empleado al SSS', type: 'employee', percentage: 8.75, effectiveDate: new Date().toISOString().split('T')[0], status: 'active', category: 'social_security' }), description: 'Aporte obligatorio del empleado al Seguro Social' },
-    { key: 'legal_parameters_sss_employer', value: JSON.stringify({ name: 'Aporte del Patrono al SSS', type: 'employer', percentage: 12.25, effectiveDate: new Date().toISOString().split('T')[0], status: 'active', category: 'social_security' }), description: 'Aporte obligatorio del patrono al Seguro Social' },
-    { key: 'legal_parameters_educational', value: JSON.stringify({ name: 'Seguro Educativo', type: 'employer', percentage: 1.25, effectiveDate: new Date().toISOString().split('T')[0], status: 'active', category: 'educational_insurance' }), description: 'Aporte del patrono para seguro educativo' },
-    { key: 'legal_parameters_isr_tramo1', value: JSON.stringify({ name: 'Tramo 1: Exento', type: 'employee', percentage: 0, range: { min: 0, max: 12000 }, effectiveDate: new Date().toISOString().split('T')[0], status: 'active', category: 'isr' }), description: 'Rango exento de ISR en Panamá' },
-    { key: 'legal_parameters_isr_tramo2', value: JSON.stringify({ name: 'Tramo 2: 15%', type: 'employee', percentage: 15, range: { min: 12001, max: 36000 }, effectiveDate: new Date().toISOString().split('T')[0], status: 'active', category: 'isr' }), description: 'Rango 15% de ISR en Panamá' },
-    { key: 'legal_parameters_isr_tramo3', value: JSON.stringify({ name: 'Tramo 3: 20%', type: 'employee', percentage: 20, range: { min: 36001, max: 60000 }, effectiveDate: new Date().toISOString().split('T')[0], status: 'active', category: 'isr' }), description: 'Rango 20% de ISR en Panamá' },
-    { key: 'legal_parameters_isr_tramo4', value: JSON.stringify({ name: 'Tramo 4: 25%', type: 'employee', percentage: 25, range: { min: 60001, max: 999999 }, effectiveDate: new Date().toISOString().split('T')[0], status: 'active', category: 'isr' }), description: 'Rango 25% de ISR en Panamá' },
+    { key: 'legal_parameters_sss_employee', value: JSON.stringify({ percentage: 8.75, category: 'social_security' }), description: 'Aporte SSS Empleado' },
+    { key: 'legal_parameters_sss_employer', value: JSON.stringify({ percentage: 12.25, category: 'social_security' }), description: 'Aporte SSS Patrono' },
+    { key: 'legal_parameters_educational', value: JSON.stringify({ percentage: 1.25, category: 'educational_insurance' }), description: 'Seguro Educativo' },
+    { key: 'legal_parameters_isr_tramo1', value: JSON.stringify({ percentage: 0, range: { min: 0, max: 12000 } }), description: 'ISR Tramo 1' },
+    { key: 'legal_parameters_isr_tramo2', value: JSON.stringify({ percentage: 15, range: { min: 12001, max: 36000 } }), description: 'ISR Tramo 2' },
+    { key: 'legal_parameters_isr_tramo3', value: JSON.stringify({ percentage: 20, range: { min: 36001, max: 60000 } }), description: 'ISR Tramo 3' },
+    { key: 'legal_parameters_isr_tramo4', value: JSON.stringify({ percentage: 25, range: { min: 60001, max: 999999 } }), description: 'ISR Tramo 4' }
   ];
 
-  // OPTIMIZACIÓN CLAVE: Ejecución paralela con upsert directo
-  // Esto evita el error findUnique() invocation ETIMEDOUT
-  await Promise.all(
-    legalParameters.map((param) =>
-      prisma.systemConfig.upsert({
-        where: { key: param.key },
-        update: { value: param.value, description: param.description },
-        create: param,
-      })
-    )
-  );
+  console.log('📦 Sincronizando parámetros...');
+  await prisma.systemConfig.createMany({
+    data: legalParameters,
+    skipDuplicates: true, // Si ya existen, no hace nada (muy rápido)
+  });
 
-  console.log(`✅ Parámetros legales sincronizados.`);
-}
-
-async function main() {
-  console.log('🚀 Iniciando Seed...');
-
-  // 1. Parámetros Legales
-  await seedLegalParameters();
-
-  // 2. Compañías y Departamentos
+  // 3. COMPAÑÍAS Y DEPARTAMENTOS
+  // Usamos upsert pero los disparamos todos juntos
   const companyData = [
     { name: 'Intermaritime', code: 'COMP-IM', ruc: '8-111-1111' },
     { name: 'PMTS', code: 'COMP-PM', ruc: '8-222-2222' }
   ];
 
-  const companies: Record<string, any> = {};
-  const departments: Record<string, any> = {};
+  const results = await Promise.all(companyData.map(c => 
+    prisma.company.upsert({
+      where: { name: c.name },
+      update: { code: c.code },
+      create: { ...c, isActive: true }
+    })
+  ));
 
-  for (const data of companyData) {
-    const company = await prisma.company.upsert({
-      where: { name: data.name },
-      update: { code: data.code, ruc: data.ruc },
-      create: { name: data.name, code: data.code, ruc: data.ruc, isActive: true }
-    });
-    companies[data.name] = company;
-
-    const dept = await prisma.department.upsert({
-      where: { id: `dept-gen-${company.id}` },
-      update: {},
-      create: {
-        id: `dept-gen-${company.id}`,
-        name: 'Administración',
-        description: `Departamento general de ${company.name}`,
-        companyId: company.id,
-        isActive: true
-      }
-    });
-    departments[company.name] = dept;
-  }
-
-  // 3. Empleados y Personas
+  // 4. CREACIÓN DE USUARIOS Y EMPLEADOS
+  // Para ir lo más rápido posible, creamos los registros base
   const employeesData = [
-    { cedula: '8-123-4567', firstName: 'Carlos', lastName: 'Sanchez', email: 'david@intermaritime.org', salary: 2500, companyName: 'Intermaritime', role: 'SUPER_ADMIN' },
-    { cedula: '8-999-0000', firstName: 'Maria', lastName: 'Sosa', email: 'maria.sosa@test.com', salary: 3000, companyName: 'PMTS', role: 'MODERATOR' }
+    { cedula: '8-123-4567', firstName: 'Carlos', lastName: 'Sanchez', email: 'david@intermaritime.org', salary: 2500, companyId: results[0].id },
+    { cedula: '8-999-0000', firstName: 'Maria', lastName: 'Sosa', email: 'maria.sosa@test.com', salary: 3000, companyId: results[1].id }
   ];
 
-  // Usamos un bucle for tradicional aquí para no saturar las conexiones de la DB al crear usuarios (bcrypt)
   for (const emp of employeesData) {
-    const targetCompany = companies[emp.companyName];
-    const targetDept = departments[emp.companyName];
+    // Upsert de Usuario
+    const user = await prisma.user.upsert({
+      where: { email: emp.email },
+      update: {},
+      create: {
+        email: emp.email,
+        username: `${emp.firstName.toLowerCase()}${Math.floor(Math.random() * 99)}`,
+        password: hashedPw,
+        role: 'SUPER_ADMIN',
+        isActive: true,
+      }
+    });
 
-    const user = await getAvailableUserForEmployee(emp.email, emp.firstName, emp.lastName, targetCompany.id, emp.role);
-
+    // Upsert de Empleado
     await prisma.employee.upsert({
       where: { cedula: emp.cedula },
-      update: { companyId: targetCompany.id, salary: new Decimal(emp.salary) },
+      update: { salary: new Decimal(emp.salary) },
       create: {
         cedula: emp.cedula,
         firstName: emp.firstName,
         lastName: emp.lastName,
         email: emp.email,
-        position: 'Analista',
-        hireDate: new Date(),
         salary: new Decimal(emp.salary),
         userId: user.id,
-        companyId: targetCompany.id,
-        status: 'ACTIVE'
+        companyId: emp.companyId,
+        status: 'ACTIVE',
+        hireDate: new Date(),
+        position: 'Analista'
       }
     });
-
-    await prisma.person.upsert({
-      where: { userId: user.id },
-      update: { companyId: targetCompany.id, departmentId: targetDept.id },
-      create: {
-        userId: user.id,
-        firstName: emp.firstName,
-        lastName: emp.lastName,
-        fullName: `${emp.firstName} ${emp.lastName}`,
-        userCode: generateNextUserCode(),
-        status: 'Activo',
-        companyId: targetCompany.id,
-        departmentId: targetDept.id,
-        position: 'Analista de Operaciones'
-      }
-    });
-    console.log(`✅ ${emp.firstName} procesado.`);
   }
 
-  console.log('\n🎉 Seed finalizado correctamente.');
+  console.timeEnd('⏱️ Tiempo total de Seed');
+  console.log('🎉 Seed completado exitosamente.');
 }
 
 main()
   .catch((e) => {
-    console.error('❌ Error fatal:', e);
+    console.error('❌ Error:', e);
     process.exit(1);
   })
   .finally(async () => {
