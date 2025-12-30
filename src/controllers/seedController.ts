@@ -1,23 +1,20 @@
 import { Request, Response } from 'express';
 import bcrypt from 'bcryptjs';
 import { prisma } from '../../lib/prisma.js';
-import { Decimal } from '@prisma/client/runtime/client';
+import { Decimal } from '@prisma/client/runtime/client.js';
 
 export class SeedController {
   
-  /* ============================
-      MÉTODOS PRIVADOS (UTILIDADES)
-     ============================ */
-
   private generateNextUserCode(): string {
     return `USR-${Math.floor(100000 + Math.random() * 900000)}`;
   }
 
-  async hashPassword(password: string) {
+  private async hashPassword(password: string) {
+    // Usar rounds bajos (10) es suficiente y rápido para serverless
     return await bcrypt.hash(password, 10);
   }
 
-  async getAvailableUserForEmployee(
+  private async getAvailableUserForEmployee(
     email: string,
     firstName: string,
     lastName: string,
@@ -27,7 +24,7 @@ export class SeedController {
     const hashedPassword = await this.hashPassword('password123');
     const user = await prisma.user.upsert({
       where: { email },
-      update: {},
+      update: { role }, // Actualizar rol si ya existe
       create: {
         email,
         username: `${firstName.toLowerCase()}.${lastName.toLowerCase()}${Math.floor(Math.random() * 100)}`,
@@ -50,8 +47,7 @@ export class SeedController {
       MÉTODO PRINCIPAL (HANDLER)
      ============================ */
 
-  async runSeed (req: Request, res: Response) {
-    // 1. Protección de seguridad
+  async runSeed(req: Request, res: Response) {
     const auth = req.headers.authorization;
     const SECRET = process.env.SEED_SECRET || 'mi-seed-key';
 
@@ -64,9 +60,9 @@ export class SeedController {
     }
 
     try {
-      console.log('🚀 Iniciando Seed desde el Endpoint...');
+      console.log('🚀 Iniciando Seed Optimizado...');
 
-      // --- 1. PARÁMETROS LEGALES ---
+      // --- 1. PARÁMETROS LEGALES (EJECUCIÓN PARALELA) ---
       const legalParameters = [
         { key: 'legal_parameters_sss_employee', value: JSON.stringify({ name: 'Aporte del Empleado al SSS', type: 'employee', percentage: 8.75, effectiveDate: new Date().toISOString().split('T')[0], status: 'active', category: 'social_security' }), description: 'Aporte obligatorio del empleado al Seguro Social' },
         { key: 'legal_parameters_sss_employer', value: JSON.stringify({ name: 'Aporte del Patrono al SSS', type: 'employer', percentage: 12.25, effectiveDate: new Date().toISOString().split('T')[0], status: 'active', category: 'social_security' }), description: 'Aporte obligatorio del patrono al Seguro Social' },
@@ -77,13 +73,13 @@ export class SeedController {
         { key: 'legal_parameters_isr_tramo4', value: JSON.stringify({ name: 'Tramo 4: 25%', type: 'employee', percentage: 25, range: { min: 60001, max: 999999 }, effectiveDate: new Date().toISOString().split('T')[0], status: 'active', category: 'isr' }), description: 'Rango 25% de ISR en Panamá' }
       ];
 
-      for (const param of legalParameters) {
-        await prisma.systemConfig.upsert({
+      await Promise.all(legalParameters.map(param => 
+        prisma.systemConfig.upsert({
           where: { key: param.key },
           update: { value: param.value, description: param.description },
           create: param,
-        });
-      }
+        })
+      ));
 
       // --- 2. COMPAÑÍAS Y DEPARTAMENTOS ---
       const companyData = [
@@ -116,7 +112,7 @@ export class SeedController {
         departments[company.name] = dept;
       }
 
-      // --- 3. EMPLEADOS Y PERSONAS ---
+      // --- 3. EMPLEADOS Y PERSONAS (PROCESO SECUENCIAL PARA EVITAR BLOQUEOS) ---
       const employeesData = [
         { cedula: '8-123-4567', firstName: 'Carlos', lastName: 'Sanchez', email: 'david@intermaritime.org', salary: 2500, companyName: 'Intermaritime', role: 'SUPER_ADMIN' },
         { cedula: '8-999-0000', firstName: 'Maria', lastName: 'Sosa', email: 'maria.sosa@test.com', salary: 3000, companyName: 'PMTS', role: 'MODERATOR' }
@@ -129,7 +125,10 @@ export class SeedController {
 
         await prisma.employee.upsert({
           where: { cedula: emp.cedula },
-          update: { companyId: targetCompany.id },
+          update: { 
+            companyId: targetCompany.id,
+            salary: new Decimal(emp.salary)
+          },
           create: {
             cedula: emp.cedula,
             firstName: emp.firstName,
@@ -161,11 +160,15 @@ export class SeedController {
         });
       }
 
-      res.status(200).json({ message: '🎉 Seed ejecutado correctamente desde la Clase' });
+      return res.status(200).json({ message: '🎉 Seed ejecutado con éxito' });
 
     } catch (err: any) {
-      console.error('❌ Error en seed endpoint:', err);
-      res.status(500).json({ error: 'Error al ejecutar seed', details: err.message || err });
+      console.error('❌ Error fatal en Seed:', err);
+      return res.status(500).json({ 
+        error: 'Error al ejecutar seed', 
+        details: err.message,
+        code: err.code // Útil para debuggear timeouts de base de datos
+      });
     }
   }
 }
