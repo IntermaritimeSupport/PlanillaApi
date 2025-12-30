@@ -1,8 +1,8 @@
-import 'dotenv/config'
 import { Request, Response } from 'express';
 import bcrypt from 'bcryptjs';
 import { prisma } from '../../lib/prisma.js';
 import { Decimal } from '@prisma/client/runtime/client.js';
+
 
 export class SeedController {
   
@@ -10,45 +10,8 @@ export class SeedController {
     return `USR-${Math.floor(100000 + Math.random() * 900000)}`;
   }
 
-  private async hashPassword(password: string) {
-    // Usar rounds bajos (10) es suficiente y rápido para serverless
-    return await bcrypt.hash(password, 10);
-  }
-
-  private async getAvailableUserForEmployee(
-    email: string,
-    firstName: string,
-    lastName: string,
-    companyId: string,
-    role: any = 'USER'
-  ) {
-    const hashedPassword = await this.hashPassword('password123');
-    const user = await prisma.user.upsert({
-      where: { email },
-      update: { role }, // Actualizar rol si ya existe
-      create: {
-        email,
-        username: `${firstName.toLowerCase()}.${lastName.toLowerCase()}${Math.floor(Math.random() * 100)}`,
-        password: hashedPassword,
-        role: role,
-        isActive: true,
-      },
-    });
-
-    await prisma.userCompany.upsert({
-      where: { userId_companyId: { userId: user.id, companyId } },
-      update: {},
-      create: { userId: user.id, companyId }
-    });
-
-    return user;
-  }
-
-  /* ============================
-      MÉTODO PRINCIPAL (HANDLER)
-     ============================ */
-
   async runSeed(req: Request, res: Response) {
+    // 1. Protección de seguridad rápida
     const auth = req.headers.authorization;
     const SECRET = process.env.SEED_SECRET || 'mi-seed-key';
 
@@ -56,94 +19,105 @@ export class SeedController {
       return res.status(401).json({ error: 'No autorizado' });
     }
 
-    if (req.method !== 'POST') {
-      return res.status(405).json({ error: 'Método no permitido' });
-    }
-
     try {
-      console.log('🚀 Iniciando Seed Optimizado...');
+      console.time('🚀 ExecutionTime');
+      
+      // OPTIMIZACIÓN 1: Hashear la contraseña una sola vez (Bcrypt es lento)
+      const commonHashedPassword = await bcrypt.hash('password123', 10);
 
-      // --- 1. PARÁMETROS LEGALES (EJECUCIÓN PARALELA) ---
+      // OPTIMIZACIÓN 2: Parámetros legales con createMany (Súper rápido)
       const legalParameters = [
-        { key: 'legal_parameters_sss_employee', value: JSON.stringify({ name: 'Aporte del Empleado al SSS', type: 'employee', percentage: 8.75, effectiveDate: new Date().toISOString().split('T')[0], status: 'active', category: 'social_security' }), description: 'Aporte obligatorio del empleado al Seguro Social' },
-        { key: 'legal_parameters_sss_employer', value: JSON.stringify({ name: 'Aporte del Patrono al SSS', type: 'employer', percentage: 12.25, effectiveDate: new Date().toISOString().split('T')[0], status: 'active', category: 'social_security' }), description: 'Aporte obligatorio del patrono al Seguro Social' },
-        { key: 'legal_parameters_educational', value: JSON.stringify({ name: 'Seguro Educativo', type: 'employer', percentage: 1.25, effectiveDate: new Date().toISOString().split('T')[0], status: 'active', category: 'educational_insurance' }), description: 'Aporte del patrono para seguro educativo' },
-        { key: 'legal_parameters_isr_tramo1', value: JSON.stringify({ name: 'Tramo 1: Exento', type: 'employee', percentage: 0, range: { min: 0, max: 12000 }, effectiveDate: new Date().toISOString().split('T')[0], status: 'active', category: 'isr' }), description: 'Rango exento de ISR en Panamá' },
-        { key: 'legal_parameters_isr_tramo2', value: JSON.stringify({ name: 'Tramo 2: 15%', type: 'employee', percentage: 15, range: { min: 12001, max: 36000 }, effectiveDate: new Date().toISOString().split('T')[0], status: 'active', category: 'isr' }), description: 'Rango 15% de ISR en Panamá' },
-        { key: 'legal_parameters_isr_tramo3', value: JSON.stringify({ name: 'Tramo 3: 20%', type: 'employee', percentage: 20, range: { min: 36001, max: 60000 }, effectiveDate: new Date().toISOString().split('T')[0], status: 'active', category: 'isr' }), description: 'Rango 20% de ISR en Panamá' },
-        { key: 'legal_parameters_isr_tramo4', value: JSON.stringify({ name: 'Tramo 4: 25%', type: 'employee', percentage: 25, range: { min: 60001, max: 999999 }, effectiveDate: new Date().toISOString().split('T')[0], status: 'active', category: 'isr' }), description: 'Rango 25% de ISR en Panamá' }
+        { key: 'legal_parameters_sss_employee', value: JSON.stringify({ percentage: 8.75, category: 'social_security' }), description: 'SSS Empleado' },
+        { key: 'legal_parameters_sss_employer', value: JSON.stringify({ percentage: 12.25, category: 'social_security' }), description: 'SSS Patrono' },
+        { key: 'legal_parameters_educational', value: JSON.stringify({ percentage: 1.25, category: 'educational_insurance' }), description: 'Seguro Educativo' },
+        { key: 'legal_parameters_isr_tramo1', value: JSON.stringify({ percentage: 0, range: { min: 0, max: 12000 } }), description: 'ISR Tramo 1' },
+        { key: 'legal_parameters_isr_tramo2', value: JSON.stringify({ percentage: 15, range: { min: 12001, max: 36000 } }), description: 'ISR Tramo 2' },
+        { key: 'legal_parameters_isr_tramo3', value: JSON.stringify({ percentage: 20, range: { min: 36001, max: 60000 } }), description: 'ISR Tramo 3' },
+        { key: 'legal_parameters_isr_tramo4', value: JSON.stringify({ percentage: 25, range: { min: 60001, max: 999999 } }), description: 'ISR Tramo 4' }
       ];
 
-      await Promise.all(legalParameters.map(param => 
-        prisma.systemConfig.upsert({
-          where: { key: param.key },
-          update: { value: param.value, description: param.description },
-          create: param,
-        })
-      ));
+      await prisma.systemConfig.createMany({
+        data: legalParameters,
+        skipDuplicates: true, // Si ya existen, no fallará ni tardará nada
+      });
 
-      // --- 2. COMPAÑÍAS Y DEPARTAMENTOS ---
+      // OPTIMIZACIÓN 3: Compañías en paralelo
       const companyData = [
         { name: 'Intermaritime', code: 'COMP-IM', ruc: '8-111-1111' },
         { name: 'PMTS', code: 'COMP-PM', ruc: '8-222-2222' }
       ];
 
-      const companies: Record<string, any> = {};
-      const departments: Record<string, any> = {};
+      const companyResults = await Promise.all(companyData.map(c => 
+        prisma.company.upsert({
+          where: { name: c.name },
+          update: { code: c.code },
+          create: { ...c, isActive: true }
+        })
+      ));
 
-      for (const data of companyData) {
-        const company = await prisma.company.upsert({
-          where: { name: data.name },
-          update: { code: data.code, ruc: data.ruc },
-          create: { name: data.name, code: data.code, ruc: data.ruc, isActive: true }
-        });
-        companies[data.name] = company;
-
-        const dept = await prisma.department.upsert({
+      // Crear departamentos por defecto rápidamente
+      const depts = await Promise.all(companyResults.map(company => 
+        prisma.department.upsert({
           where: { id: `dept-gen-${company.id}` },
           update: {},
           create: {
             id: `dept-gen-${company.id}`,
             name: 'Administración',
-            description: `Departamento general de ${company.name}`,
             companyId: company.id,
             isActive: true
           }
-        });
-        departments[company.name] = dept;
-      }
+        })
+      ));
 
-      // --- 3. EMPLEADOS Y PERSONAS (PROCESO SECUENCIAL PARA EVITAR BLOQUEOS) ---
+      // 4. Empleados y Personas
       const employeesData = [
-        { cedula: '8-123-4567', firstName: 'Carlos', lastName: 'Sanchez', email: 'david@intermaritime.org', salary: 2500, companyName: 'Intermaritime', role: 'SUPER_ADMIN' },
-        { cedula: '8-999-0000', firstName: 'Maria', lastName: 'Sosa', email: 'maria.sosa@test.com', salary: 3000, companyName: 'PMTS', role: 'MODERATOR' }
+        { cedula: '8-123-4567', firstName: 'Carlos', lastName: 'Sanchez', email: 'david@intermaritime.org', salary: 2500, companyIdx: 0 },
+        { cedula: '8-999-0000', firstName: 'Maria', lastName: 'Sosa', email: 'maria.sosa@test.com', salary: 3000, companyIdx: 1 }
       ];
 
       for (const emp of employeesData) {
-        const targetCompany = companies[emp.companyName];
-        const targetDept = departments[emp.companyName];
-        const user = await this.getAvailableUserForEmployee(emp.email, emp.firstName, emp.lastName, targetCompany.id, emp.role);
+        const targetCompany = companyResults[emp.companyIdx];
+        const targetDept = depts[emp.companyIdx];
 
+        // Upsert de Usuario (Ya tiene el hash calculado)
+        const user = await prisma.user.upsert({
+          where: { email: emp.email },
+          update: { role: emp.companyIdx === 0 ? 'SUPER_ADMIN' : 'MODERATOR' },
+          create: {
+            email: emp.email,
+            username: `${emp.firstName.toLowerCase()}.${emp.lastName.toLowerCase()}${Math.floor(Math.random() * 99)}`,
+            password: commonHashedPassword,
+            role: emp.companyIdx === 0 ? 'SUPER_ADMIN' : 'MODERATOR',
+            isActive: true,
+          }
+        });
+
+        // Conectar Usuario con Compañía
+        await prisma.userCompany.upsert({
+          where: { userId_companyId: { userId: user.id, companyId: targetCompany.id } },
+          update: {},
+          create: { userId: user.id, companyId: targetCompany.id }
+        });
+
+        // Crear Empleado
         await prisma.employee.upsert({
           where: { cedula: emp.cedula },
-          update: { 
-            companyId: targetCompany.id,
-            salary: new Decimal(emp.salary)
-          },
+          update: { salary: new Decimal(emp.salary) },
           create: {
             cedula: emp.cedula,
             firstName: emp.firstName,
             lastName: emp.lastName,
             email: emp.email,
-            position: 'Analista',
-            hireDate: new Date(),
             salary: new Decimal(emp.salary),
             userId: user.id,
             companyId: targetCompany.id,
-            status: 'ACTIVE'
+            status: 'ACTIVE',
+            hireDate: new Date(),
+            position: 'Analista'
           }
         });
 
+        // Crear registro en Person
         await prisma.person.upsert({
           where: { userId: user.id },
           update: { companyId: targetCompany.id, departmentId: targetDept.id },
@@ -161,15 +135,12 @@ export class SeedController {
         });
       }
 
-      return res.status(200).json({ message: '🎉 Seed ejecutado con éxito' });
+      console.timeEnd('🚀 ExecutionTime');
+      return res.status(200).json({ message: '🎉 Seed ultra-rápido ejecutado con éxito' });
 
     } catch (err: any) {
-      console.error('❌ Error fatal en Seed:', err);
-      return res.status(500).json({ 
-        error: 'Error al ejecutar seed', 
-        details: err.message,
-        code: err.code // Útil para debuggear timeouts de base de datos
-      });
+      console.error('❌ Error:', err);
+      return res.status(500).json({ error: 'Fallo en la semilla', details: err.message });
     }
   }
 }
