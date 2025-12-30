@@ -1,6 +1,5 @@
 import { Request, Response } from 'express';
-import prisma from '../../lib/prisma';
-
+import { prisma } from '../../lib/prisma.js';
 export class SystemConfigController {
   // Get all system configurations or filter by category
   async getAll(req: Request, res: Response) {

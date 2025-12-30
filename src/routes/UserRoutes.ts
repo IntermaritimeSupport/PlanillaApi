@@ -13,5 +13,4 @@ UserRouter.get('/profile/:id', userController.getProfile.bind(userController));
 UserRouter.get('/full', userController.getAllWithPerson.bind(userController));
 UserRouter.get('/full/:companyCode', userController.getAllUserByCompanyId.bind(userController));
 
-
 export default UserRouter;
