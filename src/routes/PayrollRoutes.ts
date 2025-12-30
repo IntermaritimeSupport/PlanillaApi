@@ -1,8 +1,8 @@
 import { Router } from 'express';
-import { AttendanceController } from '../controllers/AttendanceController';
-import { EmployeeController } from '../controllers/EmployeeController';
-import { PayrollController } from '../controllers/PayrollController';
-import { LeaveController } from '../controllers/LeaveController';
+import { AttendanceController } from '../controllers/AttendanceController.js';
+import { EmployeeController } from '../controllers/EmployeeController.js';
+import { PayrollController } from '../controllers/PayrollController.js';
+import { LeaveController } from '../controllers/LeaveController.js';
 
 
 const PayrollRouter = Router();
