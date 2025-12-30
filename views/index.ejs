@@ -1,0 +1,11 @@
+<div class="container mx-auto p-4">
+    <h1 class="text-3xl font-bold mb-4"><%= message %></h1>
+    <p class="text-lg">Esta es la página de inicio de tu Sistema IT.</p>
+    <p class="mt-4">
+        <% if (!user) { %>
+            <a href="/auth/login" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-md shadow-md transition duration-200">Iniciar Sesión</a>
+        <% } else { %>
+            <a href="/dashboard" class="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded-md shadow-md transition duration-200">Ir al Dashboard</a>
+        <% } %>
+    </p>
+</div>

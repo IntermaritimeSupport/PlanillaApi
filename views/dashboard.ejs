@@ -1,0 +1,41 @@
+<div class="container mx-auto p-4">
+    <h1 class="text-3xl font-bold mb-6">Panel de Control</h1>
+
+    <% if (user) { %>
+        <p class="text-xl mb-4">Bienvenido al dashboard, <span class="font-semibold text-blue-400"><%= user.username %></span>!</p>
+        <p class="text-lg text-gray-300">Tu rol actual es: <span class="font-semibold text-yellow-400"><%= user.role %></span></p>
+        <% if (user.companyId) { %>
+            <p class="text-lg text-gray-300">ID de Empresa Asignada: <span class="font-semibold text-purple-400"><%= user.companyId %></span></p>
+        <% } %>
+    <% } %>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-8">
+        <div class="bg-gray-800 p-6 rounded-lg shadow-md border border-gray-700">
+            <h3 class="text-xl font-semibold text-white mb-2">Equipos Activos</h3>
+            <p class="text-4xl font-bold text-green-500">125</p>
+            <p class="text-gray-400 mt-2">Total de equipos en uso.</p>
+        </div>
+
+        <div class="bg-gray-800 p-6 rounded-lg shadow-md border border-gray-700">
+            <h3 class="text-xl font-semibold text-white mb-2">En Mantenimiento</h3>
+            <p class="text-4xl font-bold text-yellow-500">12</p>
+            <p class="text-gray-400 mt-2">Equipos actualmente en reparación.</p>
+        </div>
+
+        <div class="bg-gray-800 p-6 rounded-lg shadow-md border border-gray-700">
+            <h3 class="text-xl font-semibold text-white mb-2">Licencias por Vencer (30 días)</h3>
+            <p class="text-4xl font-bold text-red-500">5</p>
+            <p class="text-gray-400 mt-2">Licencias con fecha de expiración próxima.</p>
+        </div>
+
+        <div class="bg-gray-800 p-6 rounded-lg shadow-md border border-gray-700 col-span-full">
+            <h3 class="text-xl font-semibold text-white mb-4">Gráfica de Estado de Activos</h3>
+            <div id="recharts-container" class="w-full h-80 bg-gray-700 rounded-md flex items-center justify-center text-gray-400">
+                <p>Cargando gráfica...</p>
+            </div>
+            <script>
+                // ... (El script de Recharts se mantendría igual si lo tienes)
+            </script>
+        </div>
+    </div>
+</div>

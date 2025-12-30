@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= title %></title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #1a202c; /* Dark background */
+            color: #e2e8f0; /* Light text */
+            display: flex; /* Use flexbox for centering */
+            justify-content: center; /* Center horizontally */
+            align-items: center; /* Center vertically */
+            min-height: 100vh; /* Full viewport height */
+        }
+        .error-container {
+            text-align: center;
+            padding: 2rem;
+            background-color: #2d3748; /* Darker gray background for content */
+            border-radius: 0.75rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+</head>
+<body>
+    <div class="error-container">
+        <h1 class="text-6xl font-bold text-red-500 mb-4">404</h1>
+        <h2 class="text-3xl font-semibold mb-6">Página No Encontrada</h2>
+        <p class="text-lg text-gray-300 mb-8">Lo sentimos, la página que buscas no existe.</p>
+        <a href="/" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-md shadow-lg transition duration-200">Volver al Inicio</a>
+    </div>
+</body>
+</html>

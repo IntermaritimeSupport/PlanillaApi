@@ -1,0 +1,363 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model User {
+  id                   String        @id @default(uuid())
+  username             String        @unique
+  email                String        @unique
+  password             String
+  role                 UserRole      @default(USER)
+  isActive             Boolean       @default(true)
+  createdAt            DateTime      @default(now())
+  updatedAt            DateTime      @updatedAt
+  
+  companies            UserCompany[]
+  createdCompanies     Company[]     @relation("CompanyCreatedBy")
+  person               Person?
+  employee             Employee?     @relation("EmployeeUser")
+}
+
+model UserCompany {
+  userId    String
+  companyId String
+
+  user      User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  company   Company @relation(fields: [companyId], references: [id], onDelete: Cascade)
+
+  @@id([userId, companyId])
+}
+
+model Person {
+  id           String       @id @default(uuid())
+  userId       String       @unique
+  firstName    String?
+  lastName     String?
+  fullName     String?
+  contactEmail String?
+  phoneNumber  String?
+  departmentId String?
+  position     String?
+  status       PersonStatus @default(Activo)
+  userCode     String       @unique
+  createdAt    DateTime     @default(now())
+  updatedAt    DateTime     @updatedAt
+  companyId    String?
+  
+  department   Department?  @relation(fields: [departmentId], references: [id], onDelete: SetNull)
+  user         User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Company {
+  id               String            @id @default(uuid())
+  code             String            @unique
+  name             String            @unique
+  address          String?
+  phone            String?
+  email            String?
+  ruc              String?           @unique
+  logoUrl          String?
+  isActive         Boolean           @default(true)
+  createdAt        DateTime          @default(now())
+  updatedAt        DateTime          @updatedAt
+  createdByUserId  String?
+  
+  createdBy              User?             @relation("CompanyCreatedBy", fields: [createdByUserId], references: [id], onDelete: SetNull)
+  departments            Department[]
+  users                  UserCompany[]
+  employees              Employee[]        @relation("EmployeeCompany")
+  payrolls               Payroll[]         @relation("PayrollCompany")
+  attendanceRecords      AttendanceRecord[] @relation("AttendanceCompany")
+  leaves                 Leave[]           @relation("LeaveCompany")
+}
+
+model Department {
+  id          String   @id @default(uuid())
+  name        String
+  description String?
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  companyId   String
+  
+  company     Company  @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  persons     Person[]
+}
+
+model SystemConfig {
+  id          String   @id @default(uuid())
+  key         String   @unique
+  value       String
+  description String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+// ============================================
+// PAYROLL MODELS
+// ============================================
+
+model Employee {
+  id                    String                @id @default(uuid())
+  cedula                String                @unique // Cédula de identidad (Panamá)
+  firstName             String
+  lastName              String
+  email                 String                @unique
+  phoneNumber           String?
+  position              String
+  department            String?
+  hireDate              DateTime
+  salary                Decimal               @default(0.00)
+  salaryType            SalaryType            @default(MONTHLY)
+  status                EmployeeStatus        @default(ACTIVE)
+  bankAccount           String?
+  bankName              String?
+  
+  // Relación con Usuario - OPCIONAL (NULL)
+  userId                String?               @unique
+  user                  User?                 @relation("EmployeeUser", fields: [userId], references: [id], onDelete: SetNull)
+  
+  // Relación obligatoria con Compañía
+  companyId             String
+  company               Company               @relation("EmployeeCompany", fields: [companyId], references: [id], onDelete: Cascade)
+  
+  // Historiales
+  payrolls              Payroll[]
+  deductions            Deduction[]
+  allowances            Allowance[]
+  attendanceRecords     AttendanceRecord[]
+  leaves                Leave[]
+  
+  createdAt             DateTime              @default(now())
+  updatedAt             DateTime              @updatedAt
+
+  @@index([companyId])
+  @@index([cedula])
+  @@index([userId])
+}
+
+model Payroll {
+  id                    String                @id @default(uuid())
+  payrollNumber         String                @unique
+  employeeId            String
+  employee              Employee              @relation(fields: [employeeId], references: [id], onDelete: Cascade)
+  companyId             String
+  company               Company               @relation("PayrollCompany", fields: [companyId], references: [id], onDelete: Cascade)
+  
+  // Período
+  payPeriod             DateTime
+  paymentDate           DateTime
+  payrollType           PayrollType           @default(REGULAR)
+  
+  // Salario base
+  baseSalary            Decimal               @default(0.00)
+  workingDays           Int                   @default(30)
+  daysWorked            Int                   @default(30)
+  
+  // Cálculos
+  grossSalary           Decimal               @default(0.00)
+  
+  // Deducciones
+  incomeTax             Decimal               @default(0.00)
+  sss                   Decimal               @default(0.00)
+  privateInsurance      Decimal               @default(0.00)
+  customDeductions      Decimal               @default(0.00)
+  
+  totalDeductions       Decimal               @default(0.00)
+  netSalary             Decimal               @default(0.00)
+  
+  // Décimo Tercer Mes
+  thirteenthMonthAmount Decimal?              @default(0.00)
+  thirteenthMonthNote   String?
+  
+  // Detalles
+  deductions            Deduction[]
+  allowances            Allowance[]
+  
+  // Estado
+  status                PayrollStatus         @default(DRAFT)
+  approvedBy            String?
+  approvalDate          DateTime?
+  comments              String?
+  
+  createdAt             DateTime              @default(now())
+  updatedAt             DateTime              @updatedAt
+
+  @@index([employeeId])
+  @@index([companyId])
+  @@index([payPeriod])
+  @@index([payrollType])
+}
+
+model Deduction {
+  id                    String                @id @default(uuid())
+  payrollId             String?
+  payroll               Payroll?              @relation(fields: [payrollId], references: [id], onDelete: Cascade)
+  employeeId            String
+  employee              Employee              @relation(fields: [employeeId], references: [id], onDelete: Cascade)
+  
+  deductionType         DeductionType         @default(OTHER)
+  description           String
+  amount                Decimal
+  isFixed               Boolean               @default(false)
+  
+  createdAt             DateTime              @default(now())
+  updatedAt             DateTime              @updatedAt
+
+  @@index([employeeId])
+  @@index([payrollId])
+}
+
+model Allowance {
+  id                    String                @id @default(uuid())
+  payrollId             String?
+  payroll               Payroll?              @relation(fields: [payrollId], references: [id], onDelete: Cascade)
+  employeeId            String
+  employee              Employee              @relation(fields: [employeeId], references: [id], onDelete: Cascade)
+  
+  allowanceType         AllowanceType         @default(OTHER)
+  description           String
+  amount                Decimal
+  
+  createdAt             DateTime              @default(now())
+  updatedAt             DateTime              @updatedAt
+
+  @@index([employeeId])
+  @@index([payrollId])
+}
+
+model AttendanceRecord {
+  id                    String                @id @default(uuid())
+  employeeId            String
+  employee              Employee              @relation(fields: [employeeId], references: [id], onDelete: Cascade)
+  companyId             String
+  company               Company               @relation("AttendanceCompany", fields: [companyId], references: [id], onDelete: Cascade)
+  
+  date                  DateTime
+  checkInTime           DateTime?
+  checkOutTime          DateTime?
+  hoursWorked           Decimal?
+  status                AttendanceStatus      @default(PRESENT)
+  notes                 String?
+  
+  createdAt             DateTime              @default(now())
+  updatedAt             DateTime              @updatedAt
+
+  @@unique([employeeId, date])
+  @@index([employeeId])
+  @@index([companyId])
+}
+
+model Leave {
+  id                    String                @id @default(uuid())
+  employeeId            String
+  employee              Employee              @relation(fields: [employeeId], references: [id], onDelete: Cascade)
+  companyId             String
+  company               Company               @relation("LeaveCompany", fields: [companyId], references: [id], onDelete: Cascade)
+  
+  leaveType             LeaveType
+  startDate             DateTime
+  endDate               DateTime
+  daysRequested         Int
+  daysApproved          Int?
+  reason                String?
+  status                LeaveStatus           @default(PENDING)
+  approvedBy            String?
+  approvalDate          DateTime?
+  comments              String?
+  
+  createdAt             DateTime              @default(now())
+  updatedAt             DateTime              @updatedAt
+
+  @@index([employeeId])
+  @@index([companyId])
+}
+
+// ============================================
+// ENUMS
+// ============================================
+
+enum SalaryType {
+  MONTHLY
+  BIWEEKLY
+}
+
+enum PayrollType {
+  REGULAR
+  THIRTEEN_MONTH
+}
+
+enum EmployeeStatus {
+  ACTIVE
+  INACTIVE
+  SUSPENDED
+  TERMINATED
+}
+
+enum PayrollStatus {
+  DRAFT
+  PENDING_APPROVAL
+  APPROVED
+  PAID
+  REJECTED
+}
+
+enum DeductionType {
+  SSS
+  ISR
+  PRIVATE_INSURANCE
+  LOAN
+  ADVANCE
+  OTHER
+}
+
+enum AllowanceType {
+  OVERTIME
+  BONUS
+  COMMISSION
+  LUNCH_VOUCHER
+  TRANSPORTATION
+  HOUSING
+  OTHER
+}
+
+enum AttendanceStatus {
+  PRESENT
+  ABSENT
+  LATE
+  HALF_DAY
+  EXCUSED
+}
+
+enum LeaveType {
+  VACATION
+  SICK_LEAVE
+  MATERNITY_LEAVE
+  PERSONAL_LEAVE
+  UNPAID_LEAVE
+  OTHER
+}
+
+enum LeaveStatus {
+  PENDING
+  APPROVED
+  REJECTED
+  CANCELLED
+}
+
+enum UserRole {
+  USER
+  ADMIN
+  MODERATOR
+  SUPER_ADMIN
+}
+
+enum PersonStatus {
+  Activo
+  Inactivo
+}

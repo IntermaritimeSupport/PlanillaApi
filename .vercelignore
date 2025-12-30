@@ -1,0 +1,12 @@
+# Ignorar archivos y carpetas que no son necesarios para el despliegue
+
+node_modules
+.vercel
+.git
+.gitignore
+.env
+.env.local
+.env.development
+.env.production
+README.md
+*.log
