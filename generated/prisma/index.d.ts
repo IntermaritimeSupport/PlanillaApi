@@ -3,7 +3,7 @@
  * Client
 **/
 
-import * as runtime from './runtime/client.js';
+import * as runtime from './runtime/library.js';
 import $Types = runtime.Types // general types
 import $Public = runtime.Types.Public
 import $Utils = runtime.Types.Utils
@@ -73,6 +73,11 @@ export type AttendanceRecord = $Result.DefaultSelection<Prisma.$AttendanceRecord
  * 
  */
 export type Leave = $Result.DefaultSelection<Prisma.$LeavePayload>
+/**
+ * Model LegalParameter
+ * 
+ */
+export type LegalParameter = $Result.DefaultSelection<Prisma.$LegalParameterPayload>
 
 /**
  * Enums
@@ -248,7 +253,7 @@ export const PersonStatus: typeof $Enums.PersonStatus
  * ```
  *
  *
- * Read more in our [docs](https://pris.ly/d/client).
+ * Read more in our [docs](https://www.prisma.io/docs/reference/tools-and-interfaces/prisma-client).
  */
 export class PrismaClient<
   ClientOptions extends Prisma.PrismaClientOptions = Prisma.PrismaClientOptions,
@@ -269,7 +274,7 @@ export class PrismaClient<
    * ```
    *
    *
-   * Read more in our [docs](https://pris.ly/d/client).
+   * Read more in our [docs](https://www.prisma.io/docs/reference/tools-and-interfaces/prisma-client).
    */
 
   constructor(optionsArg ?: Prisma.Subset<ClientOptions, Prisma.PrismaClientOptions>);
@@ -292,7 +297,7 @@ export class PrismaClient<
    * const result = await prisma.$executeRaw`UPDATE User SET cool = ${true} WHERE email = ${'user@email.com'};`
    * ```
    *
-   * Read more in our [docs](https://pris.ly/d/raw-queries).
+   * Read more in our [docs](https://www.prisma.io/docs/reference/tools-and-interfaces/prisma-client/raw-database-access).
    */
   $executeRaw<T = unknown>(query: TemplateStringsArray | Prisma.Sql, ...values: any[]): Prisma.PrismaPromise<number>;
 
@@ -304,7 +309,7 @@ export class PrismaClient<
    * const result = await prisma.$executeRawUnsafe('UPDATE User SET cool = $1 WHERE email = $2 ;', true, 'user@email.com')
    * ```
    *
-   * Read more in our [docs](https://pris.ly/d/raw-queries).
+   * Read more in our [docs](https://www.prisma.io/docs/reference/tools-and-interfaces/prisma-client/raw-database-access).
    */
   $executeRawUnsafe<T = unknown>(query: string, ...values: any[]): Prisma.PrismaPromise<number>;
 
@@ -315,7 +320,7 @@ export class PrismaClient<
    * const result = await prisma.$queryRaw`SELECT * FROM User WHERE id = ${1} OR email = ${'user@email.com'};`
    * ```
    *
-   * Read more in our [docs](https://pris.ly/d/raw-queries).
+   * Read more in our [docs](https://www.prisma.io/docs/reference/tools-and-interfaces/prisma-client/raw-database-access).
    */
   $queryRaw<T = unknown>(query: TemplateStringsArray | Prisma.Sql, ...values: any[]): Prisma.PrismaPromise<T>;
 
@@ -327,7 +332,7 @@ export class PrismaClient<
    * const result = await prisma.$queryRawUnsafe('SELECT * FROM User WHERE id = $1 OR email = $2;', 1, 'user@email.com')
    * ```
    *
-   * Read more in our [docs](https://pris.ly/d/raw-queries).
+   * Read more in our [docs](https://www.prisma.io/docs/reference/tools-and-interfaces/prisma-client/raw-database-access).
    */
   $queryRawUnsafe<T = unknown>(query: string, ...values: any[]): Prisma.PrismaPromise<T>;
 
@@ -348,6 +353,7 @@ export class PrismaClient<
   $transaction<P extends Prisma.PrismaPromise<any>[]>(arg: [...P], options?: { isolationLevel?: Prisma.TransactionIsolationLevel }): $Utils.JsPromise<runtime.Types.Utils.UnwrapTuple<P>>
 
   $transaction<R>(fn: (prisma: Omit<PrismaClient, runtime.ITXClientDenyList>) => $Utils.JsPromise<R>, options?: { maxWait?: number, timeout?: number, isolationLevel?: Prisma.TransactionIsolationLevel }): $Utils.JsPromise<R>
+
 
   $extends: $Extensions.ExtendsHook<"extends", Prisma.TypeMapCb<ClientOptions>, ExtArgs, $Utils.Call<Prisma.TypeMapCb<ClientOptions>, {
     extArgs: ExtArgs
@@ -472,6 +478,16 @@ export class PrismaClient<
     * ```
     */
   get leave(): Prisma.LeaveDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.legalParameter`: Exposes CRUD operations for the **LegalParameter** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more LegalParameters
+    * const legalParameters = await prisma.legalParameter.findMany()
+    * ```
+    */
+  get legalParameter(): Prisma.LegalParameterDelegate<ExtArgs, ClientOptions>;
 }
 
 export namespace Prisma {
@@ -512,6 +528,14 @@ export namespace Prisma {
   export type DecimalJsLike = runtime.DecimalJsLike
 
   /**
+   * Metrics
+   */
+  export type Metrics = runtime.Metrics
+  export type Metric<T> = runtime.Metric<T>
+  export type MetricHistogram = runtime.MetricHistogram
+  export type MetricHistogramBucket = runtime.MetricHistogramBucket
+
+  /**
   * Extensions
   */
   export import Extension = $Extensions.UserArgs
@@ -522,12 +546,11 @@ export namespace Prisma {
   export import Exact = $Public.Exact
 
   /**
-   * Prisma Client JS version: 7.1.0
-   * Query Engine version: ab635e6b9d606fa5c8fb8b1a7f909c3c3c1c98ba
+   * Prisma Client JS version: 6.19.1
+   * Query Engine version: c2990dca591cba766e3b7ef5d9e8a84796e47ab7
    */
   export type PrismaVersion = {
     client: string
-    engine: string
   }
 
   export const prismaVersion: PrismaVersion
@@ -917,12 +940,16 @@ export namespace Prisma {
     Deduction: 'Deduction',
     Allowance: 'Allowance',
     AttendanceRecord: 'AttendanceRecord',
-    Leave: 'Leave'
+    Leave: 'Leave',
+    LegalParameter: 'LegalParameter'
   };
 
   export type ModelName = (typeof ModelName)[keyof typeof ModelName]
 
 
+  export type Datasources = {
+    db?: Datasource
+  }
 
   interface TypeMapCb<ClientOptions = {}> extends $Utils.Fn<{extArgs: $Extensions.InternalArgs }, $Utils.Record<string, any>> {
     returns: Prisma.TypeMap<this['params']['extArgs'], ClientOptions extends { omit: infer OmitOptions } ? OmitOptions : {}>
@@ -933,7 +960,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "user" | "userCompany" | "person" | "company" | "department" | "systemConfig" | "employee" | "payroll" | "deduction" | "allowance" | "attendanceRecord" | "leave"
+      modelProps: "user" | "userCompany" | "person" | "company" | "department" | "systemConfig" | "employee" | "payroll" | "deduction" | "allowance" | "attendanceRecord" | "leave" | "legalParameter"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -1825,6 +1852,80 @@ export namespace Prisma {
           }
         }
       }
+      LegalParameter: {
+        payload: Prisma.$LegalParameterPayload<ExtArgs>
+        fields: Prisma.LegalParameterFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.LegalParameterFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$LegalParameterPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.LegalParameterFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$LegalParameterPayload>
+          }
+          findFirst: {
+            args: Prisma.LegalParameterFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$LegalParameterPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.LegalParameterFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$LegalParameterPayload>
+          }
+          findMany: {
+            args: Prisma.LegalParameterFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$LegalParameterPayload>[]
+          }
+          create: {
+            args: Prisma.LegalParameterCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$LegalParameterPayload>
+          }
+          createMany: {
+            args: Prisma.LegalParameterCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.LegalParameterCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$LegalParameterPayload>[]
+          }
+          delete: {
+            args: Prisma.LegalParameterDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$LegalParameterPayload>
+          }
+          update: {
+            args: Prisma.LegalParameterUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$LegalParameterPayload>
+          }
+          deleteMany: {
+            args: Prisma.LegalParameterDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.LegalParameterUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.LegalParameterUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$LegalParameterPayload>[]
+          }
+          upsert: {
+            args: Prisma.LegalParameterUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$LegalParameterPayload>
+          }
+          aggregate: {
+            args: Prisma.LegalParameterAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateLegalParameter>
+          }
+          groupBy: {
+            args: Prisma.LegalParameterGroupByArgs<ExtArgs>
+            result: $Utils.Optional<LegalParameterGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.LegalParameterCountArgs<ExtArgs>
+            result: $Utils.Optional<LegalParameterCountAggregateOutputType> | number
+          }
+        }
+      }
     }
   } & {
     other: {
@@ -1854,6 +1955,14 @@ export namespace Prisma {
   export type ErrorFormat = 'pretty' | 'colorless' | 'minimal'
   export interface PrismaClientOptions {
     /**
+     * Overwrites the datasource url from your schema.prisma file
+     */
+    datasources?: Datasources
+    /**
+     * Overwrites the datasource url from your schema.prisma file
+     */
+    datasourceUrl?: string
+    /**
      * @default "colorless"
      */
     errorFormat?: ErrorFormat
@@ -1879,7 +1988,7 @@ export namespace Prisma {
      *  { emit: 'stdout', level: 'error' }
      * 
      * ```
-     * Read more in our [docs](https://pris.ly/d/logging).
+     * Read more in our [docs](https://www.prisma.io/docs/reference/tools-and-interfaces/prisma-client/logging#the-log-option).
      */
     log?: (LogLevel | LogDefinition)[]
     /**
@@ -1895,11 +2004,7 @@ export namespace Prisma {
     /**
      * Instance of a Driver Adapter, e.g., like one provided by `@prisma/adapter-planetscale`
      */
-    adapter?: runtime.SqlDriverAdapterFactory
-    /**
-     * Prisma Accelerate URL allowing the client to connect through Accelerate instead of a direct database.
-     */
-    accelerateUrl?: string
+    adapter?: runtime.SqlDriverAdapterFactory | null
     /**
      * Global configuration for omitting model fields by default.
      * 
@@ -1915,22 +2020,6 @@ export namespace Prisma {
      * ```
      */
     omit?: Prisma.GlobalOmitConfig
-    /**
-     * SQL commenter plugins that add metadata to SQL queries as comments.
-     * Comments follow the sqlcommenter format: https://google.github.io/sqlcommenter/
-     * 
-     * @example
-     * ```
-     * const prisma = new PrismaClient({
-     *   adapter,
-     *   comments: [
-     *     traceContext(),
-     *     queryInsights(),
-     *   ],
-     * })
-     * ```
-     */
-    comments?: runtime.SqlCommenterPlugin[]
   }
   export type GlobalOmitConfig = {
     user?: UserOmit
@@ -1945,6 +2034,7 @@ export namespace Prisma {
     allowance?: AllowanceOmit
     attendanceRecord?: AttendanceRecordOmit
     leave?: LeaveOmit
+    legalParameter?: LegalParameterOmit
   }
 
   /* Types for Logging */
@@ -16780,6 +16870,1147 @@ export namespace Prisma {
 
 
   /**
+   * Model LegalParameter
+   */
+
+  export type AggregateLegalParameter = {
+    _count: LegalParameterCountAggregateOutputType | null
+    _avg: LegalParameterAvgAggregateOutputType | null
+    _sum: LegalParameterSumAggregateOutputType | null
+    _min: LegalParameterMinAggregateOutputType | null
+    _max: LegalParameterMaxAggregateOutputType | null
+  }
+
+  export type LegalParameterAvgAggregateOutputType = {
+    percentage: number | null
+    minRange: number | null
+    maxRange: number | null
+  }
+
+  export type LegalParameterSumAggregateOutputType = {
+    percentage: number | null
+    minRange: number | null
+    maxRange: number | null
+  }
+
+  export type LegalParameterMinAggregateOutputType = {
+    id: string | null
+    key: string | null
+    name: string | null
+    type: string | null
+    category: string | null
+    percentage: number | null
+    minRange: number | null
+    maxRange: number | null
+    status: string | null
+    effectiveDate: Date | null
+    description: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type LegalParameterMaxAggregateOutputType = {
+    id: string | null
+    key: string | null
+    name: string | null
+    type: string | null
+    category: string | null
+    percentage: number | null
+    minRange: number | null
+    maxRange: number | null
+    status: string | null
+    effectiveDate: Date | null
+    description: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type LegalParameterCountAggregateOutputType = {
+    id: number
+    key: number
+    name: number
+    type: number
+    category: number
+    percentage: number
+    minRange: number
+    maxRange: number
+    status: number
+    effectiveDate: number
+    description: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type LegalParameterAvgAggregateInputType = {
+    percentage?: true
+    minRange?: true
+    maxRange?: true
+  }
+
+  export type LegalParameterSumAggregateInputType = {
+    percentage?: true
+    minRange?: true
+    maxRange?: true
+  }
+
+  export type LegalParameterMinAggregateInputType = {
+    id?: true
+    key?: true
+    name?: true
+    type?: true
+    category?: true
+    percentage?: true
+    minRange?: true
+    maxRange?: true
+    status?: true
+    effectiveDate?: true
+    description?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type LegalParameterMaxAggregateInputType = {
+    id?: true
+    key?: true
+    name?: true
+    type?: true
+    category?: true
+    percentage?: true
+    minRange?: true
+    maxRange?: true
+    status?: true
+    effectiveDate?: true
+    description?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type LegalParameterCountAggregateInputType = {
+    id?: true
+    key?: true
+    name?: true
+    type?: true
+    category?: true
+    percentage?: true
+    minRange?: true
+    maxRange?: true
+    status?: true
+    effectiveDate?: true
+    description?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type LegalParameterAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which LegalParameter to aggregate.
+     */
+    where?: LegalParameterWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of LegalParameters to fetch.
+     */
+    orderBy?: LegalParameterOrderByWithRelationInput | LegalParameterOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: LegalParameterWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` LegalParameters from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` LegalParameters.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned LegalParameters
+    **/
+    _count?: true | LegalParameterCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: LegalParameterAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: LegalParameterSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: LegalParameterMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: LegalParameterMaxAggregateInputType
+  }
+
+  export type GetLegalParameterAggregateType<T extends LegalParameterAggregateArgs> = {
+        [P in keyof T & keyof AggregateLegalParameter]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateLegalParameter[P]>
+      : GetScalarType<T[P], AggregateLegalParameter[P]>
+  }
+
+
+
+
+  export type LegalParameterGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: LegalParameterWhereInput
+    orderBy?: LegalParameterOrderByWithAggregationInput | LegalParameterOrderByWithAggregationInput[]
+    by: LegalParameterScalarFieldEnum[] | LegalParameterScalarFieldEnum
+    having?: LegalParameterScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: LegalParameterCountAggregateInputType | true
+    _avg?: LegalParameterAvgAggregateInputType
+    _sum?: LegalParameterSumAggregateInputType
+    _min?: LegalParameterMinAggregateInputType
+    _max?: LegalParameterMaxAggregateInputType
+  }
+
+  export type LegalParameterGroupByOutputType = {
+    id: string
+    key: string
+    name: string
+    type: string
+    category: string
+    percentage: number
+    minRange: number | null
+    maxRange: number | null
+    status: string
+    effectiveDate: Date
+    description: string | null
+    createdAt: Date
+    updatedAt: Date
+    _count: LegalParameterCountAggregateOutputType | null
+    _avg: LegalParameterAvgAggregateOutputType | null
+    _sum: LegalParameterSumAggregateOutputType | null
+    _min: LegalParameterMinAggregateOutputType | null
+    _max: LegalParameterMaxAggregateOutputType | null
+  }
+
+  type GetLegalParameterGroupByPayload<T extends LegalParameterGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<LegalParameterGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof LegalParameterGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], LegalParameterGroupByOutputType[P]>
+            : GetScalarType<T[P], LegalParameterGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type LegalParameterSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    key?: boolean
+    name?: boolean
+    type?: boolean
+    category?: boolean
+    percentage?: boolean
+    minRange?: boolean
+    maxRange?: boolean
+    status?: boolean
+    effectiveDate?: boolean
+    description?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }, ExtArgs["result"]["legalParameter"]>
+
+  export type LegalParameterSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    key?: boolean
+    name?: boolean
+    type?: boolean
+    category?: boolean
+    percentage?: boolean
+    minRange?: boolean
+    maxRange?: boolean
+    status?: boolean
+    effectiveDate?: boolean
+    description?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }, ExtArgs["result"]["legalParameter"]>
+
+  export type LegalParameterSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    key?: boolean
+    name?: boolean
+    type?: boolean
+    category?: boolean
+    percentage?: boolean
+    minRange?: boolean
+    maxRange?: boolean
+    status?: boolean
+    effectiveDate?: boolean
+    description?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }, ExtArgs["result"]["legalParameter"]>
+
+  export type LegalParameterSelectScalar = {
+    id?: boolean
+    key?: boolean
+    name?: boolean
+    type?: boolean
+    category?: boolean
+    percentage?: boolean
+    minRange?: boolean
+    maxRange?: boolean
+    status?: boolean
+    effectiveDate?: boolean
+    description?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type LegalParameterOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "key" | "name" | "type" | "category" | "percentage" | "minRange" | "maxRange" | "status" | "effectiveDate" | "description" | "createdAt" | "updatedAt", ExtArgs["result"]["legalParameter"]>
+
+  export type $LegalParameterPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "LegalParameter"
+    objects: {}
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      key: string
+      name: string
+      type: string
+      category: string
+      percentage: number
+      minRange: number | null
+      maxRange: number | null
+      status: string
+      effectiveDate: Date
+      description: string | null
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["legalParameter"]>
+    composites: {}
+  }
+
+  type LegalParameterGetPayload<S extends boolean | null | undefined | LegalParameterDefaultArgs> = $Result.GetResult<Prisma.$LegalParameterPayload, S>
+
+  type LegalParameterCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<LegalParameterFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: LegalParameterCountAggregateInputType | true
+    }
+
+  export interface LegalParameterDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['LegalParameter'], meta: { name: 'LegalParameter' } }
+    /**
+     * Find zero or one LegalParameter that matches the filter.
+     * @param {LegalParameterFindUniqueArgs} args - Arguments to find a LegalParameter
+     * @example
+     * // Get one LegalParameter
+     * const legalParameter = await prisma.legalParameter.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends LegalParameterFindUniqueArgs>(args: SelectSubset<T, LegalParameterFindUniqueArgs<ExtArgs>>): Prisma__LegalParameterClient<$Result.GetResult<Prisma.$LegalParameterPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one LegalParameter that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {LegalParameterFindUniqueOrThrowArgs} args - Arguments to find a LegalParameter
+     * @example
+     * // Get one LegalParameter
+     * const legalParameter = await prisma.legalParameter.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends LegalParameterFindUniqueOrThrowArgs>(args: SelectSubset<T, LegalParameterFindUniqueOrThrowArgs<ExtArgs>>): Prisma__LegalParameterClient<$Result.GetResult<Prisma.$LegalParameterPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first LegalParameter that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {LegalParameterFindFirstArgs} args - Arguments to find a LegalParameter
+     * @example
+     * // Get one LegalParameter
+     * const legalParameter = await prisma.legalParameter.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends LegalParameterFindFirstArgs>(args?: SelectSubset<T, LegalParameterFindFirstArgs<ExtArgs>>): Prisma__LegalParameterClient<$Result.GetResult<Prisma.$LegalParameterPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first LegalParameter that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {LegalParameterFindFirstOrThrowArgs} args - Arguments to find a LegalParameter
+     * @example
+     * // Get one LegalParameter
+     * const legalParameter = await prisma.legalParameter.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends LegalParameterFindFirstOrThrowArgs>(args?: SelectSubset<T, LegalParameterFindFirstOrThrowArgs<ExtArgs>>): Prisma__LegalParameterClient<$Result.GetResult<Prisma.$LegalParameterPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more LegalParameters that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {LegalParameterFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all LegalParameters
+     * const legalParameters = await prisma.legalParameter.findMany()
+     * 
+     * // Get first 10 LegalParameters
+     * const legalParameters = await prisma.legalParameter.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const legalParameterWithIdOnly = await prisma.legalParameter.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends LegalParameterFindManyArgs>(args?: SelectSubset<T, LegalParameterFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$LegalParameterPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a LegalParameter.
+     * @param {LegalParameterCreateArgs} args - Arguments to create a LegalParameter.
+     * @example
+     * // Create one LegalParameter
+     * const LegalParameter = await prisma.legalParameter.create({
+     *   data: {
+     *     // ... data to create a LegalParameter
+     *   }
+     * })
+     * 
+     */
+    create<T extends LegalParameterCreateArgs>(args: SelectSubset<T, LegalParameterCreateArgs<ExtArgs>>): Prisma__LegalParameterClient<$Result.GetResult<Prisma.$LegalParameterPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many LegalParameters.
+     * @param {LegalParameterCreateManyArgs} args - Arguments to create many LegalParameters.
+     * @example
+     * // Create many LegalParameters
+     * const legalParameter = await prisma.legalParameter.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends LegalParameterCreateManyArgs>(args?: SelectSubset<T, LegalParameterCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many LegalParameters and returns the data saved in the database.
+     * @param {LegalParameterCreateManyAndReturnArgs} args - Arguments to create many LegalParameters.
+     * @example
+     * // Create many LegalParameters
+     * const legalParameter = await prisma.legalParameter.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many LegalParameters and only return the `id`
+     * const legalParameterWithIdOnly = await prisma.legalParameter.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends LegalParameterCreateManyAndReturnArgs>(args?: SelectSubset<T, LegalParameterCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$LegalParameterPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a LegalParameter.
+     * @param {LegalParameterDeleteArgs} args - Arguments to delete one LegalParameter.
+     * @example
+     * // Delete one LegalParameter
+     * const LegalParameter = await prisma.legalParameter.delete({
+     *   where: {
+     *     // ... filter to delete one LegalParameter
+     *   }
+     * })
+     * 
+     */
+    delete<T extends LegalParameterDeleteArgs>(args: SelectSubset<T, LegalParameterDeleteArgs<ExtArgs>>): Prisma__LegalParameterClient<$Result.GetResult<Prisma.$LegalParameterPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one LegalParameter.
+     * @param {LegalParameterUpdateArgs} args - Arguments to update one LegalParameter.
+     * @example
+     * // Update one LegalParameter
+     * const legalParameter = await prisma.legalParameter.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends LegalParameterUpdateArgs>(args: SelectSubset<T, LegalParameterUpdateArgs<ExtArgs>>): Prisma__LegalParameterClient<$Result.GetResult<Prisma.$LegalParameterPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more LegalParameters.
+     * @param {LegalParameterDeleteManyArgs} args - Arguments to filter LegalParameters to delete.
+     * @example
+     * // Delete a few LegalParameters
+     * const { count } = await prisma.legalParameter.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends LegalParameterDeleteManyArgs>(args?: SelectSubset<T, LegalParameterDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more LegalParameters.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {LegalParameterUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many LegalParameters
+     * const legalParameter = await prisma.legalParameter.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends LegalParameterUpdateManyArgs>(args: SelectSubset<T, LegalParameterUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more LegalParameters and returns the data updated in the database.
+     * @param {LegalParameterUpdateManyAndReturnArgs} args - Arguments to update many LegalParameters.
+     * @example
+     * // Update many LegalParameters
+     * const legalParameter = await prisma.legalParameter.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more LegalParameters and only return the `id`
+     * const legalParameterWithIdOnly = await prisma.legalParameter.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends LegalParameterUpdateManyAndReturnArgs>(args: SelectSubset<T, LegalParameterUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$LegalParameterPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one LegalParameter.
+     * @param {LegalParameterUpsertArgs} args - Arguments to update or create a LegalParameter.
+     * @example
+     * // Update or create a LegalParameter
+     * const legalParameter = await prisma.legalParameter.upsert({
+     *   create: {
+     *     // ... data to create a LegalParameter
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the LegalParameter we want to update
+     *   }
+     * })
+     */
+    upsert<T extends LegalParameterUpsertArgs>(args: SelectSubset<T, LegalParameterUpsertArgs<ExtArgs>>): Prisma__LegalParameterClient<$Result.GetResult<Prisma.$LegalParameterPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of LegalParameters.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {LegalParameterCountArgs} args - Arguments to filter LegalParameters to count.
+     * @example
+     * // Count the number of LegalParameters
+     * const count = await prisma.legalParameter.count({
+     *   where: {
+     *     // ... the filter for the LegalParameters we want to count
+     *   }
+     * })
+    **/
+    count<T extends LegalParameterCountArgs>(
+      args?: Subset<T, LegalParameterCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], LegalParameterCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a LegalParameter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {LegalParameterAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends LegalParameterAggregateArgs>(args: Subset<T, LegalParameterAggregateArgs>): Prisma.PrismaPromise<GetLegalParameterAggregateType<T>>
+
+    /**
+     * Group by LegalParameter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {LegalParameterGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends LegalParameterGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: LegalParameterGroupByArgs['orderBy'] }
+        : { orderBy?: LegalParameterGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, LegalParameterGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetLegalParameterGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the LegalParameter model
+   */
+  readonly fields: LegalParameterFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for LegalParameter.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__LegalParameterClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the LegalParameter model
+   */
+  interface LegalParameterFieldRefs {
+    readonly id: FieldRef<"LegalParameter", 'String'>
+    readonly key: FieldRef<"LegalParameter", 'String'>
+    readonly name: FieldRef<"LegalParameter", 'String'>
+    readonly type: FieldRef<"LegalParameter", 'String'>
+    readonly category: FieldRef<"LegalParameter", 'String'>
+    readonly percentage: FieldRef<"LegalParameter", 'Float'>
+    readonly minRange: FieldRef<"LegalParameter", 'Int'>
+    readonly maxRange: FieldRef<"LegalParameter", 'Int'>
+    readonly status: FieldRef<"LegalParameter", 'String'>
+    readonly effectiveDate: FieldRef<"LegalParameter", 'DateTime'>
+    readonly description: FieldRef<"LegalParameter", 'String'>
+    readonly createdAt: FieldRef<"LegalParameter", 'DateTime'>
+    readonly updatedAt: FieldRef<"LegalParameter", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * LegalParameter findUnique
+   */
+  export type LegalParameterFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the LegalParameter
+     */
+    select?: LegalParameterSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the LegalParameter
+     */
+    omit?: LegalParameterOmit<ExtArgs> | null
+    /**
+     * Filter, which LegalParameter to fetch.
+     */
+    where: LegalParameterWhereUniqueInput
+  }
+
+  /**
+   * LegalParameter findUniqueOrThrow
+   */
+  export type LegalParameterFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the LegalParameter
+     */
+    select?: LegalParameterSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the LegalParameter
+     */
+    omit?: LegalParameterOmit<ExtArgs> | null
+    /**
+     * Filter, which LegalParameter to fetch.
+     */
+    where: LegalParameterWhereUniqueInput
+  }
+
+  /**
+   * LegalParameter findFirst
+   */
+  export type LegalParameterFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the LegalParameter
+     */
+    select?: LegalParameterSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the LegalParameter
+     */
+    omit?: LegalParameterOmit<ExtArgs> | null
+    /**
+     * Filter, which LegalParameter to fetch.
+     */
+    where?: LegalParameterWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of LegalParameters to fetch.
+     */
+    orderBy?: LegalParameterOrderByWithRelationInput | LegalParameterOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for LegalParameters.
+     */
+    cursor?: LegalParameterWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` LegalParameters from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` LegalParameters.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of LegalParameters.
+     */
+    distinct?: LegalParameterScalarFieldEnum | LegalParameterScalarFieldEnum[]
+  }
+
+  /**
+   * LegalParameter findFirstOrThrow
+   */
+  export type LegalParameterFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the LegalParameter
+     */
+    select?: LegalParameterSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the LegalParameter
+     */
+    omit?: LegalParameterOmit<ExtArgs> | null
+    /**
+     * Filter, which LegalParameter to fetch.
+     */
+    where?: LegalParameterWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of LegalParameters to fetch.
+     */
+    orderBy?: LegalParameterOrderByWithRelationInput | LegalParameterOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for LegalParameters.
+     */
+    cursor?: LegalParameterWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` LegalParameters from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` LegalParameters.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of LegalParameters.
+     */
+    distinct?: LegalParameterScalarFieldEnum | LegalParameterScalarFieldEnum[]
+  }
+
+  /**
+   * LegalParameter findMany
+   */
+  export type LegalParameterFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the LegalParameter
+     */
+    select?: LegalParameterSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the LegalParameter
+     */
+    omit?: LegalParameterOmit<ExtArgs> | null
+    /**
+     * Filter, which LegalParameters to fetch.
+     */
+    where?: LegalParameterWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of LegalParameters to fetch.
+     */
+    orderBy?: LegalParameterOrderByWithRelationInput | LegalParameterOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing LegalParameters.
+     */
+    cursor?: LegalParameterWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` LegalParameters from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` LegalParameters.
+     */
+    skip?: number
+    distinct?: LegalParameterScalarFieldEnum | LegalParameterScalarFieldEnum[]
+  }
+
+  /**
+   * LegalParameter create
+   */
+  export type LegalParameterCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the LegalParameter
+     */
+    select?: LegalParameterSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the LegalParameter
+     */
+    omit?: LegalParameterOmit<ExtArgs> | null
+    /**
+     * The data needed to create a LegalParameter.
+     */
+    data: XOR<LegalParameterCreateInput, LegalParameterUncheckedCreateInput>
+  }
+
+  /**
+   * LegalParameter createMany
+   */
+  export type LegalParameterCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many LegalParameters.
+     */
+    data: LegalParameterCreateManyInput | LegalParameterCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * LegalParameter createManyAndReturn
+   */
+  export type LegalParameterCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the LegalParameter
+     */
+    select?: LegalParameterSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the LegalParameter
+     */
+    omit?: LegalParameterOmit<ExtArgs> | null
+    /**
+     * The data used to create many LegalParameters.
+     */
+    data: LegalParameterCreateManyInput | LegalParameterCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * LegalParameter update
+   */
+  export type LegalParameterUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the LegalParameter
+     */
+    select?: LegalParameterSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the LegalParameter
+     */
+    omit?: LegalParameterOmit<ExtArgs> | null
+    /**
+     * The data needed to update a LegalParameter.
+     */
+    data: XOR<LegalParameterUpdateInput, LegalParameterUncheckedUpdateInput>
+    /**
+     * Choose, which LegalParameter to update.
+     */
+    where: LegalParameterWhereUniqueInput
+  }
+
+  /**
+   * LegalParameter updateMany
+   */
+  export type LegalParameterUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update LegalParameters.
+     */
+    data: XOR<LegalParameterUpdateManyMutationInput, LegalParameterUncheckedUpdateManyInput>
+    /**
+     * Filter which LegalParameters to update
+     */
+    where?: LegalParameterWhereInput
+    /**
+     * Limit how many LegalParameters to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * LegalParameter updateManyAndReturn
+   */
+  export type LegalParameterUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the LegalParameter
+     */
+    select?: LegalParameterSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the LegalParameter
+     */
+    omit?: LegalParameterOmit<ExtArgs> | null
+    /**
+     * The data used to update LegalParameters.
+     */
+    data: XOR<LegalParameterUpdateManyMutationInput, LegalParameterUncheckedUpdateManyInput>
+    /**
+     * Filter which LegalParameters to update
+     */
+    where?: LegalParameterWhereInput
+    /**
+     * Limit how many LegalParameters to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * LegalParameter upsert
+   */
+  export type LegalParameterUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the LegalParameter
+     */
+    select?: LegalParameterSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the LegalParameter
+     */
+    omit?: LegalParameterOmit<ExtArgs> | null
+    /**
+     * The filter to search for the LegalParameter to update in case it exists.
+     */
+    where: LegalParameterWhereUniqueInput
+    /**
+     * In case the LegalParameter found by the `where` argument doesn't exist, create a new LegalParameter with this data.
+     */
+    create: XOR<LegalParameterCreateInput, LegalParameterUncheckedCreateInput>
+    /**
+     * In case the LegalParameter was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<LegalParameterUpdateInput, LegalParameterUncheckedUpdateInput>
+  }
+
+  /**
+   * LegalParameter delete
+   */
+  export type LegalParameterDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the LegalParameter
+     */
+    select?: LegalParameterSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the LegalParameter
+     */
+    omit?: LegalParameterOmit<ExtArgs> | null
+    /**
+     * Filter which LegalParameter to delete.
+     */
+    where: LegalParameterWhereUniqueInput
+  }
+
+  /**
+   * LegalParameter deleteMany
+   */
+  export type LegalParameterDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which LegalParameters to delete
+     */
+    where?: LegalParameterWhereInput
+    /**
+     * Limit how many LegalParameters to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * LegalParameter without action
+   */
+  export type LegalParameterDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the LegalParameter
+     */
+    select?: LegalParameterSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the LegalParameter
+     */
+    omit?: LegalParameterOmit<ExtArgs> | null
+  }
+
+
+  /**
    * Enums
    */
 
@@ -16998,6 +18229,25 @@ export namespace Prisma {
   };
 
   export type LeaveScalarFieldEnum = (typeof LeaveScalarFieldEnum)[keyof typeof LeaveScalarFieldEnum]
+
+
+  export const LegalParameterScalarFieldEnum: {
+    id: 'id',
+    key: 'key',
+    name: 'name',
+    type: 'type',
+    category: 'category',
+    percentage: 'percentage',
+    minRange: 'minRange',
+    maxRange: 'maxRange',
+    status: 'status',
+    effectiveDate: 'effectiveDate',
+    description: 'description',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type LegalParameterScalarFieldEnum = (typeof LegalParameterScalarFieldEnum)[keyof typeof LegalParameterScalarFieldEnum]
 
 
   export const SortOrder: {
@@ -18384,6 +19634,100 @@ export namespace Prisma {
     updatedAt?: DateTimeWithAggregatesFilter<"Leave"> | Date | string
   }
 
+  export type LegalParameterWhereInput = {
+    AND?: LegalParameterWhereInput | LegalParameterWhereInput[]
+    OR?: LegalParameterWhereInput[]
+    NOT?: LegalParameterWhereInput | LegalParameterWhereInput[]
+    id?: StringFilter<"LegalParameter"> | string
+    key?: StringFilter<"LegalParameter"> | string
+    name?: StringFilter<"LegalParameter"> | string
+    type?: StringFilter<"LegalParameter"> | string
+    category?: StringFilter<"LegalParameter"> | string
+    percentage?: FloatFilter<"LegalParameter"> | number
+    minRange?: IntNullableFilter<"LegalParameter"> | number | null
+    maxRange?: IntNullableFilter<"LegalParameter"> | number | null
+    status?: StringFilter<"LegalParameter"> | string
+    effectiveDate?: DateTimeFilter<"LegalParameter"> | Date | string
+    description?: StringNullableFilter<"LegalParameter"> | string | null
+    createdAt?: DateTimeFilter<"LegalParameter"> | Date | string
+    updatedAt?: DateTimeFilter<"LegalParameter"> | Date | string
+  }
+
+  export type LegalParameterOrderByWithRelationInput = {
+    id?: SortOrder
+    key?: SortOrder
+    name?: SortOrder
+    type?: SortOrder
+    category?: SortOrder
+    percentage?: SortOrder
+    minRange?: SortOrderInput | SortOrder
+    maxRange?: SortOrderInput | SortOrder
+    status?: SortOrder
+    effectiveDate?: SortOrder
+    description?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type LegalParameterWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    key?: string
+    AND?: LegalParameterWhereInput | LegalParameterWhereInput[]
+    OR?: LegalParameterWhereInput[]
+    NOT?: LegalParameterWhereInput | LegalParameterWhereInput[]
+    name?: StringFilter<"LegalParameter"> | string
+    type?: StringFilter<"LegalParameter"> | string
+    category?: StringFilter<"LegalParameter"> | string
+    percentage?: FloatFilter<"LegalParameter"> | number
+    minRange?: IntNullableFilter<"LegalParameter"> | number | null
+    maxRange?: IntNullableFilter<"LegalParameter"> | number | null
+    status?: StringFilter<"LegalParameter"> | string
+    effectiveDate?: DateTimeFilter<"LegalParameter"> | Date | string
+    description?: StringNullableFilter<"LegalParameter"> | string | null
+    createdAt?: DateTimeFilter<"LegalParameter"> | Date | string
+    updatedAt?: DateTimeFilter<"LegalParameter"> | Date | string
+  }, "id" | "key">
+
+  export type LegalParameterOrderByWithAggregationInput = {
+    id?: SortOrder
+    key?: SortOrder
+    name?: SortOrder
+    type?: SortOrder
+    category?: SortOrder
+    percentage?: SortOrder
+    minRange?: SortOrderInput | SortOrder
+    maxRange?: SortOrderInput | SortOrder
+    status?: SortOrder
+    effectiveDate?: SortOrder
+    description?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: LegalParameterCountOrderByAggregateInput
+    _avg?: LegalParameterAvgOrderByAggregateInput
+    _max?: LegalParameterMaxOrderByAggregateInput
+    _min?: LegalParameterMinOrderByAggregateInput
+    _sum?: LegalParameterSumOrderByAggregateInput
+  }
+
+  export type LegalParameterScalarWhereWithAggregatesInput = {
+    AND?: LegalParameterScalarWhereWithAggregatesInput | LegalParameterScalarWhereWithAggregatesInput[]
+    OR?: LegalParameterScalarWhereWithAggregatesInput[]
+    NOT?: LegalParameterScalarWhereWithAggregatesInput | LegalParameterScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"LegalParameter"> | string
+    key?: StringWithAggregatesFilter<"LegalParameter"> | string
+    name?: StringWithAggregatesFilter<"LegalParameter"> | string
+    type?: StringWithAggregatesFilter<"LegalParameter"> | string
+    category?: StringWithAggregatesFilter<"LegalParameter"> | string
+    percentage?: FloatWithAggregatesFilter<"LegalParameter"> | number
+    minRange?: IntNullableWithAggregatesFilter<"LegalParameter"> | number | null
+    maxRange?: IntNullableWithAggregatesFilter<"LegalParameter"> | number | null
+    status?: StringWithAggregatesFilter<"LegalParameter"> | string
+    effectiveDate?: DateTimeWithAggregatesFilter<"LegalParameter"> | Date | string
+    description?: StringNullableWithAggregatesFilter<"LegalParameter"> | string | null
+    createdAt?: DateTimeWithAggregatesFilter<"LegalParameter"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"LegalParameter"> | Date | string
+  }
+
   export type UserCreateInput = {
     id?: string
     username: string
@@ -19636,6 +20980,118 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type LegalParameterCreateInput = {
+    id?: string
+    key: string
+    name: string
+    type: string
+    category: string
+    percentage: number
+    minRange?: number | null
+    maxRange?: number | null
+    status?: string
+    effectiveDate?: Date | string
+    description?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type LegalParameterUncheckedCreateInput = {
+    id?: string
+    key: string
+    name: string
+    type: string
+    category: string
+    percentage: number
+    minRange?: number | null
+    maxRange?: number | null
+    status?: string
+    effectiveDate?: Date | string
+    description?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type LegalParameterUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    key?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    type?: StringFieldUpdateOperationsInput | string
+    category?: StringFieldUpdateOperationsInput | string
+    percentage?: FloatFieldUpdateOperationsInput | number
+    minRange?: NullableIntFieldUpdateOperationsInput | number | null
+    maxRange?: NullableIntFieldUpdateOperationsInput | number | null
+    status?: StringFieldUpdateOperationsInput | string
+    effectiveDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type LegalParameterUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    key?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    type?: StringFieldUpdateOperationsInput | string
+    category?: StringFieldUpdateOperationsInput | string
+    percentage?: FloatFieldUpdateOperationsInput | number
+    minRange?: NullableIntFieldUpdateOperationsInput | number | null
+    maxRange?: NullableIntFieldUpdateOperationsInput | number | null
+    status?: StringFieldUpdateOperationsInput | string
+    effectiveDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type LegalParameterCreateManyInput = {
+    id?: string
+    key: string
+    name: string
+    type: string
+    category: string
+    percentage: number
+    minRange?: number | null
+    maxRange?: number | null
+    status?: string
+    effectiveDate?: Date | string
+    description?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type LegalParameterUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    key?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    type?: StringFieldUpdateOperationsInput | string
+    category?: StringFieldUpdateOperationsInput | string
+    percentage?: FloatFieldUpdateOperationsInput | number
+    minRange?: NullableIntFieldUpdateOperationsInput | number | null
+    maxRange?: NullableIntFieldUpdateOperationsInput | number | null
+    status?: StringFieldUpdateOperationsInput | string
+    effectiveDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type LegalParameterUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    key?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    type?: StringFieldUpdateOperationsInput | string
+    category?: StringFieldUpdateOperationsInput | string
+    percentage?: FloatFieldUpdateOperationsInput | number
+    minRange?: NullableIntFieldUpdateOperationsInput | number | null
+    maxRange?: NullableIntFieldUpdateOperationsInput | number | null
+    status?: StringFieldUpdateOperationsInput | string
+    effectiveDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type StringFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel>
     in?: string[] | ListStringFieldRefInput<$PrismaModel>
@@ -20798,6 +22254,93 @@ export namespace Prisma {
     _max?: NestedEnumLeaveStatusFilter<$PrismaModel>
   }
 
+  export type FloatFilter<$PrismaModel = never> = {
+    equals?: number | FloatFieldRefInput<$PrismaModel>
+    in?: number[] | ListFloatFieldRefInput<$PrismaModel>
+    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel>
+    lt?: number | FloatFieldRefInput<$PrismaModel>
+    lte?: number | FloatFieldRefInput<$PrismaModel>
+    gt?: number | FloatFieldRefInput<$PrismaModel>
+    gte?: number | FloatFieldRefInput<$PrismaModel>
+    not?: NestedFloatFilter<$PrismaModel> | number
+  }
+
+  export type LegalParameterCountOrderByAggregateInput = {
+    id?: SortOrder
+    key?: SortOrder
+    name?: SortOrder
+    type?: SortOrder
+    category?: SortOrder
+    percentage?: SortOrder
+    minRange?: SortOrder
+    maxRange?: SortOrder
+    status?: SortOrder
+    effectiveDate?: SortOrder
+    description?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type LegalParameterAvgOrderByAggregateInput = {
+    percentage?: SortOrder
+    minRange?: SortOrder
+    maxRange?: SortOrder
+  }
+
+  export type LegalParameterMaxOrderByAggregateInput = {
+    id?: SortOrder
+    key?: SortOrder
+    name?: SortOrder
+    type?: SortOrder
+    category?: SortOrder
+    percentage?: SortOrder
+    minRange?: SortOrder
+    maxRange?: SortOrder
+    status?: SortOrder
+    effectiveDate?: SortOrder
+    description?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type LegalParameterMinOrderByAggregateInput = {
+    id?: SortOrder
+    key?: SortOrder
+    name?: SortOrder
+    type?: SortOrder
+    category?: SortOrder
+    percentage?: SortOrder
+    minRange?: SortOrder
+    maxRange?: SortOrder
+    status?: SortOrder
+    effectiveDate?: SortOrder
+    description?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type LegalParameterSumOrderByAggregateInput = {
+    percentage?: SortOrder
+    minRange?: SortOrder
+    maxRange?: SortOrder
+  }
+
+  export type FloatWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: number | FloatFieldRefInput<$PrismaModel>
+    in?: number[] | ListFloatFieldRefInput<$PrismaModel>
+    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel>
+    lt?: number | FloatFieldRefInput<$PrismaModel>
+    lte?: number | FloatFieldRefInput<$PrismaModel>
+    gt?: number | FloatFieldRefInput<$PrismaModel>
+    gte?: number | FloatFieldRefInput<$PrismaModel>
+    not?: NestedFloatWithAggregatesFilter<$PrismaModel> | number
+    _count?: NestedIntFilter<$PrismaModel>
+    _avg?: NestedFloatFilter<$PrismaModel>
+    _sum?: NestedFloatFilter<$PrismaModel>
+    _min?: NestedFloatFilter<$PrismaModel>
+    _max?: NestedFloatFilter<$PrismaModel>
+  }
+
   export type UserCompanyCreateNestedManyWithoutUserInput = {
     create?: XOR<UserCompanyCreateWithoutUserInput, UserCompanyUncheckedCreateWithoutUserInput> | UserCompanyCreateWithoutUserInput[] | UserCompanyUncheckedCreateWithoutUserInput[]
     connectOrCreate?: UserCompanyCreateOrConnectWithoutUserInput | UserCompanyCreateOrConnectWithoutUserInput[]
@@ -21892,6 +23435,14 @@ export namespace Prisma {
     update?: XOR<XOR<CompanyUpdateToOneWithWhereWithoutLeavesInput, CompanyUpdateWithoutLeavesInput>, CompanyUncheckedUpdateWithoutLeavesInput>
   }
 
+  export type FloatFieldUpdateOperationsInput = {
+    set?: number
+    increment?: number
+    decrement?: number
+    multiply?: number
+    divide?: number
+  }
+
   export type NestedStringFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel>
     in?: string[] | ListStringFieldRefInput<$PrismaModel>
@@ -22332,6 +23883,22 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedEnumLeaveStatusFilter<$PrismaModel>
     _max?: NestedEnumLeaveStatusFilter<$PrismaModel>
+  }
+
+  export type NestedFloatWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: number | FloatFieldRefInput<$PrismaModel>
+    in?: number[] | ListFloatFieldRefInput<$PrismaModel>
+    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel>
+    lt?: number | FloatFieldRefInput<$PrismaModel>
+    lte?: number | FloatFieldRefInput<$PrismaModel>
+    gt?: number | FloatFieldRefInput<$PrismaModel>
+    gte?: number | FloatFieldRefInput<$PrismaModel>
+    not?: NestedFloatWithAggregatesFilter<$PrismaModel> | number
+    _count?: NestedIntFilter<$PrismaModel>
+    _avg?: NestedFloatFilter<$PrismaModel>
+    _sum?: NestedFloatFilter<$PrismaModel>
+    _min?: NestedFloatFilter<$PrismaModel>
+    _max?: NestedFloatFilter<$PrismaModel>
   }
 
   export type UserCompanyCreateWithoutUserInput = {

@@ -14,6 +14,7 @@ import PayrollRouter from './routes/PayrollRoutes.js';
 import SystemRouter from './routes/SystemConfigRoutes.js';
 import EmployeeRouter from './routes/EmployeeRoutes.js';
 import SeedRouter from './routes/SeedRoutes.js';
+import legalParameterRouter from './routes/LegalParameterRoutes.js';
 
 dotenv.config({ path: '.env' });
 
@@ -64,7 +65,8 @@ app.get('/', (req, res) => {
 app.use('/api/user/auth', AuthRouter);
 app.use('/api/users', UserRouter);
 app.use('/api/companies', CompaniesRouter);
-app.use('/api/system', SystemRouter);
+// app.use('/api/system', SystemRouter);
+app.use('/api/system', legalParameterRouter);
 app.use('/api/payroll', PayrollRouter);
 app.use('/api/payroll', EmployeeRouter);
 app.use('/api/seed', SeedRouter);

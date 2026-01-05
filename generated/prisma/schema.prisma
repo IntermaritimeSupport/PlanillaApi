@@ -1,10 +1,12 @@
 generator client {
-  provider = "prisma-client-js"
-  output   = "../generated/prisma"
+  provider      = "prisma-client-js"
+  output        = "../generated/prisma"
+  binaryTargets = ["native", "rhel-openssl-3.0.x"]
 }
 
 datasource db {
   provider = "postgresql"
+  url      = env("DATABASE_URL")
 }
 
 model User {
@@ -104,7 +106,7 @@ model SystemConfig {
 
 model Employee {
   id          String         @id @default(uuid())
-  cedula      String         @unique // Cédula de identidad (Panamá)
+  cedula      String         @unique
   firstName   String
   lastName    String
   email       String         @unique
@@ -118,15 +120,12 @@ model Employee {
   bankAccount String?
   bankName    String?
 
-  // Relación con Usuario - OPCIONAL (NULL)
   userId String? @unique
   user   User?   @relation("EmployeeUser", fields: [userId], references: [id], onDelete: SetNull)
 
-  // Relación obligatoria con Compañía
   companyId String
   company   Company @relation("EmployeeCompany", fields: [companyId], references: [id], onDelete: Cascade)
 
-  // Historiales
   payrolls          Payroll[]
   deductions        Deduction[]
   allowances        Allowance[]
@@ -149,20 +148,16 @@ model Payroll {
   companyId     String
   company       Company  @relation("PayrollCompany", fields: [companyId], references: [id], onDelete: Cascade)
 
-  // Período
   payPeriod   DateTime
   paymentDate DateTime
   payrollType PayrollType @default(REGULAR)
 
-  // Salario base
   baseSalary  Decimal @default(0.00)
   workingDays Int     @default(30)
   daysWorked  Int     @default(30)
 
-  // Cálculos
   grossSalary Decimal @default(0.00)
 
-  // Deducciones
   incomeTax        Decimal @default(0.00)
   sss              Decimal @default(0.00)
   privateInsurance Decimal @default(0.00)
@@ -171,15 +166,12 @@ model Payroll {
   totalDeductions Decimal @default(0.00)
   netSalary       Decimal @default(0.00)
 
-  // Décimo Tercer Mes
   thirteenthMonthAmount Decimal? @default(0.00)
   thirteenthMonthNote   String?
 
-  // Detalles
   deductions Deduction[]
   allowances Allowance[]
 
-  // Estado
   status       PayrollStatus @default(DRAFT)
   approvedBy   String?
   approvalDate DateTime?
@@ -276,6 +268,27 @@ model Leave {
 
   @@index([employeeId])
   @@index([companyId])
+}
+
+// ✅ AGREGADO: LegalParameter para parámetros legales (sin JSON)
+model LegalParameter {
+  id            String   @id @default(uuid())
+  key           String   @unique
+  name          String
+  type          String // "employee" | "employer" | "fixed"
+  category      String // "social_security" | "educational_insurance" | "isr" | "other"
+  percentage    Float
+  minRange      Int?
+  maxRange      Int?
+  status        String   @default("active")
+  effectiveDate DateTime @default(now())
+  description   String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([category])
+  @@index([status])
 }
 
 // ============================================
