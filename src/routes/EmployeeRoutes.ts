@@ -1,8 +1,27 @@
 import { Router } from 'express';
+import multer from 'multer';
 import { EmployeeController } from '../controllers/EmployeeController.js';
 
 const EmployeeRouter = Router();
 const employeeController = new EmployeeController();
+
+// ============================================
+// MULTER CONFIGURATION
+// ============================================
+const upload = multer({
+  storage: multer.memoryStorage(),
+  fileFilter: (req, file, cb) => {
+    if (
+      file.mimetype === 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' ||
+      file.mimetype === 'application/vnd.ms-excel'
+    ) {
+      cb(null, true);
+    } else {
+      cb(new Error('Solo se aceptan archivos Excel (.xlsx, .xls)'));
+    }
+  },
+  limits: { fileSize: 5 * 1024 * 1024 }, // 5MB max
+});
 
 // ============================================
 // EMPLOYEE ROUTES
@@ -105,6 +124,68 @@ EmployeeRouter.put('/employees/:id/status', (req, res) =>
  */
 EmployeeRouter.get('/employees/company/:companyId/summary', (req, res) =>
   employeeController.getCompanySummary(req, res)
+);
+
+// ============================================
+// IMPORT/EXPORT ROUTES
+// ============================================
+
+/**
+ * POST /api/payroll/employees/import/preview
+ * Procesar archivo Excel y mostrar vista previa
+ * 
+ * Form Data:
+ * - file: archivo Excel (.xlsx, .xls)
+ * - companyId: string (obligatorio)
+ * 
+ * Respuesta:
+ * {
+ *   success: boolean
+ *   totalRows: number
+ *   validEmployees: number
+ *   errors: Array<{ fila: number, error: string }>
+ *   employees: Array<Employee>
+ * }
+ */
+EmployeeRouter.post(
+  '/employees/import/preview',
+  upload.single('file'),
+  (req, res) => employeeController.importFromExcel(req, res)
+);
+
+/**
+ * POST /api/payroll/employees/import/confirm
+ * Confirmar e importar empleados a la base de datos
+ * 
+ * Body:
+ * {
+ *   employees: Array<Employee>
+ *   companyId: string
+ * }
+ * 
+ * Respuesta:
+ * {
+ *   success: boolean
+ *   totalImported: number
+ *   totalFailed: number
+ *   createdEmployees: Array<Employee>
+ *   failedEmployees: Array<{ cedula: string, nombre: string, error: string }>
+ * }
+ */
+EmployeeRouter.post(
+  '/employees/import/confirm',
+  (req, res) => employeeController.confirmImport(req, res)
+);
+
+/**
+ * GET /api/payroll/employees/template/download
+ * Descargar template Excel para importación
+ * 
+ * Retorna: archivo Excel con formato y ejemplos
+ */
+EmployeeRouter.get(
+  '/employees/template/download',
+  (req, res) => employeeController.downloadTemplate(req, res)
 );
 
 export default EmployeeRouter;
