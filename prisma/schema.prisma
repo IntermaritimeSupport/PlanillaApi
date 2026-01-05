@@ -68,7 +68,7 @@ model Company {
   createdAt       DateTime @default(now())
   updatedAt       DateTime @updatedAt
   createdByUserId String?
-
+  legalParameters   LegalParameter[]
   createdBy         User?              @relation("CompanyCreatedBy", fields: [createdByUserId], references: [id], onDelete: SetNull)
   departments       Department[]
   users             UserCompany[]
@@ -273,7 +273,7 @@ model Leave {
 // ✅ AGREGADO: LegalParameter para parámetros legales (sin JSON)
 model LegalParameter {
   id            String   @id @default(uuid())
-  key           String   @unique
+  key           LegalParameterKey
   name          String
   type          String   // "employee" | "employer" | "fixed"
   category      String   // "social_security" | "educational_insurance" | "isr" | "other"
@@ -284,9 +284,16 @@ model LegalParameter {
   effectiveDate DateTime @default(now())
   description   String?
 
+  // ✅ Relación con Compañía
+  companyId     String
+  company       Company  @relation(fields: [companyId], references: [id], onDelete: Cascade)
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
+  // ✅ Ajuste de Índices y Unicidad
+  @@unique([companyId, key]) // La combinación de compañía y key debe ser única
+  @@index([companyId])
   @@index([category])
   @@index([status])
 }
@@ -294,6 +301,18 @@ model LegalParameter {
 // ============================================
 // ENUMS
 // ============================================
+enum LegalParameterKey {
+  ss_empleado
+  ss_patrono
+  ss_decimo
+  se_empleado
+  se_patrono
+  riesgo_profesional
+  isr_r1
+  isr_r2
+  isr_r3
+  decimo_css
+}
 
 enum SalaryType {
   MONTHLY

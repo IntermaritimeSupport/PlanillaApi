@@ -1,6 +1,8 @@
 import 'dotenv/config'
 import prisma from '../lib/prisma.js'
 import { hash } from 'bcryptjs'
+// 1. IMPORTA EL ENUM DESDE TU CLIENTE GENERADO
+import { LegalParameterKey } from '../generated/prisma/index.js'
 
 export enum UserRole {
   USER = 'USER',
@@ -9,12 +11,11 @@ export enum UserRole {
   SUPER_ADMIN = 'SUPER_ADMIN',
 }
 
-export async function generateNextCompanyCode(): Promise<string> {
+async function generateNextCompanyCode(): Promise<string> {
   const companies = await prisma.company.findMany({
     select: { code: true },
     orderBy: { code: 'desc' },
   })
-
   let max = 0
   for (const c of companies) {
     if (c.code?.startsWith('CO')) {
@@ -22,16 +23,14 @@ export async function generateNextCompanyCode(): Promise<string> {
       if (!isNaN(n)) max = Math.max(max, n)
     }
   }
-
   return `CO${String(max + 1).padStart(3, '0')}`
 }
 
-export async function generateNextUserCode(): Promise<string> {
+async function generateNextUserCode(): Promise<string> {
   const persons = await prisma.person.findMany({
     select: { userCode: true },
     orderBy: { userCode: 'desc' },
   })
-
   let max = 0
   for (const p of persons) {
     if (p.userCode?.startsWith('USR')) {
@@ -39,287 +38,195 @@ export async function generateNextUserCode(): Promise<string> {
       if (!isNaN(n)) max = Math.max(max, n)
     }
   }
-
   return `USR${String(max + 1).padStart(3, '0')}`
 }
 
-/* ============================
-   SEED
-============================ */
-
 async function main() {
-  console.log('🌱 Ejecutando seed...\n')
+  console.log('🗑️ Limpiando base de datos...')
+  
+  await prisma.userCompany.deleteMany({})
+  await prisma.legalParameter.deleteMany({})
+  await prisma.attendanceRecord.deleteMany({})
+  await prisma.payroll.deleteMany({})
+  await prisma.employee.deleteMany({})
+  await prisma.person.deleteMany({})
+  await prisma.user.deleteMany({})
+  await prisma.department.deleteMany({})
+  await prisma.company.deleteMany({})
+
+  console.log('✅ Base de datos limpia.\n')
 
   const passwordHash = await hash('Lexus0110', 10)
 
   /* ============================
-     LEGAL PARAMETERS
+     1. CREAR COMPAÑÍA PRINCIPAL
   ============================ */
-  console.log('📋 Creando parámetros legales...')
+  console.log('🏢 Creando compañía principal...')
+  const companyIM = await prisma.company.create({
+    data: {
+      name: 'Intermaritime',
+      code: await generateNextCompanyCode(),
+      isActive: true,
+      ruc: '8-888-8888 DV 88',
+      email: 'info@intermaritime.org'
+    }
+  })
 
-  const legalParameters = [
+  /* ============================
+     2. LEGAL PARAMETERS (Corregido con Enum)
+  ============================ */
+  console.log('📋 Creando parámetros legales para ' + companyIM.name)
+
+  // 2. TIPAR EL ARRAY PARA QUE ACEPTE EL ENUM
+  const legalParameters: any[] = [
     {
-      key: 'sss_employee',
-      name: 'Aportación SSS - Empleado',
+      key: LegalParameterKey.ss_empleado,
+      name: 'Seguro Social - Empleado',
       type: 'employee',
       category: 'social_security',
-      percentage: 2.87,
-      description: 'Aportación del empleado al Seguro Social',
+      percentage: 9.75,
+      companyId: companyIM.id,
+      description: 'Cuota regular de SS para empleados',
     },
     {
-      key: 'sss_employer',
-      name: 'Aportación SSS - Empleador',
+      key: LegalParameterKey.ss_patrono,
+      name: 'Seguro Social - Patrono',
       type: 'employer',
       category: 'social_security',
-      percentage: 3.625,
-      description: 'Aportación del empleador al Seguro Social',
+      percentage: 12.25,
+      companyId: companyIM.id,
+      description: 'Cuota patronal de SS',
     },
     {
-      key: 'isr_rate',
-      name: 'Tasa ISR',
-      type: 'fixed',
-      category: 'isr',
-      percentage: 5.0,
-      minRange: 0,
-      maxRange: 100000,
-      description: 'Impuesto sobre la Renta - Tramo 1',
+      key: LegalParameterKey.ss_decimo,
+      name: 'Seguro Social - XIII Mes',
+      type: 'employee',
+      category: 'social_security',
+      percentage: 7.25,
+      companyId: companyIM.id,
+      description: 'Cuota de SS para el décimo tercer mes',
     },
     {
-      key: 'educational_insurance_employee',
+      key: LegalParameterKey.se_empleado,
       name: 'Seguro Educativo - Empleado',
       type: 'employee',
       category: 'educational_insurance',
-      percentage: 1.5,
-      description: 'Aportación del empleado al seguro educativo',
+      percentage: 1.25,
+      companyId: companyIM.id,
+      description: 'Seguro educativo empleado',
     },
     {
-      key: 'educational_insurance_employer',
-      name: 'Seguro Educativo - Empleador',
+      key: LegalParameterKey.se_patrono,
+      name: 'Seguro Educativo - Patrono',
       type: 'employer',
       category: 'educational_insurance',
-      percentage: 1.5,
-      description: 'Aportación del empleador al seguro educativo',
+      percentage: 1.50,
+      companyId: companyIM.id,
+      description: 'Seguro educativo patronal',
     },
     {
-      key: 'private_insurance_rate',
-      name: 'Tasa de Seguro Privado',
-      type: 'fixed',
+      key: LegalParameterKey.riesgo_profesional,
+      name: 'Riesgos Profesionales',
+      type: 'employer',
       category: 'other',
-      percentage: 2.0,
-      description: 'Tasa estándar para seguros privados',
+      percentage: 0.98,
+      companyId: companyIM.id,
+      description: 'Riesgos profesionales base',
+    },
+    {
+      key: LegalParameterKey.isr_r1,
+      name: 'ISR Tramo 1 (Exento)',
+      type: 'fixed',
+      category: 'isr',
+      percentage: 0,
+      minRange: 0,
+      maxRange: 11000,
+      companyId: companyIM.id,
+      description: 'Rango exento hasta $11,000 anuales',
+    },
+    {
+      key: LegalParameterKey.isr_r2,
+      name: 'ISR Tramo 2 (15%)',
+      type: 'fixed',
+      category: 'isr',
+      percentage: 15,
+      minRange: 11000,
+      maxRange: 50000,
+      companyId: companyIM.id,
+      description: '15% sobre excedente de $11k a $50k',
+    },
+    {
+      key: LegalParameterKey.isr_r3,
+      name: 'ISR Tramo 3 (25%)',
+      type: 'fixed',
+      category: 'isr',
+      percentage: 25,
+      minRange: 50000,
+      maxRange: 99999999,
+      companyId: companyIM.id,
+      description: '25% sobre excedente de $50k',
     },
   ]
 
   for (const param of legalParameters) {
-    const existing = await prisma.legalParameter.findUnique({
-      where: { key: param.key },
-    })
-
-    if (!existing) {
-      await prisma.legalParameter.create({
-        data: {
-          ...param,
-          status: 'active',
-        },
-      })
-      console.log(`✅ Parámetro legal creado: ${param.name}`)
-    } else {
-      console.log(`ℹ️ Parámetro legal existente: ${param.name}`)
-    }
-  }
-
-  /* ============================
-     COMPANIES
-  ============================ */
-
-  console.log('\n🏢 Creando compañías...')
-
-  const companies: Record<string, any> = {}
-
-  for (const name of ['Intermaritime', 'PMTS']) {
-    let company = await prisma.company.findUnique({ where: { name } })
-
-    if (!company) {
-      company = await prisma.company.create({
-        data: {
-          name,
-          code: await generateNextCompanyCode(),
-          isActive: true,
-        },
-      })
-      console.log(`✅ Compañía creada: ${name}`)
-    } else {
-      console.log(`ℹ️ Compañía existente: ${name}`)
-    }
-
-    companies[name] = company
-  }
-
-  /* ============================
-     DEPARTMENTS
-  ============================ */
-
-  console.log('\n🏛️ Creando departamentos...')
-
-  const departments: Record<string, any> = {}
-
-  const departmentData = [
-    { name: 'Administración', company: 'Intermaritime' },
-    { name: 'Administración', company: 'PMTS' },
-  ]
-
-  for (const d of departmentData) {
-    let department = await prisma.department.findFirst({
-      where: {
-        name: d.name,
-        companyId: companies[d.company].id,
+    await prisma.legalParameter.create({
+      data: { 
+        ...param, 
+        status: 'active', 
+        effectiveDate: new Date() 
       },
     })
-
-    if (!department) {
-      department = await prisma.department.create({
-        data: {
-          name: d.name,
-          description: `${d.name} - ${d.company}`,
-          companyId: companies[d.company].id,
-          isActive: true,
-        },
-      })
-      console.log(`✅ Departamento creado: ${d.name} (${d.company})`)
-    } else {
-      console.log(`ℹ️ Departamento existente: ${d.name} (${d.company})`)
-    }
-
-    departments[`${d.name}_${d.company}`] = department
   }
 
   /* ============================
-     SUPER ADMIN
+     3. DEPARTAMENTOS
   ============================ */
-
-  console.log('\n👨‍💼 Creando SUPER_ADMIN...')
-
-  const superAdminEmail = 'david@intermaritime.org'
-
-  let superAdmin = await prisma.user.findFirst({
-    where: {
-      OR: [{ email: superAdminEmail }, { username: 'superadmin' }],
-    },
-    include: { person: true },
+  const deptAdmin = await prisma.department.create({
+    data: {
+      name: 'Administración',
+      companyId: companyIM.id,
+      isActive: true,
+    }
   })
 
-  if (!superAdmin) {
-    const userCode = await generateNextUserCode()
+  /* ============================
+     4. SUPER ADMIN
+  ============================ */
+  console.log('👨‍💼 Creando SUPER_ADMIN...')
+  const superAdminEmail = 'david@intermaritime.org'
+  const userCode = await generateNextUserCode()
 
-    superAdmin = await prisma.user.create({
-      data: {
-        email: superAdminEmail,
-        username: 'superadmin',
-        password: passwordHash,
-        role: UserRole.SUPER_ADMIN,
-        isActive: true,
-        person: {
-          create: {
-            firstName: 'Carlos',
-            lastName: 'Sanchez',
-            fullName: 'Carlos Sanchez',
-            contactEmail: superAdminEmail,
-            status: 'Activo',
-            userCode,
-            departmentId: departments['Administración_Intermaritime'].id,
-            companyId: companies['Intermaritime'].id,
-          },
+  const superAdmin = await prisma.user.create({
+    data: {
+      email: superAdminEmail,
+      username: 'superadmin',
+      password: passwordHash,
+      role: UserRole.SUPER_ADMIN,
+      isActive: true,
+      person: {
+        create: {
+          firstName: 'Carlos',
+          lastName: 'Sanchez',
+          fullName: 'Carlos Sanchez',
+          contactEmail: superAdminEmail,
+          status: 'Activo',
+          userCode,
+          departmentId: deptAdmin.id,
+          companyId: companyIM.id,
         },
       },
-      include: { person: true },
-    })
-
-    const allCompanies = await prisma.company.findMany({
-      select: { id: true },
-    })
-
-    await prisma.userCompany.createMany({
-      data: allCompanies.map(c => ({
-        userId: superAdmin!.id,
-        companyId: c.id,
-      })),
-      skipDuplicates: true,
-    })
-
-    console.log('✅ SUPER_ADMIN creado y asignado a todas las compañías')
-  } else {
-    console.log('ℹ️ SUPER_ADMIN existente')
-  }
-
-  /* ============================
-     OTHER USERS
-  ============================ */
-
-  console.log('\n👥 Creando usuarios...')
-
-  const users = [
-    {
-      email: 'maria.sosa@test.com',
-      username: 'maria.sosa',
-      role: UserRole.MODERATOR,
-      company: 'PMTS',
-      department: 'Administración',
-      firstName: 'Maria',
-      lastName: 'Sosa',
-      position: 'Moderador',
-    },
-  ]
-
-  for (const u of users) {
-    let user = await prisma.user.findUnique({
-      where: { email: u.email },
-    })
-
-    if (!user) {
-      const userCode = await generateNextUserCode()
-
-      user = await prisma.user.create({
-        data: {
-          email: u.email,
-          username: u.username,
-          password: passwordHash,
-          role: u.role,
-          isActive: true,
-          person: {
-            create: {
-              firstName: u.firstName,
-              lastName: u.lastName,
-              fullName: `${u.firstName} ${u.lastName}`,
-              contactEmail: u.email,
-              position: u.position,
-              status: 'Activo',
-              userCode,
-              departmentId: departments[`${u.department}_${u.company}`].id,
-              companyId: companies[u.company].id,
-            },
-          },
-        },
-      })
-
-      await prisma.userCompany.create({
-        data: {
-          userId: user.id,
-          companyId: companies[u.company].id,
-        },
-      })
-
-      console.log(`✅ Usuario creado: ${u.email}`)
-    } else {
-      console.log(`ℹ️ Usuario existente: ${u.email}`)
     }
-  }
+  })
 
-  console.log('\n🎉 Seed ejecutado correctamente')
+  await prisma.userCompany.create({
+    data: {
+      userId: superAdmin.id,
+      companyId: companyIM.id,
+    }
+  })
+
+  console.log('\n🎉 Seed ejecutado con éxito.')
 }
-
-/* ============================
-   RUN
-============================ */
 
 main()
   .catch(err => {

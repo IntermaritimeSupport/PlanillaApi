@@ -304,6 +304,7 @@ exports.Prisma.LegalParameterScalarFieldEnum = {
   status: 'status',
   effectiveDate: 'effectiveDate',
   description: 'description',
+  companyId: 'companyId',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 };
@@ -400,6 +401,19 @@ exports.LeaveStatus = exports.$Enums.LeaveStatus = {
   APPROVED: 'APPROVED',
   REJECTED: 'REJECTED',
   CANCELLED: 'CANCELLED'
+};
+
+exports.LegalParameterKey = exports.$Enums.LegalParameterKey = {
+  ss_empleado: 'ss_empleado',
+  ss_patrono: 'ss_patrono',
+  ss_decimo: 'ss_decimo',
+  se_empleado: 'se_empleado',
+  se_patrono: 'se_patrono',
+  riesgo_profesional: 'riesgo_profesional',
+  isr_r1: 'isr_r1',
+  isr_r2: 'isr_r2',
+  isr_r3: 'isr_r3',
+  decimo_css: 'decimo_css'
 };
 
 exports.Prisma.ModelName = {

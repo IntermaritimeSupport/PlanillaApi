@@ -2,12 +2,25 @@ import { Request, Response } from 'express'
 import prisma from '../../lib/prisma.js'
 
 export class LegalParameterController {
-  // Get all legal parameters or filter by category
+  
+  /**
+   * Obtener todos los parámetros legales filtrados por compañía.
+   * Query params: companyId (obligatorio), category, status.
+   */
   async getAll(req: Request, res: Response) {
     try {
-      const { category, status } = req.query
+      const { category, status, companyId } = req.query
 
-      const where: any = {}
+      if (!companyId) {
+        return res.status(400).json({
+          error: 'El companyId es obligatorio para consultar los parámetros.'
+        })
+      }
+
+      const where: any = {
+        companyId: String(companyId)
+      }
+
       if (category) {
         where.category = category
       }
@@ -30,7 +43,9 @@ export class LegalParameterController {
     }
   }
 
-  // Get a specific legal parameter
+  /**
+   * Obtener un parámetro específico por su ID único (UUID).
+   */
   async getById(req: Request, res: Response) {
     try {
       const { id } = req.params
@@ -55,13 +70,23 @@ export class LegalParameterController {
     }
   }
 
-  // Get by category
+  /**
+   * Obtener parámetros por categoría y compañía.
+   */
   async getByCategory(req: Request, res: Response) {
     try {
       const { category } = req.params
+      const { companyId } = req.query
+
+      if (!companyId) {
+        return res.status(400).json({ error: 'companyId es obligatorio' })
+      }
 
       const parameters = await prisma.legalParameter.findMany({
-        where: { category }
+        where: { 
+          category,
+          companyId: String(companyId)
+        }
       })
 
       return res.status(200).json(parameters)
@@ -74,71 +99,50 @@ export class LegalParameterController {
     }
   }
 
-  // Create new legal parameter
+  /**
+   * Crear un nuevo parámetro legal asociado a una compañía.
+   */
   async create(req: Request, res: Response) {
     try {
-      const { key, name, type, category, percentage, minRange, maxRange, description } = req.body
+      const { 
+        key, name, type, category, percentage, 
+        minRange, maxRange, description, companyId 
+      } = req.body
 
-      // Validaciones
-      if (!key || !name || !type || !category || percentage === undefined) {
+      // Validaciones básicas
+      if (!companyId || !key || !name || !type || !category || percentage === undefined) {
         return res.status(400).json({
-          error: 'Key, name, type, category y percentage son obligatorios'
+          error: 'Faltan campos obligatorios (key, name, type, category, percentage, companyId)'
         })
       }
 
-      // Validar tipo
-      const validTypes = ['employee', 'employer', 'fixed']
-      if (!validTypes.includes(type)) {
-        return res.status(400).json({
-          error: 'Type debe ser: employee, employer o fixed'
-        })
-      }
-
-      // Validar categoría
-      const validCategories = ['social_security', 'educational_insurance', 'isr', 'other']
-      if (!validCategories.includes(category)) {
-        return res.status(400).json({
-          error: 'Category debe ser: social_security, educational_insurance, isr o other'
-        })
-      }
-
-      // Normalizar key (lowercase, sin espacios, solo caracteres permitidos)
+      // Normalizar key (lowercase, snake_case)
       const normalizedKey = key
         .toLowerCase()
         .trim()
         .replace(/\s+/g, '_')
         .replace(/[^a-z0-9_]/g, '')
 
-      if (!normalizedKey) {
-        return res.status(400).json({
-          error: 'Key debe contener al menos un carácter alfanumérico'
-        })
-      }
-
-      // Validar porcentaje
-      if (typeof percentage !== 'number' || percentage < 0) {
-        return res.status(400).json({
-          error: 'Percentage debe ser un número positivo'
-        })
-      }
-
-      // Check if key already exists
+      // Verificar si la combinación UNIQUE(companyId, key) ya existe
       const existing = await prisma.legalParameter.findUnique({
-        where: { key: normalizedKey }
+        where: {
+          companyId_key: {
+            companyId: companyId,
+            key: normalizedKey
+          }
+        }
       })
 
       if (existing) {
         return res.status(409).json({
-          error: `El parámetro legal con key "${normalizedKey}" ya existe`
+          error: `El parámetro con la clave "${normalizedKey}" ya existe para esta compañía.`
         })
       }
 
-      // Validar rangos si existen
+      // Validar rangos
       if (minRange !== undefined && maxRange !== undefined) {
-        if (minRange > maxRange) {
-          return res.status(400).json({
-            error: 'minRange no puede ser mayor que maxRange'
-          })
+        if (Number(minRange) > Number(maxRange)) {
+          return res.status(400).json({ error: 'minRange no puede ser mayor que maxRange' })
         }
       }
 
@@ -148,10 +152,11 @@ export class LegalParameterController {
           name,
           type,
           category,
-          percentage,
-          minRange: minRange ? parseInt(minRange) : null,
-          maxRange: maxRange ? parseInt(maxRange) : null,
+          percentage: Number(percentage),
+          minRange: minRange ? Number(minRange) : null,
+          maxRange: maxRange ? Number(maxRange) : null,
           description: description || null,
+          companyId: companyId,
           status: 'active',
           effectiveDate: new Date()
         }
@@ -167,68 +172,23 @@ export class LegalParameterController {
     }
   }
 
-  // Update legal parameter
+  /**
+   * Actualizar un parámetro legal por ID.
+   */
   async update(req: Request, res: Response) {
     try {
       const { id } = req.params
-      const { name, type, category, percentage, minRange, maxRange, status, description, effectiveDate } = req.body
+      const { 
+        name, type, category, percentage, minRange, 
+        maxRange, status, description, effectiveDate 
+      } = req.body
 
       const parameter = await prisma.legalParameter.findUnique({
         where: { id }
       })
 
       if (!parameter) {
-        return res.status(404).json({
-          error: 'Parámetro legal no encontrado'
-        })
-      }
-
-      // Validar tipo si se proporciona
-      if (type) {
-        const validTypes = ['employee', 'employer', 'fixed']
-        if (!validTypes.includes(type)) {
-          return res.status(400).json({
-            error: 'Type debe ser: employee, employer o fixed'
-          })
-        }
-      }
-
-      // Validar categoría si se proporciona
-      if (category) {
-        const validCategories = ['social_security', 'educational_insurance', 'isr', 'other']
-        if (!validCategories.includes(category)) {
-          return res.status(400).json({
-            error: 'Category debe ser: social_security, educational_insurance, isr o other'
-          })
-        }
-      }
-
-      // Validar porcentaje si se proporciona
-      if (percentage !== undefined) {
-        if (typeof percentage !== 'number' || percentage < 0) {
-          return res.status(400).json({
-            error: 'Percentage debe ser un número positivo'
-          })
-        }
-      }
-
-      // Validar status si se proporciona
-      if (status) {
-        const validStatuses = ['active', 'inactive']
-        if (!validStatuses.includes(status)) {
-          return res.status(400).json({
-            error: 'Status debe ser: active o inactive'
-          })
-        }
-      }
-
-      // Validar rangos si existen
-      if (minRange !== undefined && maxRange !== undefined) {
-        if (minRange > maxRange) {
-          return res.status(400).json({
-            error: 'minRange no puede ser mayor que maxRange'
-          })
-        }
+        return res.status(404).json({ error: 'Parámetro legal no encontrado' })
       }
 
       const updated = await prisma.legalParameter.update({
@@ -237,11 +197,11 @@ export class LegalParameterController {
           ...(name && { name }),
           ...(type && { type }),
           ...(category && { category }),
-          ...(percentage !== undefined && { percentage }),
-          ...(minRange !== undefined && { minRange: minRange ? parseInt(minRange) : null }),
-          ...(maxRange !== undefined && { maxRange: maxRange ? parseInt(maxRange) : null }),
+          ...(percentage !== undefined && { percentage: Number(percentage) }),
+          ...(minRange !== undefined && { minRange: minRange ? Number(minRange) : null }),
+          ...(maxRange !== undefined && { maxRange: maxRange ? Number(maxRange) : null }),
           ...(status && { status }),
-          ...(description !== undefined && { description: description || null }),
+          ...(description !== undefined && { description }),
           ...(effectiveDate && { effectiveDate: new Date(effectiveDate) })
         }
       })
@@ -256,7 +216,9 @@ export class LegalParameterController {
     }
   }
 
-  // Delete legal parameter
+  /**
+   * Eliminar un parámetro legal.
+   */
   async delete(req: Request, res: Response) {
     try {
       const { id } = req.params
@@ -266,9 +228,7 @@ export class LegalParameterController {
       })
 
       if (!parameter) {
-        return res.status(404).json({
-          error: 'Parámetro legal no encontrado'
-        })
+        return res.status(404).json({ error: 'Parámetro legal no encontrado' })
       }
 
       await prisma.legalParameter.delete({
@@ -288,11 +248,17 @@ export class LegalParameterController {
     }
   }
 
-  // Get ISR rates for calculation
+  /**
+   * Obtener tasas de ISR por compañía.
+   */
   async getISRRates(req: Request, res: Response) {
     try {
+      const { companyId } = req.query
+      if (!companyId) return res.status(400).json({ error: 'companyId es requerido' })
+
       const rates = await prisma.legalParameter.findMany({
         where: {
+          companyId: String(companyId),
           category: 'isr',
           status: 'active'
         },
@@ -302,18 +268,21 @@ export class LegalParameterController {
       return res.status(200).json(rates)
     } catch (error: any) {
       console.error('Error fetching ISR rates:', error)
-      return res.status(500).json({
-        error: 'Error al obtener tasas de ISR',
-        details: error.message
-      })
+      return res.status(500).json({ error: 'Error al obtener tasas de ISR' })
     }
   }
 
-  // Get SSS rates
+  /**
+   * Obtener tasas de Seguridad Social por compañía.
+   */
   async getSSSRates(req: Request, res: Response) {
     try {
+      const { companyId } = req.query
+      if (!companyId) return res.status(400).json({ error: 'companyId es requerido' })
+
       const rates = await prisma.legalParameter.findMany({
         where: {
+          companyId: String(companyId),
           category: 'social_security',
           status: 'active'
         }
@@ -322,10 +291,23 @@ export class LegalParameterController {
       return res.status(200).json(rates)
     } catch (error: any) {
       console.error('Error fetching SSS rates:', error)
-      return res.status(500).json({
-        error: 'Error al obtener tasas de SSS',
-        details: error.message
-      })
+      return res.status(500).json({ error: 'Error al obtener tasas de SSS' })
     }
+  }
+  // Agregar dentro de la clase LegalParameterController
+  async getAvailableKeys(req: Request, res: Response) {
+    const keys = [
+      { key: 'ss_empleado', name: 'Seguro Social - Empleado', category: 'social_security' },
+      { key: 'ss_patrono', name: 'Seguro Social - Patrono', category: 'social_security' },
+      { key: 'ss_decimo', name: 'Seguro Social - Décimo Tercer Mes', category: 'social_security' },
+      { key: 'se_empleado', name: 'Seguro Educativo - Empleado', category: 'educational_insurance' },
+      { key: 'se_patrono', name: 'Seguro Educativo - Patrono', category: 'educational_insurance' },
+      { key: 'riesgo_profesional', name: 'Riesgos Profesionales', category: 'other' },
+      { key: 'isr_r1', name: 'ISR Tramo 1 (Exento)', category: 'isr' },
+      { key: 'isr_r2', name: 'ISR Tramo 2 (15%)', category: 'isr' },
+      { key: 'isr_r3', name: 'ISR Tramo 3 (25%)', category: 'isr' },
+      { key: 'decimo_css', name: 'Décimo Tercer Mes %', category: 'other' }
+    ];
+    return res.status(200).json(keys);
   }
 }

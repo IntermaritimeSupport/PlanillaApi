@@ -83,7 +83,23 @@ export type LegalParameter = $Result.DefaultSelection<Prisma.$LegalParameterPayl
  * Enums
  */
 export namespace $Enums {
-  export const SalaryType: {
+  export const LegalParameterKey: {
+  ss_empleado: 'ss_empleado',
+  ss_patrono: 'ss_patrono',
+  ss_decimo: 'ss_decimo',
+  se_empleado: 'se_empleado',
+  se_patrono: 'se_patrono',
+  riesgo_profesional: 'riesgo_profesional',
+  isr_r1: 'isr_r1',
+  isr_r2: 'isr_r2',
+  isr_r3: 'isr_r3',
+  decimo_css: 'decimo_css'
+};
+
+export type LegalParameterKey = (typeof LegalParameterKey)[keyof typeof LegalParameterKey]
+
+
+export const SalaryType: {
   MONTHLY: 'MONTHLY',
   BIWEEKLY: 'BIWEEKLY'
 };
@@ -196,6 +212,10 @@ export const PersonStatus: {
 export type PersonStatus = (typeof PersonStatus)[keyof typeof PersonStatus]
 
 }
+
+export type LegalParameterKey = $Enums.LegalParameterKey
+
+export const LegalParameterKey: typeof $Enums.LegalParameterKey
 
 export type SalaryType = $Enums.SalaryType
 
@@ -2155,6 +2175,7 @@ export namespace Prisma {
    */
 
   export type CompanyCountOutputType = {
+    legalParameters: number
     departments: number
     users: number
     employees: number
@@ -2164,6 +2185,7 @@ export namespace Prisma {
   }
 
   export type CompanyCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    legalParameters?: boolean | CompanyCountOutputTypeCountLegalParametersArgs
     departments?: boolean | CompanyCountOutputTypeCountDepartmentsArgs
     users?: boolean | CompanyCountOutputTypeCountUsersArgs
     employees?: boolean | CompanyCountOutputTypeCountEmployeesArgs
@@ -2181,6 +2203,13 @@ export namespace Prisma {
      * Select specific fields to fetch from the CompanyCountOutputType
      */
     select?: CompanyCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * CompanyCountOutputType without action
+   */
+  export type CompanyCountOutputTypeCountLegalParametersArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: LegalParameterWhereInput
   }
 
   /**
@@ -6000,6 +6029,7 @@ export namespace Prisma {
     createdAt?: boolean
     updatedAt?: boolean
     createdByUserId?: boolean
+    legalParameters?: boolean | Company$legalParametersArgs<ExtArgs>
     createdBy?: boolean | Company$createdByArgs<ExtArgs>
     departments?: boolean | Company$departmentsArgs<ExtArgs>
     users?: boolean | Company$usersArgs<ExtArgs>
@@ -6059,6 +6089,7 @@ export namespace Prisma {
 
   export type CompanyOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "code" | "name" | "address" | "phone" | "email" | "ruc" | "logoUrl" | "isActive" | "createdAt" | "updatedAt" | "createdByUserId", ExtArgs["result"]["company"]>
   export type CompanyInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    legalParameters?: boolean | Company$legalParametersArgs<ExtArgs>
     createdBy?: boolean | Company$createdByArgs<ExtArgs>
     departments?: boolean | Company$departmentsArgs<ExtArgs>
     users?: boolean | Company$usersArgs<ExtArgs>
@@ -6078,6 +6109,7 @@ export namespace Prisma {
   export type $CompanyPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "Company"
     objects: {
+      legalParameters: Prisma.$LegalParameterPayload<ExtArgs>[]
       createdBy: Prisma.$UserPayload<ExtArgs> | null
       departments: Prisma.$DepartmentPayload<ExtArgs>[]
       users: Prisma.$UserCompanyPayload<ExtArgs>[]
@@ -6493,6 +6525,7 @@ export namespace Prisma {
    */
   export interface Prisma__CompanyClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
+    legalParameters<T extends Company$legalParametersArgs<ExtArgs> = {}>(args?: Subset<T, Company$legalParametersArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$LegalParameterPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     createdBy<T extends Company$createdByArgs<ExtArgs> = {}>(args?: Subset<T, Company$createdByArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     departments<T extends Company$departmentsArgs<ExtArgs> = {}>(args?: Subset<T, Company$departmentsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DepartmentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     users<T extends Company$usersArgs<ExtArgs> = {}>(args?: Subset<T, Company$usersArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$UserCompanyPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
@@ -6934,6 +6967,30 @@ export namespace Prisma {
      * Limit how many Companies to delete.
      */
     limit?: number
+  }
+
+  /**
+   * Company.legalParameters
+   */
+  export type Company$legalParametersArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the LegalParameter
+     */
+    select?: LegalParameterSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the LegalParameter
+     */
+    omit?: LegalParameterOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: LegalParameterInclude<ExtArgs> | null
+    where?: LegalParameterWhereInput
+    orderBy?: LegalParameterOrderByWithRelationInput | LegalParameterOrderByWithRelationInput[]
+    cursor?: LegalParameterWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: LegalParameterScalarFieldEnum | LegalParameterScalarFieldEnum[]
   }
 
   /**
@@ -16895,7 +16952,7 @@ export namespace Prisma {
 
   export type LegalParameterMinAggregateOutputType = {
     id: string | null
-    key: string | null
+    key: $Enums.LegalParameterKey | null
     name: string | null
     type: string | null
     category: string | null
@@ -16905,13 +16962,14 @@ export namespace Prisma {
     status: string | null
     effectiveDate: Date | null
     description: string | null
+    companyId: string | null
     createdAt: Date | null
     updatedAt: Date | null
   }
 
   export type LegalParameterMaxAggregateOutputType = {
     id: string | null
-    key: string | null
+    key: $Enums.LegalParameterKey | null
     name: string | null
     type: string | null
     category: string | null
@@ -16921,6 +16979,7 @@ export namespace Prisma {
     status: string | null
     effectiveDate: Date | null
     description: string | null
+    companyId: string | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -16937,6 +16996,7 @@ export namespace Prisma {
     status: number
     effectiveDate: number
     description: number
+    companyId: number
     createdAt: number
     updatedAt: number
     _all: number
@@ -16967,6 +17027,7 @@ export namespace Prisma {
     status?: true
     effectiveDate?: true
     description?: true
+    companyId?: true
     createdAt?: true
     updatedAt?: true
   }
@@ -16983,6 +17044,7 @@ export namespace Prisma {
     status?: true
     effectiveDate?: true
     description?: true
+    companyId?: true
     createdAt?: true
     updatedAt?: true
   }
@@ -16999,6 +17061,7 @@ export namespace Prisma {
     status?: true
     effectiveDate?: true
     description?: true
+    companyId?: true
     createdAt?: true
     updatedAt?: true
     _all?: true
@@ -17092,7 +17155,7 @@ export namespace Prisma {
 
   export type LegalParameterGroupByOutputType = {
     id: string
-    key: string
+    key: $Enums.LegalParameterKey
     name: string
     type: string
     category: string
@@ -17102,6 +17165,7 @@ export namespace Prisma {
     status: string
     effectiveDate: Date
     description: string | null
+    companyId: string
     createdAt: Date
     updatedAt: Date
     _count: LegalParameterCountAggregateOutputType | null
@@ -17137,8 +17201,10 @@ export namespace Prisma {
     status?: boolean
     effectiveDate?: boolean
     description?: boolean
+    companyId?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    company?: boolean | CompanyDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["legalParameter"]>
 
   export type LegalParameterSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -17153,8 +17219,10 @@ export namespace Prisma {
     status?: boolean
     effectiveDate?: boolean
     description?: boolean
+    companyId?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    company?: boolean | CompanyDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["legalParameter"]>
 
   export type LegalParameterSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -17169,8 +17237,10 @@ export namespace Prisma {
     status?: boolean
     effectiveDate?: boolean
     description?: boolean
+    companyId?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    company?: boolean | CompanyDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["legalParameter"]>
 
   export type LegalParameterSelectScalar = {
@@ -17185,18 +17255,30 @@ export namespace Prisma {
     status?: boolean
     effectiveDate?: boolean
     description?: boolean
+    companyId?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }
 
-  export type LegalParameterOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "key" | "name" | "type" | "category" | "percentage" | "minRange" | "maxRange" | "status" | "effectiveDate" | "description" | "createdAt" | "updatedAt", ExtArgs["result"]["legalParameter"]>
+  export type LegalParameterOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "key" | "name" | "type" | "category" | "percentage" | "minRange" | "maxRange" | "status" | "effectiveDate" | "description" | "companyId" | "createdAt" | "updatedAt", ExtArgs["result"]["legalParameter"]>
+  export type LegalParameterInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    company?: boolean | CompanyDefaultArgs<ExtArgs>
+  }
+  export type LegalParameterIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    company?: boolean | CompanyDefaultArgs<ExtArgs>
+  }
+  export type LegalParameterIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    company?: boolean | CompanyDefaultArgs<ExtArgs>
+  }
 
   export type $LegalParameterPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "LegalParameter"
-    objects: {}
+    objects: {
+      company: Prisma.$CompanyPayload<ExtArgs>
+    }
     scalars: $Extensions.GetPayloadResult<{
       id: string
-      key: string
+      key: $Enums.LegalParameterKey
       name: string
       type: string
       category: string
@@ -17206,6 +17288,7 @@ export namespace Prisma {
       status: string
       effectiveDate: Date
       description: string | null
+      companyId: string
       createdAt: Date
       updatedAt: Date
     }, ExtArgs["result"]["legalParameter"]>
@@ -17602,6 +17685,7 @@ export namespace Prisma {
    */
   export interface Prisma__LegalParameterClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
+    company<T extends CompanyDefaultArgs<ExtArgs> = {}>(args?: Subset<T, CompanyDefaultArgs<ExtArgs>>): Prisma__CompanyClient<$Result.GetResult<Prisma.$CompanyPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -17632,7 +17716,7 @@ export namespace Prisma {
    */
   interface LegalParameterFieldRefs {
     readonly id: FieldRef<"LegalParameter", 'String'>
-    readonly key: FieldRef<"LegalParameter", 'String'>
+    readonly key: FieldRef<"LegalParameter", 'LegalParameterKey'>
     readonly name: FieldRef<"LegalParameter", 'String'>
     readonly type: FieldRef<"LegalParameter", 'String'>
     readonly category: FieldRef<"LegalParameter", 'String'>
@@ -17642,6 +17726,7 @@ export namespace Prisma {
     readonly status: FieldRef<"LegalParameter", 'String'>
     readonly effectiveDate: FieldRef<"LegalParameter", 'DateTime'>
     readonly description: FieldRef<"LegalParameter", 'String'>
+    readonly companyId: FieldRef<"LegalParameter", 'String'>
     readonly createdAt: FieldRef<"LegalParameter", 'DateTime'>
     readonly updatedAt: FieldRef<"LegalParameter", 'DateTime'>
   }
@@ -17661,6 +17746,10 @@ export namespace Prisma {
      */
     omit?: LegalParameterOmit<ExtArgs> | null
     /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: LegalParameterInclude<ExtArgs> | null
+    /**
      * Filter, which LegalParameter to fetch.
      */
     where: LegalParameterWhereUniqueInput
@@ -17679,6 +17768,10 @@ export namespace Prisma {
      */
     omit?: LegalParameterOmit<ExtArgs> | null
     /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: LegalParameterInclude<ExtArgs> | null
+    /**
      * Filter, which LegalParameter to fetch.
      */
     where: LegalParameterWhereUniqueInput
@@ -17696,6 +17789,10 @@ export namespace Prisma {
      * Omit specific fields from the LegalParameter
      */
     omit?: LegalParameterOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: LegalParameterInclude<ExtArgs> | null
     /**
      * Filter, which LegalParameter to fetch.
      */
@@ -17745,6 +17842,10 @@ export namespace Prisma {
      */
     omit?: LegalParameterOmit<ExtArgs> | null
     /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: LegalParameterInclude<ExtArgs> | null
+    /**
      * Filter, which LegalParameter to fetch.
      */
     where?: LegalParameterWhereInput
@@ -17793,6 +17894,10 @@ export namespace Prisma {
      */
     omit?: LegalParameterOmit<ExtArgs> | null
     /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: LegalParameterInclude<ExtArgs> | null
+    /**
      * Filter, which LegalParameters to fetch.
      */
     where?: LegalParameterWhereInput
@@ -17836,6 +17941,10 @@ export namespace Prisma {
      */
     omit?: LegalParameterOmit<ExtArgs> | null
     /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: LegalParameterInclude<ExtArgs> | null
+    /**
      * The data needed to create a LegalParameter.
      */
     data: XOR<LegalParameterCreateInput, LegalParameterUncheckedCreateInput>
@@ -17869,6 +17978,10 @@ export namespace Prisma {
      */
     data: LegalParameterCreateManyInput | LegalParameterCreateManyInput[]
     skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: LegalParameterIncludeCreateManyAndReturn<ExtArgs> | null
   }
 
   /**
@@ -17883,6 +17996,10 @@ export namespace Prisma {
      * Omit specific fields from the LegalParameter
      */
     omit?: LegalParameterOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: LegalParameterInclude<ExtArgs> | null
     /**
      * The data needed to update a LegalParameter.
      */
@@ -17935,6 +18052,10 @@ export namespace Prisma {
      * Limit how many LegalParameters to update.
      */
     limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: LegalParameterIncludeUpdateManyAndReturn<ExtArgs> | null
   }
 
   /**
@@ -17949,6 +18070,10 @@ export namespace Prisma {
      * Omit specific fields from the LegalParameter
      */
     omit?: LegalParameterOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: LegalParameterInclude<ExtArgs> | null
     /**
      * The filter to search for the LegalParameter to update in case it exists.
      */
@@ -17975,6 +18100,10 @@ export namespace Prisma {
      * Omit specific fields from the LegalParameter
      */
     omit?: LegalParameterOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: LegalParameterInclude<ExtArgs> | null
     /**
      * Filter which LegalParameter to delete.
      */
@@ -18007,6 +18136,10 @@ export namespace Prisma {
      * Omit specific fields from the LegalParameter
      */
     omit?: LegalParameterOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: LegalParameterInclude<ExtArgs> | null
   }
 
 
@@ -18243,6 +18376,7 @@ export namespace Prisma {
     status: 'status',
     effectiveDate: 'effectiveDate',
     description: 'description',
+    companyId: 'companyId',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt'
   };
@@ -18493,6 +18627,20 @@ export namespace Prisma {
    * Reference to a field of type 'LeaveStatus[]'
    */
   export type ListEnumLeaveStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'LeaveStatus[]'>
+    
+
+
+  /**
+   * Reference to a field of type 'LegalParameterKey'
+   */
+  export type EnumLegalParameterKeyFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'LegalParameterKey'>
+    
+
+
+  /**
+   * Reference to a field of type 'LegalParameterKey[]'
+   */
+  export type ListEnumLegalParameterKeyFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'LegalParameterKey[]'>
     
 
 
@@ -18755,6 +18903,7 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"Company"> | Date | string
     updatedAt?: DateTimeFilter<"Company"> | Date | string
     createdByUserId?: StringNullableFilter<"Company"> | string | null
+    legalParameters?: LegalParameterListRelationFilter
     createdBy?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
     departments?: DepartmentListRelationFilter
     users?: UserCompanyListRelationFilter
@@ -18777,6 +18926,7 @@ export namespace Prisma {
     createdAt?: SortOrder
     updatedAt?: SortOrder
     createdByUserId?: SortOrderInput | SortOrder
+    legalParameters?: LegalParameterOrderByRelationAggregateInput
     createdBy?: UserOrderByWithRelationInput
     departments?: DepartmentOrderByRelationAggregateInput
     users?: UserCompanyOrderByRelationAggregateInput
@@ -18802,6 +18952,7 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"Company"> | Date | string
     updatedAt?: DateTimeFilter<"Company"> | Date | string
     createdByUserId?: StringNullableFilter<"Company"> | string | null
+    legalParameters?: LegalParameterListRelationFilter
     createdBy?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
     departments?: DepartmentListRelationFilter
     users?: UserCompanyListRelationFilter
@@ -19639,7 +19790,7 @@ export namespace Prisma {
     OR?: LegalParameterWhereInput[]
     NOT?: LegalParameterWhereInput | LegalParameterWhereInput[]
     id?: StringFilter<"LegalParameter"> | string
-    key?: StringFilter<"LegalParameter"> | string
+    key?: EnumLegalParameterKeyFilter<"LegalParameter"> | $Enums.LegalParameterKey
     name?: StringFilter<"LegalParameter"> | string
     type?: StringFilter<"LegalParameter"> | string
     category?: StringFilter<"LegalParameter"> | string
@@ -19649,8 +19800,10 @@ export namespace Prisma {
     status?: StringFilter<"LegalParameter"> | string
     effectiveDate?: DateTimeFilter<"LegalParameter"> | Date | string
     description?: StringNullableFilter<"LegalParameter"> | string | null
+    companyId?: StringFilter<"LegalParameter"> | string
     createdAt?: DateTimeFilter<"LegalParameter"> | Date | string
     updatedAt?: DateTimeFilter<"LegalParameter"> | Date | string
+    company?: XOR<CompanyScalarRelationFilter, CompanyWhereInput>
   }
 
   export type LegalParameterOrderByWithRelationInput = {
@@ -19665,16 +19818,19 @@ export namespace Prisma {
     status?: SortOrder
     effectiveDate?: SortOrder
     description?: SortOrderInput | SortOrder
+    companyId?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    company?: CompanyOrderByWithRelationInput
   }
 
   export type LegalParameterWhereUniqueInput = Prisma.AtLeast<{
     id?: string
-    key?: string
+    companyId_key?: LegalParameterCompanyIdKeyCompoundUniqueInput
     AND?: LegalParameterWhereInput | LegalParameterWhereInput[]
     OR?: LegalParameterWhereInput[]
     NOT?: LegalParameterWhereInput | LegalParameterWhereInput[]
+    key?: EnumLegalParameterKeyFilter<"LegalParameter"> | $Enums.LegalParameterKey
     name?: StringFilter<"LegalParameter"> | string
     type?: StringFilter<"LegalParameter"> | string
     category?: StringFilter<"LegalParameter"> | string
@@ -19684,9 +19840,11 @@ export namespace Prisma {
     status?: StringFilter<"LegalParameter"> | string
     effectiveDate?: DateTimeFilter<"LegalParameter"> | Date | string
     description?: StringNullableFilter<"LegalParameter"> | string | null
+    companyId?: StringFilter<"LegalParameter"> | string
     createdAt?: DateTimeFilter<"LegalParameter"> | Date | string
     updatedAt?: DateTimeFilter<"LegalParameter"> | Date | string
-  }, "id" | "key">
+    company?: XOR<CompanyScalarRelationFilter, CompanyWhereInput>
+  }, "id" | "companyId_key">
 
   export type LegalParameterOrderByWithAggregationInput = {
     id?: SortOrder
@@ -19700,6 +19858,7 @@ export namespace Prisma {
     status?: SortOrder
     effectiveDate?: SortOrder
     description?: SortOrderInput | SortOrder
+    companyId?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     _count?: LegalParameterCountOrderByAggregateInput
@@ -19714,7 +19873,7 @@ export namespace Prisma {
     OR?: LegalParameterScalarWhereWithAggregatesInput[]
     NOT?: LegalParameterScalarWhereWithAggregatesInput | LegalParameterScalarWhereWithAggregatesInput[]
     id?: StringWithAggregatesFilter<"LegalParameter"> | string
-    key?: StringWithAggregatesFilter<"LegalParameter"> | string
+    key?: EnumLegalParameterKeyWithAggregatesFilter<"LegalParameter"> | $Enums.LegalParameterKey
     name?: StringWithAggregatesFilter<"LegalParameter"> | string
     type?: StringWithAggregatesFilter<"LegalParameter"> | string
     category?: StringWithAggregatesFilter<"LegalParameter"> | string
@@ -19724,6 +19883,7 @@ export namespace Prisma {
     status?: StringWithAggregatesFilter<"LegalParameter"> | string
     effectiveDate?: DateTimeWithAggregatesFilter<"LegalParameter"> | Date | string
     description?: StringNullableWithAggregatesFilter<"LegalParameter"> | string | null
+    companyId?: StringWithAggregatesFilter<"LegalParameter"> | string
     createdAt?: DateTimeWithAggregatesFilter<"LegalParameter"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"LegalParameter"> | Date | string
   }
@@ -19984,6 +20144,7 @@ export namespace Prisma {
     isActive?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
+    legalParameters?: LegalParameterCreateNestedManyWithoutCompanyInput
     createdBy?: UserCreateNestedOneWithoutCreatedCompaniesInput
     departments?: DepartmentCreateNestedManyWithoutCompanyInput
     users?: UserCompanyCreateNestedManyWithoutCompanyInput
@@ -20006,6 +20167,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     createdByUserId?: string | null
+    legalParameters?: LegalParameterUncheckedCreateNestedManyWithoutCompanyInput
     departments?: DepartmentUncheckedCreateNestedManyWithoutCompanyInput
     users?: UserCompanyUncheckedCreateNestedManyWithoutCompanyInput
     employees?: EmployeeUncheckedCreateNestedManyWithoutCompanyInput
@@ -20026,6 +20188,7 @@ export namespace Prisma {
     isActive?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    legalParameters?: LegalParameterUpdateManyWithoutCompanyNestedInput
     createdBy?: UserUpdateOneWithoutCreatedCompaniesNestedInput
     departments?: DepartmentUpdateManyWithoutCompanyNestedInput
     users?: UserCompanyUpdateManyWithoutCompanyNestedInput
@@ -20048,6 +20211,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     createdByUserId?: NullableStringFieldUpdateOperationsInput | string | null
+    legalParameters?: LegalParameterUncheckedUpdateManyWithoutCompanyNestedInput
     departments?: DepartmentUncheckedUpdateManyWithoutCompanyNestedInput
     users?: UserCompanyUncheckedUpdateManyWithoutCompanyNestedInput
     employees?: EmployeeUncheckedUpdateManyWithoutCompanyNestedInput
@@ -20982,7 +21146,7 @@ export namespace Prisma {
 
   export type LegalParameterCreateInput = {
     id?: string
-    key: string
+    key: $Enums.LegalParameterKey
     name: string
     type: string
     category: string
@@ -20994,11 +21158,12 @@ export namespace Prisma {
     description?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    company: CompanyCreateNestedOneWithoutLegalParametersInput
   }
 
   export type LegalParameterUncheckedCreateInput = {
     id?: string
-    key: string
+    key: $Enums.LegalParameterKey
     name: string
     type: string
     category: string
@@ -21008,13 +21173,14 @@ export namespace Prisma {
     status?: string
     effectiveDate?: Date | string
     description?: string | null
+    companyId: string
     createdAt?: Date | string
     updatedAt?: Date | string
   }
 
   export type LegalParameterUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
-    key?: StringFieldUpdateOperationsInput | string
+    key?: EnumLegalParameterKeyFieldUpdateOperationsInput | $Enums.LegalParameterKey
     name?: StringFieldUpdateOperationsInput | string
     type?: StringFieldUpdateOperationsInput | string
     category?: StringFieldUpdateOperationsInput | string
@@ -21026,11 +21192,12 @@ export namespace Prisma {
     description?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    company?: CompanyUpdateOneRequiredWithoutLegalParametersNestedInput
   }
 
   export type LegalParameterUncheckedUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
-    key?: StringFieldUpdateOperationsInput | string
+    key?: EnumLegalParameterKeyFieldUpdateOperationsInput | $Enums.LegalParameterKey
     name?: StringFieldUpdateOperationsInput | string
     type?: StringFieldUpdateOperationsInput | string
     category?: StringFieldUpdateOperationsInput | string
@@ -21040,13 +21207,14 @@ export namespace Prisma {
     status?: StringFieldUpdateOperationsInput | string
     effectiveDate?: DateTimeFieldUpdateOperationsInput | Date | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
+    companyId?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type LegalParameterCreateManyInput = {
     id?: string
-    key: string
+    key: $Enums.LegalParameterKey
     name: string
     type: string
     category: string
@@ -21056,13 +21224,14 @@ export namespace Prisma {
     status?: string
     effectiveDate?: Date | string
     description?: string | null
+    companyId: string
     createdAt?: Date | string
     updatedAt?: Date | string
   }
 
   export type LegalParameterUpdateManyMutationInput = {
     id?: StringFieldUpdateOperationsInput | string
-    key?: StringFieldUpdateOperationsInput | string
+    key?: EnumLegalParameterKeyFieldUpdateOperationsInput | $Enums.LegalParameterKey
     name?: StringFieldUpdateOperationsInput | string
     type?: StringFieldUpdateOperationsInput | string
     category?: StringFieldUpdateOperationsInput | string
@@ -21078,7 +21247,7 @@ export namespace Prisma {
 
   export type LegalParameterUncheckedUpdateManyInput = {
     id?: StringFieldUpdateOperationsInput | string
-    key?: StringFieldUpdateOperationsInput | string
+    key?: EnumLegalParameterKeyFieldUpdateOperationsInput | $Enums.LegalParameterKey
     name?: StringFieldUpdateOperationsInput | string
     type?: StringFieldUpdateOperationsInput | string
     category?: StringFieldUpdateOperationsInput | string
@@ -21088,6 +21257,7 @@ export namespace Prisma {
     status?: StringFieldUpdateOperationsInput | string
     effectiveDate?: DateTimeFieldUpdateOperationsInput | Date | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
+    companyId?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -21384,6 +21554,12 @@ export namespace Prisma {
     _max?: NestedEnumPersonStatusFilter<$PrismaModel>
   }
 
+  export type LegalParameterListRelationFilter = {
+    every?: LegalParameterWhereInput
+    some?: LegalParameterWhereInput
+    none?: LegalParameterWhereInput
+  }
+
   export type UserNullableScalarRelationFilter = {
     is?: UserWhereInput | null
     isNot?: UserWhereInput | null
@@ -21417,6 +21593,10 @@ export namespace Prisma {
     every?: LeaveWhereInput
     some?: LeaveWhereInput
     none?: LeaveWhereInput
+  }
+
+  export type LegalParameterOrderByRelationAggregateInput = {
+    _count?: SortOrder
   }
 
   export type DepartmentOrderByRelationAggregateInput = {
@@ -22254,6 +22434,13 @@ export namespace Prisma {
     _max?: NestedEnumLeaveStatusFilter<$PrismaModel>
   }
 
+  export type EnumLegalParameterKeyFilter<$PrismaModel = never> = {
+    equals?: $Enums.LegalParameterKey | EnumLegalParameterKeyFieldRefInput<$PrismaModel>
+    in?: $Enums.LegalParameterKey[] | ListEnumLegalParameterKeyFieldRefInput<$PrismaModel>
+    notIn?: $Enums.LegalParameterKey[] | ListEnumLegalParameterKeyFieldRefInput<$PrismaModel>
+    not?: NestedEnumLegalParameterKeyFilter<$PrismaModel> | $Enums.LegalParameterKey
+  }
+
   export type FloatFilter<$PrismaModel = never> = {
     equals?: number | FloatFieldRefInput<$PrismaModel>
     in?: number[] | ListFloatFieldRefInput<$PrismaModel>
@@ -22263,6 +22450,11 @@ export namespace Prisma {
     gt?: number | FloatFieldRefInput<$PrismaModel>
     gte?: number | FloatFieldRefInput<$PrismaModel>
     not?: NestedFloatFilter<$PrismaModel> | number
+  }
+
+  export type LegalParameterCompanyIdKeyCompoundUniqueInput = {
+    companyId: string
+    key: $Enums.LegalParameterKey
   }
 
   export type LegalParameterCountOrderByAggregateInput = {
@@ -22277,6 +22469,7 @@ export namespace Prisma {
     status?: SortOrder
     effectiveDate?: SortOrder
     description?: SortOrder
+    companyId?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -22299,6 +22492,7 @@ export namespace Prisma {
     status?: SortOrder
     effectiveDate?: SortOrder
     description?: SortOrder
+    companyId?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -22315,6 +22509,7 @@ export namespace Prisma {
     status?: SortOrder
     effectiveDate?: SortOrder
     description?: SortOrder
+    companyId?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -22323,6 +22518,16 @@ export namespace Prisma {
     percentage?: SortOrder
     minRange?: SortOrder
     maxRange?: SortOrder
+  }
+
+  export type EnumLegalParameterKeyWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.LegalParameterKey | EnumLegalParameterKeyFieldRefInput<$PrismaModel>
+    in?: $Enums.LegalParameterKey[] | ListEnumLegalParameterKeyFieldRefInput<$PrismaModel>
+    notIn?: $Enums.LegalParameterKey[] | ListEnumLegalParameterKeyFieldRefInput<$PrismaModel>
+    not?: NestedEnumLegalParameterKeyWithAggregatesFilter<$PrismaModel> | $Enums.LegalParameterKey
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumLegalParameterKeyFilter<$PrismaModel>
+    _max?: NestedEnumLegalParameterKeyFilter<$PrismaModel>
   }
 
   export type FloatWithAggregatesFilter<$PrismaModel = never> = {
@@ -22571,6 +22776,13 @@ export namespace Prisma {
     update?: XOR<XOR<UserUpdateToOneWithWhereWithoutPersonInput, UserUpdateWithoutPersonInput>, UserUncheckedUpdateWithoutPersonInput>
   }
 
+  export type LegalParameterCreateNestedManyWithoutCompanyInput = {
+    create?: XOR<LegalParameterCreateWithoutCompanyInput, LegalParameterUncheckedCreateWithoutCompanyInput> | LegalParameterCreateWithoutCompanyInput[] | LegalParameterUncheckedCreateWithoutCompanyInput[]
+    connectOrCreate?: LegalParameterCreateOrConnectWithoutCompanyInput | LegalParameterCreateOrConnectWithoutCompanyInput[]
+    createMany?: LegalParameterCreateManyCompanyInputEnvelope
+    connect?: LegalParameterWhereUniqueInput | LegalParameterWhereUniqueInput[]
+  }
+
   export type UserCreateNestedOneWithoutCreatedCompaniesInput = {
     create?: XOR<UserCreateWithoutCreatedCompaniesInput, UserUncheckedCreateWithoutCreatedCompaniesInput>
     connectOrCreate?: UserCreateOrConnectWithoutCreatedCompaniesInput
@@ -22619,6 +22831,13 @@ export namespace Prisma {
     connect?: LeaveWhereUniqueInput | LeaveWhereUniqueInput[]
   }
 
+  export type LegalParameterUncheckedCreateNestedManyWithoutCompanyInput = {
+    create?: XOR<LegalParameterCreateWithoutCompanyInput, LegalParameterUncheckedCreateWithoutCompanyInput> | LegalParameterCreateWithoutCompanyInput[] | LegalParameterUncheckedCreateWithoutCompanyInput[]
+    connectOrCreate?: LegalParameterCreateOrConnectWithoutCompanyInput | LegalParameterCreateOrConnectWithoutCompanyInput[]
+    createMany?: LegalParameterCreateManyCompanyInputEnvelope
+    connect?: LegalParameterWhereUniqueInput | LegalParameterWhereUniqueInput[]
+  }
+
   export type DepartmentUncheckedCreateNestedManyWithoutCompanyInput = {
     create?: XOR<DepartmentCreateWithoutCompanyInput, DepartmentUncheckedCreateWithoutCompanyInput> | DepartmentCreateWithoutCompanyInput[] | DepartmentUncheckedCreateWithoutCompanyInput[]
     connectOrCreate?: DepartmentCreateOrConnectWithoutCompanyInput | DepartmentCreateOrConnectWithoutCompanyInput[]
@@ -22659,6 +22878,20 @@ export namespace Prisma {
     connectOrCreate?: LeaveCreateOrConnectWithoutCompanyInput | LeaveCreateOrConnectWithoutCompanyInput[]
     createMany?: LeaveCreateManyCompanyInputEnvelope
     connect?: LeaveWhereUniqueInput | LeaveWhereUniqueInput[]
+  }
+
+  export type LegalParameterUpdateManyWithoutCompanyNestedInput = {
+    create?: XOR<LegalParameterCreateWithoutCompanyInput, LegalParameterUncheckedCreateWithoutCompanyInput> | LegalParameterCreateWithoutCompanyInput[] | LegalParameterUncheckedCreateWithoutCompanyInput[]
+    connectOrCreate?: LegalParameterCreateOrConnectWithoutCompanyInput | LegalParameterCreateOrConnectWithoutCompanyInput[]
+    upsert?: LegalParameterUpsertWithWhereUniqueWithoutCompanyInput | LegalParameterUpsertWithWhereUniqueWithoutCompanyInput[]
+    createMany?: LegalParameterCreateManyCompanyInputEnvelope
+    set?: LegalParameterWhereUniqueInput | LegalParameterWhereUniqueInput[]
+    disconnect?: LegalParameterWhereUniqueInput | LegalParameterWhereUniqueInput[]
+    delete?: LegalParameterWhereUniqueInput | LegalParameterWhereUniqueInput[]
+    connect?: LegalParameterWhereUniqueInput | LegalParameterWhereUniqueInput[]
+    update?: LegalParameterUpdateWithWhereUniqueWithoutCompanyInput | LegalParameterUpdateWithWhereUniqueWithoutCompanyInput[]
+    updateMany?: LegalParameterUpdateManyWithWhereWithoutCompanyInput | LegalParameterUpdateManyWithWhereWithoutCompanyInput[]
+    deleteMany?: LegalParameterScalarWhereInput | LegalParameterScalarWhereInput[]
   }
 
   export type UserUpdateOneWithoutCreatedCompaniesNestedInput = {
@@ -22753,6 +22986,20 @@ export namespace Prisma {
     update?: LeaveUpdateWithWhereUniqueWithoutCompanyInput | LeaveUpdateWithWhereUniqueWithoutCompanyInput[]
     updateMany?: LeaveUpdateManyWithWhereWithoutCompanyInput | LeaveUpdateManyWithWhereWithoutCompanyInput[]
     deleteMany?: LeaveScalarWhereInput | LeaveScalarWhereInput[]
+  }
+
+  export type LegalParameterUncheckedUpdateManyWithoutCompanyNestedInput = {
+    create?: XOR<LegalParameterCreateWithoutCompanyInput, LegalParameterUncheckedCreateWithoutCompanyInput> | LegalParameterCreateWithoutCompanyInput[] | LegalParameterUncheckedCreateWithoutCompanyInput[]
+    connectOrCreate?: LegalParameterCreateOrConnectWithoutCompanyInput | LegalParameterCreateOrConnectWithoutCompanyInput[]
+    upsert?: LegalParameterUpsertWithWhereUniqueWithoutCompanyInput | LegalParameterUpsertWithWhereUniqueWithoutCompanyInput[]
+    createMany?: LegalParameterCreateManyCompanyInputEnvelope
+    set?: LegalParameterWhereUniqueInput | LegalParameterWhereUniqueInput[]
+    disconnect?: LegalParameterWhereUniqueInput | LegalParameterWhereUniqueInput[]
+    delete?: LegalParameterWhereUniqueInput | LegalParameterWhereUniqueInput[]
+    connect?: LegalParameterWhereUniqueInput | LegalParameterWhereUniqueInput[]
+    update?: LegalParameterUpdateWithWhereUniqueWithoutCompanyInput | LegalParameterUpdateWithWhereUniqueWithoutCompanyInput[]
+    updateMany?: LegalParameterUpdateManyWithWhereWithoutCompanyInput | LegalParameterUpdateManyWithWhereWithoutCompanyInput[]
+    deleteMany?: LegalParameterScalarWhereInput | LegalParameterScalarWhereInput[]
   }
 
   export type DepartmentUncheckedUpdateManyWithoutCompanyNestedInput = {
@@ -23435,12 +23682,30 @@ export namespace Prisma {
     update?: XOR<XOR<CompanyUpdateToOneWithWhereWithoutLeavesInput, CompanyUpdateWithoutLeavesInput>, CompanyUncheckedUpdateWithoutLeavesInput>
   }
 
+  export type CompanyCreateNestedOneWithoutLegalParametersInput = {
+    create?: XOR<CompanyCreateWithoutLegalParametersInput, CompanyUncheckedCreateWithoutLegalParametersInput>
+    connectOrCreate?: CompanyCreateOrConnectWithoutLegalParametersInput
+    connect?: CompanyWhereUniqueInput
+  }
+
+  export type EnumLegalParameterKeyFieldUpdateOperationsInput = {
+    set?: $Enums.LegalParameterKey
+  }
+
   export type FloatFieldUpdateOperationsInput = {
     set?: number
     increment?: number
     decrement?: number
     multiply?: number
     divide?: number
+  }
+
+  export type CompanyUpdateOneRequiredWithoutLegalParametersNestedInput = {
+    create?: XOR<CompanyCreateWithoutLegalParametersInput, CompanyUncheckedCreateWithoutLegalParametersInput>
+    connectOrCreate?: CompanyCreateOrConnectWithoutLegalParametersInput
+    upsert?: CompanyUpsertWithoutLegalParametersInput
+    connect?: CompanyWhereUniqueInput
+    update?: XOR<XOR<CompanyUpdateToOneWithWhereWithoutLegalParametersInput, CompanyUpdateWithoutLegalParametersInput>, CompanyUncheckedUpdateWithoutLegalParametersInput>
   }
 
   export type NestedStringFilter<$PrismaModel = never> = {
@@ -23885,6 +24150,23 @@ export namespace Prisma {
     _max?: NestedEnumLeaveStatusFilter<$PrismaModel>
   }
 
+  export type NestedEnumLegalParameterKeyFilter<$PrismaModel = never> = {
+    equals?: $Enums.LegalParameterKey | EnumLegalParameterKeyFieldRefInput<$PrismaModel>
+    in?: $Enums.LegalParameterKey[] | ListEnumLegalParameterKeyFieldRefInput<$PrismaModel>
+    notIn?: $Enums.LegalParameterKey[] | ListEnumLegalParameterKeyFieldRefInput<$PrismaModel>
+    not?: NestedEnumLegalParameterKeyFilter<$PrismaModel> | $Enums.LegalParameterKey
+  }
+
+  export type NestedEnumLegalParameterKeyWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.LegalParameterKey | EnumLegalParameterKeyFieldRefInput<$PrismaModel>
+    in?: $Enums.LegalParameterKey[] | ListEnumLegalParameterKeyFieldRefInput<$PrismaModel>
+    notIn?: $Enums.LegalParameterKey[] | ListEnumLegalParameterKeyFieldRefInput<$PrismaModel>
+    not?: NestedEnumLegalParameterKeyWithAggregatesFilter<$PrismaModel> | $Enums.LegalParameterKey
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumLegalParameterKeyFilter<$PrismaModel>
+    _max?: NestedEnumLegalParameterKeyFilter<$PrismaModel>
+  }
+
   export type NestedFloatWithAggregatesFilter<$PrismaModel = never> = {
     equals?: number | FloatFieldRefInput<$PrismaModel>
     in?: number[] | ListFloatFieldRefInput<$PrismaModel>
@@ -23931,6 +24213,7 @@ export namespace Prisma {
     isActive?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
+    legalParameters?: LegalParameterCreateNestedManyWithoutCompanyInput
     departments?: DepartmentCreateNestedManyWithoutCompanyInput
     users?: UserCompanyCreateNestedManyWithoutCompanyInput
     employees?: EmployeeCreateNestedManyWithoutCompanyInput
@@ -23951,6 +24234,7 @@ export namespace Prisma {
     isActive?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
+    legalParameters?: LegalParameterUncheckedCreateNestedManyWithoutCompanyInput
     departments?: DepartmentUncheckedCreateNestedManyWithoutCompanyInput
     users?: UserCompanyUncheckedCreateNestedManyWithoutCompanyInput
     employees?: EmployeeUncheckedCreateNestedManyWithoutCompanyInput
@@ -24268,6 +24552,7 @@ export namespace Prisma {
     isActive?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
+    legalParameters?: LegalParameterCreateNestedManyWithoutCompanyInput
     createdBy?: UserCreateNestedOneWithoutCreatedCompaniesInput
     departments?: DepartmentCreateNestedManyWithoutCompanyInput
     employees?: EmployeeCreateNestedManyWithoutCompanyInput
@@ -24289,6 +24574,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     createdByUserId?: string | null
+    legalParameters?: LegalParameterUncheckedCreateNestedManyWithoutCompanyInput
     departments?: DepartmentUncheckedCreateNestedManyWithoutCompanyInput
     employees?: EmployeeUncheckedCreateNestedManyWithoutCompanyInput
     payrolls?: PayrollUncheckedCreateNestedManyWithoutCompanyInput
@@ -24363,6 +24649,7 @@ export namespace Prisma {
     isActive?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    legalParameters?: LegalParameterUpdateManyWithoutCompanyNestedInput
     createdBy?: UserUpdateOneWithoutCreatedCompaniesNestedInput
     departments?: DepartmentUpdateManyWithoutCompanyNestedInput
     employees?: EmployeeUpdateManyWithoutCompanyNestedInput
@@ -24384,6 +24671,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     createdByUserId?: NullableStringFieldUpdateOperationsInput | string | null
+    legalParameters?: LegalParameterUncheckedUpdateManyWithoutCompanyNestedInput
     departments?: DepartmentUncheckedUpdateManyWithoutCompanyNestedInput
     employees?: EmployeeUncheckedUpdateManyWithoutCompanyNestedInput
     payrolls?: PayrollUncheckedUpdateManyWithoutCompanyNestedInput
@@ -24517,6 +24805,48 @@ export namespace Prisma {
     companies?: UserCompanyUncheckedUpdateManyWithoutUserNestedInput
     createdCompanies?: CompanyUncheckedUpdateManyWithoutCreatedByNestedInput
     employee?: EmployeeUncheckedUpdateOneWithoutUserNestedInput
+  }
+
+  export type LegalParameterCreateWithoutCompanyInput = {
+    id?: string
+    key: $Enums.LegalParameterKey
+    name: string
+    type: string
+    category: string
+    percentage: number
+    minRange?: number | null
+    maxRange?: number | null
+    status?: string
+    effectiveDate?: Date | string
+    description?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type LegalParameterUncheckedCreateWithoutCompanyInput = {
+    id?: string
+    key: $Enums.LegalParameterKey
+    name: string
+    type: string
+    category: string
+    percentage: number
+    minRange?: number | null
+    maxRange?: number | null
+    status?: string
+    effectiveDate?: Date | string
+    description?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type LegalParameterCreateOrConnectWithoutCompanyInput = {
+    where: LegalParameterWhereUniqueInput
+    create: XOR<LegalParameterCreateWithoutCompanyInput, LegalParameterUncheckedCreateWithoutCompanyInput>
+  }
+
+  export type LegalParameterCreateManyCompanyInputEnvelope = {
+    data: LegalParameterCreateManyCompanyInput | LegalParameterCreateManyCompanyInput[]
+    skipDuplicates?: boolean
   }
 
   export type UserCreateWithoutCreatedCompaniesInput = {
@@ -24808,6 +25138,42 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type LegalParameterUpsertWithWhereUniqueWithoutCompanyInput = {
+    where: LegalParameterWhereUniqueInput
+    update: XOR<LegalParameterUpdateWithoutCompanyInput, LegalParameterUncheckedUpdateWithoutCompanyInput>
+    create: XOR<LegalParameterCreateWithoutCompanyInput, LegalParameterUncheckedCreateWithoutCompanyInput>
+  }
+
+  export type LegalParameterUpdateWithWhereUniqueWithoutCompanyInput = {
+    where: LegalParameterWhereUniqueInput
+    data: XOR<LegalParameterUpdateWithoutCompanyInput, LegalParameterUncheckedUpdateWithoutCompanyInput>
+  }
+
+  export type LegalParameterUpdateManyWithWhereWithoutCompanyInput = {
+    where: LegalParameterScalarWhereInput
+    data: XOR<LegalParameterUpdateManyMutationInput, LegalParameterUncheckedUpdateManyWithoutCompanyInput>
+  }
+
+  export type LegalParameterScalarWhereInput = {
+    AND?: LegalParameterScalarWhereInput | LegalParameterScalarWhereInput[]
+    OR?: LegalParameterScalarWhereInput[]
+    NOT?: LegalParameterScalarWhereInput | LegalParameterScalarWhereInput[]
+    id?: StringFilter<"LegalParameter"> | string
+    key?: EnumLegalParameterKeyFilter<"LegalParameter"> | $Enums.LegalParameterKey
+    name?: StringFilter<"LegalParameter"> | string
+    type?: StringFilter<"LegalParameter"> | string
+    category?: StringFilter<"LegalParameter"> | string
+    percentage?: FloatFilter<"LegalParameter"> | number
+    minRange?: IntNullableFilter<"LegalParameter"> | number | null
+    maxRange?: IntNullableFilter<"LegalParameter"> | number | null
+    status?: StringFilter<"LegalParameter"> | string
+    effectiveDate?: DateTimeFilter<"LegalParameter"> | Date | string
+    description?: StringNullableFilter<"LegalParameter"> | string | null
+    companyId?: StringFilter<"LegalParameter"> | string
+    createdAt?: DateTimeFilter<"LegalParameter"> | Date | string
+    updatedAt?: DateTimeFilter<"LegalParameter"> | Date | string
+  }
+
   export type UserUpsertWithoutCreatedCompaniesInput = {
     update: XOR<UserUpdateWithoutCreatedCompaniesInput, UserUncheckedUpdateWithoutCreatedCompaniesInput>
     create: XOR<UserCreateWithoutCreatedCompaniesInput, UserUncheckedCreateWithoutCreatedCompaniesInput>
@@ -25061,6 +25427,7 @@ export namespace Prisma {
     isActive?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
+    legalParameters?: LegalParameterCreateNestedManyWithoutCompanyInput
     createdBy?: UserCreateNestedOneWithoutCreatedCompaniesInput
     users?: UserCompanyCreateNestedManyWithoutCompanyInput
     employees?: EmployeeCreateNestedManyWithoutCompanyInput
@@ -25082,6 +25449,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     createdByUserId?: string | null
+    legalParameters?: LegalParameterUncheckedCreateNestedManyWithoutCompanyInput
     users?: UserCompanyUncheckedCreateNestedManyWithoutCompanyInput
     employees?: EmployeeUncheckedCreateNestedManyWithoutCompanyInput
     payrolls?: PayrollUncheckedCreateNestedManyWithoutCompanyInput
@@ -25159,6 +25527,7 @@ export namespace Prisma {
     isActive?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    legalParameters?: LegalParameterUpdateManyWithoutCompanyNestedInput
     createdBy?: UserUpdateOneWithoutCreatedCompaniesNestedInput
     users?: UserCompanyUpdateManyWithoutCompanyNestedInput
     employees?: EmployeeUpdateManyWithoutCompanyNestedInput
@@ -25180,6 +25549,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     createdByUserId?: NullableStringFieldUpdateOperationsInput | string | null
+    legalParameters?: LegalParameterUncheckedUpdateManyWithoutCompanyNestedInput
     users?: UserCompanyUncheckedUpdateManyWithoutCompanyNestedInput
     employees?: EmployeeUncheckedUpdateManyWithoutCompanyNestedInput
     payrolls?: PayrollUncheckedUpdateManyWithoutCompanyNestedInput
@@ -25268,6 +25638,7 @@ export namespace Prisma {
     isActive?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
+    legalParameters?: LegalParameterCreateNestedManyWithoutCompanyInput
     createdBy?: UserCreateNestedOneWithoutCreatedCompaniesInput
     departments?: DepartmentCreateNestedManyWithoutCompanyInput
     users?: UserCompanyCreateNestedManyWithoutCompanyInput
@@ -25289,6 +25660,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     createdByUserId?: string | null
+    legalParameters?: LegalParameterUncheckedCreateNestedManyWithoutCompanyInput
     departments?: DepartmentUncheckedCreateNestedManyWithoutCompanyInput
     users?: UserCompanyUncheckedCreateNestedManyWithoutCompanyInput
     payrolls?: PayrollUncheckedCreateNestedManyWithoutCompanyInput
@@ -25573,6 +25945,7 @@ export namespace Prisma {
     isActive?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    legalParameters?: LegalParameterUpdateManyWithoutCompanyNestedInput
     createdBy?: UserUpdateOneWithoutCreatedCompaniesNestedInput
     departments?: DepartmentUpdateManyWithoutCompanyNestedInput
     users?: UserCompanyUpdateManyWithoutCompanyNestedInput
@@ -25594,6 +25967,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     createdByUserId?: NullableStringFieldUpdateOperationsInput | string | null
+    legalParameters?: LegalParameterUncheckedUpdateManyWithoutCompanyNestedInput
     departments?: DepartmentUncheckedUpdateManyWithoutCompanyNestedInput
     users?: UserCompanyUncheckedUpdateManyWithoutCompanyNestedInput
     payrolls?: PayrollUncheckedUpdateManyWithoutCompanyNestedInput
@@ -25777,6 +26151,7 @@ export namespace Prisma {
     isActive?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
+    legalParameters?: LegalParameterCreateNestedManyWithoutCompanyInput
     createdBy?: UserCreateNestedOneWithoutCreatedCompaniesInput
     departments?: DepartmentCreateNestedManyWithoutCompanyInput
     users?: UserCompanyCreateNestedManyWithoutCompanyInput
@@ -25798,6 +26173,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     createdByUserId?: string | null
+    legalParameters?: LegalParameterUncheckedCreateNestedManyWithoutCompanyInput
     departments?: DepartmentUncheckedCreateNestedManyWithoutCompanyInput
     users?: UserCompanyUncheckedCreateNestedManyWithoutCompanyInput
     employees?: EmployeeUncheckedCreateNestedManyWithoutCompanyInput
@@ -25956,6 +26332,7 @@ export namespace Prisma {
     isActive?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    legalParameters?: LegalParameterUpdateManyWithoutCompanyNestedInput
     createdBy?: UserUpdateOneWithoutCreatedCompaniesNestedInput
     departments?: DepartmentUpdateManyWithoutCompanyNestedInput
     users?: UserCompanyUpdateManyWithoutCompanyNestedInput
@@ -25977,6 +26354,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     createdByUserId?: NullableStringFieldUpdateOperationsInput | string | null
+    legalParameters?: LegalParameterUncheckedUpdateManyWithoutCompanyNestedInput
     departments?: DepartmentUncheckedUpdateManyWithoutCompanyNestedInput
     users?: UserCompanyUncheckedUpdateManyWithoutCompanyNestedInput
     employees?: EmployeeUncheckedUpdateManyWithoutCompanyNestedInput
@@ -26579,6 +26957,7 @@ export namespace Prisma {
     isActive?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
+    legalParameters?: LegalParameterCreateNestedManyWithoutCompanyInput
     createdBy?: UserCreateNestedOneWithoutCreatedCompaniesInput
     departments?: DepartmentCreateNestedManyWithoutCompanyInput
     users?: UserCompanyCreateNestedManyWithoutCompanyInput
@@ -26600,6 +26979,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     createdByUserId?: string | null
+    legalParameters?: LegalParameterUncheckedCreateNestedManyWithoutCompanyInput
     departments?: DepartmentUncheckedCreateNestedManyWithoutCompanyInput
     users?: UserCompanyUncheckedCreateNestedManyWithoutCompanyInput
     employees?: EmployeeUncheckedCreateNestedManyWithoutCompanyInput
@@ -26696,6 +27076,7 @@ export namespace Prisma {
     isActive?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    legalParameters?: LegalParameterUpdateManyWithoutCompanyNestedInput
     createdBy?: UserUpdateOneWithoutCreatedCompaniesNestedInput
     departments?: DepartmentUpdateManyWithoutCompanyNestedInput
     users?: UserCompanyUpdateManyWithoutCompanyNestedInput
@@ -26717,6 +27098,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     createdByUserId?: NullableStringFieldUpdateOperationsInput | string | null
+    legalParameters?: LegalParameterUncheckedUpdateManyWithoutCompanyNestedInput
     departments?: DepartmentUncheckedUpdateManyWithoutCompanyNestedInput
     users?: UserCompanyUncheckedUpdateManyWithoutCompanyNestedInput
     employees?: EmployeeUncheckedUpdateManyWithoutCompanyNestedInput
@@ -26791,6 +27173,7 @@ export namespace Prisma {
     isActive?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
+    legalParameters?: LegalParameterCreateNestedManyWithoutCompanyInput
     createdBy?: UserCreateNestedOneWithoutCreatedCompaniesInput
     departments?: DepartmentCreateNestedManyWithoutCompanyInput
     users?: UserCompanyCreateNestedManyWithoutCompanyInput
@@ -26812,6 +27195,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     createdByUserId?: string | null
+    legalParameters?: LegalParameterUncheckedCreateNestedManyWithoutCompanyInput
     departments?: DepartmentUncheckedCreateNestedManyWithoutCompanyInput
     users?: UserCompanyUncheckedCreateNestedManyWithoutCompanyInput
     employees?: EmployeeUncheckedCreateNestedManyWithoutCompanyInput
@@ -26908,6 +27292,7 @@ export namespace Prisma {
     isActive?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    legalParameters?: LegalParameterUpdateManyWithoutCompanyNestedInput
     createdBy?: UserUpdateOneWithoutCreatedCompaniesNestedInput
     departments?: DepartmentUpdateManyWithoutCompanyNestedInput
     users?: UserCompanyUpdateManyWithoutCompanyNestedInput
@@ -26929,11 +27314,112 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     createdByUserId?: NullableStringFieldUpdateOperationsInput | string | null
+    legalParameters?: LegalParameterUncheckedUpdateManyWithoutCompanyNestedInput
     departments?: DepartmentUncheckedUpdateManyWithoutCompanyNestedInput
     users?: UserCompanyUncheckedUpdateManyWithoutCompanyNestedInput
     employees?: EmployeeUncheckedUpdateManyWithoutCompanyNestedInput
     payrolls?: PayrollUncheckedUpdateManyWithoutCompanyNestedInput
     attendanceRecords?: AttendanceRecordUncheckedUpdateManyWithoutCompanyNestedInput
+  }
+
+  export type CompanyCreateWithoutLegalParametersInput = {
+    id?: string
+    code: string
+    name: string
+    address?: string | null
+    phone?: string | null
+    email?: string | null
+    ruc?: string | null
+    logoUrl?: string | null
+    isActive?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    createdBy?: UserCreateNestedOneWithoutCreatedCompaniesInput
+    departments?: DepartmentCreateNestedManyWithoutCompanyInput
+    users?: UserCompanyCreateNestedManyWithoutCompanyInput
+    employees?: EmployeeCreateNestedManyWithoutCompanyInput
+    payrolls?: PayrollCreateNestedManyWithoutCompanyInput
+    attendanceRecords?: AttendanceRecordCreateNestedManyWithoutCompanyInput
+    leaves?: LeaveCreateNestedManyWithoutCompanyInput
+  }
+
+  export type CompanyUncheckedCreateWithoutLegalParametersInput = {
+    id?: string
+    code: string
+    name: string
+    address?: string | null
+    phone?: string | null
+    email?: string | null
+    ruc?: string | null
+    logoUrl?: string | null
+    isActive?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    createdByUserId?: string | null
+    departments?: DepartmentUncheckedCreateNestedManyWithoutCompanyInput
+    users?: UserCompanyUncheckedCreateNestedManyWithoutCompanyInput
+    employees?: EmployeeUncheckedCreateNestedManyWithoutCompanyInput
+    payrolls?: PayrollUncheckedCreateNestedManyWithoutCompanyInput
+    attendanceRecords?: AttendanceRecordUncheckedCreateNestedManyWithoutCompanyInput
+    leaves?: LeaveUncheckedCreateNestedManyWithoutCompanyInput
+  }
+
+  export type CompanyCreateOrConnectWithoutLegalParametersInput = {
+    where: CompanyWhereUniqueInput
+    create: XOR<CompanyCreateWithoutLegalParametersInput, CompanyUncheckedCreateWithoutLegalParametersInput>
+  }
+
+  export type CompanyUpsertWithoutLegalParametersInput = {
+    update: XOR<CompanyUpdateWithoutLegalParametersInput, CompanyUncheckedUpdateWithoutLegalParametersInput>
+    create: XOR<CompanyCreateWithoutLegalParametersInput, CompanyUncheckedCreateWithoutLegalParametersInput>
+    where?: CompanyWhereInput
+  }
+
+  export type CompanyUpdateToOneWithWhereWithoutLegalParametersInput = {
+    where?: CompanyWhereInput
+    data: XOR<CompanyUpdateWithoutLegalParametersInput, CompanyUncheckedUpdateWithoutLegalParametersInput>
+  }
+
+  export type CompanyUpdateWithoutLegalParametersInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    code?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    address?: NullableStringFieldUpdateOperationsInput | string | null
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    ruc?: NullableStringFieldUpdateOperationsInput | string | null
+    logoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: UserUpdateOneWithoutCreatedCompaniesNestedInput
+    departments?: DepartmentUpdateManyWithoutCompanyNestedInput
+    users?: UserCompanyUpdateManyWithoutCompanyNestedInput
+    employees?: EmployeeUpdateManyWithoutCompanyNestedInput
+    payrolls?: PayrollUpdateManyWithoutCompanyNestedInput
+    attendanceRecords?: AttendanceRecordUpdateManyWithoutCompanyNestedInput
+    leaves?: LeaveUpdateManyWithoutCompanyNestedInput
+  }
+
+  export type CompanyUncheckedUpdateWithoutLegalParametersInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    code?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    address?: NullableStringFieldUpdateOperationsInput | string | null
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    ruc?: NullableStringFieldUpdateOperationsInput | string | null
+    logoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdByUserId?: NullableStringFieldUpdateOperationsInput | string | null
+    departments?: DepartmentUncheckedUpdateManyWithoutCompanyNestedInput
+    users?: UserCompanyUncheckedUpdateManyWithoutCompanyNestedInput
+    employees?: EmployeeUncheckedUpdateManyWithoutCompanyNestedInput
+    payrolls?: PayrollUncheckedUpdateManyWithoutCompanyNestedInput
+    attendanceRecords?: AttendanceRecordUncheckedUpdateManyWithoutCompanyNestedInput
+    leaves?: LeaveUncheckedUpdateManyWithoutCompanyNestedInput
   }
 
   export type UserCompanyCreateManyUserInput = {
@@ -26978,6 +27464,7 @@ export namespace Prisma {
     isActive?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    legalParameters?: LegalParameterUpdateManyWithoutCompanyNestedInput
     departments?: DepartmentUpdateManyWithoutCompanyNestedInput
     users?: UserCompanyUpdateManyWithoutCompanyNestedInput
     employees?: EmployeeUpdateManyWithoutCompanyNestedInput
@@ -26998,6 +27485,7 @@ export namespace Prisma {
     isActive?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    legalParameters?: LegalParameterUncheckedUpdateManyWithoutCompanyNestedInput
     departments?: DepartmentUncheckedUpdateManyWithoutCompanyNestedInput
     users?: UserCompanyUncheckedUpdateManyWithoutCompanyNestedInput
     employees?: EmployeeUncheckedUpdateManyWithoutCompanyNestedInput
@@ -27018,6 +27506,22 @@ export namespace Prisma {
     isActive?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type LegalParameterCreateManyCompanyInput = {
+    id?: string
+    key: $Enums.LegalParameterKey
+    name: string
+    type: string
+    category: string
+    percentage: number
+    minRange?: number | null
+    maxRange?: number | null
+    status?: string
+    effectiveDate?: Date | string
+    description?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
   }
 
   export type DepartmentCreateManyCompanyInput = {
@@ -27108,6 +27612,54 @@ export namespace Prisma {
     comments?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+  }
+
+  export type LegalParameterUpdateWithoutCompanyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    key?: EnumLegalParameterKeyFieldUpdateOperationsInput | $Enums.LegalParameterKey
+    name?: StringFieldUpdateOperationsInput | string
+    type?: StringFieldUpdateOperationsInput | string
+    category?: StringFieldUpdateOperationsInput | string
+    percentage?: FloatFieldUpdateOperationsInput | number
+    minRange?: NullableIntFieldUpdateOperationsInput | number | null
+    maxRange?: NullableIntFieldUpdateOperationsInput | number | null
+    status?: StringFieldUpdateOperationsInput | string
+    effectiveDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type LegalParameterUncheckedUpdateWithoutCompanyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    key?: EnumLegalParameterKeyFieldUpdateOperationsInput | $Enums.LegalParameterKey
+    name?: StringFieldUpdateOperationsInput | string
+    type?: StringFieldUpdateOperationsInput | string
+    category?: StringFieldUpdateOperationsInput | string
+    percentage?: FloatFieldUpdateOperationsInput | number
+    minRange?: NullableIntFieldUpdateOperationsInput | number | null
+    maxRange?: NullableIntFieldUpdateOperationsInput | number | null
+    status?: StringFieldUpdateOperationsInput | string
+    effectiveDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type LegalParameterUncheckedUpdateManyWithoutCompanyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    key?: EnumLegalParameterKeyFieldUpdateOperationsInput | $Enums.LegalParameterKey
+    name?: StringFieldUpdateOperationsInput | string
+    type?: StringFieldUpdateOperationsInput | string
+    category?: StringFieldUpdateOperationsInput | string
+    percentage?: FloatFieldUpdateOperationsInput | number
+    minRange?: NullableIntFieldUpdateOperationsInput | number | null
+    maxRange?: NullableIntFieldUpdateOperationsInput | number | null
+    status?: StringFieldUpdateOperationsInput | string
+    effectiveDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type DepartmentUpdateWithoutCompanyInput = {
