@@ -1,5 +1,5 @@
 import { Router } from 'express'
-import { LegalParameterController } from '../controllers/LegalParameterController'
+import { LegalParameterController } from '../controllers/LegalParameterController.js'
 
 const legalParameterRouter = Router()
 const controller = new LegalParameterController()
