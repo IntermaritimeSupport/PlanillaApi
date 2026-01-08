@@ -5,44 +5,169 @@ import prisma from '../../lib/prisma.js';
 
 export class CompanyController {
 
-    /**
-     * Creates a new company
-     * @param req Express Request with company data in body
-     * @param res Express Response
-     */
-    async Create(req: Request, res: Response) {
+ async Create(req: Request, res: Response) {
         try {
             const { name, address, phone, email, ruc, logoUrl, createdByUserId } = req.body;
 
-            // Validate that the company name is provided
+            // 1. Validación básica
             if (!name) {
                 return res.status(400).json({ error: 'El nombre de la compañía es obligatorio.' });
             }
 
-            // Generate the next available company code
+            // 2. Generar el código de la compañía (fuera de la transacción para evitar bloqueos largos)
             const companyCode = await generateNextCompanyCode(prisma);
 
-            const newCompany = await prisma.company.create({
-                data: {
-                    name,
-                    code: companyCode,
-                    address,
-                    phone,
-                    email,
-                    ruc,
-                    logoUrl,
-                    isActive: true,
-                    ...(createdByUserId && {
-                        createdBy: {
-                            connect: { id: createdByUserId },
-                        },
-                    }),
-                },
+            // 3. Ejecutar Transacción Atómica
+            const newCompany = await prisma.$transaction(async (tx) => {
+                
+                // A. Crear la compañía
+                const company = await tx.company.create({
+                    data: {
+                        name,
+                        code: companyCode,
+                        address,
+                        phone,
+                        email,
+                        ruc,
+                        logoUrl,
+                        isActive: true,
+                        ...(createdByUserId && {
+                            createdBy: {
+                                connect: { id: createdByUserId },
+                            },
+                        }),
+                    },
+                });
+
+                // B. Definir parámetros legales por defecto (Panamá 2026)
+                // Usamos el ID de la compañía recién creada
+                const legalParametersData = [
+                    {
+                        key: 'ss_empleado',
+                        name: 'Seguro Social - Empleado',
+                        type: 'employee',
+                        category: 'social_security',
+                        percentage: 9.75,
+                        companyId: company.id,
+                        status: 'active',
+                        effectiveDate: new Date(),
+                        description: 'Cuota regular de SS para empleados',
+                    },
+                    {
+                        key: 'ss_patrono',
+                        name: 'Seguro Social - Patrono',
+                        type: 'employer',
+                        category: 'social_security',
+                        percentage: 12.25,
+                        companyId: company.id,
+                        status: 'active',
+                        effectiveDate: new Date(),
+                        description: 'Cuota patronal de SS',
+                    },
+                    {
+                        key: 'ss_decimo',
+                        name: 'Seguro Social - XIII Mes',
+                        type: 'employee',
+                        category: 'social_security',
+                        percentage: 7.25,
+                        companyId: company.id,
+                        status: 'active',
+                        effectiveDate: new Date(),
+                        description: 'Cuota de SS para el décimo tercer mes',
+                    },
+                    {
+                        key: 'se_empleado',
+                        name: 'Seguro Educativo - Empleado',
+                        type: 'employee',
+                        category: 'educational_insurance',
+                        percentage: 1.25,
+                        companyId: company.id,
+                        status: 'active',
+                        effectiveDate: new Date(),
+                        description: 'Seguro educativo empleado',
+                    },
+                    {
+                        key: 'se_patrono',
+                        name: 'Seguro Educativo - Patrono',
+                        type: 'employer',
+                        category: 'educational_insurance',
+                        percentage: 1.50,
+                        companyId: company.id,
+                        status: 'active',
+                        effectiveDate: new Date(),
+                        description: 'Seguro educativo patronal',
+                    },
+                    {
+                        key: 'riesgo_profesional',
+                        name: 'Riesgos Profesionales',
+                        type: 'employer',
+                        category: 'other',
+                        percentage: 0.98,
+                        companyId: company.id,
+                        status: 'active',
+                        effectiveDate: new Date(),
+                        description: 'Riesgos profesionales base',
+                    },
+                    {
+                        key: 'isr_r1',
+                        name: 'ISR Tramo 1 (Exento)',
+                        type: 'fixed',
+                        category: 'isr',
+                        percentage: 0,
+                        minRange: 0,
+                        maxRange: 11000,
+                        companyId: company.id,
+                        status: 'active',
+                        effectiveDate: new Date(),
+                        description: 'Rango exento hasta $11,000 anuales',
+                    },
+                    {
+                        key: 'isr_r2',
+                        name: 'ISR Tramo 2 (15%)',
+                        type: 'fixed',
+                        category: 'isr',
+                        percentage: 15,
+                        minRange: 11001,
+                        maxRange: 50000,
+                        companyId: company.id,
+                        status: 'active',
+                        effectiveDate: new Date(),
+                        description: '15% sobre excedente de $11k a $50k',
+                    },
+                    {
+                        key: 'isr_r3',
+                        name: 'ISR Tramo 3 (25%)',
+                        type: 'fixed',
+                        category: 'isr',
+                        percentage: 25,
+                        minRange: 50001,
+                        maxRange: 99999999,
+                        companyId: company.id,
+                        status: 'active',
+                        effectiveDate: new Date(),
+                        description: '25% sobre excedente de $50k',
+                    },
+                ];
+
+                // C. Insertar todos los parámetros de golpe
+                // Nota: usamos el nombre del modelo tal como está en tu schema.prisma
+                await tx.legalParameter.createMany({
+                    data: legalParametersData as any,
+                });
+                await tx.legalDecimoParameter.createMany({
+                    data: legalParametersData as any,
+                });
+
+                return company;
             });
 
+            // 4. Respuesta exitosa
             res.status(201).json(newCompany);
+
         } catch (error: any) {
             console.error('Error al crear la compañía:', error);
+
+            // Manejo de errores de Prisma (P2002 es para campos únicos)
             if (error.code === 'P2002') {
                 let errorMessage = 'Ya existe una compañía con este nombre o código.';
                 if (error.meta?.target) {
@@ -52,7 +177,11 @@ export class CompanyController {
                 }
                 return res.status(409).json({ error: errorMessage });
             }
-            res.status(500).json({ error: 'Error interno del servidor al crear la compañía.' });
+
+            res.status(500).json({ 
+                error: 'Error interno del servidor al crear la compañía.',
+                details: error.message 
+            });
         }
     }
 

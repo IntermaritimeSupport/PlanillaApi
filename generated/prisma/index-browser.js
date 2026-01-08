@@ -309,6 +309,23 @@ exports.Prisma.LegalParameterScalarFieldEnum = {
   updatedAt: 'updatedAt'
 };
 
+exports.Prisma.LegalDecimoParameterScalarFieldEnum = {
+  id: 'id',
+  key: 'key',
+  name: 'name',
+  type: 'type',
+  category: 'category',
+  percentage: 'percentage',
+  minRange: 'minRange',
+  maxRange: 'maxRange',
+  status: 'status',
+  effectiveDate: 'effectiveDate',
+  description: 'description',
+  companyId: 'companyId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -429,7 +446,8 @@ exports.Prisma.ModelName = {
   Allowance: 'Allowance',
   AttendanceRecord: 'AttendanceRecord',
   Leave: 'Leave',
-  LegalParameter: 'LegalParameter'
+  LegalParameter: 'LegalParameter',
+  LegalDecimoParameter: 'LegalDecimoParameter'
 };
 
 /**

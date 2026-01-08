@@ -108,7 +108,7 @@ export class LegalParameterController {
         key, name, type, category, percentage, 
         minRange, maxRange, description, companyId 
       } = req.body
-
+      console.log('Creating legal parameter with data:', req.body)
       // Validaciones básicas
       if (!companyId || !key || !name || !type || !category || percentage === undefined) {
         return res.status(400).json({
@@ -182,7 +182,7 @@ export class LegalParameterController {
         name, type, category, percentage, minRange, 
         maxRange, status, description, effectiveDate 
       } = req.body
-
+      console.log('Creating legal parameter with data:', req.body)
       const parameter = await prisma.legalParameter.findUnique({
         where: { id }
       })

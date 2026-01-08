@@ -16,6 +16,7 @@ import EmployeeRouter from './routes/EmployeeRoutes.js';
 import SeedRouter from './routes/SeedRoutes.js';
 import legalParameterRouter from './routes/LegalParameterRoutes.js';
 import DepartmentRouter from './routes/DepartmentRoutes.js';
+import legalDecimoParameterRouter from './routes/LegalDecimoParameterRoutes.js';
 
 dotenv.config({ path: '.env' });
 
@@ -68,6 +69,7 @@ app.use('/api/users', UserRouter);
 app.use('/api/companies', CompaniesRouter);
 app.use('/api/departments', DepartmentRouter);
 app.use('/api/system', legalParameterRouter);
+app.use('/api/system', legalDecimoParameterRouter);
 app.use('/api/payroll', PayrollRouter);
 app.use('/api/payroll', EmployeeRouter);
 app.use('/api/seed', SeedRouter);

@@ -56,26 +56,27 @@ model Person {
 }
 
 model Company {
-  id                String             @id @default(uuid())
-  code              String             @unique
-  name              String             @unique
-  address           String?
-  phone             String?
-  email             String?
-  ruc               String?            @unique
-  logoUrl           String?
-  isActive          Boolean            @default(true)
-  createdAt         DateTime           @default(now())
-  updatedAt         DateTime           @updatedAt
-  createdByUserId   String?
-  legalParameters   LegalParameter[]
-  createdBy         User?              @relation("CompanyCreatedBy", fields: [createdByUserId], references: [id], onDelete: SetNull)
-  departments       Department[]
-  users             UserCompany[]
-  employees         Employee[]         @relation("EmployeeCompany")
-  payrolls          Payroll[]          @relation("PayrollCompany")
-  attendanceRecords AttendanceRecord[] @relation("AttendanceCompany")
-  leaves            Leave[]            @relation("LeaveCompany")
+  id                   String                 @id @default(uuid())
+  code                 String                 @unique
+  name                 String                 @unique
+  address              String?
+  phone                String?
+  email                String?
+  ruc                  String?                @unique
+  logoUrl              String?
+  isActive             Boolean                @default(true)
+  createdAt            DateTime               @default(now())
+  updatedAt            DateTime               @updatedAt
+  createdByUserId      String?
+  LegalDecimoParameter LegalDecimoParameter[]
+  legalParameters      LegalParameter[]
+  createdBy            User?                  @relation("CompanyCreatedBy", fields: [createdByUserId], references: [id], onDelete: SetNull)
+  departments          Department[]
+  users                UserCompany[]
+  employees            Employee[]             @relation("EmployeeCompany")
+  payrolls             Payroll[]              @relation("PayrollCompany")
+  attendanceRecords    AttendanceRecord[]     @relation("AttendanceCompany")
+  leaves               Leave[]                @relation("LeaveCompany")
 }
 
 model Department {
@@ -272,6 +273,33 @@ model Leave {
 
 // ✅ AGREGADO: LegalParameter para parámetros legales (sin JSON)
 model LegalParameter {
+  id            String            @id @default(uuid())
+  key           LegalParameterKey
+  name          String
+  type          String // "employee" | "employer" | "fixed"
+  category      String // "social_security" | "educational_insurance" | "isr" | "other"
+  percentage    Float
+  minRange      Int?
+  maxRange      Int?
+  status        String            @default("active")
+  effectiveDate DateTime          @default(now())
+  description   String?
+
+  // ✅ Relación con Compañía
+  companyId String
+  company   Company @relation(fields: [companyId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // ✅ Ajuste de Índices y Unicidad
+  @@unique([companyId, key]) // La combinación de compañía y key debe ser única
+  @@index([companyId])
+  @@index([category])
+  @@index([status])
+}
+
+model LegalDecimoParameter {
   id            String            @id @default(uuid())
   key           LegalParameterKey
   name          String

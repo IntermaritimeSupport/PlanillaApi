@@ -78,6 +78,11 @@ export type Leave = $Result.DefaultSelection<Prisma.$LeavePayload>
  * 
  */
 export type LegalParameter = $Result.DefaultSelection<Prisma.$LegalParameterPayload>
+/**
+ * Model LegalDecimoParameter
+ * 
+ */
+export type LegalDecimoParameter = $Result.DefaultSelection<Prisma.$LegalDecimoParameterPayload>
 
 /**
  * Enums
@@ -508,6 +513,16 @@ export class PrismaClient<
     * ```
     */
   get legalParameter(): Prisma.LegalParameterDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.legalDecimoParameter`: Exposes CRUD operations for the **LegalDecimoParameter** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more LegalDecimoParameters
+    * const legalDecimoParameters = await prisma.legalDecimoParameter.findMany()
+    * ```
+    */
+  get legalDecimoParameter(): Prisma.LegalDecimoParameterDelegate<ExtArgs, ClientOptions>;
 }
 
 export namespace Prisma {
@@ -961,7 +976,8 @@ export namespace Prisma {
     Allowance: 'Allowance',
     AttendanceRecord: 'AttendanceRecord',
     Leave: 'Leave',
-    LegalParameter: 'LegalParameter'
+    LegalParameter: 'LegalParameter',
+    LegalDecimoParameter: 'LegalDecimoParameter'
   };
 
   export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -980,7 +996,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "user" | "userCompany" | "person" | "company" | "department" | "systemConfig" | "employee" | "payroll" | "deduction" | "allowance" | "attendanceRecord" | "leave" | "legalParameter"
+      modelProps: "user" | "userCompany" | "person" | "company" | "department" | "systemConfig" | "employee" | "payroll" | "deduction" | "allowance" | "attendanceRecord" | "leave" | "legalParameter" | "legalDecimoParameter"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -1946,6 +1962,80 @@ export namespace Prisma {
           }
         }
       }
+      LegalDecimoParameter: {
+        payload: Prisma.$LegalDecimoParameterPayload<ExtArgs>
+        fields: Prisma.LegalDecimoParameterFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.LegalDecimoParameterFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$LegalDecimoParameterPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.LegalDecimoParameterFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$LegalDecimoParameterPayload>
+          }
+          findFirst: {
+            args: Prisma.LegalDecimoParameterFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$LegalDecimoParameterPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.LegalDecimoParameterFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$LegalDecimoParameterPayload>
+          }
+          findMany: {
+            args: Prisma.LegalDecimoParameterFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$LegalDecimoParameterPayload>[]
+          }
+          create: {
+            args: Prisma.LegalDecimoParameterCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$LegalDecimoParameterPayload>
+          }
+          createMany: {
+            args: Prisma.LegalDecimoParameterCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.LegalDecimoParameterCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$LegalDecimoParameterPayload>[]
+          }
+          delete: {
+            args: Prisma.LegalDecimoParameterDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$LegalDecimoParameterPayload>
+          }
+          update: {
+            args: Prisma.LegalDecimoParameterUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$LegalDecimoParameterPayload>
+          }
+          deleteMany: {
+            args: Prisma.LegalDecimoParameterDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.LegalDecimoParameterUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.LegalDecimoParameterUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$LegalDecimoParameterPayload>[]
+          }
+          upsert: {
+            args: Prisma.LegalDecimoParameterUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$LegalDecimoParameterPayload>
+          }
+          aggregate: {
+            args: Prisma.LegalDecimoParameterAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateLegalDecimoParameter>
+          }
+          groupBy: {
+            args: Prisma.LegalDecimoParameterGroupByArgs<ExtArgs>
+            result: $Utils.Optional<LegalDecimoParameterGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.LegalDecimoParameterCountArgs<ExtArgs>
+            result: $Utils.Optional<LegalDecimoParameterCountAggregateOutputType> | number
+          }
+        }
+      }
     }
   } & {
     other: {
@@ -2055,6 +2145,7 @@ export namespace Prisma {
     attendanceRecord?: AttendanceRecordOmit
     leave?: LeaveOmit
     legalParameter?: LegalParameterOmit
+    legalDecimoParameter?: LegalDecimoParameterOmit
   }
 
   /* Types for Logging */
@@ -2175,6 +2266,7 @@ export namespace Prisma {
    */
 
   export type CompanyCountOutputType = {
+    LegalDecimoParameter: number
     legalParameters: number
     departments: number
     users: number
@@ -2185,6 +2277,7 @@ export namespace Prisma {
   }
 
   export type CompanyCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    LegalDecimoParameter?: boolean | CompanyCountOutputTypeCountLegalDecimoParameterArgs
     legalParameters?: boolean | CompanyCountOutputTypeCountLegalParametersArgs
     departments?: boolean | CompanyCountOutputTypeCountDepartmentsArgs
     users?: boolean | CompanyCountOutputTypeCountUsersArgs
@@ -2203,6 +2296,13 @@ export namespace Prisma {
      * Select specific fields to fetch from the CompanyCountOutputType
      */
     select?: CompanyCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * CompanyCountOutputType without action
+   */
+  export type CompanyCountOutputTypeCountLegalDecimoParameterArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: LegalDecimoParameterWhereInput
   }
 
   /**
@@ -6029,6 +6129,7 @@ export namespace Prisma {
     createdAt?: boolean
     updatedAt?: boolean
     createdByUserId?: boolean
+    LegalDecimoParameter?: boolean | Company$LegalDecimoParameterArgs<ExtArgs>
     legalParameters?: boolean | Company$legalParametersArgs<ExtArgs>
     createdBy?: boolean | Company$createdByArgs<ExtArgs>
     departments?: boolean | Company$departmentsArgs<ExtArgs>
@@ -6089,6 +6190,7 @@ export namespace Prisma {
 
   export type CompanyOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "code" | "name" | "address" | "phone" | "email" | "ruc" | "logoUrl" | "isActive" | "createdAt" | "updatedAt" | "createdByUserId", ExtArgs["result"]["company"]>
   export type CompanyInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    LegalDecimoParameter?: boolean | Company$LegalDecimoParameterArgs<ExtArgs>
     legalParameters?: boolean | Company$legalParametersArgs<ExtArgs>
     createdBy?: boolean | Company$createdByArgs<ExtArgs>
     departments?: boolean | Company$departmentsArgs<ExtArgs>
@@ -6109,6 +6211,7 @@ export namespace Prisma {
   export type $CompanyPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "Company"
     objects: {
+      LegalDecimoParameter: Prisma.$LegalDecimoParameterPayload<ExtArgs>[]
       legalParameters: Prisma.$LegalParameterPayload<ExtArgs>[]
       createdBy: Prisma.$UserPayload<ExtArgs> | null
       departments: Prisma.$DepartmentPayload<ExtArgs>[]
@@ -6525,6 +6628,7 @@ export namespace Prisma {
    */
   export interface Prisma__CompanyClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
+    LegalDecimoParameter<T extends Company$LegalDecimoParameterArgs<ExtArgs> = {}>(args?: Subset<T, Company$LegalDecimoParameterArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$LegalDecimoParameterPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     legalParameters<T extends Company$legalParametersArgs<ExtArgs> = {}>(args?: Subset<T, Company$legalParametersArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$LegalParameterPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     createdBy<T extends Company$createdByArgs<ExtArgs> = {}>(args?: Subset<T, Company$createdByArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     departments<T extends Company$departmentsArgs<ExtArgs> = {}>(args?: Subset<T, Company$departmentsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DepartmentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
@@ -6967,6 +7071,30 @@ export namespace Prisma {
      * Limit how many Companies to delete.
      */
     limit?: number
+  }
+
+  /**
+   * Company.LegalDecimoParameter
+   */
+  export type Company$LegalDecimoParameterArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the LegalDecimoParameter
+     */
+    select?: LegalDecimoParameterSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the LegalDecimoParameter
+     */
+    omit?: LegalDecimoParameterOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: LegalDecimoParameterInclude<ExtArgs> | null
+    where?: LegalDecimoParameterWhereInput
+    orderBy?: LegalDecimoParameterOrderByWithRelationInput | LegalDecimoParameterOrderByWithRelationInput[]
+    cursor?: LegalDecimoParameterWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: LegalDecimoParameterScalarFieldEnum | LegalDecimoParameterScalarFieldEnum[]
   }
 
   /**
@@ -18144,6 +18272,1223 @@ export namespace Prisma {
 
 
   /**
+   * Model LegalDecimoParameter
+   */
+
+  export type AggregateLegalDecimoParameter = {
+    _count: LegalDecimoParameterCountAggregateOutputType | null
+    _avg: LegalDecimoParameterAvgAggregateOutputType | null
+    _sum: LegalDecimoParameterSumAggregateOutputType | null
+    _min: LegalDecimoParameterMinAggregateOutputType | null
+    _max: LegalDecimoParameterMaxAggregateOutputType | null
+  }
+
+  export type LegalDecimoParameterAvgAggregateOutputType = {
+    percentage: number | null
+    minRange: number | null
+    maxRange: number | null
+  }
+
+  export type LegalDecimoParameterSumAggregateOutputType = {
+    percentage: number | null
+    minRange: number | null
+    maxRange: number | null
+  }
+
+  export type LegalDecimoParameterMinAggregateOutputType = {
+    id: string | null
+    key: $Enums.LegalParameterKey | null
+    name: string | null
+    type: string | null
+    category: string | null
+    percentage: number | null
+    minRange: number | null
+    maxRange: number | null
+    status: string | null
+    effectiveDate: Date | null
+    description: string | null
+    companyId: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type LegalDecimoParameterMaxAggregateOutputType = {
+    id: string | null
+    key: $Enums.LegalParameterKey | null
+    name: string | null
+    type: string | null
+    category: string | null
+    percentage: number | null
+    minRange: number | null
+    maxRange: number | null
+    status: string | null
+    effectiveDate: Date | null
+    description: string | null
+    companyId: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type LegalDecimoParameterCountAggregateOutputType = {
+    id: number
+    key: number
+    name: number
+    type: number
+    category: number
+    percentage: number
+    minRange: number
+    maxRange: number
+    status: number
+    effectiveDate: number
+    description: number
+    companyId: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type LegalDecimoParameterAvgAggregateInputType = {
+    percentage?: true
+    minRange?: true
+    maxRange?: true
+  }
+
+  export type LegalDecimoParameterSumAggregateInputType = {
+    percentage?: true
+    minRange?: true
+    maxRange?: true
+  }
+
+  export type LegalDecimoParameterMinAggregateInputType = {
+    id?: true
+    key?: true
+    name?: true
+    type?: true
+    category?: true
+    percentage?: true
+    minRange?: true
+    maxRange?: true
+    status?: true
+    effectiveDate?: true
+    description?: true
+    companyId?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type LegalDecimoParameterMaxAggregateInputType = {
+    id?: true
+    key?: true
+    name?: true
+    type?: true
+    category?: true
+    percentage?: true
+    minRange?: true
+    maxRange?: true
+    status?: true
+    effectiveDate?: true
+    description?: true
+    companyId?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type LegalDecimoParameterCountAggregateInputType = {
+    id?: true
+    key?: true
+    name?: true
+    type?: true
+    category?: true
+    percentage?: true
+    minRange?: true
+    maxRange?: true
+    status?: true
+    effectiveDate?: true
+    description?: true
+    companyId?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type LegalDecimoParameterAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which LegalDecimoParameter to aggregate.
+     */
+    where?: LegalDecimoParameterWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of LegalDecimoParameters to fetch.
+     */
+    orderBy?: LegalDecimoParameterOrderByWithRelationInput | LegalDecimoParameterOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: LegalDecimoParameterWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` LegalDecimoParameters from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` LegalDecimoParameters.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned LegalDecimoParameters
+    **/
+    _count?: true | LegalDecimoParameterCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: LegalDecimoParameterAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: LegalDecimoParameterSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: LegalDecimoParameterMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: LegalDecimoParameterMaxAggregateInputType
+  }
+
+  export type GetLegalDecimoParameterAggregateType<T extends LegalDecimoParameterAggregateArgs> = {
+        [P in keyof T & keyof AggregateLegalDecimoParameter]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateLegalDecimoParameter[P]>
+      : GetScalarType<T[P], AggregateLegalDecimoParameter[P]>
+  }
+
+
+
+
+  export type LegalDecimoParameterGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: LegalDecimoParameterWhereInput
+    orderBy?: LegalDecimoParameterOrderByWithAggregationInput | LegalDecimoParameterOrderByWithAggregationInput[]
+    by: LegalDecimoParameterScalarFieldEnum[] | LegalDecimoParameterScalarFieldEnum
+    having?: LegalDecimoParameterScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: LegalDecimoParameterCountAggregateInputType | true
+    _avg?: LegalDecimoParameterAvgAggregateInputType
+    _sum?: LegalDecimoParameterSumAggregateInputType
+    _min?: LegalDecimoParameterMinAggregateInputType
+    _max?: LegalDecimoParameterMaxAggregateInputType
+  }
+
+  export type LegalDecimoParameterGroupByOutputType = {
+    id: string
+    key: $Enums.LegalParameterKey
+    name: string
+    type: string
+    category: string
+    percentage: number
+    minRange: number | null
+    maxRange: number | null
+    status: string
+    effectiveDate: Date
+    description: string | null
+    companyId: string
+    createdAt: Date
+    updatedAt: Date
+    _count: LegalDecimoParameterCountAggregateOutputType | null
+    _avg: LegalDecimoParameterAvgAggregateOutputType | null
+    _sum: LegalDecimoParameterSumAggregateOutputType | null
+    _min: LegalDecimoParameterMinAggregateOutputType | null
+    _max: LegalDecimoParameterMaxAggregateOutputType | null
+  }
+
+  type GetLegalDecimoParameterGroupByPayload<T extends LegalDecimoParameterGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<LegalDecimoParameterGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof LegalDecimoParameterGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], LegalDecimoParameterGroupByOutputType[P]>
+            : GetScalarType<T[P], LegalDecimoParameterGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type LegalDecimoParameterSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    key?: boolean
+    name?: boolean
+    type?: boolean
+    category?: boolean
+    percentage?: boolean
+    minRange?: boolean
+    maxRange?: boolean
+    status?: boolean
+    effectiveDate?: boolean
+    description?: boolean
+    companyId?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    company?: boolean | CompanyDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["legalDecimoParameter"]>
+
+  export type LegalDecimoParameterSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    key?: boolean
+    name?: boolean
+    type?: boolean
+    category?: boolean
+    percentage?: boolean
+    minRange?: boolean
+    maxRange?: boolean
+    status?: boolean
+    effectiveDate?: boolean
+    description?: boolean
+    companyId?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    company?: boolean | CompanyDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["legalDecimoParameter"]>
+
+  export type LegalDecimoParameterSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    key?: boolean
+    name?: boolean
+    type?: boolean
+    category?: boolean
+    percentage?: boolean
+    minRange?: boolean
+    maxRange?: boolean
+    status?: boolean
+    effectiveDate?: boolean
+    description?: boolean
+    companyId?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    company?: boolean | CompanyDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["legalDecimoParameter"]>
+
+  export type LegalDecimoParameterSelectScalar = {
+    id?: boolean
+    key?: boolean
+    name?: boolean
+    type?: boolean
+    category?: boolean
+    percentage?: boolean
+    minRange?: boolean
+    maxRange?: boolean
+    status?: boolean
+    effectiveDate?: boolean
+    description?: boolean
+    companyId?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type LegalDecimoParameterOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "key" | "name" | "type" | "category" | "percentage" | "minRange" | "maxRange" | "status" | "effectiveDate" | "description" | "companyId" | "createdAt" | "updatedAt", ExtArgs["result"]["legalDecimoParameter"]>
+  export type LegalDecimoParameterInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    company?: boolean | CompanyDefaultArgs<ExtArgs>
+  }
+  export type LegalDecimoParameterIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    company?: boolean | CompanyDefaultArgs<ExtArgs>
+  }
+  export type LegalDecimoParameterIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    company?: boolean | CompanyDefaultArgs<ExtArgs>
+  }
+
+  export type $LegalDecimoParameterPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "LegalDecimoParameter"
+    objects: {
+      company: Prisma.$CompanyPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      key: $Enums.LegalParameterKey
+      name: string
+      type: string
+      category: string
+      percentage: number
+      minRange: number | null
+      maxRange: number | null
+      status: string
+      effectiveDate: Date
+      description: string | null
+      companyId: string
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["legalDecimoParameter"]>
+    composites: {}
+  }
+
+  type LegalDecimoParameterGetPayload<S extends boolean | null | undefined | LegalDecimoParameterDefaultArgs> = $Result.GetResult<Prisma.$LegalDecimoParameterPayload, S>
+
+  type LegalDecimoParameterCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<LegalDecimoParameterFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: LegalDecimoParameterCountAggregateInputType | true
+    }
+
+  export interface LegalDecimoParameterDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['LegalDecimoParameter'], meta: { name: 'LegalDecimoParameter' } }
+    /**
+     * Find zero or one LegalDecimoParameter that matches the filter.
+     * @param {LegalDecimoParameterFindUniqueArgs} args - Arguments to find a LegalDecimoParameter
+     * @example
+     * // Get one LegalDecimoParameter
+     * const legalDecimoParameter = await prisma.legalDecimoParameter.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends LegalDecimoParameterFindUniqueArgs>(args: SelectSubset<T, LegalDecimoParameterFindUniqueArgs<ExtArgs>>): Prisma__LegalDecimoParameterClient<$Result.GetResult<Prisma.$LegalDecimoParameterPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one LegalDecimoParameter that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {LegalDecimoParameterFindUniqueOrThrowArgs} args - Arguments to find a LegalDecimoParameter
+     * @example
+     * // Get one LegalDecimoParameter
+     * const legalDecimoParameter = await prisma.legalDecimoParameter.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends LegalDecimoParameterFindUniqueOrThrowArgs>(args: SelectSubset<T, LegalDecimoParameterFindUniqueOrThrowArgs<ExtArgs>>): Prisma__LegalDecimoParameterClient<$Result.GetResult<Prisma.$LegalDecimoParameterPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first LegalDecimoParameter that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {LegalDecimoParameterFindFirstArgs} args - Arguments to find a LegalDecimoParameter
+     * @example
+     * // Get one LegalDecimoParameter
+     * const legalDecimoParameter = await prisma.legalDecimoParameter.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends LegalDecimoParameterFindFirstArgs>(args?: SelectSubset<T, LegalDecimoParameterFindFirstArgs<ExtArgs>>): Prisma__LegalDecimoParameterClient<$Result.GetResult<Prisma.$LegalDecimoParameterPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first LegalDecimoParameter that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {LegalDecimoParameterFindFirstOrThrowArgs} args - Arguments to find a LegalDecimoParameter
+     * @example
+     * // Get one LegalDecimoParameter
+     * const legalDecimoParameter = await prisma.legalDecimoParameter.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends LegalDecimoParameterFindFirstOrThrowArgs>(args?: SelectSubset<T, LegalDecimoParameterFindFirstOrThrowArgs<ExtArgs>>): Prisma__LegalDecimoParameterClient<$Result.GetResult<Prisma.$LegalDecimoParameterPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more LegalDecimoParameters that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {LegalDecimoParameterFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all LegalDecimoParameters
+     * const legalDecimoParameters = await prisma.legalDecimoParameter.findMany()
+     * 
+     * // Get first 10 LegalDecimoParameters
+     * const legalDecimoParameters = await prisma.legalDecimoParameter.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const legalDecimoParameterWithIdOnly = await prisma.legalDecimoParameter.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends LegalDecimoParameterFindManyArgs>(args?: SelectSubset<T, LegalDecimoParameterFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$LegalDecimoParameterPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a LegalDecimoParameter.
+     * @param {LegalDecimoParameterCreateArgs} args - Arguments to create a LegalDecimoParameter.
+     * @example
+     * // Create one LegalDecimoParameter
+     * const LegalDecimoParameter = await prisma.legalDecimoParameter.create({
+     *   data: {
+     *     // ... data to create a LegalDecimoParameter
+     *   }
+     * })
+     * 
+     */
+    create<T extends LegalDecimoParameterCreateArgs>(args: SelectSubset<T, LegalDecimoParameterCreateArgs<ExtArgs>>): Prisma__LegalDecimoParameterClient<$Result.GetResult<Prisma.$LegalDecimoParameterPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many LegalDecimoParameters.
+     * @param {LegalDecimoParameterCreateManyArgs} args - Arguments to create many LegalDecimoParameters.
+     * @example
+     * // Create many LegalDecimoParameters
+     * const legalDecimoParameter = await prisma.legalDecimoParameter.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends LegalDecimoParameterCreateManyArgs>(args?: SelectSubset<T, LegalDecimoParameterCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many LegalDecimoParameters and returns the data saved in the database.
+     * @param {LegalDecimoParameterCreateManyAndReturnArgs} args - Arguments to create many LegalDecimoParameters.
+     * @example
+     * // Create many LegalDecimoParameters
+     * const legalDecimoParameter = await prisma.legalDecimoParameter.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many LegalDecimoParameters and only return the `id`
+     * const legalDecimoParameterWithIdOnly = await prisma.legalDecimoParameter.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends LegalDecimoParameterCreateManyAndReturnArgs>(args?: SelectSubset<T, LegalDecimoParameterCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$LegalDecimoParameterPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a LegalDecimoParameter.
+     * @param {LegalDecimoParameterDeleteArgs} args - Arguments to delete one LegalDecimoParameter.
+     * @example
+     * // Delete one LegalDecimoParameter
+     * const LegalDecimoParameter = await prisma.legalDecimoParameter.delete({
+     *   where: {
+     *     // ... filter to delete one LegalDecimoParameter
+     *   }
+     * })
+     * 
+     */
+    delete<T extends LegalDecimoParameterDeleteArgs>(args: SelectSubset<T, LegalDecimoParameterDeleteArgs<ExtArgs>>): Prisma__LegalDecimoParameterClient<$Result.GetResult<Prisma.$LegalDecimoParameterPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one LegalDecimoParameter.
+     * @param {LegalDecimoParameterUpdateArgs} args - Arguments to update one LegalDecimoParameter.
+     * @example
+     * // Update one LegalDecimoParameter
+     * const legalDecimoParameter = await prisma.legalDecimoParameter.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends LegalDecimoParameterUpdateArgs>(args: SelectSubset<T, LegalDecimoParameterUpdateArgs<ExtArgs>>): Prisma__LegalDecimoParameterClient<$Result.GetResult<Prisma.$LegalDecimoParameterPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more LegalDecimoParameters.
+     * @param {LegalDecimoParameterDeleteManyArgs} args - Arguments to filter LegalDecimoParameters to delete.
+     * @example
+     * // Delete a few LegalDecimoParameters
+     * const { count } = await prisma.legalDecimoParameter.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends LegalDecimoParameterDeleteManyArgs>(args?: SelectSubset<T, LegalDecimoParameterDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more LegalDecimoParameters.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {LegalDecimoParameterUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many LegalDecimoParameters
+     * const legalDecimoParameter = await prisma.legalDecimoParameter.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends LegalDecimoParameterUpdateManyArgs>(args: SelectSubset<T, LegalDecimoParameterUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more LegalDecimoParameters and returns the data updated in the database.
+     * @param {LegalDecimoParameterUpdateManyAndReturnArgs} args - Arguments to update many LegalDecimoParameters.
+     * @example
+     * // Update many LegalDecimoParameters
+     * const legalDecimoParameter = await prisma.legalDecimoParameter.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more LegalDecimoParameters and only return the `id`
+     * const legalDecimoParameterWithIdOnly = await prisma.legalDecimoParameter.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends LegalDecimoParameterUpdateManyAndReturnArgs>(args: SelectSubset<T, LegalDecimoParameterUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$LegalDecimoParameterPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one LegalDecimoParameter.
+     * @param {LegalDecimoParameterUpsertArgs} args - Arguments to update or create a LegalDecimoParameter.
+     * @example
+     * // Update or create a LegalDecimoParameter
+     * const legalDecimoParameter = await prisma.legalDecimoParameter.upsert({
+     *   create: {
+     *     // ... data to create a LegalDecimoParameter
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the LegalDecimoParameter we want to update
+     *   }
+     * })
+     */
+    upsert<T extends LegalDecimoParameterUpsertArgs>(args: SelectSubset<T, LegalDecimoParameterUpsertArgs<ExtArgs>>): Prisma__LegalDecimoParameterClient<$Result.GetResult<Prisma.$LegalDecimoParameterPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of LegalDecimoParameters.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {LegalDecimoParameterCountArgs} args - Arguments to filter LegalDecimoParameters to count.
+     * @example
+     * // Count the number of LegalDecimoParameters
+     * const count = await prisma.legalDecimoParameter.count({
+     *   where: {
+     *     // ... the filter for the LegalDecimoParameters we want to count
+     *   }
+     * })
+    **/
+    count<T extends LegalDecimoParameterCountArgs>(
+      args?: Subset<T, LegalDecimoParameterCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], LegalDecimoParameterCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a LegalDecimoParameter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {LegalDecimoParameterAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends LegalDecimoParameterAggregateArgs>(args: Subset<T, LegalDecimoParameterAggregateArgs>): Prisma.PrismaPromise<GetLegalDecimoParameterAggregateType<T>>
+
+    /**
+     * Group by LegalDecimoParameter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {LegalDecimoParameterGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends LegalDecimoParameterGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: LegalDecimoParameterGroupByArgs['orderBy'] }
+        : { orderBy?: LegalDecimoParameterGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, LegalDecimoParameterGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetLegalDecimoParameterGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the LegalDecimoParameter model
+   */
+  readonly fields: LegalDecimoParameterFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for LegalDecimoParameter.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__LegalDecimoParameterClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    company<T extends CompanyDefaultArgs<ExtArgs> = {}>(args?: Subset<T, CompanyDefaultArgs<ExtArgs>>): Prisma__CompanyClient<$Result.GetResult<Prisma.$CompanyPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the LegalDecimoParameter model
+   */
+  interface LegalDecimoParameterFieldRefs {
+    readonly id: FieldRef<"LegalDecimoParameter", 'String'>
+    readonly key: FieldRef<"LegalDecimoParameter", 'LegalParameterKey'>
+    readonly name: FieldRef<"LegalDecimoParameter", 'String'>
+    readonly type: FieldRef<"LegalDecimoParameter", 'String'>
+    readonly category: FieldRef<"LegalDecimoParameter", 'String'>
+    readonly percentage: FieldRef<"LegalDecimoParameter", 'Float'>
+    readonly minRange: FieldRef<"LegalDecimoParameter", 'Int'>
+    readonly maxRange: FieldRef<"LegalDecimoParameter", 'Int'>
+    readonly status: FieldRef<"LegalDecimoParameter", 'String'>
+    readonly effectiveDate: FieldRef<"LegalDecimoParameter", 'DateTime'>
+    readonly description: FieldRef<"LegalDecimoParameter", 'String'>
+    readonly companyId: FieldRef<"LegalDecimoParameter", 'String'>
+    readonly createdAt: FieldRef<"LegalDecimoParameter", 'DateTime'>
+    readonly updatedAt: FieldRef<"LegalDecimoParameter", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * LegalDecimoParameter findUnique
+   */
+  export type LegalDecimoParameterFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the LegalDecimoParameter
+     */
+    select?: LegalDecimoParameterSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the LegalDecimoParameter
+     */
+    omit?: LegalDecimoParameterOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: LegalDecimoParameterInclude<ExtArgs> | null
+    /**
+     * Filter, which LegalDecimoParameter to fetch.
+     */
+    where: LegalDecimoParameterWhereUniqueInput
+  }
+
+  /**
+   * LegalDecimoParameter findUniqueOrThrow
+   */
+  export type LegalDecimoParameterFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the LegalDecimoParameter
+     */
+    select?: LegalDecimoParameterSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the LegalDecimoParameter
+     */
+    omit?: LegalDecimoParameterOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: LegalDecimoParameterInclude<ExtArgs> | null
+    /**
+     * Filter, which LegalDecimoParameter to fetch.
+     */
+    where: LegalDecimoParameterWhereUniqueInput
+  }
+
+  /**
+   * LegalDecimoParameter findFirst
+   */
+  export type LegalDecimoParameterFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the LegalDecimoParameter
+     */
+    select?: LegalDecimoParameterSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the LegalDecimoParameter
+     */
+    omit?: LegalDecimoParameterOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: LegalDecimoParameterInclude<ExtArgs> | null
+    /**
+     * Filter, which LegalDecimoParameter to fetch.
+     */
+    where?: LegalDecimoParameterWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of LegalDecimoParameters to fetch.
+     */
+    orderBy?: LegalDecimoParameterOrderByWithRelationInput | LegalDecimoParameterOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for LegalDecimoParameters.
+     */
+    cursor?: LegalDecimoParameterWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` LegalDecimoParameters from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` LegalDecimoParameters.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of LegalDecimoParameters.
+     */
+    distinct?: LegalDecimoParameterScalarFieldEnum | LegalDecimoParameterScalarFieldEnum[]
+  }
+
+  /**
+   * LegalDecimoParameter findFirstOrThrow
+   */
+  export type LegalDecimoParameterFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the LegalDecimoParameter
+     */
+    select?: LegalDecimoParameterSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the LegalDecimoParameter
+     */
+    omit?: LegalDecimoParameterOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: LegalDecimoParameterInclude<ExtArgs> | null
+    /**
+     * Filter, which LegalDecimoParameter to fetch.
+     */
+    where?: LegalDecimoParameterWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of LegalDecimoParameters to fetch.
+     */
+    orderBy?: LegalDecimoParameterOrderByWithRelationInput | LegalDecimoParameterOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for LegalDecimoParameters.
+     */
+    cursor?: LegalDecimoParameterWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` LegalDecimoParameters from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` LegalDecimoParameters.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of LegalDecimoParameters.
+     */
+    distinct?: LegalDecimoParameterScalarFieldEnum | LegalDecimoParameterScalarFieldEnum[]
+  }
+
+  /**
+   * LegalDecimoParameter findMany
+   */
+  export type LegalDecimoParameterFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the LegalDecimoParameter
+     */
+    select?: LegalDecimoParameterSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the LegalDecimoParameter
+     */
+    omit?: LegalDecimoParameterOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: LegalDecimoParameterInclude<ExtArgs> | null
+    /**
+     * Filter, which LegalDecimoParameters to fetch.
+     */
+    where?: LegalDecimoParameterWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of LegalDecimoParameters to fetch.
+     */
+    orderBy?: LegalDecimoParameterOrderByWithRelationInput | LegalDecimoParameterOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing LegalDecimoParameters.
+     */
+    cursor?: LegalDecimoParameterWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` LegalDecimoParameters from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` LegalDecimoParameters.
+     */
+    skip?: number
+    distinct?: LegalDecimoParameterScalarFieldEnum | LegalDecimoParameterScalarFieldEnum[]
+  }
+
+  /**
+   * LegalDecimoParameter create
+   */
+  export type LegalDecimoParameterCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the LegalDecimoParameter
+     */
+    select?: LegalDecimoParameterSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the LegalDecimoParameter
+     */
+    omit?: LegalDecimoParameterOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: LegalDecimoParameterInclude<ExtArgs> | null
+    /**
+     * The data needed to create a LegalDecimoParameter.
+     */
+    data: XOR<LegalDecimoParameterCreateInput, LegalDecimoParameterUncheckedCreateInput>
+  }
+
+  /**
+   * LegalDecimoParameter createMany
+   */
+  export type LegalDecimoParameterCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many LegalDecimoParameters.
+     */
+    data: LegalDecimoParameterCreateManyInput | LegalDecimoParameterCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * LegalDecimoParameter createManyAndReturn
+   */
+  export type LegalDecimoParameterCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the LegalDecimoParameter
+     */
+    select?: LegalDecimoParameterSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the LegalDecimoParameter
+     */
+    omit?: LegalDecimoParameterOmit<ExtArgs> | null
+    /**
+     * The data used to create many LegalDecimoParameters.
+     */
+    data: LegalDecimoParameterCreateManyInput | LegalDecimoParameterCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: LegalDecimoParameterIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * LegalDecimoParameter update
+   */
+  export type LegalDecimoParameterUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the LegalDecimoParameter
+     */
+    select?: LegalDecimoParameterSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the LegalDecimoParameter
+     */
+    omit?: LegalDecimoParameterOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: LegalDecimoParameterInclude<ExtArgs> | null
+    /**
+     * The data needed to update a LegalDecimoParameter.
+     */
+    data: XOR<LegalDecimoParameterUpdateInput, LegalDecimoParameterUncheckedUpdateInput>
+    /**
+     * Choose, which LegalDecimoParameter to update.
+     */
+    where: LegalDecimoParameterWhereUniqueInput
+  }
+
+  /**
+   * LegalDecimoParameter updateMany
+   */
+  export type LegalDecimoParameterUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update LegalDecimoParameters.
+     */
+    data: XOR<LegalDecimoParameterUpdateManyMutationInput, LegalDecimoParameterUncheckedUpdateManyInput>
+    /**
+     * Filter which LegalDecimoParameters to update
+     */
+    where?: LegalDecimoParameterWhereInput
+    /**
+     * Limit how many LegalDecimoParameters to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * LegalDecimoParameter updateManyAndReturn
+   */
+  export type LegalDecimoParameterUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the LegalDecimoParameter
+     */
+    select?: LegalDecimoParameterSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the LegalDecimoParameter
+     */
+    omit?: LegalDecimoParameterOmit<ExtArgs> | null
+    /**
+     * The data used to update LegalDecimoParameters.
+     */
+    data: XOR<LegalDecimoParameterUpdateManyMutationInput, LegalDecimoParameterUncheckedUpdateManyInput>
+    /**
+     * Filter which LegalDecimoParameters to update
+     */
+    where?: LegalDecimoParameterWhereInput
+    /**
+     * Limit how many LegalDecimoParameters to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: LegalDecimoParameterIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * LegalDecimoParameter upsert
+   */
+  export type LegalDecimoParameterUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the LegalDecimoParameter
+     */
+    select?: LegalDecimoParameterSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the LegalDecimoParameter
+     */
+    omit?: LegalDecimoParameterOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: LegalDecimoParameterInclude<ExtArgs> | null
+    /**
+     * The filter to search for the LegalDecimoParameter to update in case it exists.
+     */
+    where: LegalDecimoParameterWhereUniqueInput
+    /**
+     * In case the LegalDecimoParameter found by the `where` argument doesn't exist, create a new LegalDecimoParameter with this data.
+     */
+    create: XOR<LegalDecimoParameterCreateInput, LegalDecimoParameterUncheckedCreateInput>
+    /**
+     * In case the LegalDecimoParameter was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<LegalDecimoParameterUpdateInput, LegalDecimoParameterUncheckedUpdateInput>
+  }
+
+  /**
+   * LegalDecimoParameter delete
+   */
+  export type LegalDecimoParameterDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the LegalDecimoParameter
+     */
+    select?: LegalDecimoParameterSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the LegalDecimoParameter
+     */
+    omit?: LegalDecimoParameterOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: LegalDecimoParameterInclude<ExtArgs> | null
+    /**
+     * Filter which LegalDecimoParameter to delete.
+     */
+    where: LegalDecimoParameterWhereUniqueInput
+  }
+
+  /**
+   * LegalDecimoParameter deleteMany
+   */
+  export type LegalDecimoParameterDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which LegalDecimoParameters to delete
+     */
+    where?: LegalDecimoParameterWhereInput
+    /**
+     * Limit how many LegalDecimoParameters to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * LegalDecimoParameter without action
+   */
+  export type LegalDecimoParameterDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the LegalDecimoParameter
+     */
+    select?: LegalDecimoParameterSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the LegalDecimoParameter
+     */
+    omit?: LegalDecimoParameterOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: LegalDecimoParameterInclude<ExtArgs> | null
+  }
+
+
+  /**
    * Enums
    */
 
@@ -18382,6 +19727,26 @@ export namespace Prisma {
   };
 
   export type LegalParameterScalarFieldEnum = (typeof LegalParameterScalarFieldEnum)[keyof typeof LegalParameterScalarFieldEnum]
+
+
+  export const LegalDecimoParameterScalarFieldEnum: {
+    id: 'id',
+    key: 'key',
+    name: 'name',
+    type: 'type',
+    category: 'category',
+    percentage: 'percentage',
+    minRange: 'minRange',
+    maxRange: 'maxRange',
+    status: 'status',
+    effectiveDate: 'effectiveDate',
+    description: 'description',
+    companyId: 'companyId',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type LegalDecimoParameterScalarFieldEnum = (typeof LegalDecimoParameterScalarFieldEnum)[keyof typeof LegalDecimoParameterScalarFieldEnum]
 
 
   export const SortOrder: {
@@ -18903,6 +20268,7 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"Company"> | Date | string
     updatedAt?: DateTimeFilter<"Company"> | Date | string
     createdByUserId?: StringNullableFilter<"Company"> | string | null
+    LegalDecimoParameter?: LegalDecimoParameterListRelationFilter
     legalParameters?: LegalParameterListRelationFilter
     createdBy?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
     departments?: DepartmentListRelationFilter
@@ -18926,6 +20292,7 @@ export namespace Prisma {
     createdAt?: SortOrder
     updatedAt?: SortOrder
     createdByUserId?: SortOrderInput | SortOrder
+    LegalDecimoParameter?: LegalDecimoParameterOrderByRelationAggregateInput
     legalParameters?: LegalParameterOrderByRelationAggregateInput
     createdBy?: UserOrderByWithRelationInput
     departments?: DepartmentOrderByRelationAggregateInput
@@ -18952,6 +20319,7 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"Company"> | Date | string
     updatedAt?: DateTimeFilter<"Company"> | Date | string
     createdByUserId?: StringNullableFilter<"Company"> | string | null
+    LegalDecimoParameter?: LegalDecimoParameterListRelationFilter
     legalParameters?: LegalParameterListRelationFilter
     createdBy?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
     departments?: DepartmentListRelationFilter
@@ -19888,6 +21256,109 @@ export namespace Prisma {
     updatedAt?: DateTimeWithAggregatesFilter<"LegalParameter"> | Date | string
   }
 
+  export type LegalDecimoParameterWhereInput = {
+    AND?: LegalDecimoParameterWhereInput | LegalDecimoParameterWhereInput[]
+    OR?: LegalDecimoParameterWhereInput[]
+    NOT?: LegalDecimoParameterWhereInput | LegalDecimoParameterWhereInput[]
+    id?: StringFilter<"LegalDecimoParameter"> | string
+    key?: EnumLegalParameterKeyFilter<"LegalDecimoParameter"> | $Enums.LegalParameterKey
+    name?: StringFilter<"LegalDecimoParameter"> | string
+    type?: StringFilter<"LegalDecimoParameter"> | string
+    category?: StringFilter<"LegalDecimoParameter"> | string
+    percentage?: FloatFilter<"LegalDecimoParameter"> | number
+    minRange?: IntNullableFilter<"LegalDecimoParameter"> | number | null
+    maxRange?: IntNullableFilter<"LegalDecimoParameter"> | number | null
+    status?: StringFilter<"LegalDecimoParameter"> | string
+    effectiveDate?: DateTimeFilter<"LegalDecimoParameter"> | Date | string
+    description?: StringNullableFilter<"LegalDecimoParameter"> | string | null
+    companyId?: StringFilter<"LegalDecimoParameter"> | string
+    createdAt?: DateTimeFilter<"LegalDecimoParameter"> | Date | string
+    updatedAt?: DateTimeFilter<"LegalDecimoParameter"> | Date | string
+    company?: XOR<CompanyScalarRelationFilter, CompanyWhereInput>
+  }
+
+  export type LegalDecimoParameterOrderByWithRelationInput = {
+    id?: SortOrder
+    key?: SortOrder
+    name?: SortOrder
+    type?: SortOrder
+    category?: SortOrder
+    percentage?: SortOrder
+    minRange?: SortOrderInput | SortOrder
+    maxRange?: SortOrderInput | SortOrder
+    status?: SortOrder
+    effectiveDate?: SortOrder
+    description?: SortOrderInput | SortOrder
+    companyId?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    company?: CompanyOrderByWithRelationInput
+  }
+
+  export type LegalDecimoParameterWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    companyId_key?: LegalDecimoParameterCompanyIdKeyCompoundUniqueInput
+    AND?: LegalDecimoParameterWhereInput | LegalDecimoParameterWhereInput[]
+    OR?: LegalDecimoParameterWhereInput[]
+    NOT?: LegalDecimoParameterWhereInput | LegalDecimoParameterWhereInput[]
+    key?: EnumLegalParameterKeyFilter<"LegalDecimoParameter"> | $Enums.LegalParameterKey
+    name?: StringFilter<"LegalDecimoParameter"> | string
+    type?: StringFilter<"LegalDecimoParameter"> | string
+    category?: StringFilter<"LegalDecimoParameter"> | string
+    percentage?: FloatFilter<"LegalDecimoParameter"> | number
+    minRange?: IntNullableFilter<"LegalDecimoParameter"> | number | null
+    maxRange?: IntNullableFilter<"LegalDecimoParameter"> | number | null
+    status?: StringFilter<"LegalDecimoParameter"> | string
+    effectiveDate?: DateTimeFilter<"LegalDecimoParameter"> | Date | string
+    description?: StringNullableFilter<"LegalDecimoParameter"> | string | null
+    companyId?: StringFilter<"LegalDecimoParameter"> | string
+    createdAt?: DateTimeFilter<"LegalDecimoParameter"> | Date | string
+    updatedAt?: DateTimeFilter<"LegalDecimoParameter"> | Date | string
+    company?: XOR<CompanyScalarRelationFilter, CompanyWhereInput>
+  }, "id" | "companyId_key">
+
+  export type LegalDecimoParameterOrderByWithAggregationInput = {
+    id?: SortOrder
+    key?: SortOrder
+    name?: SortOrder
+    type?: SortOrder
+    category?: SortOrder
+    percentage?: SortOrder
+    minRange?: SortOrderInput | SortOrder
+    maxRange?: SortOrderInput | SortOrder
+    status?: SortOrder
+    effectiveDate?: SortOrder
+    description?: SortOrderInput | SortOrder
+    companyId?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: LegalDecimoParameterCountOrderByAggregateInput
+    _avg?: LegalDecimoParameterAvgOrderByAggregateInput
+    _max?: LegalDecimoParameterMaxOrderByAggregateInput
+    _min?: LegalDecimoParameterMinOrderByAggregateInput
+    _sum?: LegalDecimoParameterSumOrderByAggregateInput
+  }
+
+  export type LegalDecimoParameterScalarWhereWithAggregatesInput = {
+    AND?: LegalDecimoParameterScalarWhereWithAggregatesInput | LegalDecimoParameterScalarWhereWithAggregatesInput[]
+    OR?: LegalDecimoParameterScalarWhereWithAggregatesInput[]
+    NOT?: LegalDecimoParameterScalarWhereWithAggregatesInput | LegalDecimoParameterScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"LegalDecimoParameter"> | string
+    key?: EnumLegalParameterKeyWithAggregatesFilter<"LegalDecimoParameter"> | $Enums.LegalParameterKey
+    name?: StringWithAggregatesFilter<"LegalDecimoParameter"> | string
+    type?: StringWithAggregatesFilter<"LegalDecimoParameter"> | string
+    category?: StringWithAggregatesFilter<"LegalDecimoParameter"> | string
+    percentage?: FloatWithAggregatesFilter<"LegalDecimoParameter"> | number
+    minRange?: IntNullableWithAggregatesFilter<"LegalDecimoParameter"> | number | null
+    maxRange?: IntNullableWithAggregatesFilter<"LegalDecimoParameter"> | number | null
+    status?: StringWithAggregatesFilter<"LegalDecimoParameter"> | string
+    effectiveDate?: DateTimeWithAggregatesFilter<"LegalDecimoParameter"> | Date | string
+    description?: StringNullableWithAggregatesFilter<"LegalDecimoParameter"> | string | null
+    companyId?: StringWithAggregatesFilter<"LegalDecimoParameter"> | string
+    createdAt?: DateTimeWithAggregatesFilter<"LegalDecimoParameter"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"LegalDecimoParameter"> | Date | string
+  }
+
   export type UserCreateInput = {
     id?: string
     username: string
@@ -20144,6 +21615,7 @@ export namespace Prisma {
     isActive?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
+    LegalDecimoParameter?: LegalDecimoParameterCreateNestedManyWithoutCompanyInput
     legalParameters?: LegalParameterCreateNestedManyWithoutCompanyInput
     createdBy?: UserCreateNestedOneWithoutCreatedCompaniesInput
     departments?: DepartmentCreateNestedManyWithoutCompanyInput
@@ -20167,6 +21639,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     createdByUserId?: string | null
+    LegalDecimoParameter?: LegalDecimoParameterUncheckedCreateNestedManyWithoutCompanyInput
     legalParameters?: LegalParameterUncheckedCreateNestedManyWithoutCompanyInput
     departments?: DepartmentUncheckedCreateNestedManyWithoutCompanyInput
     users?: UserCompanyUncheckedCreateNestedManyWithoutCompanyInput
@@ -20188,6 +21661,7 @@ export namespace Prisma {
     isActive?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    LegalDecimoParameter?: LegalDecimoParameterUpdateManyWithoutCompanyNestedInput
     legalParameters?: LegalParameterUpdateManyWithoutCompanyNestedInput
     createdBy?: UserUpdateOneWithoutCreatedCompaniesNestedInput
     departments?: DepartmentUpdateManyWithoutCompanyNestedInput
@@ -20211,6 +21685,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     createdByUserId?: NullableStringFieldUpdateOperationsInput | string | null
+    LegalDecimoParameter?: LegalDecimoParameterUncheckedUpdateManyWithoutCompanyNestedInput
     legalParameters?: LegalParameterUncheckedUpdateManyWithoutCompanyNestedInput
     departments?: DepartmentUncheckedUpdateManyWithoutCompanyNestedInput
     users?: UserCompanyUncheckedUpdateManyWithoutCompanyNestedInput
@@ -21262,6 +22737,124 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type LegalDecimoParameterCreateInput = {
+    id?: string
+    key: $Enums.LegalParameterKey
+    name: string
+    type: string
+    category: string
+    percentage: number
+    minRange?: number | null
+    maxRange?: number | null
+    status?: string
+    effectiveDate?: Date | string
+    description?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    company: CompanyCreateNestedOneWithoutLegalDecimoParameterInput
+  }
+
+  export type LegalDecimoParameterUncheckedCreateInput = {
+    id?: string
+    key: $Enums.LegalParameterKey
+    name: string
+    type: string
+    category: string
+    percentage: number
+    minRange?: number | null
+    maxRange?: number | null
+    status?: string
+    effectiveDate?: Date | string
+    description?: string | null
+    companyId: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type LegalDecimoParameterUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    key?: EnumLegalParameterKeyFieldUpdateOperationsInput | $Enums.LegalParameterKey
+    name?: StringFieldUpdateOperationsInput | string
+    type?: StringFieldUpdateOperationsInput | string
+    category?: StringFieldUpdateOperationsInput | string
+    percentage?: FloatFieldUpdateOperationsInput | number
+    minRange?: NullableIntFieldUpdateOperationsInput | number | null
+    maxRange?: NullableIntFieldUpdateOperationsInput | number | null
+    status?: StringFieldUpdateOperationsInput | string
+    effectiveDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    company?: CompanyUpdateOneRequiredWithoutLegalDecimoParameterNestedInput
+  }
+
+  export type LegalDecimoParameterUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    key?: EnumLegalParameterKeyFieldUpdateOperationsInput | $Enums.LegalParameterKey
+    name?: StringFieldUpdateOperationsInput | string
+    type?: StringFieldUpdateOperationsInput | string
+    category?: StringFieldUpdateOperationsInput | string
+    percentage?: FloatFieldUpdateOperationsInput | number
+    minRange?: NullableIntFieldUpdateOperationsInput | number | null
+    maxRange?: NullableIntFieldUpdateOperationsInput | number | null
+    status?: StringFieldUpdateOperationsInput | string
+    effectiveDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    companyId?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type LegalDecimoParameterCreateManyInput = {
+    id?: string
+    key: $Enums.LegalParameterKey
+    name: string
+    type: string
+    category: string
+    percentage: number
+    minRange?: number | null
+    maxRange?: number | null
+    status?: string
+    effectiveDate?: Date | string
+    description?: string | null
+    companyId: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type LegalDecimoParameterUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    key?: EnumLegalParameterKeyFieldUpdateOperationsInput | $Enums.LegalParameterKey
+    name?: StringFieldUpdateOperationsInput | string
+    type?: StringFieldUpdateOperationsInput | string
+    category?: StringFieldUpdateOperationsInput | string
+    percentage?: FloatFieldUpdateOperationsInput | number
+    minRange?: NullableIntFieldUpdateOperationsInput | number | null
+    maxRange?: NullableIntFieldUpdateOperationsInput | number | null
+    status?: StringFieldUpdateOperationsInput | string
+    effectiveDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type LegalDecimoParameterUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    key?: EnumLegalParameterKeyFieldUpdateOperationsInput | $Enums.LegalParameterKey
+    name?: StringFieldUpdateOperationsInput | string
+    type?: StringFieldUpdateOperationsInput | string
+    category?: StringFieldUpdateOperationsInput | string
+    percentage?: FloatFieldUpdateOperationsInput | number
+    minRange?: NullableIntFieldUpdateOperationsInput | number | null
+    maxRange?: NullableIntFieldUpdateOperationsInput | number | null
+    status?: StringFieldUpdateOperationsInput | string
+    effectiveDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    companyId?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type StringFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel>
     in?: string[] | ListStringFieldRefInput<$PrismaModel>
@@ -21554,6 +23147,12 @@ export namespace Prisma {
     _max?: NestedEnumPersonStatusFilter<$PrismaModel>
   }
 
+  export type LegalDecimoParameterListRelationFilter = {
+    every?: LegalDecimoParameterWhereInput
+    some?: LegalDecimoParameterWhereInput
+    none?: LegalDecimoParameterWhereInput
+  }
+
   export type LegalParameterListRelationFilter = {
     every?: LegalParameterWhereInput
     some?: LegalParameterWhereInput
@@ -21593,6 +23192,10 @@ export namespace Prisma {
     every?: LeaveWhereInput
     some?: LeaveWhereInput
     none?: LeaveWhereInput
+  }
+
+  export type LegalDecimoParameterOrderByRelationAggregateInput = {
+    _count?: SortOrder
   }
 
   export type LegalParameterOrderByRelationAggregateInput = {
@@ -22546,6 +24149,74 @@ export namespace Prisma {
     _max?: NestedFloatFilter<$PrismaModel>
   }
 
+  export type LegalDecimoParameterCompanyIdKeyCompoundUniqueInput = {
+    companyId: string
+    key: $Enums.LegalParameterKey
+  }
+
+  export type LegalDecimoParameterCountOrderByAggregateInput = {
+    id?: SortOrder
+    key?: SortOrder
+    name?: SortOrder
+    type?: SortOrder
+    category?: SortOrder
+    percentage?: SortOrder
+    minRange?: SortOrder
+    maxRange?: SortOrder
+    status?: SortOrder
+    effectiveDate?: SortOrder
+    description?: SortOrder
+    companyId?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type LegalDecimoParameterAvgOrderByAggregateInput = {
+    percentage?: SortOrder
+    minRange?: SortOrder
+    maxRange?: SortOrder
+  }
+
+  export type LegalDecimoParameterMaxOrderByAggregateInput = {
+    id?: SortOrder
+    key?: SortOrder
+    name?: SortOrder
+    type?: SortOrder
+    category?: SortOrder
+    percentage?: SortOrder
+    minRange?: SortOrder
+    maxRange?: SortOrder
+    status?: SortOrder
+    effectiveDate?: SortOrder
+    description?: SortOrder
+    companyId?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type LegalDecimoParameterMinOrderByAggregateInput = {
+    id?: SortOrder
+    key?: SortOrder
+    name?: SortOrder
+    type?: SortOrder
+    category?: SortOrder
+    percentage?: SortOrder
+    minRange?: SortOrder
+    maxRange?: SortOrder
+    status?: SortOrder
+    effectiveDate?: SortOrder
+    description?: SortOrder
+    companyId?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type LegalDecimoParameterSumOrderByAggregateInput = {
+    percentage?: SortOrder
+    minRange?: SortOrder
+    maxRange?: SortOrder
+  }
+
   export type UserCompanyCreateNestedManyWithoutUserInput = {
     create?: XOR<UserCompanyCreateWithoutUserInput, UserCompanyUncheckedCreateWithoutUserInput> | UserCompanyCreateWithoutUserInput[] | UserCompanyUncheckedCreateWithoutUserInput[]
     connectOrCreate?: UserCompanyCreateOrConnectWithoutUserInput | UserCompanyCreateOrConnectWithoutUserInput[]
@@ -22776,6 +24447,13 @@ export namespace Prisma {
     update?: XOR<XOR<UserUpdateToOneWithWhereWithoutPersonInput, UserUpdateWithoutPersonInput>, UserUncheckedUpdateWithoutPersonInput>
   }
 
+  export type LegalDecimoParameterCreateNestedManyWithoutCompanyInput = {
+    create?: XOR<LegalDecimoParameterCreateWithoutCompanyInput, LegalDecimoParameterUncheckedCreateWithoutCompanyInput> | LegalDecimoParameterCreateWithoutCompanyInput[] | LegalDecimoParameterUncheckedCreateWithoutCompanyInput[]
+    connectOrCreate?: LegalDecimoParameterCreateOrConnectWithoutCompanyInput | LegalDecimoParameterCreateOrConnectWithoutCompanyInput[]
+    createMany?: LegalDecimoParameterCreateManyCompanyInputEnvelope
+    connect?: LegalDecimoParameterWhereUniqueInput | LegalDecimoParameterWhereUniqueInput[]
+  }
+
   export type LegalParameterCreateNestedManyWithoutCompanyInput = {
     create?: XOR<LegalParameterCreateWithoutCompanyInput, LegalParameterUncheckedCreateWithoutCompanyInput> | LegalParameterCreateWithoutCompanyInput[] | LegalParameterUncheckedCreateWithoutCompanyInput[]
     connectOrCreate?: LegalParameterCreateOrConnectWithoutCompanyInput | LegalParameterCreateOrConnectWithoutCompanyInput[]
@@ -22831,6 +24509,13 @@ export namespace Prisma {
     connect?: LeaveWhereUniqueInput | LeaveWhereUniqueInput[]
   }
 
+  export type LegalDecimoParameterUncheckedCreateNestedManyWithoutCompanyInput = {
+    create?: XOR<LegalDecimoParameterCreateWithoutCompanyInput, LegalDecimoParameterUncheckedCreateWithoutCompanyInput> | LegalDecimoParameterCreateWithoutCompanyInput[] | LegalDecimoParameterUncheckedCreateWithoutCompanyInput[]
+    connectOrCreate?: LegalDecimoParameterCreateOrConnectWithoutCompanyInput | LegalDecimoParameterCreateOrConnectWithoutCompanyInput[]
+    createMany?: LegalDecimoParameterCreateManyCompanyInputEnvelope
+    connect?: LegalDecimoParameterWhereUniqueInput | LegalDecimoParameterWhereUniqueInput[]
+  }
+
   export type LegalParameterUncheckedCreateNestedManyWithoutCompanyInput = {
     create?: XOR<LegalParameterCreateWithoutCompanyInput, LegalParameterUncheckedCreateWithoutCompanyInput> | LegalParameterCreateWithoutCompanyInput[] | LegalParameterUncheckedCreateWithoutCompanyInput[]
     connectOrCreate?: LegalParameterCreateOrConnectWithoutCompanyInput | LegalParameterCreateOrConnectWithoutCompanyInput[]
@@ -22878,6 +24563,20 @@ export namespace Prisma {
     connectOrCreate?: LeaveCreateOrConnectWithoutCompanyInput | LeaveCreateOrConnectWithoutCompanyInput[]
     createMany?: LeaveCreateManyCompanyInputEnvelope
     connect?: LeaveWhereUniqueInput | LeaveWhereUniqueInput[]
+  }
+
+  export type LegalDecimoParameterUpdateManyWithoutCompanyNestedInput = {
+    create?: XOR<LegalDecimoParameterCreateWithoutCompanyInput, LegalDecimoParameterUncheckedCreateWithoutCompanyInput> | LegalDecimoParameterCreateWithoutCompanyInput[] | LegalDecimoParameterUncheckedCreateWithoutCompanyInput[]
+    connectOrCreate?: LegalDecimoParameterCreateOrConnectWithoutCompanyInput | LegalDecimoParameterCreateOrConnectWithoutCompanyInput[]
+    upsert?: LegalDecimoParameterUpsertWithWhereUniqueWithoutCompanyInput | LegalDecimoParameterUpsertWithWhereUniqueWithoutCompanyInput[]
+    createMany?: LegalDecimoParameterCreateManyCompanyInputEnvelope
+    set?: LegalDecimoParameterWhereUniqueInput | LegalDecimoParameterWhereUniqueInput[]
+    disconnect?: LegalDecimoParameterWhereUniqueInput | LegalDecimoParameterWhereUniqueInput[]
+    delete?: LegalDecimoParameterWhereUniqueInput | LegalDecimoParameterWhereUniqueInput[]
+    connect?: LegalDecimoParameterWhereUniqueInput | LegalDecimoParameterWhereUniqueInput[]
+    update?: LegalDecimoParameterUpdateWithWhereUniqueWithoutCompanyInput | LegalDecimoParameterUpdateWithWhereUniqueWithoutCompanyInput[]
+    updateMany?: LegalDecimoParameterUpdateManyWithWhereWithoutCompanyInput | LegalDecimoParameterUpdateManyWithWhereWithoutCompanyInput[]
+    deleteMany?: LegalDecimoParameterScalarWhereInput | LegalDecimoParameterScalarWhereInput[]
   }
 
   export type LegalParameterUpdateManyWithoutCompanyNestedInput = {
@@ -22986,6 +24685,20 @@ export namespace Prisma {
     update?: LeaveUpdateWithWhereUniqueWithoutCompanyInput | LeaveUpdateWithWhereUniqueWithoutCompanyInput[]
     updateMany?: LeaveUpdateManyWithWhereWithoutCompanyInput | LeaveUpdateManyWithWhereWithoutCompanyInput[]
     deleteMany?: LeaveScalarWhereInput | LeaveScalarWhereInput[]
+  }
+
+  export type LegalDecimoParameterUncheckedUpdateManyWithoutCompanyNestedInput = {
+    create?: XOR<LegalDecimoParameterCreateWithoutCompanyInput, LegalDecimoParameterUncheckedCreateWithoutCompanyInput> | LegalDecimoParameterCreateWithoutCompanyInput[] | LegalDecimoParameterUncheckedCreateWithoutCompanyInput[]
+    connectOrCreate?: LegalDecimoParameterCreateOrConnectWithoutCompanyInput | LegalDecimoParameterCreateOrConnectWithoutCompanyInput[]
+    upsert?: LegalDecimoParameterUpsertWithWhereUniqueWithoutCompanyInput | LegalDecimoParameterUpsertWithWhereUniqueWithoutCompanyInput[]
+    createMany?: LegalDecimoParameterCreateManyCompanyInputEnvelope
+    set?: LegalDecimoParameterWhereUniqueInput | LegalDecimoParameterWhereUniqueInput[]
+    disconnect?: LegalDecimoParameterWhereUniqueInput | LegalDecimoParameterWhereUniqueInput[]
+    delete?: LegalDecimoParameterWhereUniqueInput | LegalDecimoParameterWhereUniqueInput[]
+    connect?: LegalDecimoParameterWhereUniqueInput | LegalDecimoParameterWhereUniqueInput[]
+    update?: LegalDecimoParameterUpdateWithWhereUniqueWithoutCompanyInput | LegalDecimoParameterUpdateWithWhereUniqueWithoutCompanyInput[]
+    updateMany?: LegalDecimoParameterUpdateManyWithWhereWithoutCompanyInput | LegalDecimoParameterUpdateManyWithWhereWithoutCompanyInput[]
+    deleteMany?: LegalDecimoParameterScalarWhereInput | LegalDecimoParameterScalarWhereInput[]
   }
 
   export type LegalParameterUncheckedUpdateManyWithoutCompanyNestedInput = {
@@ -23708,6 +25421,20 @@ export namespace Prisma {
     update?: XOR<XOR<CompanyUpdateToOneWithWhereWithoutLegalParametersInput, CompanyUpdateWithoutLegalParametersInput>, CompanyUncheckedUpdateWithoutLegalParametersInput>
   }
 
+  export type CompanyCreateNestedOneWithoutLegalDecimoParameterInput = {
+    create?: XOR<CompanyCreateWithoutLegalDecimoParameterInput, CompanyUncheckedCreateWithoutLegalDecimoParameterInput>
+    connectOrCreate?: CompanyCreateOrConnectWithoutLegalDecimoParameterInput
+    connect?: CompanyWhereUniqueInput
+  }
+
+  export type CompanyUpdateOneRequiredWithoutLegalDecimoParameterNestedInput = {
+    create?: XOR<CompanyCreateWithoutLegalDecimoParameterInput, CompanyUncheckedCreateWithoutLegalDecimoParameterInput>
+    connectOrCreate?: CompanyCreateOrConnectWithoutLegalDecimoParameterInput
+    upsert?: CompanyUpsertWithoutLegalDecimoParameterInput
+    connect?: CompanyWhereUniqueInput
+    update?: XOR<XOR<CompanyUpdateToOneWithWhereWithoutLegalDecimoParameterInput, CompanyUpdateWithoutLegalDecimoParameterInput>, CompanyUncheckedUpdateWithoutLegalDecimoParameterInput>
+  }
+
   export type NestedStringFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel>
     in?: string[] | ListStringFieldRefInput<$PrismaModel>
@@ -24213,6 +25940,7 @@ export namespace Prisma {
     isActive?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
+    LegalDecimoParameter?: LegalDecimoParameterCreateNestedManyWithoutCompanyInput
     legalParameters?: LegalParameterCreateNestedManyWithoutCompanyInput
     departments?: DepartmentCreateNestedManyWithoutCompanyInput
     users?: UserCompanyCreateNestedManyWithoutCompanyInput
@@ -24234,6 +25962,7 @@ export namespace Prisma {
     isActive?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
+    LegalDecimoParameter?: LegalDecimoParameterUncheckedCreateNestedManyWithoutCompanyInput
     legalParameters?: LegalParameterUncheckedCreateNestedManyWithoutCompanyInput
     departments?: DepartmentUncheckedCreateNestedManyWithoutCompanyInput
     users?: UserCompanyUncheckedCreateNestedManyWithoutCompanyInput
@@ -24552,6 +26281,7 @@ export namespace Prisma {
     isActive?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
+    LegalDecimoParameter?: LegalDecimoParameterCreateNestedManyWithoutCompanyInput
     legalParameters?: LegalParameterCreateNestedManyWithoutCompanyInput
     createdBy?: UserCreateNestedOneWithoutCreatedCompaniesInput
     departments?: DepartmentCreateNestedManyWithoutCompanyInput
@@ -24574,6 +26304,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     createdByUserId?: string | null
+    LegalDecimoParameter?: LegalDecimoParameterUncheckedCreateNestedManyWithoutCompanyInput
     legalParameters?: LegalParameterUncheckedCreateNestedManyWithoutCompanyInput
     departments?: DepartmentUncheckedCreateNestedManyWithoutCompanyInput
     employees?: EmployeeUncheckedCreateNestedManyWithoutCompanyInput
@@ -24649,6 +26380,7 @@ export namespace Prisma {
     isActive?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    LegalDecimoParameter?: LegalDecimoParameterUpdateManyWithoutCompanyNestedInput
     legalParameters?: LegalParameterUpdateManyWithoutCompanyNestedInput
     createdBy?: UserUpdateOneWithoutCreatedCompaniesNestedInput
     departments?: DepartmentUpdateManyWithoutCompanyNestedInput
@@ -24671,6 +26403,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     createdByUserId?: NullableStringFieldUpdateOperationsInput | string | null
+    LegalDecimoParameter?: LegalDecimoParameterUncheckedUpdateManyWithoutCompanyNestedInput
     legalParameters?: LegalParameterUncheckedUpdateManyWithoutCompanyNestedInput
     departments?: DepartmentUncheckedUpdateManyWithoutCompanyNestedInput
     employees?: EmployeeUncheckedUpdateManyWithoutCompanyNestedInput
@@ -24805,6 +26538,48 @@ export namespace Prisma {
     companies?: UserCompanyUncheckedUpdateManyWithoutUserNestedInput
     createdCompanies?: CompanyUncheckedUpdateManyWithoutCreatedByNestedInput
     employee?: EmployeeUncheckedUpdateOneWithoutUserNestedInput
+  }
+
+  export type LegalDecimoParameterCreateWithoutCompanyInput = {
+    id?: string
+    key: $Enums.LegalParameterKey
+    name: string
+    type: string
+    category: string
+    percentage: number
+    minRange?: number | null
+    maxRange?: number | null
+    status?: string
+    effectiveDate?: Date | string
+    description?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type LegalDecimoParameterUncheckedCreateWithoutCompanyInput = {
+    id?: string
+    key: $Enums.LegalParameterKey
+    name: string
+    type: string
+    category: string
+    percentage: number
+    minRange?: number | null
+    maxRange?: number | null
+    status?: string
+    effectiveDate?: Date | string
+    description?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type LegalDecimoParameterCreateOrConnectWithoutCompanyInput = {
+    where: LegalDecimoParameterWhereUniqueInput
+    create: XOR<LegalDecimoParameterCreateWithoutCompanyInput, LegalDecimoParameterUncheckedCreateWithoutCompanyInput>
+  }
+
+  export type LegalDecimoParameterCreateManyCompanyInputEnvelope = {
+    data: LegalDecimoParameterCreateManyCompanyInput | LegalDecimoParameterCreateManyCompanyInput[]
+    skipDuplicates?: boolean
   }
 
   export type LegalParameterCreateWithoutCompanyInput = {
@@ -25138,6 +26913,42 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type LegalDecimoParameterUpsertWithWhereUniqueWithoutCompanyInput = {
+    where: LegalDecimoParameterWhereUniqueInput
+    update: XOR<LegalDecimoParameterUpdateWithoutCompanyInput, LegalDecimoParameterUncheckedUpdateWithoutCompanyInput>
+    create: XOR<LegalDecimoParameterCreateWithoutCompanyInput, LegalDecimoParameterUncheckedCreateWithoutCompanyInput>
+  }
+
+  export type LegalDecimoParameterUpdateWithWhereUniqueWithoutCompanyInput = {
+    where: LegalDecimoParameterWhereUniqueInput
+    data: XOR<LegalDecimoParameterUpdateWithoutCompanyInput, LegalDecimoParameterUncheckedUpdateWithoutCompanyInput>
+  }
+
+  export type LegalDecimoParameterUpdateManyWithWhereWithoutCompanyInput = {
+    where: LegalDecimoParameterScalarWhereInput
+    data: XOR<LegalDecimoParameterUpdateManyMutationInput, LegalDecimoParameterUncheckedUpdateManyWithoutCompanyInput>
+  }
+
+  export type LegalDecimoParameterScalarWhereInput = {
+    AND?: LegalDecimoParameterScalarWhereInput | LegalDecimoParameterScalarWhereInput[]
+    OR?: LegalDecimoParameterScalarWhereInput[]
+    NOT?: LegalDecimoParameterScalarWhereInput | LegalDecimoParameterScalarWhereInput[]
+    id?: StringFilter<"LegalDecimoParameter"> | string
+    key?: EnumLegalParameterKeyFilter<"LegalDecimoParameter"> | $Enums.LegalParameterKey
+    name?: StringFilter<"LegalDecimoParameter"> | string
+    type?: StringFilter<"LegalDecimoParameter"> | string
+    category?: StringFilter<"LegalDecimoParameter"> | string
+    percentage?: FloatFilter<"LegalDecimoParameter"> | number
+    minRange?: IntNullableFilter<"LegalDecimoParameter"> | number | null
+    maxRange?: IntNullableFilter<"LegalDecimoParameter"> | number | null
+    status?: StringFilter<"LegalDecimoParameter"> | string
+    effectiveDate?: DateTimeFilter<"LegalDecimoParameter"> | Date | string
+    description?: StringNullableFilter<"LegalDecimoParameter"> | string | null
+    companyId?: StringFilter<"LegalDecimoParameter"> | string
+    createdAt?: DateTimeFilter<"LegalDecimoParameter"> | Date | string
+    updatedAt?: DateTimeFilter<"LegalDecimoParameter"> | Date | string
+  }
+
   export type LegalParameterUpsertWithWhereUniqueWithoutCompanyInput = {
     where: LegalParameterWhereUniqueInput
     update: XOR<LegalParameterUpdateWithoutCompanyInput, LegalParameterUncheckedUpdateWithoutCompanyInput>
@@ -25427,6 +27238,7 @@ export namespace Prisma {
     isActive?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
+    LegalDecimoParameter?: LegalDecimoParameterCreateNestedManyWithoutCompanyInput
     legalParameters?: LegalParameterCreateNestedManyWithoutCompanyInput
     createdBy?: UserCreateNestedOneWithoutCreatedCompaniesInput
     users?: UserCompanyCreateNestedManyWithoutCompanyInput
@@ -25449,6 +27261,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     createdByUserId?: string | null
+    LegalDecimoParameter?: LegalDecimoParameterUncheckedCreateNestedManyWithoutCompanyInput
     legalParameters?: LegalParameterUncheckedCreateNestedManyWithoutCompanyInput
     users?: UserCompanyUncheckedCreateNestedManyWithoutCompanyInput
     employees?: EmployeeUncheckedCreateNestedManyWithoutCompanyInput
@@ -25527,6 +27340,7 @@ export namespace Prisma {
     isActive?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    LegalDecimoParameter?: LegalDecimoParameterUpdateManyWithoutCompanyNestedInput
     legalParameters?: LegalParameterUpdateManyWithoutCompanyNestedInput
     createdBy?: UserUpdateOneWithoutCreatedCompaniesNestedInput
     users?: UserCompanyUpdateManyWithoutCompanyNestedInput
@@ -25549,6 +27363,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     createdByUserId?: NullableStringFieldUpdateOperationsInput | string | null
+    LegalDecimoParameter?: LegalDecimoParameterUncheckedUpdateManyWithoutCompanyNestedInput
     legalParameters?: LegalParameterUncheckedUpdateManyWithoutCompanyNestedInput
     users?: UserCompanyUncheckedUpdateManyWithoutCompanyNestedInput
     employees?: EmployeeUncheckedUpdateManyWithoutCompanyNestedInput
@@ -25638,6 +27453,7 @@ export namespace Prisma {
     isActive?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
+    LegalDecimoParameter?: LegalDecimoParameterCreateNestedManyWithoutCompanyInput
     legalParameters?: LegalParameterCreateNestedManyWithoutCompanyInput
     createdBy?: UserCreateNestedOneWithoutCreatedCompaniesInput
     departments?: DepartmentCreateNestedManyWithoutCompanyInput
@@ -25660,6 +27476,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     createdByUserId?: string | null
+    LegalDecimoParameter?: LegalDecimoParameterUncheckedCreateNestedManyWithoutCompanyInput
     legalParameters?: LegalParameterUncheckedCreateNestedManyWithoutCompanyInput
     departments?: DepartmentUncheckedCreateNestedManyWithoutCompanyInput
     users?: UserCompanyUncheckedCreateNestedManyWithoutCompanyInput
@@ -25945,6 +27762,7 @@ export namespace Prisma {
     isActive?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    LegalDecimoParameter?: LegalDecimoParameterUpdateManyWithoutCompanyNestedInput
     legalParameters?: LegalParameterUpdateManyWithoutCompanyNestedInput
     createdBy?: UserUpdateOneWithoutCreatedCompaniesNestedInput
     departments?: DepartmentUpdateManyWithoutCompanyNestedInput
@@ -25967,6 +27785,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     createdByUserId?: NullableStringFieldUpdateOperationsInput | string | null
+    LegalDecimoParameter?: LegalDecimoParameterUncheckedUpdateManyWithoutCompanyNestedInput
     legalParameters?: LegalParameterUncheckedUpdateManyWithoutCompanyNestedInput
     departments?: DepartmentUncheckedUpdateManyWithoutCompanyNestedInput
     users?: UserCompanyUncheckedUpdateManyWithoutCompanyNestedInput
@@ -26151,6 +27970,7 @@ export namespace Prisma {
     isActive?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
+    LegalDecimoParameter?: LegalDecimoParameterCreateNestedManyWithoutCompanyInput
     legalParameters?: LegalParameterCreateNestedManyWithoutCompanyInput
     createdBy?: UserCreateNestedOneWithoutCreatedCompaniesInput
     departments?: DepartmentCreateNestedManyWithoutCompanyInput
@@ -26173,6 +27993,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     createdByUserId?: string | null
+    LegalDecimoParameter?: LegalDecimoParameterUncheckedCreateNestedManyWithoutCompanyInput
     legalParameters?: LegalParameterUncheckedCreateNestedManyWithoutCompanyInput
     departments?: DepartmentUncheckedCreateNestedManyWithoutCompanyInput
     users?: UserCompanyUncheckedCreateNestedManyWithoutCompanyInput
@@ -26332,6 +28153,7 @@ export namespace Prisma {
     isActive?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    LegalDecimoParameter?: LegalDecimoParameterUpdateManyWithoutCompanyNestedInput
     legalParameters?: LegalParameterUpdateManyWithoutCompanyNestedInput
     createdBy?: UserUpdateOneWithoutCreatedCompaniesNestedInput
     departments?: DepartmentUpdateManyWithoutCompanyNestedInput
@@ -26354,6 +28176,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     createdByUserId?: NullableStringFieldUpdateOperationsInput | string | null
+    LegalDecimoParameter?: LegalDecimoParameterUncheckedUpdateManyWithoutCompanyNestedInput
     legalParameters?: LegalParameterUncheckedUpdateManyWithoutCompanyNestedInput
     departments?: DepartmentUncheckedUpdateManyWithoutCompanyNestedInput
     users?: UserCompanyUncheckedUpdateManyWithoutCompanyNestedInput
@@ -26957,6 +28780,7 @@ export namespace Prisma {
     isActive?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
+    LegalDecimoParameter?: LegalDecimoParameterCreateNestedManyWithoutCompanyInput
     legalParameters?: LegalParameterCreateNestedManyWithoutCompanyInput
     createdBy?: UserCreateNestedOneWithoutCreatedCompaniesInput
     departments?: DepartmentCreateNestedManyWithoutCompanyInput
@@ -26979,6 +28803,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     createdByUserId?: string | null
+    LegalDecimoParameter?: LegalDecimoParameterUncheckedCreateNestedManyWithoutCompanyInput
     legalParameters?: LegalParameterUncheckedCreateNestedManyWithoutCompanyInput
     departments?: DepartmentUncheckedCreateNestedManyWithoutCompanyInput
     users?: UserCompanyUncheckedCreateNestedManyWithoutCompanyInput
@@ -27076,6 +28901,7 @@ export namespace Prisma {
     isActive?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    LegalDecimoParameter?: LegalDecimoParameterUpdateManyWithoutCompanyNestedInput
     legalParameters?: LegalParameterUpdateManyWithoutCompanyNestedInput
     createdBy?: UserUpdateOneWithoutCreatedCompaniesNestedInput
     departments?: DepartmentUpdateManyWithoutCompanyNestedInput
@@ -27098,6 +28924,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     createdByUserId?: NullableStringFieldUpdateOperationsInput | string | null
+    LegalDecimoParameter?: LegalDecimoParameterUncheckedUpdateManyWithoutCompanyNestedInput
     legalParameters?: LegalParameterUncheckedUpdateManyWithoutCompanyNestedInput
     departments?: DepartmentUncheckedUpdateManyWithoutCompanyNestedInput
     users?: UserCompanyUncheckedUpdateManyWithoutCompanyNestedInput
@@ -27173,6 +29000,7 @@ export namespace Prisma {
     isActive?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
+    LegalDecimoParameter?: LegalDecimoParameterCreateNestedManyWithoutCompanyInput
     legalParameters?: LegalParameterCreateNestedManyWithoutCompanyInput
     createdBy?: UserCreateNestedOneWithoutCreatedCompaniesInput
     departments?: DepartmentCreateNestedManyWithoutCompanyInput
@@ -27195,6 +29023,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     createdByUserId?: string | null
+    LegalDecimoParameter?: LegalDecimoParameterUncheckedCreateNestedManyWithoutCompanyInput
     legalParameters?: LegalParameterUncheckedCreateNestedManyWithoutCompanyInput
     departments?: DepartmentUncheckedCreateNestedManyWithoutCompanyInput
     users?: UserCompanyUncheckedCreateNestedManyWithoutCompanyInput
@@ -27292,6 +29121,7 @@ export namespace Prisma {
     isActive?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    LegalDecimoParameter?: LegalDecimoParameterUpdateManyWithoutCompanyNestedInput
     legalParameters?: LegalParameterUpdateManyWithoutCompanyNestedInput
     createdBy?: UserUpdateOneWithoutCreatedCompaniesNestedInput
     departments?: DepartmentUpdateManyWithoutCompanyNestedInput
@@ -27314,6 +29144,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     createdByUserId?: NullableStringFieldUpdateOperationsInput | string | null
+    LegalDecimoParameter?: LegalDecimoParameterUncheckedUpdateManyWithoutCompanyNestedInput
     legalParameters?: LegalParameterUncheckedUpdateManyWithoutCompanyNestedInput
     departments?: DepartmentUncheckedUpdateManyWithoutCompanyNestedInput
     users?: UserCompanyUncheckedUpdateManyWithoutCompanyNestedInput
@@ -27334,6 +29165,7 @@ export namespace Prisma {
     isActive?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
+    LegalDecimoParameter?: LegalDecimoParameterCreateNestedManyWithoutCompanyInput
     createdBy?: UserCreateNestedOneWithoutCreatedCompaniesInput
     departments?: DepartmentCreateNestedManyWithoutCompanyInput
     users?: UserCompanyCreateNestedManyWithoutCompanyInput
@@ -27356,6 +29188,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     createdByUserId?: string | null
+    LegalDecimoParameter?: LegalDecimoParameterUncheckedCreateNestedManyWithoutCompanyInput
     departments?: DepartmentUncheckedCreateNestedManyWithoutCompanyInput
     users?: UserCompanyUncheckedCreateNestedManyWithoutCompanyInput
     employees?: EmployeeUncheckedCreateNestedManyWithoutCompanyInput
@@ -27392,6 +29225,7 @@ export namespace Prisma {
     isActive?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    LegalDecimoParameter?: LegalDecimoParameterUpdateManyWithoutCompanyNestedInput
     createdBy?: UserUpdateOneWithoutCreatedCompaniesNestedInput
     departments?: DepartmentUpdateManyWithoutCompanyNestedInput
     users?: UserCompanyUpdateManyWithoutCompanyNestedInput
@@ -27414,6 +29248,111 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     createdByUserId?: NullableStringFieldUpdateOperationsInput | string | null
+    LegalDecimoParameter?: LegalDecimoParameterUncheckedUpdateManyWithoutCompanyNestedInput
+    departments?: DepartmentUncheckedUpdateManyWithoutCompanyNestedInput
+    users?: UserCompanyUncheckedUpdateManyWithoutCompanyNestedInput
+    employees?: EmployeeUncheckedUpdateManyWithoutCompanyNestedInput
+    payrolls?: PayrollUncheckedUpdateManyWithoutCompanyNestedInput
+    attendanceRecords?: AttendanceRecordUncheckedUpdateManyWithoutCompanyNestedInput
+    leaves?: LeaveUncheckedUpdateManyWithoutCompanyNestedInput
+  }
+
+  export type CompanyCreateWithoutLegalDecimoParameterInput = {
+    id?: string
+    code: string
+    name: string
+    address?: string | null
+    phone?: string | null
+    email?: string | null
+    ruc?: string | null
+    logoUrl?: string | null
+    isActive?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    legalParameters?: LegalParameterCreateNestedManyWithoutCompanyInput
+    createdBy?: UserCreateNestedOneWithoutCreatedCompaniesInput
+    departments?: DepartmentCreateNestedManyWithoutCompanyInput
+    users?: UserCompanyCreateNestedManyWithoutCompanyInput
+    employees?: EmployeeCreateNestedManyWithoutCompanyInput
+    payrolls?: PayrollCreateNestedManyWithoutCompanyInput
+    attendanceRecords?: AttendanceRecordCreateNestedManyWithoutCompanyInput
+    leaves?: LeaveCreateNestedManyWithoutCompanyInput
+  }
+
+  export type CompanyUncheckedCreateWithoutLegalDecimoParameterInput = {
+    id?: string
+    code: string
+    name: string
+    address?: string | null
+    phone?: string | null
+    email?: string | null
+    ruc?: string | null
+    logoUrl?: string | null
+    isActive?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    createdByUserId?: string | null
+    legalParameters?: LegalParameterUncheckedCreateNestedManyWithoutCompanyInput
+    departments?: DepartmentUncheckedCreateNestedManyWithoutCompanyInput
+    users?: UserCompanyUncheckedCreateNestedManyWithoutCompanyInput
+    employees?: EmployeeUncheckedCreateNestedManyWithoutCompanyInput
+    payrolls?: PayrollUncheckedCreateNestedManyWithoutCompanyInput
+    attendanceRecords?: AttendanceRecordUncheckedCreateNestedManyWithoutCompanyInput
+    leaves?: LeaveUncheckedCreateNestedManyWithoutCompanyInput
+  }
+
+  export type CompanyCreateOrConnectWithoutLegalDecimoParameterInput = {
+    where: CompanyWhereUniqueInput
+    create: XOR<CompanyCreateWithoutLegalDecimoParameterInput, CompanyUncheckedCreateWithoutLegalDecimoParameterInput>
+  }
+
+  export type CompanyUpsertWithoutLegalDecimoParameterInput = {
+    update: XOR<CompanyUpdateWithoutLegalDecimoParameterInput, CompanyUncheckedUpdateWithoutLegalDecimoParameterInput>
+    create: XOR<CompanyCreateWithoutLegalDecimoParameterInput, CompanyUncheckedCreateWithoutLegalDecimoParameterInput>
+    where?: CompanyWhereInput
+  }
+
+  export type CompanyUpdateToOneWithWhereWithoutLegalDecimoParameterInput = {
+    where?: CompanyWhereInput
+    data: XOR<CompanyUpdateWithoutLegalDecimoParameterInput, CompanyUncheckedUpdateWithoutLegalDecimoParameterInput>
+  }
+
+  export type CompanyUpdateWithoutLegalDecimoParameterInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    code?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    address?: NullableStringFieldUpdateOperationsInput | string | null
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    ruc?: NullableStringFieldUpdateOperationsInput | string | null
+    logoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    legalParameters?: LegalParameterUpdateManyWithoutCompanyNestedInput
+    createdBy?: UserUpdateOneWithoutCreatedCompaniesNestedInput
+    departments?: DepartmentUpdateManyWithoutCompanyNestedInput
+    users?: UserCompanyUpdateManyWithoutCompanyNestedInput
+    employees?: EmployeeUpdateManyWithoutCompanyNestedInput
+    payrolls?: PayrollUpdateManyWithoutCompanyNestedInput
+    attendanceRecords?: AttendanceRecordUpdateManyWithoutCompanyNestedInput
+    leaves?: LeaveUpdateManyWithoutCompanyNestedInput
+  }
+
+  export type CompanyUncheckedUpdateWithoutLegalDecimoParameterInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    code?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    address?: NullableStringFieldUpdateOperationsInput | string | null
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    ruc?: NullableStringFieldUpdateOperationsInput | string | null
+    logoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdByUserId?: NullableStringFieldUpdateOperationsInput | string | null
+    legalParameters?: LegalParameterUncheckedUpdateManyWithoutCompanyNestedInput
     departments?: DepartmentUncheckedUpdateManyWithoutCompanyNestedInput
     users?: UserCompanyUncheckedUpdateManyWithoutCompanyNestedInput
     employees?: EmployeeUncheckedUpdateManyWithoutCompanyNestedInput
@@ -27464,6 +29403,7 @@ export namespace Prisma {
     isActive?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    LegalDecimoParameter?: LegalDecimoParameterUpdateManyWithoutCompanyNestedInput
     legalParameters?: LegalParameterUpdateManyWithoutCompanyNestedInput
     departments?: DepartmentUpdateManyWithoutCompanyNestedInput
     users?: UserCompanyUpdateManyWithoutCompanyNestedInput
@@ -27485,6 +29425,7 @@ export namespace Prisma {
     isActive?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    LegalDecimoParameter?: LegalDecimoParameterUncheckedUpdateManyWithoutCompanyNestedInput
     legalParameters?: LegalParameterUncheckedUpdateManyWithoutCompanyNestedInput
     departments?: DepartmentUncheckedUpdateManyWithoutCompanyNestedInput
     users?: UserCompanyUncheckedUpdateManyWithoutCompanyNestedInput
@@ -27506,6 +29447,22 @@ export namespace Prisma {
     isActive?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type LegalDecimoParameterCreateManyCompanyInput = {
+    id?: string
+    key: $Enums.LegalParameterKey
+    name: string
+    type: string
+    category: string
+    percentage: number
+    minRange?: number | null
+    maxRange?: number | null
+    status?: string
+    effectiveDate?: Date | string
+    description?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
   }
 
   export type LegalParameterCreateManyCompanyInput = {
@@ -27612,6 +29569,54 @@ export namespace Prisma {
     comments?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+  }
+
+  export type LegalDecimoParameterUpdateWithoutCompanyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    key?: EnumLegalParameterKeyFieldUpdateOperationsInput | $Enums.LegalParameterKey
+    name?: StringFieldUpdateOperationsInput | string
+    type?: StringFieldUpdateOperationsInput | string
+    category?: StringFieldUpdateOperationsInput | string
+    percentage?: FloatFieldUpdateOperationsInput | number
+    minRange?: NullableIntFieldUpdateOperationsInput | number | null
+    maxRange?: NullableIntFieldUpdateOperationsInput | number | null
+    status?: StringFieldUpdateOperationsInput | string
+    effectiveDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type LegalDecimoParameterUncheckedUpdateWithoutCompanyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    key?: EnumLegalParameterKeyFieldUpdateOperationsInput | $Enums.LegalParameterKey
+    name?: StringFieldUpdateOperationsInput | string
+    type?: StringFieldUpdateOperationsInput | string
+    category?: StringFieldUpdateOperationsInput | string
+    percentage?: FloatFieldUpdateOperationsInput | number
+    minRange?: NullableIntFieldUpdateOperationsInput | number | null
+    maxRange?: NullableIntFieldUpdateOperationsInput | number | null
+    status?: StringFieldUpdateOperationsInput | string
+    effectiveDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type LegalDecimoParameterUncheckedUpdateManyWithoutCompanyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    key?: EnumLegalParameterKeyFieldUpdateOperationsInput | $Enums.LegalParameterKey
+    name?: StringFieldUpdateOperationsInput | string
+    type?: StringFieldUpdateOperationsInput | string
+    category?: StringFieldUpdateOperationsInput | string
+    percentage?: FloatFieldUpdateOperationsInput | number
+    minRange?: NullableIntFieldUpdateOperationsInput | number | null
+    maxRange?: NullableIntFieldUpdateOperationsInput | number | null
+    status?: StringFieldUpdateOperationsInput | string
+    effectiveDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type LegalParameterUpdateWithoutCompanyInput = {
