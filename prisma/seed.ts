@@ -1,8 +1,9 @@
 import 'dotenv/config'
 import prisma from '../lib/prisma.js'
 import { hash } from 'bcryptjs'
-// 1. IMPORTA EL ENUM DESDE TU CLIENTE GENERADO
 import { LegalParameterKey } from '../generated/prisma/index.js'
+import { AdminConfig } from '../src/config/adminConfig.js'
+
 
 export enum UserRole {
   USER = 'USER',
@@ -56,11 +57,12 @@ async function main() {
 
   console.log('✅ Base de datos limpia.\n')
 
-  const passwordHash = await hash('Lexus0110', 10)
+  if (!AdminConfig?.Email || !AdminConfig?.Password ) {
+    throw new Error('ADMIN_EMAIL y ADMIN_EMAIL_PASSWORD deben estar definidos en las variables de entorno.')
+  }
 
-  /* ============================
-     1. CREAR COMPAÑÍA PRINCIPAL
-  ============================ */
+  const passwordHash = await hash(String(AdminConfig?.Email), 10)
+
   console.log('🏢 Creando compañía principal...')
   const companyIM = await prisma.company.create({
     data: {
@@ -71,13 +73,8 @@ async function main() {
       email: 'info@intermaritime.org'
     }
   })
-
-  /* ============================
-     2. LEGAL PARAMETERS (Corregido con Enum)
-  ============================ */
   console.log('📋 Creando parámetros legales para ' + companyIM.name)
 
-  // 2. TIPAR EL ARRAY PARA QUE ACEPTE EL ENUM
   const legalParameters: any[] = [
     {
       key: LegalParameterKey.ss_empleado,
@@ -193,7 +190,7 @@ async function main() {
      4. SUPER ADMIN
   ============================ */
   console.log('👨‍💼 Creando SUPER_ADMIN...')
-  const superAdminEmail = 'david@intermaritime.org'
+  const superAdminEmail = String(AdminConfig?.Email)
   const userCode = await generateNextUserCode()
 
   const superAdmin = await prisma.user.create({
@@ -205,9 +202,9 @@ async function main() {
       isActive: true,
       person: {
         create: {
-          firstName: 'Carlos',
-          lastName: 'Sanchez',
-          fullName: 'Carlos Sanchez',
+          firstName: AdminConfig?.Name || 'Carlos',
+          lastName: AdminConfig?.LastName || 'Sanchez',
+          fullName: `${AdminConfig?.Name || 'Carlos'} ${AdminConfig?.LastName || 'Sanchez'}`,
           contactEmail: superAdminEmail,
           status: 'Activo',
           userCode,
