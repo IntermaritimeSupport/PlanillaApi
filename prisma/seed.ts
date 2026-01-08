@@ -40,7 +40,7 @@ async function main() {
   const paramsData = [
     { key: LegalParameterKey.ss_empleado, name: 'Seguro Social - Empleado', type: 'employee', category: 'social_security', percentage: 9.75, description: 'Cuota regular de SS para empleados' },
     { key: LegalParameterKey.ss_patrono, name: 'Seguro Social - Patrono', type: 'employer', category: 'social_security', percentage: 12.25, description: 'Cuota patronal de SS' },
-    { key: LegalParameterKey.ss_decimo, name: 'Seguro Social - XIII Mes', type: 'employee', category: 'social_security', percentage: 7.25, description: 'Cuota de SS para el décimo tercer mes' },
+    { key: LegalParameterKey.ss_decimo, name: 'Seguro Social - Decimo Tercer Mes', type: 'employee', category: 'social_security', percentage: 7.25, description: 'Cuota de SS para el décimo tercer mes' },
     { key: LegalParameterKey.se_empleado, name: 'Seguro Educativo - Empleado', type: 'employee', category: 'educational_insurance', percentage: 1.25, description: 'Seguro educativo empleado' },
     { key: LegalParameterKey.se_patrono, name: 'Seguro Educativo - Patrono', type: 'employer', category: 'educational_insurance', percentage: 1.50, description: 'Seguro educativo patronal' },
     { key: LegalParameterKey.riesgo_profesional, name: 'Riesgos Profesionales', type: 'employer', category: 'other', percentage: 0.98, description: 'Riesgos profesionales base' },

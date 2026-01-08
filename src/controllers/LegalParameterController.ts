@@ -1,5 +1,6 @@
 import { Request, Response } from 'express'
 import prisma from '../../lib/prisma.js'
+import { LegalParameterKey } from '../../generated/prisma/index.js'
 
 export class LegalParameterController {
   
@@ -297,16 +298,16 @@ export class LegalParameterController {
   // Agregar dentro de la clase LegalParameterController
   async getAvailableKeys(req: Request, res: Response) {
     const keys = [
-      { key: 'ss_empleado', name: 'Seguro Social - Empleado', category: 'social_security' },
-      { key: 'ss_patrono', name: 'Seguro Social - Patrono', category: 'social_security' },
-      { key: 'ss_decimo', name: 'Seguro Social - Décimo Tercer Mes', category: 'social_security' },
-      { key: 'se_empleado', name: 'Seguro Educativo - Empleado', category: 'educational_insurance' },
-      { key: 'se_patrono', name: 'Seguro Educativo - Patrono', category: 'educational_insurance' },
-      { key: 'riesgo_profesional', name: 'Riesgos Profesionales', category: 'other' },
-      { key: 'isr_r1', name: 'ISR Tramo 1 (Exento)', category: 'isr' },
-      { key: 'isr_r2', name: 'ISR Tramo 2 (15%)', category: 'isr' },
-      { key: 'isr_r3', name: 'ISR Tramo 3 (25%)', category: 'isr' },
-      { key: 'decimo_css', name: 'Décimo Tercer Mes %', category: 'other' }
+      { key: LegalParameterKey.ss_empleado, name: 'Seguro Social - Empleado', category: 'social_security' },
+      { key: LegalParameterKey.ss_patrono, name: 'Seguro Social - Patrono', category: 'social_security' },
+      { key: LegalParameterKey.ss_decimo, name: 'Seguro Social - Décimo Tercer Mes', category: 'social_security' },
+      { key: LegalParameterKey.se_empleado, name: 'Seguro Educativo - Empleado', category: 'educational_insurance' },
+      { key: LegalParameterKey.se_patrono, name: 'Seguro Educativo - Patrono', category: 'educational_insurance' },
+      { key: LegalParameterKey.riesgo_profesional, name: 'Riesgos Profesionales', category: 'other' },
+      { key: LegalParameterKey.isr_r1, name: 'ISR Tramo 1 (Exento)', category: 'isr' },
+      { key: LegalParameterKey.isr_r2, name: 'ISR Tramo 2 (15%)', category: 'isr' },
+      { key: LegalParameterKey.isr_r3, name: 'ISR Tramo 3 (25%)', category: 'isr' },
+      { key: LegalParameterKey.decimo_css, name: 'Décimo Tercer Mes %', category: 'other' }
     ];
     return res.status(200).json(keys);
   }
