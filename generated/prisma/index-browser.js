@@ -433,6 +433,19 @@ exports.LegalParameterKey = exports.$Enums.LegalParameterKey = {
   decimo_css: 'decimo_css'
 };
 
+exports.ParameterType = exports.$Enums.ParameterType = {
+  employee: 'employee',
+  employer: 'employer',
+  fixed: 'fixed'
+};
+
+exports.ParameterCategory = exports.$Enums.ParameterCategory = {
+  social_security: 'social_security',
+  educational_insurance: 'educational_insurance',
+  isr: 'isr',
+  other: 'other'
+};
+
 exports.Prisma.ModelName = {
   User: 'User',
   UserCompany: 'UserCompany',

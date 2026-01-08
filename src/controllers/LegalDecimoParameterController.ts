@@ -1,6 +1,6 @@
 import { Request, Response } from 'express'
 import prisma from '../../lib/prisma.js'
-import { LegalParameterKey } from '../../generated/prisma/index.js'
+import { LegalParameterKey, ParameterCategory } from '../../generated/prisma/index.js'
 
 export class LegalDecimoParameterController {
   
@@ -85,7 +85,7 @@ export class LegalDecimoParameterController {
 
       const parameters = await prisma.legalDecimoParameter.findMany({
         where: { 
-          category,
+          category: category as ParameterCategory,
           companyId: String(companyId)
         }
       })

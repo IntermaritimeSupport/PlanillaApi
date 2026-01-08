@@ -276,8 +276,8 @@ model LegalParameter {
   id            String            @id @default(uuid())
   key           LegalParameterKey
   name          String
-  type          String // "employee" | "employer" | "fixed"
-  category      String // "social_security" | "educational_insurance" | "isr" | "other"
+  type          ParameterType // "employee" | "employer" | "fixed"
+  category      ParameterCategory // "social_security" | "educational_insurance" | "isr" | "other"
   percentage    Float
   minRange      Int?
   maxRange      Int?
@@ -303,8 +303,8 @@ model LegalDecimoParameter {
   id            String            @id @default(uuid())
   key           LegalParameterKey
   name          String
-  type          String // "employee" | "employer" | "fixed"
-  category      String // "social_security" | "educational_insurance" | "isr" | "other"
+  type          ParameterType // "employee" | "employer" | "fixed"
+  category      ParameterCategory // "social_security" | "educational_insurance" | "isr" | "other"
   percentage    Float
   minRange      Int?
   maxRange      Int?
@@ -420,4 +420,17 @@ enum UserRole {
 enum PersonStatus {
   Activo
   Inactivo
+}
+
+enum ParameterType {
+  employee
+  employer
+  fixed
+}
+
+enum ParameterCategory {
+  social_security
+  educational_insurance
+  isr
+  other
 }

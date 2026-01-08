@@ -216,6 +216,25 @@ export const PersonStatus: {
 
 export type PersonStatus = (typeof PersonStatus)[keyof typeof PersonStatus]
 
+
+export const ParameterType: {
+  employee: 'employee',
+  employer: 'employer',
+  fixed: 'fixed'
+};
+
+export type ParameterType = (typeof ParameterType)[keyof typeof ParameterType]
+
+
+export const ParameterCategory: {
+  social_security: 'social_security',
+  educational_insurance: 'educational_insurance',
+  isr: 'isr',
+  other: 'other'
+};
+
+export type ParameterCategory = (typeof ParameterCategory)[keyof typeof ParameterCategory]
+
 }
 
 export type LegalParameterKey = $Enums.LegalParameterKey
@@ -265,6 +284,14 @@ export const UserRole: typeof $Enums.UserRole
 export type PersonStatus = $Enums.PersonStatus
 
 export const PersonStatus: typeof $Enums.PersonStatus
+
+export type ParameterType = $Enums.ParameterType
+
+export const ParameterType: typeof $Enums.ParameterType
+
+export type ParameterCategory = $Enums.ParameterCategory
+
+export const ParameterCategory: typeof $Enums.ParameterCategory
 
 /**
  * ##  Prisma Client ʲˢ
@@ -17082,8 +17109,8 @@ export namespace Prisma {
     id: string | null
     key: $Enums.LegalParameterKey | null
     name: string | null
-    type: string | null
-    category: string | null
+    type: $Enums.ParameterType | null
+    category: $Enums.ParameterCategory | null
     percentage: number | null
     minRange: number | null
     maxRange: number | null
@@ -17099,8 +17126,8 @@ export namespace Prisma {
     id: string | null
     key: $Enums.LegalParameterKey | null
     name: string | null
-    type: string | null
-    category: string | null
+    type: $Enums.ParameterType | null
+    category: $Enums.ParameterCategory | null
     percentage: number | null
     minRange: number | null
     maxRange: number | null
@@ -17285,8 +17312,8 @@ export namespace Prisma {
     id: string
     key: $Enums.LegalParameterKey
     name: string
-    type: string
-    category: string
+    type: $Enums.ParameterType
+    category: $Enums.ParameterCategory
     percentage: number
     minRange: number | null
     maxRange: number | null
@@ -17408,8 +17435,8 @@ export namespace Prisma {
       id: string
       key: $Enums.LegalParameterKey
       name: string
-      type: string
-      category: string
+      type: $Enums.ParameterType
+      category: $Enums.ParameterCategory
       percentage: number
       minRange: number | null
       maxRange: number | null
@@ -17846,8 +17873,8 @@ export namespace Prisma {
     readonly id: FieldRef<"LegalParameter", 'String'>
     readonly key: FieldRef<"LegalParameter", 'LegalParameterKey'>
     readonly name: FieldRef<"LegalParameter", 'String'>
-    readonly type: FieldRef<"LegalParameter", 'String'>
-    readonly category: FieldRef<"LegalParameter", 'String'>
+    readonly type: FieldRef<"LegalParameter", 'ParameterType'>
+    readonly category: FieldRef<"LegalParameter", 'ParameterCategory'>
     readonly percentage: FieldRef<"LegalParameter", 'Float'>
     readonly minRange: FieldRef<"LegalParameter", 'Int'>
     readonly maxRange: FieldRef<"LegalParameter", 'Int'>
@@ -18299,8 +18326,8 @@ export namespace Prisma {
     id: string | null
     key: $Enums.LegalParameterKey | null
     name: string | null
-    type: string | null
-    category: string | null
+    type: $Enums.ParameterType | null
+    category: $Enums.ParameterCategory | null
     percentage: number | null
     minRange: number | null
     maxRange: number | null
@@ -18316,8 +18343,8 @@ export namespace Prisma {
     id: string | null
     key: $Enums.LegalParameterKey | null
     name: string | null
-    type: string | null
-    category: string | null
+    type: $Enums.ParameterType | null
+    category: $Enums.ParameterCategory | null
     percentage: number | null
     minRange: number | null
     maxRange: number | null
@@ -18502,8 +18529,8 @@ export namespace Prisma {
     id: string
     key: $Enums.LegalParameterKey
     name: string
-    type: string
-    category: string
+    type: $Enums.ParameterType
+    category: $Enums.ParameterCategory
     percentage: number
     minRange: number | null
     maxRange: number | null
@@ -18625,8 +18652,8 @@ export namespace Prisma {
       id: string
       key: $Enums.LegalParameterKey
       name: string
-      type: string
-      category: string
+      type: $Enums.ParameterType
+      category: $Enums.ParameterCategory
       percentage: number
       minRange: number | null
       maxRange: number | null
@@ -19063,8 +19090,8 @@ export namespace Prisma {
     readonly id: FieldRef<"LegalDecimoParameter", 'String'>
     readonly key: FieldRef<"LegalDecimoParameter", 'LegalParameterKey'>
     readonly name: FieldRef<"LegalDecimoParameter", 'String'>
-    readonly type: FieldRef<"LegalDecimoParameter", 'String'>
-    readonly category: FieldRef<"LegalDecimoParameter", 'String'>
+    readonly type: FieldRef<"LegalDecimoParameter", 'ParameterType'>
+    readonly category: FieldRef<"LegalDecimoParameter", 'ParameterCategory'>
     readonly percentage: FieldRef<"LegalDecimoParameter", 'Float'>
     readonly minRange: FieldRef<"LegalDecimoParameter", 'Int'>
     readonly maxRange: FieldRef<"LegalDecimoParameter", 'Int'>
@@ -20006,6 +20033,34 @@ export namespace Prisma {
    * Reference to a field of type 'LegalParameterKey[]'
    */
   export type ListEnumLegalParameterKeyFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'LegalParameterKey[]'>
+    
+
+
+  /**
+   * Reference to a field of type 'ParameterType'
+   */
+  export type EnumParameterTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ParameterType'>
+    
+
+
+  /**
+   * Reference to a field of type 'ParameterType[]'
+   */
+  export type ListEnumParameterTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ParameterType[]'>
+    
+
+
+  /**
+   * Reference to a field of type 'ParameterCategory'
+   */
+  export type EnumParameterCategoryFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ParameterCategory'>
+    
+
+
+  /**
+   * Reference to a field of type 'ParameterCategory[]'
+   */
+  export type ListEnumParameterCategoryFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ParameterCategory[]'>
     
 
 
@@ -21160,8 +21215,8 @@ export namespace Prisma {
     id?: StringFilter<"LegalParameter"> | string
     key?: EnumLegalParameterKeyFilter<"LegalParameter"> | $Enums.LegalParameterKey
     name?: StringFilter<"LegalParameter"> | string
-    type?: StringFilter<"LegalParameter"> | string
-    category?: StringFilter<"LegalParameter"> | string
+    type?: EnumParameterTypeFilter<"LegalParameter"> | $Enums.ParameterType
+    category?: EnumParameterCategoryFilter<"LegalParameter"> | $Enums.ParameterCategory
     percentage?: FloatFilter<"LegalParameter"> | number
     minRange?: IntNullableFilter<"LegalParameter"> | number | null
     maxRange?: IntNullableFilter<"LegalParameter"> | number | null
@@ -21200,8 +21255,8 @@ export namespace Prisma {
     NOT?: LegalParameterWhereInput | LegalParameterWhereInput[]
     key?: EnumLegalParameterKeyFilter<"LegalParameter"> | $Enums.LegalParameterKey
     name?: StringFilter<"LegalParameter"> | string
-    type?: StringFilter<"LegalParameter"> | string
-    category?: StringFilter<"LegalParameter"> | string
+    type?: EnumParameterTypeFilter<"LegalParameter"> | $Enums.ParameterType
+    category?: EnumParameterCategoryFilter<"LegalParameter"> | $Enums.ParameterCategory
     percentage?: FloatFilter<"LegalParameter"> | number
     minRange?: IntNullableFilter<"LegalParameter"> | number | null
     maxRange?: IntNullableFilter<"LegalParameter"> | number | null
@@ -21243,8 +21298,8 @@ export namespace Prisma {
     id?: StringWithAggregatesFilter<"LegalParameter"> | string
     key?: EnumLegalParameterKeyWithAggregatesFilter<"LegalParameter"> | $Enums.LegalParameterKey
     name?: StringWithAggregatesFilter<"LegalParameter"> | string
-    type?: StringWithAggregatesFilter<"LegalParameter"> | string
-    category?: StringWithAggregatesFilter<"LegalParameter"> | string
+    type?: EnumParameterTypeWithAggregatesFilter<"LegalParameter"> | $Enums.ParameterType
+    category?: EnumParameterCategoryWithAggregatesFilter<"LegalParameter"> | $Enums.ParameterCategory
     percentage?: FloatWithAggregatesFilter<"LegalParameter"> | number
     minRange?: IntNullableWithAggregatesFilter<"LegalParameter"> | number | null
     maxRange?: IntNullableWithAggregatesFilter<"LegalParameter"> | number | null
@@ -21263,8 +21318,8 @@ export namespace Prisma {
     id?: StringFilter<"LegalDecimoParameter"> | string
     key?: EnumLegalParameterKeyFilter<"LegalDecimoParameter"> | $Enums.LegalParameterKey
     name?: StringFilter<"LegalDecimoParameter"> | string
-    type?: StringFilter<"LegalDecimoParameter"> | string
-    category?: StringFilter<"LegalDecimoParameter"> | string
+    type?: EnumParameterTypeFilter<"LegalDecimoParameter"> | $Enums.ParameterType
+    category?: EnumParameterCategoryFilter<"LegalDecimoParameter"> | $Enums.ParameterCategory
     percentage?: FloatFilter<"LegalDecimoParameter"> | number
     minRange?: IntNullableFilter<"LegalDecimoParameter"> | number | null
     maxRange?: IntNullableFilter<"LegalDecimoParameter"> | number | null
@@ -21303,8 +21358,8 @@ export namespace Prisma {
     NOT?: LegalDecimoParameterWhereInput | LegalDecimoParameterWhereInput[]
     key?: EnumLegalParameterKeyFilter<"LegalDecimoParameter"> | $Enums.LegalParameterKey
     name?: StringFilter<"LegalDecimoParameter"> | string
-    type?: StringFilter<"LegalDecimoParameter"> | string
-    category?: StringFilter<"LegalDecimoParameter"> | string
+    type?: EnumParameterTypeFilter<"LegalDecimoParameter"> | $Enums.ParameterType
+    category?: EnumParameterCategoryFilter<"LegalDecimoParameter"> | $Enums.ParameterCategory
     percentage?: FloatFilter<"LegalDecimoParameter"> | number
     minRange?: IntNullableFilter<"LegalDecimoParameter"> | number | null
     maxRange?: IntNullableFilter<"LegalDecimoParameter"> | number | null
@@ -21346,8 +21401,8 @@ export namespace Prisma {
     id?: StringWithAggregatesFilter<"LegalDecimoParameter"> | string
     key?: EnumLegalParameterKeyWithAggregatesFilter<"LegalDecimoParameter"> | $Enums.LegalParameterKey
     name?: StringWithAggregatesFilter<"LegalDecimoParameter"> | string
-    type?: StringWithAggregatesFilter<"LegalDecimoParameter"> | string
-    category?: StringWithAggregatesFilter<"LegalDecimoParameter"> | string
+    type?: EnumParameterTypeWithAggregatesFilter<"LegalDecimoParameter"> | $Enums.ParameterType
+    category?: EnumParameterCategoryWithAggregatesFilter<"LegalDecimoParameter"> | $Enums.ParameterCategory
     percentage?: FloatWithAggregatesFilter<"LegalDecimoParameter"> | number
     minRange?: IntNullableWithAggregatesFilter<"LegalDecimoParameter"> | number | null
     maxRange?: IntNullableWithAggregatesFilter<"LegalDecimoParameter"> | number | null
@@ -22623,8 +22678,8 @@ export namespace Prisma {
     id?: string
     key: $Enums.LegalParameterKey
     name: string
-    type: string
-    category: string
+    type: $Enums.ParameterType
+    category: $Enums.ParameterCategory
     percentage: number
     minRange?: number | null
     maxRange?: number | null
@@ -22640,8 +22695,8 @@ export namespace Prisma {
     id?: string
     key: $Enums.LegalParameterKey
     name: string
-    type: string
-    category: string
+    type: $Enums.ParameterType
+    category: $Enums.ParameterCategory
     percentage: number
     minRange?: number | null
     maxRange?: number | null
@@ -22657,8 +22712,8 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     key?: EnumLegalParameterKeyFieldUpdateOperationsInput | $Enums.LegalParameterKey
     name?: StringFieldUpdateOperationsInput | string
-    type?: StringFieldUpdateOperationsInput | string
-    category?: StringFieldUpdateOperationsInput | string
+    type?: EnumParameterTypeFieldUpdateOperationsInput | $Enums.ParameterType
+    category?: EnumParameterCategoryFieldUpdateOperationsInput | $Enums.ParameterCategory
     percentage?: FloatFieldUpdateOperationsInput | number
     minRange?: NullableIntFieldUpdateOperationsInput | number | null
     maxRange?: NullableIntFieldUpdateOperationsInput | number | null
@@ -22674,8 +22729,8 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     key?: EnumLegalParameterKeyFieldUpdateOperationsInput | $Enums.LegalParameterKey
     name?: StringFieldUpdateOperationsInput | string
-    type?: StringFieldUpdateOperationsInput | string
-    category?: StringFieldUpdateOperationsInput | string
+    type?: EnumParameterTypeFieldUpdateOperationsInput | $Enums.ParameterType
+    category?: EnumParameterCategoryFieldUpdateOperationsInput | $Enums.ParameterCategory
     percentage?: FloatFieldUpdateOperationsInput | number
     minRange?: NullableIntFieldUpdateOperationsInput | number | null
     maxRange?: NullableIntFieldUpdateOperationsInput | number | null
@@ -22691,8 +22746,8 @@ export namespace Prisma {
     id?: string
     key: $Enums.LegalParameterKey
     name: string
-    type: string
-    category: string
+    type: $Enums.ParameterType
+    category: $Enums.ParameterCategory
     percentage: number
     minRange?: number | null
     maxRange?: number | null
@@ -22708,8 +22763,8 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     key?: EnumLegalParameterKeyFieldUpdateOperationsInput | $Enums.LegalParameterKey
     name?: StringFieldUpdateOperationsInput | string
-    type?: StringFieldUpdateOperationsInput | string
-    category?: StringFieldUpdateOperationsInput | string
+    type?: EnumParameterTypeFieldUpdateOperationsInput | $Enums.ParameterType
+    category?: EnumParameterCategoryFieldUpdateOperationsInput | $Enums.ParameterCategory
     percentage?: FloatFieldUpdateOperationsInput | number
     minRange?: NullableIntFieldUpdateOperationsInput | number | null
     maxRange?: NullableIntFieldUpdateOperationsInput | number | null
@@ -22724,8 +22779,8 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     key?: EnumLegalParameterKeyFieldUpdateOperationsInput | $Enums.LegalParameterKey
     name?: StringFieldUpdateOperationsInput | string
-    type?: StringFieldUpdateOperationsInput | string
-    category?: StringFieldUpdateOperationsInput | string
+    type?: EnumParameterTypeFieldUpdateOperationsInput | $Enums.ParameterType
+    category?: EnumParameterCategoryFieldUpdateOperationsInput | $Enums.ParameterCategory
     percentage?: FloatFieldUpdateOperationsInput | number
     minRange?: NullableIntFieldUpdateOperationsInput | number | null
     maxRange?: NullableIntFieldUpdateOperationsInput | number | null
@@ -22741,8 +22796,8 @@ export namespace Prisma {
     id?: string
     key: $Enums.LegalParameterKey
     name: string
-    type: string
-    category: string
+    type: $Enums.ParameterType
+    category: $Enums.ParameterCategory
     percentage: number
     minRange?: number | null
     maxRange?: number | null
@@ -22758,8 +22813,8 @@ export namespace Prisma {
     id?: string
     key: $Enums.LegalParameterKey
     name: string
-    type: string
-    category: string
+    type: $Enums.ParameterType
+    category: $Enums.ParameterCategory
     percentage: number
     minRange?: number | null
     maxRange?: number | null
@@ -22775,8 +22830,8 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     key?: EnumLegalParameterKeyFieldUpdateOperationsInput | $Enums.LegalParameterKey
     name?: StringFieldUpdateOperationsInput | string
-    type?: StringFieldUpdateOperationsInput | string
-    category?: StringFieldUpdateOperationsInput | string
+    type?: EnumParameterTypeFieldUpdateOperationsInput | $Enums.ParameterType
+    category?: EnumParameterCategoryFieldUpdateOperationsInput | $Enums.ParameterCategory
     percentage?: FloatFieldUpdateOperationsInput | number
     minRange?: NullableIntFieldUpdateOperationsInput | number | null
     maxRange?: NullableIntFieldUpdateOperationsInput | number | null
@@ -22792,8 +22847,8 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     key?: EnumLegalParameterKeyFieldUpdateOperationsInput | $Enums.LegalParameterKey
     name?: StringFieldUpdateOperationsInput | string
-    type?: StringFieldUpdateOperationsInput | string
-    category?: StringFieldUpdateOperationsInput | string
+    type?: EnumParameterTypeFieldUpdateOperationsInput | $Enums.ParameterType
+    category?: EnumParameterCategoryFieldUpdateOperationsInput | $Enums.ParameterCategory
     percentage?: FloatFieldUpdateOperationsInput | number
     minRange?: NullableIntFieldUpdateOperationsInput | number | null
     maxRange?: NullableIntFieldUpdateOperationsInput | number | null
@@ -22809,8 +22864,8 @@ export namespace Prisma {
     id?: string
     key: $Enums.LegalParameterKey
     name: string
-    type: string
-    category: string
+    type: $Enums.ParameterType
+    category: $Enums.ParameterCategory
     percentage: number
     minRange?: number | null
     maxRange?: number | null
@@ -22826,8 +22881,8 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     key?: EnumLegalParameterKeyFieldUpdateOperationsInput | $Enums.LegalParameterKey
     name?: StringFieldUpdateOperationsInput | string
-    type?: StringFieldUpdateOperationsInput | string
-    category?: StringFieldUpdateOperationsInput | string
+    type?: EnumParameterTypeFieldUpdateOperationsInput | $Enums.ParameterType
+    category?: EnumParameterCategoryFieldUpdateOperationsInput | $Enums.ParameterCategory
     percentage?: FloatFieldUpdateOperationsInput | number
     minRange?: NullableIntFieldUpdateOperationsInput | number | null
     maxRange?: NullableIntFieldUpdateOperationsInput | number | null
@@ -22842,8 +22897,8 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     key?: EnumLegalParameterKeyFieldUpdateOperationsInput | $Enums.LegalParameterKey
     name?: StringFieldUpdateOperationsInput | string
-    type?: StringFieldUpdateOperationsInput | string
-    category?: StringFieldUpdateOperationsInput | string
+    type?: EnumParameterTypeFieldUpdateOperationsInput | $Enums.ParameterType
+    category?: EnumParameterCategoryFieldUpdateOperationsInput | $Enums.ParameterCategory
     percentage?: FloatFieldUpdateOperationsInput | number
     minRange?: NullableIntFieldUpdateOperationsInput | number | null
     maxRange?: NullableIntFieldUpdateOperationsInput | number | null
@@ -24044,6 +24099,20 @@ export namespace Prisma {
     not?: NestedEnumLegalParameterKeyFilter<$PrismaModel> | $Enums.LegalParameterKey
   }
 
+  export type EnumParameterTypeFilter<$PrismaModel = never> = {
+    equals?: $Enums.ParameterType | EnumParameterTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.ParameterType[] | ListEnumParameterTypeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.ParameterType[] | ListEnumParameterTypeFieldRefInput<$PrismaModel>
+    not?: NestedEnumParameterTypeFilter<$PrismaModel> | $Enums.ParameterType
+  }
+
+  export type EnumParameterCategoryFilter<$PrismaModel = never> = {
+    equals?: $Enums.ParameterCategory | EnumParameterCategoryFieldRefInput<$PrismaModel>
+    in?: $Enums.ParameterCategory[] | ListEnumParameterCategoryFieldRefInput<$PrismaModel>
+    notIn?: $Enums.ParameterCategory[] | ListEnumParameterCategoryFieldRefInput<$PrismaModel>
+    not?: NestedEnumParameterCategoryFilter<$PrismaModel> | $Enums.ParameterCategory
+  }
+
   export type FloatFilter<$PrismaModel = never> = {
     equals?: number | FloatFieldRefInput<$PrismaModel>
     in?: number[] | ListFloatFieldRefInput<$PrismaModel>
@@ -24131,6 +24200,26 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedEnumLegalParameterKeyFilter<$PrismaModel>
     _max?: NestedEnumLegalParameterKeyFilter<$PrismaModel>
+  }
+
+  export type EnumParameterTypeWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.ParameterType | EnumParameterTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.ParameterType[] | ListEnumParameterTypeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.ParameterType[] | ListEnumParameterTypeFieldRefInput<$PrismaModel>
+    not?: NestedEnumParameterTypeWithAggregatesFilter<$PrismaModel> | $Enums.ParameterType
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumParameterTypeFilter<$PrismaModel>
+    _max?: NestedEnumParameterTypeFilter<$PrismaModel>
+  }
+
+  export type EnumParameterCategoryWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.ParameterCategory | EnumParameterCategoryFieldRefInput<$PrismaModel>
+    in?: $Enums.ParameterCategory[] | ListEnumParameterCategoryFieldRefInput<$PrismaModel>
+    notIn?: $Enums.ParameterCategory[] | ListEnumParameterCategoryFieldRefInput<$PrismaModel>
+    not?: NestedEnumParameterCategoryWithAggregatesFilter<$PrismaModel> | $Enums.ParameterCategory
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumParameterCategoryFilter<$PrismaModel>
+    _max?: NestedEnumParameterCategoryFilter<$PrismaModel>
   }
 
   export type FloatWithAggregatesFilter<$PrismaModel = never> = {
@@ -25405,6 +25494,14 @@ export namespace Prisma {
     set?: $Enums.LegalParameterKey
   }
 
+  export type EnumParameterTypeFieldUpdateOperationsInput = {
+    set?: $Enums.ParameterType
+  }
+
+  export type EnumParameterCategoryFieldUpdateOperationsInput = {
+    set?: $Enums.ParameterCategory
+  }
+
   export type FloatFieldUpdateOperationsInput = {
     set?: number
     increment?: number
@@ -25884,6 +25981,20 @@ export namespace Prisma {
     not?: NestedEnumLegalParameterKeyFilter<$PrismaModel> | $Enums.LegalParameterKey
   }
 
+  export type NestedEnumParameterTypeFilter<$PrismaModel = never> = {
+    equals?: $Enums.ParameterType | EnumParameterTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.ParameterType[] | ListEnumParameterTypeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.ParameterType[] | ListEnumParameterTypeFieldRefInput<$PrismaModel>
+    not?: NestedEnumParameterTypeFilter<$PrismaModel> | $Enums.ParameterType
+  }
+
+  export type NestedEnumParameterCategoryFilter<$PrismaModel = never> = {
+    equals?: $Enums.ParameterCategory | EnumParameterCategoryFieldRefInput<$PrismaModel>
+    in?: $Enums.ParameterCategory[] | ListEnumParameterCategoryFieldRefInput<$PrismaModel>
+    notIn?: $Enums.ParameterCategory[] | ListEnumParameterCategoryFieldRefInput<$PrismaModel>
+    not?: NestedEnumParameterCategoryFilter<$PrismaModel> | $Enums.ParameterCategory
+  }
+
   export type NestedEnumLegalParameterKeyWithAggregatesFilter<$PrismaModel = never> = {
     equals?: $Enums.LegalParameterKey | EnumLegalParameterKeyFieldRefInput<$PrismaModel>
     in?: $Enums.LegalParameterKey[] | ListEnumLegalParameterKeyFieldRefInput<$PrismaModel>
@@ -25892,6 +26003,26 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedEnumLegalParameterKeyFilter<$PrismaModel>
     _max?: NestedEnumLegalParameterKeyFilter<$PrismaModel>
+  }
+
+  export type NestedEnumParameterTypeWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.ParameterType | EnumParameterTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.ParameterType[] | ListEnumParameterTypeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.ParameterType[] | ListEnumParameterTypeFieldRefInput<$PrismaModel>
+    not?: NestedEnumParameterTypeWithAggregatesFilter<$PrismaModel> | $Enums.ParameterType
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumParameterTypeFilter<$PrismaModel>
+    _max?: NestedEnumParameterTypeFilter<$PrismaModel>
+  }
+
+  export type NestedEnumParameterCategoryWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.ParameterCategory | EnumParameterCategoryFieldRefInput<$PrismaModel>
+    in?: $Enums.ParameterCategory[] | ListEnumParameterCategoryFieldRefInput<$PrismaModel>
+    notIn?: $Enums.ParameterCategory[] | ListEnumParameterCategoryFieldRefInput<$PrismaModel>
+    not?: NestedEnumParameterCategoryWithAggregatesFilter<$PrismaModel> | $Enums.ParameterCategory
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumParameterCategoryFilter<$PrismaModel>
+    _max?: NestedEnumParameterCategoryFilter<$PrismaModel>
   }
 
   export type NestedFloatWithAggregatesFilter<$PrismaModel = never> = {
@@ -26544,8 +26675,8 @@ export namespace Prisma {
     id?: string
     key: $Enums.LegalParameterKey
     name: string
-    type: string
-    category: string
+    type: $Enums.ParameterType
+    category: $Enums.ParameterCategory
     percentage: number
     minRange?: number | null
     maxRange?: number | null
@@ -26560,8 +26691,8 @@ export namespace Prisma {
     id?: string
     key: $Enums.LegalParameterKey
     name: string
-    type: string
-    category: string
+    type: $Enums.ParameterType
+    category: $Enums.ParameterCategory
     percentage: number
     minRange?: number | null
     maxRange?: number | null
@@ -26586,8 +26717,8 @@ export namespace Prisma {
     id?: string
     key: $Enums.LegalParameterKey
     name: string
-    type: string
-    category: string
+    type: $Enums.ParameterType
+    category: $Enums.ParameterCategory
     percentage: number
     minRange?: number | null
     maxRange?: number | null
@@ -26602,8 +26733,8 @@ export namespace Prisma {
     id?: string
     key: $Enums.LegalParameterKey
     name: string
-    type: string
-    category: string
+    type: $Enums.ParameterType
+    category: $Enums.ParameterCategory
     percentage: number
     minRange?: number | null
     maxRange?: number | null
@@ -26936,8 +27067,8 @@ export namespace Prisma {
     id?: StringFilter<"LegalDecimoParameter"> | string
     key?: EnumLegalParameterKeyFilter<"LegalDecimoParameter"> | $Enums.LegalParameterKey
     name?: StringFilter<"LegalDecimoParameter"> | string
-    type?: StringFilter<"LegalDecimoParameter"> | string
-    category?: StringFilter<"LegalDecimoParameter"> | string
+    type?: EnumParameterTypeFilter<"LegalDecimoParameter"> | $Enums.ParameterType
+    category?: EnumParameterCategoryFilter<"LegalDecimoParameter"> | $Enums.ParameterCategory
     percentage?: FloatFilter<"LegalDecimoParameter"> | number
     minRange?: IntNullableFilter<"LegalDecimoParameter"> | number | null
     maxRange?: IntNullableFilter<"LegalDecimoParameter"> | number | null
@@ -26972,8 +27103,8 @@ export namespace Prisma {
     id?: StringFilter<"LegalParameter"> | string
     key?: EnumLegalParameterKeyFilter<"LegalParameter"> | $Enums.LegalParameterKey
     name?: StringFilter<"LegalParameter"> | string
-    type?: StringFilter<"LegalParameter"> | string
-    category?: StringFilter<"LegalParameter"> | string
+    type?: EnumParameterTypeFilter<"LegalParameter"> | $Enums.ParameterType
+    category?: EnumParameterCategoryFilter<"LegalParameter"> | $Enums.ParameterCategory
     percentage?: FloatFilter<"LegalParameter"> | number
     minRange?: IntNullableFilter<"LegalParameter"> | number | null
     maxRange?: IntNullableFilter<"LegalParameter"> | number | null
@@ -29453,8 +29584,8 @@ export namespace Prisma {
     id?: string
     key: $Enums.LegalParameterKey
     name: string
-    type: string
-    category: string
+    type: $Enums.ParameterType
+    category: $Enums.ParameterCategory
     percentage: number
     minRange?: number | null
     maxRange?: number | null
@@ -29469,8 +29600,8 @@ export namespace Prisma {
     id?: string
     key: $Enums.LegalParameterKey
     name: string
-    type: string
-    category: string
+    type: $Enums.ParameterType
+    category: $Enums.ParameterCategory
     percentage: number
     minRange?: number | null
     maxRange?: number | null
@@ -29575,8 +29706,8 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     key?: EnumLegalParameterKeyFieldUpdateOperationsInput | $Enums.LegalParameterKey
     name?: StringFieldUpdateOperationsInput | string
-    type?: StringFieldUpdateOperationsInput | string
-    category?: StringFieldUpdateOperationsInput | string
+    type?: EnumParameterTypeFieldUpdateOperationsInput | $Enums.ParameterType
+    category?: EnumParameterCategoryFieldUpdateOperationsInput | $Enums.ParameterCategory
     percentage?: FloatFieldUpdateOperationsInput | number
     minRange?: NullableIntFieldUpdateOperationsInput | number | null
     maxRange?: NullableIntFieldUpdateOperationsInput | number | null
@@ -29591,8 +29722,8 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     key?: EnumLegalParameterKeyFieldUpdateOperationsInput | $Enums.LegalParameterKey
     name?: StringFieldUpdateOperationsInput | string
-    type?: StringFieldUpdateOperationsInput | string
-    category?: StringFieldUpdateOperationsInput | string
+    type?: EnumParameterTypeFieldUpdateOperationsInput | $Enums.ParameterType
+    category?: EnumParameterCategoryFieldUpdateOperationsInput | $Enums.ParameterCategory
     percentage?: FloatFieldUpdateOperationsInput | number
     minRange?: NullableIntFieldUpdateOperationsInput | number | null
     maxRange?: NullableIntFieldUpdateOperationsInput | number | null
@@ -29607,8 +29738,8 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     key?: EnumLegalParameterKeyFieldUpdateOperationsInput | $Enums.LegalParameterKey
     name?: StringFieldUpdateOperationsInput | string
-    type?: StringFieldUpdateOperationsInput | string
-    category?: StringFieldUpdateOperationsInput | string
+    type?: EnumParameterTypeFieldUpdateOperationsInput | $Enums.ParameterType
+    category?: EnumParameterCategoryFieldUpdateOperationsInput | $Enums.ParameterCategory
     percentage?: FloatFieldUpdateOperationsInput | number
     minRange?: NullableIntFieldUpdateOperationsInput | number | null
     maxRange?: NullableIntFieldUpdateOperationsInput | number | null
@@ -29623,8 +29754,8 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     key?: EnumLegalParameterKeyFieldUpdateOperationsInput | $Enums.LegalParameterKey
     name?: StringFieldUpdateOperationsInput | string
-    type?: StringFieldUpdateOperationsInput | string
-    category?: StringFieldUpdateOperationsInput | string
+    type?: EnumParameterTypeFieldUpdateOperationsInput | $Enums.ParameterType
+    category?: EnumParameterCategoryFieldUpdateOperationsInput | $Enums.ParameterCategory
     percentage?: FloatFieldUpdateOperationsInput | number
     minRange?: NullableIntFieldUpdateOperationsInput | number | null
     maxRange?: NullableIntFieldUpdateOperationsInput | number | null
@@ -29639,8 +29770,8 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     key?: EnumLegalParameterKeyFieldUpdateOperationsInput | $Enums.LegalParameterKey
     name?: StringFieldUpdateOperationsInput | string
-    type?: StringFieldUpdateOperationsInput | string
-    category?: StringFieldUpdateOperationsInput | string
+    type?: EnumParameterTypeFieldUpdateOperationsInput | $Enums.ParameterType
+    category?: EnumParameterCategoryFieldUpdateOperationsInput | $Enums.ParameterCategory
     percentage?: FloatFieldUpdateOperationsInput | number
     minRange?: NullableIntFieldUpdateOperationsInput | number | null
     maxRange?: NullableIntFieldUpdateOperationsInput | number | null
@@ -29655,8 +29786,8 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     key?: EnumLegalParameterKeyFieldUpdateOperationsInput | $Enums.LegalParameterKey
     name?: StringFieldUpdateOperationsInput | string
-    type?: StringFieldUpdateOperationsInput | string
-    category?: StringFieldUpdateOperationsInput | string
+    type?: EnumParameterTypeFieldUpdateOperationsInput | $Enums.ParameterType
+    category?: EnumParameterCategoryFieldUpdateOperationsInput | $Enums.ParameterCategory
     percentage?: FloatFieldUpdateOperationsInput | number
     minRange?: NullableIntFieldUpdateOperationsInput | number | null
     maxRange?: NullableIntFieldUpdateOperationsInput | number | null

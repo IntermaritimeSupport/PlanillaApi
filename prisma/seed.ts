@@ -1,7 +1,7 @@
 import 'dotenv/config'
 import prisma from '../lib/prisma.js'
 import { hash } from 'bcryptjs'
-import { LegalParameterKey, UserRole } from '../generated/prisma/index.js'
+import { LegalParameterKey, ParameterCategory, ParameterType, UserRole } from '../generated/prisma/index.js'
 import { AdminConfig } from '../src/config/adminConfig.js'
 
 async function main() {
@@ -38,33 +38,55 @@ async function main() {
      2. PARÁMETROS LEGALES (REGULARES Y DÉCIMO)
   ============================ */
   const paramsData = [
-    { key: LegalParameterKey.ss_empleado, name: 'Seguro Social - Empleado', type: 'employee', category: 'social_security', percentage: 9.75, description: 'Cuota regular de SS para empleados' },
-    { key: LegalParameterKey.ss_patrono, name: 'Seguro Social - Patrono', type: 'employer', category: 'social_security', percentage: 12.25, description: 'Cuota patronal de SS' },
-    { key: LegalParameterKey.ss_decimo, name: 'Seguro Social - Decimo Tercer Mes', type: 'employee', category: 'social_security', percentage: 7.25, description: 'Cuota de SS para el décimo tercer mes' },
-    { key: LegalParameterKey.se_empleado, name: 'Seguro Educativo - Empleado', type: 'employee', category: 'educational_insurance', percentage: 1.25, description: 'Seguro educativo empleado' },
-    { key: LegalParameterKey.se_patrono, name: 'Seguro Educativo - Patrono', type: 'employer', category: 'educational_insurance', percentage: 1.50, description: 'Seguro educativo patronal' },
-    { key: LegalParameterKey.riesgo_profesional, name: 'Riesgos Profesionales', type: 'employer', category: 'other', percentage: 0.98, description: 'Riesgos profesionales base' },
-    { key: LegalParameterKey.isr_r1, name: 'ISR Tramo 1 (Exento)', type: 'fixed', category: 'isr', percentage: 0, minRange: 0, maxRange: 11000, description: 'Rango exento hasta $11,000 anuales' },
-    { key: LegalParameterKey.isr_r2, name: 'ISR Tramo 2 (15%)', type: 'fixed', category: 'isr', percentage: 15, minRange: 11001, maxRange: 50000, description: '15% sobre excedente de $11k a $50k' },
-    { key: LegalParameterKey.isr_r3, name: 'ISR Tramo 3 (25%)', type: 'fixed', category: 'isr', percentage: 25, minRange: 50001, maxRange: 99999999, description: '25% sobre excedente de $50k' },
+    { key: LegalParameterKey.ss_empleado, name: 'Seguro Social - Empleado', type: 'employee', category: ParameterCategory.social_security, percentage: 9.75, description: 'Cuota regular de SS para empleados' },
+    { key: LegalParameterKey.ss_patrono, name: 'Seguro Social - Patrono', type: 'employer', category: ParameterCategory.social_security, percentage: 12.25, description: 'Cuota patronal de SS' },
+    { key: LegalParameterKey.ss_decimo, name: 'Seguro Social - Decimo Tercer Mes', type: 'employee', category: ParameterCategory.social_security, percentage: 7.25, description: 'Cuota de SS para el décimo tercer mes' },
+    { key: LegalParameterKey.se_empleado, name: 'Seguro Educativo - Empleado', type: 'employee', category: ParameterCategory.educational_insurance, percentage: 1.25, description: 'Seguro educativo empleado' },
+    { key: LegalParameterKey.se_patrono, name: 'Seguro Educativo - Patrono', type: 'employer', category: ParameterCategory.educational_insurance, percentage: 1.50, description: 'Seguro educativo patronal' },
+    { key: LegalParameterKey.riesgo_profesional, name: 'Riesgos Profesionales', type: 'employer', category: ParameterCategory.other, percentage: 0.98, description: 'Riesgos profesionales base' },
+    { key: LegalParameterKey.isr_r1, name: 'ISR Tramo 1 (Exento)', type: 'fixed', category: ParameterCategory.isr, percentage: 0, minRange: 0, maxRange: 11000, description: 'Rango exento hasta $11,000 anuales' },
+    { key: LegalParameterKey.isr_r2, name: 'ISR Tramo 2 (15%)', type: 'fixed', category: ParameterCategory.isr, percentage: 15, minRange: 11001, maxRange: 50000, description: '15% sobre excedente de $11k a $50k' },
+    { key: LegalParameterKey.isr_r3, name: 'ISR Tramo 3 (25%)', type: 'fixed', category: ParameterCategory.isr, percentage: 25, minRange: 50001, maxRange: 99999999, description: '25% sobre excedente de $50k' },
   ]
 
   for (const p of paramsData) {
+    const commonData = {
+      name: p.name,
+      type: p.type as ParameterType,
+      category: p.category as ParameterCategory,
+      percentage: p.percentage,
+      minRange: p.minRange ?? null,
+      maxRange: p.maxRange ?? null,
+      description: p.description,
+    }
+
     // Upsert para LegalParameter
     await prisma.legalParameter.upsert({
       where: { companyId_key: { companyId: companyIM.id, key: p.key } },
-      update: { percentage: p.percentage, minRange: p.minRange, maxRange: p.maxRange, name: p.name },
-      create: { ...p, companyId: companyIM.id, status: 'active', effectiveDate: new Date() }
+      update: commonData,
+      create: { 
+        ...commonData, 
+        key: p.key,
+        companyId: companyIM.id, 
+        status: 'active', 
+        effectiveDate: new Date() 
+      }
     })
 
     // Upsert para LegalDecimoParameter
     await prisma.legalDecimoParameter.upsert({
       where: { companyId_key: { companyId: companyIM.id, key: p.key } },
-      update: { percentage: p.percentage, minRange: p.minRange, maxRange: p.maxRange, name: p.name },
-      create: { ...p, companyId: companyIM.id, status: 'active', effectiveDate: new Date() }
+      update: commonData,
+      create: { 
+        ...commonData, 
+        key: p.key,
+        companyId: companyIM.id, 
+        status: 'active', 
+        effectiveDate: new Date() 
+      }
     })
   }
-  console.log('📋 Parámetros legales (Regulares y Décimo) actualizados.')
+  console.log('📋 Parámetros legales actualizados.')
 
   /* ============================
      3. DEPARTAMENTO
