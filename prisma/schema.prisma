@@ -77,6 +77,7 @@ model Company {
   payrolls          Payroll[]          @relation("PayrollCompany")
   attendanceRecords AttendanceRecord[] @relation("AttendanceCompany")
   leaves            Leave[]            @relation("LeaveCompany")
+  payrollRuns           PayrollRun[]     
 }
 
 model Department {
@@ -140,47 +141,80 @@ model Employee {
   @@index([cedula])
   @@index([userId])
 }
+// 2. Modelo que agrupa a los 30 empleados (La Planilla Maestra)
+model PayrollRun {
+  id            String           @id @default(uuid())
+  companyId     String
+  company       Company          @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  
+  // Datos del período para evitar duplicados
+  periodDate    DateTime         // Primer día del mes (ej: 2026-01-01)
+  quincena      Int              // 1 o 2
+  payrollType   PayrollType      @default(REGULAR)
+  
+  // Totales acumulados (opcional, pero muy recomendado)
+  totalGross    Decimal          @default(0.00)
+  totalNet      Decimal          @default(0.00)
+  totalDeductions Decimal        @default(0.00)
+  
+  status        PayrollRunStatus @default(DRAFT)
+  
+  // Auditoría
+  createdByUserId String?
+  createdAt       DateTime       @default(now())
+  updatedAt       DateTime       @updatedAt
+
+  // Relación con los registros individuales
+  payrolls      Payroll[]
+
+  // ⚠️ CLAVE PARA EVITAR DUPLICADOS: 
+  // No puede haber una planilla para la misma empresa, mismo mes, misma quincena y mismo tipo
+  @@unique([companyId, periodDate, quincena, payrollType])
+  @@index([companyId])
+  @@index([periodDate])
+}
 
 model Payroll {
   id            String   @id @default(uuid())
   payrollNumber String   @unique
+  
+  // 👈 AGREGAR ESTO: Vínculo con el lote (Maestro)
+  payrollRunId  String?
+  payrollRun    PayrollRun? @relation(fields: [payrollRunId], references: [id], onDelete: Cascade)
+
   employeeId    String
   employee      Employee @relation(fields: [employeeId], references: [id], onDelete: Cascade)
+  
   companyId     String
   company       Company  @relation("PayrollCompany", fields: [companyId], references: [id], onDelete: Cascade)
 
+  // ... (Tus campos actuales: payPeriod, paymentDate, baseSalary, etc.) ...
   payPeriod   DateTime
   paymentDate DateTime
   payrollType PayrollType @default(REGULAR)
-
   baseSalary  Decimal @default(0.00)
   workingDays Int     @default(30)
   daysWorked  Int     @default(30)
-
   grossSalary Decimal @default(0.00)
-
   incomeTax        Decimal @default(0.00)
   sss              Decimal @default(0.00)
   privateInsurance Decimal @default(0.00)
   customDeductions Decimal @default(0.00)
-
   totalDeductions Decimal @default(0.00)
   netSalary       Decimal @default(0.00)
-
   thirteenthMonthAmount Decimal? @default(0.00)
   thirteenthMonthNote   String?
-
   deductions Deduction[]
   allowances Allowance[]
-
   status       PayrollStatus @default(DRAFT)
   approvedBy   String?
   approvalDate DateTime?
   comments     String?
-
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
+  // 👈 AGREGAR ESTE ÍNDICE para que las consultas por lote sean rápidas
+  @@index([payrollRunId])
   @@index([employeeId])
   @@index([companyId])
   @@index([payPeriod])
@@ -433,4 +467,11 @@ enum ParameterCategory {
   educational_insurance
   isr
   other
+}
+
+enum PayrollRunStatus {
+  DRAFT
+  APPROVED
+  PAID
+  CANCELLED
 }

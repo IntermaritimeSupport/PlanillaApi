@@ -209,9 +209,25 @@ exports.Prisma.EmployeeScalarFieldEnum = {
   updatedAt: 'updatedAt'
 };
 
+exports.Prisma.PayrollRunScalarFieldEnum = {
+  id: 'id',
+  companyId: 'companyId',
+  periodDate: 'periodDate',
+  quincena: 'quincena',
+  payrollType: 'payrollType',
+  totalGross: 'totalGross',
+  totalNet: 'totalNet',
+  totalDeductions: 'totalDeductions',
+  status: 'status',
+  createdByUserId: 'createdByUserId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
 exports.Prisma.PayrollScalarFieldEnum = {
   id: 'id',
   payrollNumber: 'payrollNumber',
+  payrollRunId: 'payrollRunId',
   employeeId: 'employeeId',
   companyId: 'companyId',
   payPeriod: 'payPeriod',
@@ -369,6 +385,13 @@ exports.PayrollType = exports.$Enums.PayrollType = {
   THIRTEEN_MONTH: 'THIRTEEN_MONTH'
 };
 
+exports.PayrollRunStatus = exports.$Enums.PayrollRunStatus = {
+  DRAFT: 'DRAFT',
+  APPROVED: 'APPROVED',
+  PAID: 'PAID',
+  CANCELLED: 'CANCELLED'
+};
+
 exports.PayrollStatus = exports.$Enums.PayrollStatus = {
   DRAFT: 'DRAFT',
   PENDING_APPROVAL: 'PENDING_APPROVAL',
@@ -454,6 +477,7 @@ exports.Prisma.ModelName = {
   Department: 'Department',
   SystemConfig: 'SystemConfig',
   Employee: 'Employee',
+  PayrollRun: 'PayrollRun',
   Payroll: 'Payroll',
   Deduction: 'Deduction',
   Allowance: 'Allowance',
