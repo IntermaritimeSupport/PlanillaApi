@@ -133,6 +133,7 @@ model Employee {
   allowances        Allowance[]
   attendanceRecords AttendanceRecord[]
   leaves            Leave[]
+  recurringDeductions EmployeeRecurringDeduction[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -140,6 +141,34 @@ model Employee {
   @@index([companyId])
   @@index([cedula])
   @@index([userId])
+}
+
+model EmployeeRecurringDeduction {
+  id          String   @id @default(uuid())
+  employeeId  String
+  employee    Employee @relation(fields: [employeeId], references: [id], onDelete: Cascade)
+
+  name        String   // Ejemplo: "Préstamo Bancario", "Pensión Alimenticia", "Club Social"
+  description String?
+  
+  amount      Decimal  @default(0.00) // Monto fijo a descontar
+  
+  // Frecuencia: ¿Se descuenta en la quincena 1, en la 2, o en ambas?
+  frequency   DeductionFrequency @default(ALWAYS) 
+  
+  // Control de vigencia
+  isActive    Boolean  @default(true)
+  startDate   DateTime @default(now())
+  endDate     DateTime? // Opcional, por si el préstamo termina en una fecha
+  
+  // Opcional: Para préstamos con saldo
+  targetAmount Decimal? // Monto total a pagar (ej: 1000.00)
+  currentBalance Decimal? // Cuánto debe a la fecha
+
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([employeeId])
 }
 // 2. Modelo que agrupa a los 30 empleados (La Planilla Maestra)
 model PayrollRun {
@@ -232,7 +261,8 @@ model Deduction {
   description   String
   amount        Decimal
   isFixed       Boolean       @default(false)
-
+  recurringDeductionId String? 
+  
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
@@ -474,4 +504,11 @@ enum PayrollRunStatus {
   APPROVED
   PAID
   CANCELLED
+}
+
+enum DeductionFrequency {
+  FIRST_QUINCENA   // Solo en la primera quincena del mes
+  SECOND_QUINCENA  // Solo en la segunda quincena
+  ALWAYS           // En todas las nóminas regulares
+  ONCE             // Una sola vez (y luego se desactiva)
 }

@@ -20,6 +20,7 @@ export class EmployeeController {
       bankName,
       userId,
       companyId,
+      recurringDeductions,
     } = req.body;
 
     try {
@@ -56,6 +57,15 @@ export class EmployeeController {
         bankName: bankName || "",
         companyId,
         status: 'ACTIVE',
+        recurringDeductions: {
+        create: recurringDeductions?.map((d: any) => ({
+          name: d.name,
+          description: d.description || "",
+          amount: Number(d.amount) || 0,
+          frequency: d.frequency || 'ALWAYS',
+          isActive: d.isActive !== undefined ? d.isActive : true,
+        })) || []
+      }
       };
 
       // 4. Lógica de vinculación de Usuario (Opcional)
@@ -98,6 +108,7 @@ export class EmployeeController {
               name: true,
             },
           },
+          recurringDeductions: true,
         },
       });
 
@@ -147,10 +158,11 @@ export class EmployeeController {
               name: true,
             },
           },
+          recurringDeductions: true,
         },
         orderBy: { createdAt: 'desc' },
       });
-      console.log('Fetched employees:', employees);
+      // console.log('Fetched employees:', employees, "fin");
       return res.status(200).json(employees);
     } catch (error: any) {
       console.error('Error fetching employees:', error);
@@ -171,6 +183,7 @@ export class EmployeeController {
         include: {
           user: true,
           company: true,
+          recurringDeductions: true,
           payrolls: {
             orderBy: { payPeriod: 'desc' },
             take: 10,
@@ -210,7 +223,7 @@ export class EmployeeController {
   async update(req: Request, res: Response) {
     try {
       const { id } = req.params;
-      const { userId, ...restOfData } = req.body;
+      const { userId, recurringDeductions, ...restOfData } = req.body;
 
       const employee = await prisma.employee.findUnique({ where: { id } });
       if (!employee) return res.status(404).json({ error: 'Empleado no encontrado.' });
@@ -234,12 +247,28 @@ export class EmployeeController {
         }
       }
 
+    if (recurringDeductions) {
+      updateData.recurringDeductions = {
+        // Primero borramos todos los existentes para este empleado
+        deleteMany: {}, 
+        // Luego creamos los que vienen en el body
+        create: recurringDeductions.map((d: any) => ({
+          name: d.name,
+          description: d.description,
+          amount: Number(d.amount),
+          frequency: d.frequency,
+          isActive: d.isActive,
+        })),
+      };
+    }
+
       const updated = await prisma.employee.update({
         where: { id },
         data: updateData,
         include: {
           user: { select: { id: true, username: true, email: true, role: true } },
           company: { select: { id: true, name: true } },
+          recurringDeductions: true,
         },
       });
 

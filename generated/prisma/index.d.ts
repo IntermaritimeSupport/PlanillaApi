@@ -49,6 +49,11 @@ export type SystemConfig = $Result.DefaultSelection<Prisma.$SystemConfigPayload>
  */
 export type Employee = $Result.DefaultSelection<Prisma.$EmployeePayload>
 /**
+ * Model EmployeeRecurringDeduction
+ * 
+ */
+export type EmployeeRecurringDeduction = $Result.DefaultSelection<Prisma.$EmployeeRecurringDeductionPayload>
+/**
  * Model PayrollRun
  * 
  */
@@ -250,6 +255,16 @@ export const PayrollRunStatus: {
 
 export type PayrollRunStatus = (typeof PayrollRunStatus)[keyof typeof PayrollRunStatus]
 
+
+export const DeductionFrequency: {
+  FIRST_QUINCENA: 'FIRST_QUINCENA',
+  SECOND_QUINCENA: 'SECOND_QUINCENA',
+  ALWAYS: 'ALWAYS',
+  ONCE: 'ONCE'
+};
+
+export type DeductionFrequency = (typeof DeductionFrequency)[keyof typeof DeductionFrequency]
+
 }
 
 export type LegalParameterKey = $Enums.LegalParameterKey
@@ -311,6 +326,10 @@ export const ParameterCategory: typeof $Enums.ParameterCategory
 export type PayrollRunStatus = $Enums.PayrollRunStatus
 
 export const PayrollRunStatus: typeof $Enums.PayrollRunStatus
+
+export type DeductionFrequency = $Enums.DeductionFrequency
+
+export const DeductionFrequency: typeof $Enums.DeductionFrequency
 
 /**
  * ##  Prisma Client ʲˢ
@@ -499,6 +518,16 @@ export class PrismaClient<
     * ```
     */
   get employee(): Prisma.EmployeeDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.employeeRecurringDeduction`: Exposes CRUD operations for the **EmployeeRecurringDeduction** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more EmployeeRecurringDeductions
+    * const employeeRecurringDeductions = await prisma.employeeRecurringDeduction.findMany()
+    * ```
+    */
+  get employeeRecurringDeduction(): Prisma.EmployeeRecurringDeductionDelegate<ExtArgs, ClientOptions>;
 
   /**
    * `prisma.payrollRun`: Exposes CRUD operations for the **PayrollRun** model.
@@ -1027,6 +1056,7 @@ export namespace Prisma {
     Department: 'Department',
     SystemConfig: 'SystemConfig',
     Employee: 'Employee',
+    EmployeeRecurringDeduction: 'EmployeeRecurringDeduction',
     PayrollRun: 'PayrollRun',
     Payroll: 'Payroll',
     Deduction: 'Deduction',
@@ -1053,7 +1083,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "user" | "userCompany" | "person" | "company" | "department" | "systemConfig" | "employee" | "payrollRun" | "payroll" | "deduction" | "allowance" | "attendanceRecord" | "leave" | "legalParameter" | "legalDecimoParameter"
+      modelProps: "user" | "userCompany" | "person" | "company" | "department" | "systemConfig" | "employee" | "employeeRecurringDeduction" | "payrollRun" | "payroll" | "deduction" | "allowance" | "attendanceRecord" | "leave" | "legalParameter" | "legalDecimoParameter"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -1572,6 +1602,80 @@ export namespace Prisma {
           count: {
             args: Prisma.EmployeeCountArgs<ExtArgs>
             result: $Utils.Optional<EmployeeCountAggregateOutputType> | number
+          }
+        }
+      }
+      EmployeeRecurringDeduction: {
+        payload: Prisma.$EmployeeRecurringDeductionPayload<ExtArgs>
+        fields: Prisma.EmployeeRecurringDeductionFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.EmployeeRecurringDeductionFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EmployeeRecurringDeductionPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.EmployeeRecurringDeductionFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EmployeeRecurringDeductionPayload>
+          }
+          findFirst: {
+            args: Prisma.EmployeeRecurringDeductionFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EmployeeRecurringDeductionPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.EmployeeRecurringDeductionFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EmployeeRecurringDeductionPayload>
+          }
+          findMany: {
+            args: Prisma.EmployeeRecurringDeductionFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EmployeeRecurringDeductionPayload>[]
+          }
+          create: {
+            args: Prisma.EmployeeRecurringDeductionCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EmployeeRecurringDeductionPayload>
+          }
+          createMany: {
+            args: Prisma.EmployeeRecurringDeductionCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.EmployeeRecurringDeductionCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EmployeeRecurringDeductionPayload>[]
+          }
+          delete: {
+            args: Prisma.EmployeeRecurringDeductionDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EmployeeRecurringDeductionPayload>
+          }
+          update: {
+            args: Prisma.EmployeeRecurringDeductionUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EmployeeRecurringDeductionPayload>
+          }
+          deleteMany: {
+            args: Prisma.EmployeeRecurringDeductionDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.EmployeeRecurringDeductionUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.EmployeeRecurringDeductionUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EmployeeRecurringDeductionPayload>[]
+          }
+          upsert: {
+            args: Prisma.EmployeeRecurringDeductionUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EmployeeRecurringDeductionPayload>
+          }
+          aggregate: {
+            args: Prisma.EmployeeRecurringDeductionAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateEmployeeRecurringDeduction>
+          }
+          groupBy: {
+            args: Prisma.EmployeeRecurringDeductionGroupByArgs<ExtArgs>
+            result: $Utils.Optional<EmployeeRecurringDeductionGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.EmployeeRecurringDeductionCountArgs<ExtArgs>
+            result: $Utils.Optional<EmployeeRecurringDeductionCountAggregateOutputType> | number
           }
         }
       }
@@ -2270,6 +2374,7 @@ export namespace Prisma {
     department?: DepartmentOmit
     systemConfig?: SystemConfigOmit
     employee?: EmployeeOmit
+    employeeRecurringDeduction?: EmployeeRecurringDeductionOmit
     payrollRun?: PayrollRunOmit
     payroll?: PayrollOmit
     deduction?: DeductionOmit
@@ -2537,6 +2642,7 @@ export namespace Prisma {
     allowances: number
     attendanceRecords: number
     leaves: number
+    recurringDeductions: number
   }
 
   export type EmployeeCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -2545,6 +2651,7 @@ export namespace Prisma {
     allowances?: boolean | EmployeeCountOutputTypeCountAllowancesArgs
     attendanceRecords?: boolean | EmployeeCountOutputTypeCountAttendanceRecordsArgs
     leaves?: boolean | EmployeeCountOutputTypeCountLeavesArgs
+    recurringDeductions?: boolean | EmployeeCountOutputTypeCountRecurringDeductionsArgs
   }
 
   // Custom InputTypes
@@ -2591,6 +2698,13 @@ export namespace Prisma {
    */
   export type EmployeeCountOutputTypeCountLeavesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: LeaveWhereInput
+  }
+
+  /**
+   * EmployeeCountOutputType without action
+   */
+  export type EmployeeCountOutputTypeCountRecurringDeductionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: EmployeeRecurringDeductionWhereInput
   }
 
 
@@ -9934,6 +10048,7 @@ export namespace Prisma {
     allowances?: boolean | Employee$allowancesArgs<ExtArgs>
     attendanceRecords?: boolean | Employee$attendanceRecordsArgs<ExtArgs>
     leaves?: boolean | Employee$leavesArgs<ExtArgs>
+    recurringDeductions?: boolean | Employee$recurringDeductionsArgs<ExtArgs>
     _count?: boolean | EmployeeCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["employee"]>
 
@@ -10013,6 +10128,7 @@ export namespace Prisma {
     allowances?: boolean | Employee$allowancesArgs<ExtArgs>
     attendanceRecords?: boolean | Employee$attendanceRecordsArgs<ExtArgs>
     leaves?: boolean | Employee$leavesArgs<ExtArgs>
+    recurringDeductions?: boolean | Employee$recurringDeductionsArgs<ExtArgs>
     _count?: boolean | EmployeeCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type EmployeeIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -10034,6 +10150,7 @@ export namespace Prisma {
       allowances: Prisma.$AllowancePayload<ExtArgs>[]
       attendanceRecords: Prisma.$AttendanceRecordPayload<ExtArgs>[]
       leaves: Prisma.$LeavePayload<ExtArgs>[]
+      recurringDeductions: Prisma.$EmployeeRecurringDeductionPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -10455,6 +10572,7 @@ export namespace Prisma {
     allowances<T extends Employee$allowancesArgs<ExtArgs> = {}>(args?: Subset<T, Employee$allowancesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AllowancePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     attendanceRecords<T extends Employee$attendanceRecordsArgs<ExtArgs> = {}>(args?: Subset<T, Employee$attendanceRecordsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AttendanceRecordPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     leaves<T extends Employee$leavesArgs<ExtArgs> = {}>(args?: Subset<T, Employee$leavesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$LeavePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    recurringDeductions<T extends Employee$recurringDeductionsArgs<ExtArgs> = {}>(args?: Subset<T, Employee$recurringDeductionsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$EmployeeRecurringDeductionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -11037,6 +11155,30 @@ export namespace Prisma {
   }
 
   /**
+   * Employee.recurringDeductions
+   */
+  export type Employee$recurringDeductionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EmployeeRecurringDeduction
+     */
+    select?: EmployeeRecurringDeductionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EmployeeRecurringDeduction
+     */
+    omit?: EmployeeRecurringDeductionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EmployeeRecurringDeductionInclude<ExtArgs> | null
+    where?: EmployeeRecurringDeductionWhereInput
+    orderBy?: EmployeeRecurringDeductionOrderByWithRelationInput | EmployeeRecurringDeductionOrderByWithRelationInput[]
+    cursor?: EmployeeRecurringDeductionWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: EmployeeRecurringDeductionScalarFieldEnum | EmployeeRecurringDeductionScalarFieldEnum[]
+  }
+
+  /**
    * Employee without action
    */
   export type EmployeeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -11052,6 +11194,1210 @@ export namespace Prisma {
      * Choose, which related nodes to fetch as well
      */
     include?: EmployeeInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model EmployeeRecurringDeduction
+   */
+
+  export type AggregateEmployeeRecurringDeduction = {
+    _count: EmployeeRecurringDeductionCountAggregateOutputType | null
+    _avg: EmployeeRecurringDeductionAvgAggregateOutputType | null
+    _sum: EmployeeRecurringDeductionSumAggregateOutputType | null
+    _min: EmployeeRecurringDeductionMinAggregateOutputType | null
+    _max: EmployeeRecurringDeductionMaxAggregateOutputType | null
+  }
+
+  export type EmployeeRecurringDeductionAvgAggregateOutputType = {
+    amount: Decimal | null
+    targetAmount: Decimal | null
+    currentBalance: Decimal | null
+  }
+
+  export type EmployeeRecurringDeductionSumAggregateOutputType = {
+    amount: Decimal | null
+    targetAmount: Decimal | null
+    currentBalance: Decimal | null
+  }
+
+  export type EmployeeRecurringDeductionMinAggregateOutputType = {
+    id: string | null
+    employeeId: string | null
+    name: string | null
+    description: string | null
+    amount: Decimal | null
+    frequency: $Enums.DeductionFrequency | null
+    isActive: boolean | null
+    startDate: Date | null
+    endDate: Date | null
+    targetAmount: Decimal | null
+    currentBalance: Decimal | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type EmployeeRecurringDeductionMaxAggregateOutputType = {
+    id: string | null
+    employeeId: string | null
+    name: string | null
+    description: string | null
+    amount: Decimal | null
+    frequency: $Enums.DeductionFrequency | null
+    isActive: boolean | null
+    startDate: Date | null
+    endDate: Date | null
+    targetAmount: Decimal | null
+    currentBalance: Decimal | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type EmployeeRecurringDeductionCountAggregateOutputType = {
+    id: number
+    employeeId: number
+    name: number
+    description: number
+    amount: number
+    frequency: number
+    isActive: number
+    startDate: number
+    endDate: number
+    targetAmount: number
+    currentBalance: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type EmployeeRecurringDeductionAvgAggregateInputType = {
+    amount?: true
+    targetAmount?: true
+    currentBalance?: true
+  }
+
+  export type EmployeeRecurringDeductionSumAggregateInputType = {
+    amount?: true
+    targetAmount?: true
+    currentBalance?: true
+  }
+
+  export type EmployeeRecurringDeductionMinAggregateInputType = {
+    id?: true
+    employeeId?: true
+    name?: true
+    description?: true
+    amount?: true
+    frequency?: true
+    isActive?: true
+    startDate?: true
+    endDate?: true
+    targetAmount?: true
+    currentBalance?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type EmployeeRecurringDeductionMaxAggregateInputType = {
+    id?: true
+    employeeId?: true
+    name?: true
+    description?: true
+    amount?: true
+    frequency?: true
+    isActive?: true
+    startDate?: true
+    endDate?: true
+    targetAmount?: true
+    currentBalance?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type EmployeeRecurringDeductionCountAggregateInputType = {
+    id?: true
+    employeeId?: true
+    name?: true
+    description?: true
+    amount?: true
+    frequency?: true
+    isActive?: true
+    startDate?: true
+    endDate?: true
+    targetAmount?: true
+    currentBalance?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type EmployeeRecurringDeductionAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which EmployeeRecurringDeduction to aggregate.
+     */
+    where?: EmployeeRecurringDeductionWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of EmployeeRecurringDeductions to fetch.
+     */
+    orderBy?: EmployeeRecurringDeductionOrderByWithRelationInput | EmployeeRecurringDeductionOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: EmployeeRecurringDeductionWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` EmployeeRecurringDeductions from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` EmployeeRecurringDeductions.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned EmployeeRecurringDeductions
+    **/
+    _count?: true | EmployeeRecurringDeductionCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: EmployeeRecurringDeductionAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: EmployeeRecurringDeductionSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: EmployeeRecurringDeductionMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: EmployeeRecurringDeductionMaxAggregateInputType
+  }
+
+  export type GetEmployeeRecurringDeductionAggregateType<T extends EmployeeRecurringDeductionAggregateArgs> = {
+        [P in keyof T & keyof AggregateEmployeeRecurringDeduction]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateEmployeeRecurringDeduction[P]>
+      : GetScalarType<T[P], AggregateEmployeeRecurringDeduction[P]>
+  }
+
+
+
+
+  export type EmployeeRecurringDeductionGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: EmployeeRecurringDeductionWhereInput
+    orderBy?: EmployeeRecurringDeductionOrderByWithAggregationInput | EmployeeRecurringDeductionOrderByWithAggregationInput[]
+    by: EmployeeRecurringDeductionScalarFieldEnum[] | EmployeeRecurringDeductionScalarFieldEnum
+    having?: EmployeeRecurringDeductionScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: EmployeeRecurringDeductionCountAggregateInputType | true
+    _avg?: EmployeeRecurringDeductionAvgAggregateInputType
+    _sum?: EmployeeRecurringDeductionSumAggregateInputType
+    _min?: EmployeeRecurringDeductionMinAggregateInputType
+    _max?: EmployeeRecurringDeductionMaxAggregateInputType
+  }
+
+  export type EmployeeRecurringDeductionGroupByOutputType = {
+    id: string
+    employeeId: string
+    name: string
+    description: string | null
+    amount: Decimal
+    frequency: $Enums.DeductionFrequency
+    isActive: boolean
+    startDate: Date
+    endDate: Date | null
+    targetAmount: Decimal | null
+    currentBalance: Decimal | null
+    createdAt: Date
+    updatedAt: Date
+    _count: EmployeeRecurringDeductionCountAggregateOutputType | null
+    _avg: EmployeeRecurringDeductionAvgAggregateOutputType | null
+    _sum: EmployeeRecurringDeductionSumAggregateOutputType | null
+    _min: EmployeeRecurringDeductionMinAggregateOutputType | null
+    _max: EmployeeRecurringDeductionMaxAggregateOutputType | null
+  }
+
+  type GetEmployeeRecurringDeductionGroupByPayload<T extends EmployeeRecurringDeductionGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<EmployeeRecurringDeductionGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof EmployeeRecurringDeductionGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], EmployeeRecurringDeductionGroupByOutputType[P]>
+            : GetScalarType<T[P], EmployeeRecurringDeductionGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type EmployeeRecurringDeductionSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    employeeId?: boolean
+    name?: boolean
+    description?: boolean
+    amount?: boolean
+    frequency?: boolean
+    isActive?: boolean
+    startDate?: boolean
+    endDate?: boolean
+    targetAmount?: boolean
+    currentBalance?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    employee?: boolean | EmployeeDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["employeeRecurringDeduction"]>
+
+  export type EmployeeRecurringDeductionSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    employeeId?: boolean
+    name?: boolean
+    description?: boolean
+    amount?: boolean
+    frequency?: boolean
+    isActive?: boolean
+    startDate?: boolean
+    endDate?: boolean
+    targetAmount?: boolean
+    currentBalance?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    employee?: boolean | EmployeeDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["employeeRecurringDeduction"]>
+
+  export type EmployeeRecurringDeductionSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    employeeId?: boolean
+    name?: boolean
+    description?: boolean
+    amount?: boolean
+    frequency?: boolean
+    isActive?: boolean
+    startDate?: boolean
+    endDate?: boolean
+    targetAmount?: boolean
+    currentBalance?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    employee?: boolean | EmployeeDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["employeeRecurringDeduction"]>
+
+  export type EmployeeRecurringDeductionSelectScalar = {
+    id?: boolean
+    employeeId?: boolean
+    name?: boolean
+    description?: boolean
+    amount?: boolean
+    frequency?: boolean
+    isActive?: boolean
+    startDate?: boolean
+    endDate?: boolean
+    targetAmount?: boolean
+    currentBalance?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type EmployeeRecurringDeductionOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "employeeId" | "name" | "description" | "amount" | "frequency" | "isActive" | "startDate" | "endDate" | "targetAmount" | "currentBalance" | "createdAt" | "updatedAt", ExtArgs["result"]["employeeRecurringDeduction"]>
+  export type EmployeeRecurringDeductionInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    employee?: boolean | EmployeeDefaultArgs<ExtArgs>
+  }
+  export type EmployeeRecurringDeductionIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    employee?: boolean | EmployeeDefaultArgs<ExtArgs>
+  }
+  export type EmployeeRecurringDeductionIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    employee?: boolean | EmployeeDefaultArgs<ExtArgs>
+  }
+
+  export type $EmployeeRecurringDeductionPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "EmployeeRecurringDeduction"
+    objects: {
+      employee: Prisma.$EmployeePayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      employeeId: string
+      name: string
+      description: string | null
+      amount: Prisma.Decimal
+      frequency: $Enums.DeductionFrequency
+      isActive: boolean
+      startDate: Date
+      endDate: Date | null
+      targetAmount: Prisma.Decimal | null
+      currentBalance: Prisma.Decimal | null
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["employeeRecurringDeduction"]>
+    composites: {}
+  }
+
+  type EmployeeRecurringDeductionGetPayload<S extends boolean | null | undefined | EmployeeRecurringDeductionDefaultArgs> = $Result.GetResult<Prisma.$EmployeeRecurringDeductionPayload, S>
+
+  type EmployeeRecurringDeductionCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<EmployeeRecurringDeductionFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: EmployeeRecurringDeductionCountAggregateInputType | true
+    }
+
+  export interface EmployeeRecurringDeductionDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['EmployeeRecurringDeduction'], meta: { name: 'EmployeeRecurringDeduction' } }
+    /**
+     * Find zero or one EmployeeRecurringDeduction that matches the filter.
+     * @param {EmployeeRecurringDeductionFindUniqueArgs} args - Arguments to find a EmployeeRecurringDeduction
+     * @example
+     * // Get one EmployeeRecurringDeduction
+     * const employeeRecurringDeduction = await prisma.employeeRecurringDeduction.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends EmployeeRecurringDeductionFindUniqueArgs>(args: SelectSubset<T, EmployeeRecurringDeductionFindUniqueArgs<ExtArgs>>): Prisma__EmployeeRecurringDeductionClient<$Result.GetResult<Prisma.$EmployeeRecurringDeductionPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one EmployeeRecurringDeduction that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {EmployeeRecurringDeductionFindUniqueOrThrowArgs} args - Arguments to find a EmployeeRecurringDeduction
+     * @example
+     * // Get one EmployeeRecurringDeduction
+     * const employeeRecurringDeduction = await prisma.employeeRecurringDeduction.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends EmployeeRecurringDeductionFindUniqueOrThrowArgs>(args: SelectSubset<T, EmployeeRecurringDeductionFindUniqueOrThrowArgs<ExtArgs>>): Prisma__EmployeeRecurringDeductionClient<$Result.GetResult<Prisma.$EmployeeRecurringDeductionPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first EmployeeRecurringDeduction that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {EmployeeRecurringDeductionFindFirstArgs} args - Arguments to find a EmployeeRecurringDeduction
+     * @example
+     * // Get one EmployeeRecurringDeduction
+     * const employeeRecurringDeduction = await prisma.employeeRecurringDeduction.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends EmployeeRecurringDeductionFindFirstArgs>(args?: SelectSubset<T, EmployeeRecurringDeductionFindFirstArgs<ExtArgs>>): Prisma__EmployeeRecurringDeductionClient<$Result.GetResult<Prisma.$EmployeeRecurringDeductionPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first EmployeeRecurringDeduction that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {EmployeeRecurringDeductionFindFirstOrThrowArgs} args - Arguments to find a EmployeeRecurringDeduction
+     * @example
+     * // Get one EmployeeRecurringDeduction
+     * const employeeRecurringDeduction = await prisma.employeeRecurringDeduction.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends EmployeeRecurringDeductionFindFirstOrThrowArgs>(args?: SelectSubset<T, EmployeeRecurringDeductionFindFirstOrThrowArgs<ExtArgs>>): Prisma__EmployeeRecurringDeductionClient<$Result.GetResult<Prisma.$EmployeeRecurringDeductionPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more EmployeeRecurringDeductions that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {EmployeeRecurringDeductionFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all EmployeeRecurringDeductions
+     * const employeeRecurringDeductions = await prisma.employeeRecurringDeduction.findMany()
+     * 
+     * // Get first 10 EmployeeRecurringDeductions
+     * const employeeRecurringDeductions = await prisma.employeeRecurringDeduction.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const employeeRecurringDeductionWithIdOnly = await prisma.employeeRecurringDeduction.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends EmployeeRecurringDeductionFindManyArgs>(args?: SelectSubset<T, EmployeeRecurringDeductionFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$EmployeeRecurringDeductionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a EmployeeRecurringDeduction.
+     * @param {EmployeeRecurringDeductionCreateArgs} args - Arguments to create a EmployeeRecurringDeduction.
+     * @example
+     * // Create one EmployeeRecurringDeduction
+     * const EmployeeRecurringDeduction = await prisma.employeeRecurringDeduction.create({
+     *   data: {
+     *     // ... data to create a EmployeeRecurringDeduction
+     *   }
+     * })
+     * 
+     */
+    create<T extends EmployeeRecurringDeductionCreateArgs>(args: SelectSubset<T, EmployeeRecurringDeductionCreateArgs<ExtArgs>>): Prisma__EmployeeRecurringDeductionClient<$Result.GetResult<Prisma.$EmployeeRecurringDeductionPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many EmployeeRecurringDeductions.
+     * @param {EmployeeRecurringDeductionCreateManyArgs} args - Arguments to create many EmployeeRecurringDeductions.
+     * @example
+     * // Create many EmployeeRecurringDeductions
+     * const employeeRecurringDeduction = await prisma.employeeRecurringDeduction.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends EmployeeRecurringDeductionCreateManyArgs>(args?: SelectSubset<T, EmployeeRecurringDeductionCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many EmployeeRecurringDeductions and returns the data saved in the database.
+     * @param {EmployeeRecurringDeductionCreateManyAndReturnArgs} args - Arguments to create many EmployeeRecurringDeductions.
+     * @example
+     * // Create many EmployeeRecurringDeductions
+     * const employeeRecurringDeduction = await prisma.employeeRecurringDeduction.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many EmployeeRecurringDeductions and only return the `id`
+     * const employeeRecurringDeductionWithIdOnly = await prisma.employeeRecurringDeduction.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends EmployeeRecurringDeductionCreateManyAndReturnArgs>(args?: SelectSubset<T, EmployeeRecurringDeductionCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$EmployeeRecurringDeductionPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a EmployeeRecurringDeduction.
+     * @param {EmployeeRecurringDeductionDeleteArgs} args - Arguments to delete one EmployeeRecurringDeduction.
+     * @example
+     * // Delete one EmployeeRecurringDeduction
+     * const EmployeeRecurringDeduction = await prisma.employeeRecurringDeduction.delete({
+     *   where: {
+     *     // ... filter to delete one EmployeeRecurringDeduction
+     *   }
+     * })
+     * 
+     */
+    delete<T extends EmployeeRecurringDeductionDeleteArgs>(args: SelectSubset<T, EmployeeRecurringDeductionDeleteArgs<ExtArgs>>): Prisma__EmployeeRecurringDeductionClient<$Result.GetResult<Prisma.$EmployeeRecurringDeductionPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one EmployeeRecurringDeduction.
+     * @param {EmployeeRecurringDeductionUpdateArgs} args - Arguments to update one EmployeeRecurringDeduction.
+     * @example
+     * // Update one EmployeeRecurringDeduction
+     * const employeeRecurringDeduction = await prisma.employeeRecurringDeduction.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends EmployeeRecurringDeductionUpdateArgs>(args: SelectSubset<T, EmployeeRecurringDeductionUpdateArgs<ExtArgs>>): Prisma__EmployeeRecurringDeductionClient<$Result.GetResult<Prisma.$EmployeeRecurringDeductionPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more EmployeeRecurringDeductions.
+     * @param {EmployeeRecurringDeductionDeleteManyArgs} args - Arguments to filter EmployeeRecurringDeductions to delete.
+     * @example
+     * // Delete a few EmployeeRecurringDeductions
+     * const { count } = await prisma.employeeRecurringDeduction.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends EmployeeRecurringDeductionDeleteManyArgs>(args?: SelectSubset<T, EmployeeRecurringDeductionDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more EmployeeRecurringDeductions.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {EmployeeRecurringDeductionUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many EmployeeRecurringDeductions
+     * const employeeRecurringDeduction = await prisma.employeeRecurringDeduction.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends EmployeeRecurringDeductionUpdateManyArgs>(args: SelectSubset<T, EmployeeRecurringDeductionUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more EmployeeRecurringDeductions and returns the data updated in the database.
+     * @param {EmployeeRecurringDeductionUpdateManyAndReturnArgs} args - Arguments to update many EmployeeRecurringDeductions.
+     * @example
+     * // Update many EmployeeRecurringDeductions
+     * const employeeRecurringDeduction = await prisma.employeeRecurringDeduction.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more EmployeeRecurringDeductions and only return the `id`
+     * const employeeRecurringDeductionWithIdOnly = await prisma.employeeRecurringDeduction.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends EmployeeRecurringDeductionUpdateManyAndReturnArgs>(args: SelectSubset<T, EmployeeRecurringDeductionUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$EmployeeRecurringDeductionPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one EmployeeRecurringDeduction.
+     * @param {EmployeeRecurringDeductionUpsertArgs} args - Arguments to update or create a EmployeeRecurringDeduction.
+     * @example
+     * // Update or create a EmployeeRecurringDeduction
+     * const employeeRecurringDeduction = await prisma.employeeRecurringDeduction.upsert({
+     *   create: {
+     *     // ... data to create a EmployeeRecurringDeduction
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the EmployeeRecurringDeduction we want to update
+     *   }
+     * })
+     */
+    upsert<T extends EmployeeRecurringDeductionUpsertArgs>(args: SelectSubset<T, EmployeeRecurringDeductionUpsertArgs<ExtArgs>>): Prisma__EmployeeRecurringDeductionClient<$Result.GetResult<Prisma.$EmployeeRecurringDeductionPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of EmployeeRecurringDeductions.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {EmployeeRecurringDeductionCountArgs} args - Arguments to filter EmployeeRecurringDeductions to count.
+     * @example
+     * // Count the number of EmployeeRecurringDeductions
+     * const count = await prisma.employeeRecurringDeduction.count({
+     *   where: {
+     *     // ... the filter for the EmployeeRecurringDeductions we want to count
+     *   }
+     * })
+    **/
+    count<T extends EmployeeRecurringDeductionCountArgs>(
+      args?: Subset<T, EmployeeRecurringDeductionCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], EmployeeRecurringDeductionCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a EmployeeRecurringDeduction.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {EmployeeRecurringDeductionAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends EmployeeRecurringDeductionAggregateArgs>(args: Subset<T, EmployeeRecurringDeductionAggregateArgs>): Prisma.PrismaPromise<GetEmployeeRecurringDeductionAggregateType<T>>
+
+    /**
+     * Group by EmployeeRecurringDeduction.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {EmployeeRecurringDeductionGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends EmployeeRecurringDeductionGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: EmployeeRecurringDeductionGroupByArgs['orderBy'] }
+        : { orderBy?: EmployeeRecurringDeductionGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, EmployeeRecurringDeductionGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetEmployeeRecurringDeductionGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the EmployeeRecurringDeduction model
+   */
+  readonly fields: EmployeeRecurringDeductionFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for EmployeeRecurringDeduction.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__EmployeeRecurringDeductionClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    employee<T extends EmployeeDefaultArgs<ExtArgs> = {}>(args?: Subset<T, EmployeeDefaultArgs<ExtArgs>>): Prisma__EmployeeClient<$Result.GetResult<Prisma.$EmployeePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the EmployeeRecurringDeduction model
+   */
+  interface EmployeeRecurringDeductionFieldRefs {
+    readonly id: FieldRef<"EmployeeRecurringDeduction", 'String'>
+    readonly employeeId: FieldRef<"EmployeeRecurringDeduction", 'String'>
+    readonly name: FieldRef<"EmployeeRecurringDeduction", 'String'>
+    readonly description: FieldRef<"EmployeeRecurringDeduction", 'String'>
+    readonly amount: FieldRef<"EmployeeRecurringDeduction", 'Decimal'>
+    readonly frequency: FieldRef<"EmployeeRecurringDeduction", 'DeductionFrequency'>
+    readonly isActive: FieldRef<"EmployeeRecurringDeduction", 'Boolean'>
+    readonly startDate: FieldRef<"EmployeeRecurringDeduction", 'DateTime'>
+    readonly endDate: FieldRef<"EmployeeRecurringDeduction", 'DateTime'>
+    readonly targetAmount: FieldRef<"EmployeeRecurringDeduction", 'Decimal'>
+    readonly currentBalance: FieldRef<"EmployeeRecurringDeduction", 'Decimal'>
+    readonly createdAt: FieldRef<"EmployeeRecurringDeduction", 'DateTime'>
+    readonly updatedAt: FieldRef<"EmployeeRecurringDeduction", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * EmployeeRecurringDeduction findUnique
+   */
+  export type EmployeeRecurringDeductionFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EmployeeRecurringDeduction
+     */
+    select?: EmployeeRecurringDeductionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EmployeeRecurringDeduction
+     */
+    omit?: EmployeeRecurringDeductionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EmployeeRecurringDeductionInclude<ExtArgs> | null
+    /**
+     * Filter, which EmployeeRecurringDeduction to fetch.
+     */
+    where: EmployeeRecurringDeductionWhereUniqueInput
+  }
+
+  /**
+   * EmployeeRecurringDeduction findUniqueOrThrow
+   */
+  export type EmployeeRecurringDeductionFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EmployeeRecurringDeduction
+     */
+    select?: EmployeeRecurringDeductionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EmployeeRecurringDeduction
+     */
+    omit?: EmployeeRecurringDeductionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EmployeeRecurringDeductionInclude<ExtArgs> | null
+    /**
+     * Filter, which EmployeeRecurringDeduction to fetch.
+     */
+    where: EmployeeRecurringDeductionWhereUniqueInput
+  }
+
+  /**
+   * EmployeeRecurringDeduction findFirst
+   */
+  export type EmployeeRecurringDeductionFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EmployeeRecurringDeduction
+     */
+    select?: EmployeeRecurringDeductionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EmployeeRecurringDeduction
+     */
+    omit?: EmployeeRecurringDeductionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EmployeeRecurringDeductionInclude<ExtArgs> | null
+    /**
+     * Filter, which EmployeeRecurringDeduction to fetch.
+     */
+    where?: EmployeeRecurringDeductionWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of EmployeeRecurringDeductions to fetch.
+     */
+    orderBy?: EmployeeRecurringDeductionOrderByWithRelationInput | EmployeeRecurringDeductionOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for EmployeeRecurringDeductions.
+     */
+    cursor?: EmployeeRecurringDeductionWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` EmployeeRecurringDeductions from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` EmployeeRecurringDeductions.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of EmployeeRecurringDeductions.
+     */
+    distinct?: EmployeeRecurringDeductionScalarFieldEnum | EmployeeRecurringDeductionScalarFieldEnum[]
+  }
+
+  /**
+   * EmployeeRecurringDeduction findFirstOrThrow
+   */
+  export type EmployeeRecurringDeductionFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EmployeeRecurringDeduction
+     */
+    select?: EmployeeRecurringDeductionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EmployeeRecurringDeduction
+     */
+    omit?: EmployeeRecurringDeductionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EmployeeRecurringDeductionInclude<ExtArgs> | null
+    /**
+     * Filter, which EmployeeRecurringDeduction to fetch.
+     */
+    where?: EmployeeRecurringDeductionWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of EmployeeRecurringDeductions to fetch.
+     */
+    orderBy?: EmployeeRecurringDeductionOrderByWithRelationInput | EmployeeRecurringDeductionOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for EmployeeRecurringDeductions.
+     */
+    cursor?: EmployeeRecurringDeductionWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` EmployeeRecurringDeductions from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` EmployeeRecurringDeductions.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of EmployeeRecurringDeductions.
+     */
+    distinct?: EmployeeRecurringDeductionScalarFieldEnum | EmployeeRecurringDeductionScalarFieldEnum[]
+  }
+
+  /**
+   * EmployeeRecurringDeduction findMany
+   */
+  export type EmployeeRecurringDeductionFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EmployeeRecurringDeduction
+     */
+    select?: EmployeeRecurringDeductionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EmployeeRecurringDeduction
+     */
+    omit?: EmployeeRecurringDeductionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EmployeeRecurringDeductionInclude<ExtArgs> | null
+    /**
+     * Filter, which EmployeeRecurringDeductions to fetch.
+     */
+    where?: EmployeeRecurringDeductionWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of EmployeeRecurringDeductions to fetch.
+     */
+    orderBy?: EmployeeRecurringDeductionOrderByWithRelationInput | EmployeeRecurringDeductionOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing EmployeeRecurringDeductions.
+     */
+    cursor?: EmployeeRecurringDeductionWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` EmployeeRecurringDeductions from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` EmployeeRecurringDeductions.
+     */
+    skip?: number
+    distinct?: EmployeeRecurringDeductionScalarFieldEnum | EmployeeRecurringDeductionScalarFieldEnum[]
+  }
+
+  /**
+   * EmployeeRecurringDeduction create
+   */
+  export type EmployeeRecurringDeductionCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EmployeeRecurringDeduction
+     */
+    select?: EmployeeRecurringDeductionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EmployeeRecurringDeduction
+     */
+    omit?: EmployeeRecurringDeductionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EmployeeRecurringDeductionInclude<ExtArgs> | null
+    /**
+     * The data needed to create a EmployeeRecurringDeduction.
+     */
+    data: XOR<EmployeeRecurringDeductionCreateInput, EmployeeRecurringDeductionUncheckedCreateInput>
+  }
+
+  /**
+   * EmployeeRecurringDeduction createMany
+   */
+  export type EmployeeRecurringDeductionCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many EmployeeRecurringDeductions.
+     */
+    data: EmployeeRecurringDeductionCreateManyInput | EmployeeRecurringDeductionCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * EmployeeRecurringDeduction createManyAndReturn
+   */
+  export type EmployeeRecurringDeductionCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EmployeeRecurringDeduction
+     */
+    select?: EmployeeRecurringDeductionSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the EmployeeRecurringDeduction
+     */
+    omit?: EmployeeRecurringDeductionOmit<ExtArgs> | null
+    /**
+     * The data used to create many EmployeeRecurringDeductions.
+     */
+    data: EmployeeRecurringDeductionCreateManyInput | EmployeeRecurringDeductionCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EmployeeRecurringDeductionIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * EmployeeRecurringDeduction update
+   */
+  export type EmployeeRecurringDeductionUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EmployeeRecurringDeduction
+     */
+    select?: EmployeeRecurringDeductionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EmployeeRecurringDeduction
+     */
+    omit?: EmployeeRecurringDeductionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EmployeeRecurringDeductionInclude<ExtArgs> | null
+    /**
+     * The data needed to update a EmployeeRecurringDeduction.
+     */
+    data: XOR<EmployeeRecurringDeductionUpdateInput, EmployeeRecurringDeductionUncheckedUpdateInput>
+    /**
+     * Choose, which EmployeeRecurringDeduction to update.
+     */
+    where: EmployeeRecurringDeductionWhereUniqueInput
+  }
+
+  /**
+   * EmployeeRecurringDeduction updateMany
+   */
+  export type EmployeeRecurringDeductionUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update EmployeeRecurringDeductions.
+     */
+    data: XOR<EmployeeRecurringDeductionUpdateManyMutationInput, EmployeeRecurringDeductionUncheckedUpdateManyInput>
+    /**
+     * Filter which EmployeeRecurringDeductions to update
+     */
+    where?: EmployeeRecurringDeductionWhereInput
+    /**
+     * Limit how many EmployeeRecurringDeductions to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * EmployeeRecurringDeduction updateManyAndReturn
+   */
+  export type EmployeeRecurringDeductionUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EmployeeRecurringDeduction
+     */
+    select?: EmployeeRecurringDeductionSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the EmployeeRecurringDeduction
+     */
+    omit?: EmployeeRecurringDeductionOmit<ExtArgs> | null
+    /**
+     * The data used to update EmployeeRecurringDeductions.
+     */
+    data: XOR<EmployeeRecurringDeductionUpdateManyMutationInput, EmployeeRecurringDeductionUncheckedUpdateManyInput>
+    /**
+     * Filter which EmployeeRecurringDeductions to update
+     */
+    where?: EmployeeRecurringDeductionWhereInput
+    /**
+     * Limit how many EmployeeRecurringDeductions to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EmployeeRecurringDeductionIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * EmployeeRecurringDeduction upsert
+   */
+  export type EmployeeRecurringDeductionUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EmployeeRecurringDeduction
+     */
+    select?: EmployeeRecurringDeductionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EmployeeRecurringDeduction
+     */
+    omit?: EmployeeRecurringDeductionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EmployeeRecurringDeductionInclude<ExtArgs> | null
+    /**
+     * The filter to search for the EmployeeRecurringDeduction to update in case it exists.
+     */
+    where: EmployeeRecurringDeductionWhereUniqueInput
+    /**
+     * In case the EmployeeRecurringDeduction found by the `where` argument doesn't exist, create a new EmployeeRecurringDeduction with this data.
+     */
+    create: XOR<EmployeeRecurringDeductionCreateInput, EmployeeRecurringDeductionUncheckedCreateInput>
+    /**
+     * In case the EmployeeRecurringDeduction was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<EmployeeRecurringDeductionUpdateInput, EmployeeRecurringDeductionUncheckedUpdateInput>
+  }
+
+  /**
+   * EmployeeRecurringDeduction delete
+   */
+  export type EmployeeRecurringDeductionDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EmployeeRecurringDeduction
+     */
+    select?: EmployeeRecurringDeductionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EmployeeRecurringDeduction
+     */
+    omit?: EmployeeRecurringDeductionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EmployeeRecurringDeductionInclude<ExtArgs> | null
+    /**
+     * Filter which EmployeeRecurringDeduction to delete.
+     */
+    where: EmployeeRecurringDeductionWhereUniqueInput
+  }
+
+  /**
+   * EmployeeRecurringDeduction deleteMany
+   */
+  export type EmployeeRecurringDeductionDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which EmployeeRecurringDeductions to delete
+     */
+    where?: EmployeeRecurringDeductionWhereInput
+    /**
+     * Limit how many EmployeeRecurringDeductions to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * EmployeeRecurringDeduction without action
+   */
+  export type EmployeeRecurringDeductionDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EmployeeRecurringDeduction
+     */
+    select?: EmployeeRecurringDeductionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EmployeeRecurringDeduction
+     */
+    omit?: EmployeeRecurringDeductionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EmployeeRecurringDeductionInclude<ExtArgs> | null
   }
 
 
@@ -13806,6 +15152,7 @@ export namespace Prisma {
     description: string | null
     amount: Decimal | null
     isFixed: boolean | null
+    recurringDeductionId: string | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -13818,6 +15165,7 @@ export namespace Prisma {
     description: string | null
     amount: Decimal | null
     isFixed: boolean | null
+    recurringDeductionId: string | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -13830,6 +15178,7 @@ export namespace Prisma {
     description: number
     amount: number
     isFixed: number
+    recurringDeductionId: number
     createdAt: number
     updatedAt: number
     _all: number
@@ -13852,6 +15201,7 @@ export namespace Prisma {
     description?: true
     amount?: true
     isFixed?: true
+    recurringDeductionId?: true
     createdAt?: true
     updatedAt?: true
   }
@@ -13864,6 +15214,7 @@ export namespace Prisma {
     description?: true
     amount?: true
     isFixed?: true
+    recurringDeductionId?: true
     createdAt?: true
     updatedAt?: true
   }
@@ -13876,6 +15227,7 @@ export namespace Prisma {
     description?: true
     amount?: true
     isFixed?: true
+    recurringDeductionId?: true
     createdAt?: true
     updatedAt?: true
     _all?: true
@@ -13975,6 +15327,7 @@ export namespace Prisma {
     description: string
     amount: Decimal
     isFixed: boolean
+    recurringDeductionId: string | null
     createdAt: Date
     updatedAt: Date
     _count: DeductionCountAggregateOutputType | null
@@ -14006,6 +15359,7 @@ export namespace Prisma {
     description?: boolean
     amount?: boolean
     isFixed?: boolean
+    recurringDeductionId?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     payroll?: boolean | Deduction$payrollArgs<ExtArgs>
@@ -14020,6 +15374,7 @@ export namespace Prisma {
     description?: boolean
     amount?: boolean
     isFixed?: boolean
+    recurringDeductionId?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     payroll?: boolean | Deduction$payrollArgs<ExtArgs>
@@ -14034,6 +15389,7 @@ export namespace Prisma {
     description?: boolean
     amount?: boolean
     isFixed?: boolean
+    recurringDeductionId?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     payroll?: boolean | Deduction$payrollArgs<ExtArgs>
@@ -14048,11 +15404,12 @@ export namespace Prisma {
     description?: boolean
     amount?: boolean
     isFixed?: boolean
+    recurringDeductionId?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }
 
-  export type DeductionOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "payrollId" | "employeeId" | "deductionType" | "description" | "amount" | "isFixed" | "createdAt" | "updatedAt", ExtArgs["result"]["deduction"]>
+  export type DeductionOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "payrollId" | "employeeId" | "deductionType" | "description" | "amount" | "isFixed" | "recurringDeductionId" | "createdAt" | "updatedAt", ExtArgs["result"]["deduction"]>
   export type DeductionInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     payroll?: boolean | Deduction$payrollArgs<ExtArgs>
     employee?: boolean | EmployeeDefaultArgs<ExtArgs>
@@ -14080,6 +15437,7 @@ export namespace Prisma {
       description: string
       amount: Prisma.Decimal
       isFixed: boolean
+      recurringDeductionId: string | null
       createdAt: Date
       updatedAt: Date
     }, ExtArgs["result"]["deduction"]>
@@ -14514,6 +15872,7 @@ export namespace Prisma {
     readonly description: FieldRef<"Deduction", 'String'>
     readonly amount: FieldRef<"Deduction", 'Decimal'>
     readonly isFixed: FieldRef<"Deduction", 'Boolean'>
+    readonly recurringDeductionId: FieldRef<"Deduction", 'String'>
     readonly createdAt: FieldRef<"Deduction", 'DateTime'>
     readonly updatedAt: FieldRef<"Deduction", 'DateTime'>
   }
@@ -21076,6 +22435,25 @@ export namespace Prisma {
   export type EmployeeScalarFieldEnum = (typeof EmployeeScalarFieldEnum)[keyof typeof EmployeeScalarFieldEnum]
 
 
+  export const EmployeeRecurringDeductionScalarFieldEnum: {
+    id: 'id',
+    employeeId: 'employeeId',
+    name: 'name',
+    description: 'description',
+    amount: 'amount',
+    frequency: 'frequency',
+    isActive: 'isActive',
+    startDate: 'startDate',
+    endDate: 'endDate',
+    targetAmount: 'targetAmount',
+    currentBalance: 'currentBalance',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type EmployeeRecurringDeductionScalarFieldEnum = (typeof EmployeeRecurringDeductionScalarFieldEnum)[keyof typeof EmployeeRecurringDeductionScalarFieldEnum]
+
+
   export const PayrollRunScalarFieldEnum: {
     id: 'id',
     companyId: 'companyId',
@@ -21134,6 +22512,7 @@ export namespace Prisma {
     description: 'description',
     amount: 'amount',
     isFixed: 'isFixed',
+    recurringDeductionId: 'recurringDeductionId',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt'
   };
@@ -21364,6 +22743,20 @@ export namespace Prisma {
    * Reference to a field of type 'EmployeeStatus[]'
    */
   export type ListEnumEmployeeStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'EmployeeStatus[]'>
+    
+
+
+  /**
+   * Reference to a field of type 'DeductionFrequency'
+   */
+  export type EnumDeductionFrequencyFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DeductionFrequency'>
+    
+
+
+  /**
+   * Reference to a field of type 'DeductionFrequency[]'
+   */
+  export type ListEnumDeductionFrequencyFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DeductionFrequency[]'>
     
 
 
@@ -22049,6 +23442,7 @@ export namespace Prisma {
     allowances?: AllowanceListRelationFilter
     attendanceRecords?: AttendanceRecordListRelationFilter
     leaves?: LeaveListRelationFilter
+    recurringDeductions?: EmployeeRecurringDeductionListRelationFilter
   }
 
   export type EmployeeOrderByWithRelationInput = {
@@ -22077,6 +23471,7 @@ export namespace Prisma {
     allowances?: AllowanceOrderByRelationAggregateInput
     attendanceRecords?: AttendanceRecordOrderByRelationAggregateInput
     leaves?: LeaveOrderByRelationAggregateInput
+    recurringDeductions?: EmployeeRecurringDeductionOrderByRelationAggregateInput
   }
 
   export type EmployeeWhereUniqueInput = Prisma.AtLeast<{
@@ -22108,6 +23503,7 @@ export namespace Prisma {
     allowances?: AllowanceListRelationFilter
     attendanceRecords?: AttendanceRecordListRelationFilter
     leaves?: LeaveListRelationFilter
+    recurringDeductions?: EmployeeRecurringDeductionListRelationFilter
   }, "id" | "cedula" | "email" | "userId">
 
   export type EmployeeOrderByWithAggregationInput = {
@@ -22158,6 +23554,103 @@ export namespace Prisma {
     companyId?: StringWithAggregatesFilter<"Employee"> | string
     createdAt?: DateTimeWithAggregatesFilter<"Employee"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"Employee"> | Date | string
+  }
+
+  export type EmployeeRecurringDeductionWhereInput = {
+    AND?: EmployeeRecurringDeductionWhereInput | EmployeeRecurringDeductionWhereInput[]
+    OR?: EmployeeRecurringDeductionWhereInput[]
+    NOT?: EmployeeRecurringDeductionWhereInput | EmployeeRecurringDeductionWhereInput[]
+    id?: StringFilter<"EmployeeRecurringDeduction"> | string
+    employeeId?: StringFilter<"EmployeeRecurringDeduction"> | string
+    name?: StringFilter<"EmployeeRecurringDeduction"> | string
+    description?: StringNullableFilter<"EmployeeRecurringDeduction"> | string | null
+    amount?: DecimalFilter<"EmployeeRecurringDeduction"> | Decimal | DecimalJsLike | number | string
+    frequency?: EnumDeductionFrequencyFilter<"EmployeeRecurringDeduction"> | $Enums.DeductionFrequency
+    isActive?: BoolFilter<"EmployeeRecurringDeduction"> | boolean
+    startDate?: DateTimeFilter<"EmployeeRecurringDeduction"> | Date | string
+    endDate?: DateTimeNullableFilter<"EmployeeRecurringDeduction"> | Date | string | null
+    targetAmount?: DecimalNullableFilter<"EmployeeRecurringDeduction"> | Decimal | DecimalJsLike | number | string | null
+    currentBalance?: DecimalNullableFilter<"EmployeeRecurringDeduction"> | Decimal | DecimalJsLike | number | string | null
+    createdAt?: DateTimeFilter<"EmployeeRecurringDeduction"> | Date | string
+    updatedAt?: DateTimeFilter<"EmployeeRecurringDeduction"> | Date | string
+    employee?: XOR<EmployeeScalarRelationFilter, EmployeeWhereInput>
+  }
+
+  export type EmployeeRecurringDeductionOrderByWithRelationInput = {
+    id?: SortOrder
+    employeeId?: SortOrder
+    name?: SortOrder
+    description?: SortOrderInput | SortOrder
+    amount?: SortOrder
+    frequency?: SortOrder
+    isActive?: SortOrder
+    startDate?: SortOrder
+    endDate?: SortOrderInput | SortOrder
+    targetAmount?: SortOrderInput | SortOrder
+    currentBalance?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    employee?: EmployeeOrderByWithRelationInput
+  }
+
+  export type EmployeeRecurringDeductionWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: EmployeeRecurringDeductionWhereInput | EmployeeRecurringDeductionWhereInput[]
+    OR?: EmployeeRecurringDeductionWhereInput[]
+    NOT?: EmployeeRecurringDeductionWhereInput | EmployeeRecurringDeductionWhereInput[]
+    employeeId?: StringFilter<"EmployeeRecurringDeduction"> | string
+    name?: StringFilter<"EmployeeRecurringDeduction"> | string
+    description?: StringNullableFilter<"EmployeeRecurringDeduction"> | string | null
+    amount?: DecimalFilter<"EmployeeRecurringDeduction"> | Decimal | DecimalJsLike | number | string
+    frequency?: EnumDeductionFrequencyFilter<"EmployeeRecurringDeduction"> | $Enums.DeductionFrequency
+    isActive?: BoolFilter<"EmployeeRecurringDeduction"> | boolean
+    startDate?: DateTimeFilter<"EmployeeRecurringDeduction"> | Date | string
+    endDate?: DateTimeNullableFilter<"EmployeeRecurringDeduction"> | Date | string | null
+    targetAmount?: DecimalNullableFilter<"EmployeeRecurringDeduction"> | Decimal | DecimalJsLike | number | string | null
+    currentBalance?: DecimalNullableFilter<"EmployeeRecurringDeduction"> | Decimal | DecimalJsLike | number | string | null
+    createdAt?: DateTimeFilter<"EmployeeRecurringDeduction"> | Date | string
+    updatedAt?: DateTimeFilter<"EmployeeRecurringDeduction"> | Date | string
+    employee?: XOR<EmployeeScalarRelationFilter, EmployeeWhereInput>
+  }, "id">
+
+  export type EmployeeRecurringDeductionOrderByWithAggregationInput = {
+    id?: SortOrder
+    employeeId?: SortOrder
+    name?: SortOrder
+    description?: SortOrderInput | SortOrder
+    amount?: SortOrder
+    frequency?: SortOrder
+    isActive?: SortOrder
+    startDate?: SortOrder
+    endDate?: SortOrderInput | SortOrder
+    targetAmount?: SortOrderInput | SortOrder
+    currentBalance?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: EmployeeRecurringDeductionCountOrderByAggregateInput
+    _avg?: EmployeeRecurringDeductionAvgOrderByAggregateInput
+    _max?: EmployeeRecurringDeductionMaxOrderByAggregateInput
+    _min?: EmployeeRecurringDeductionMinOrderByAggregateInput
+    _sum?: EmployeeRecurringDeductionSumOrderByAggregateInput
+  }
+
+  export type EmployeeRecurringDeductionScalarWhereWithAggregatesInput = {
+    AND?: EmployeeRecurringDeductionScalarWhereWithAggregatesInput | EmployeeRecurringDeductionScalarWhereWithAggregatesInput[]
+    OR?: EmployeeRecurringDeductionScalarWhereWithAggregatesInput[]
+    NOT?: EmployeeRecurringDeductionScalarWhereWithAggregatesInput | EmployeeRecurringDeductionScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"EmployeeRecurringDeduction"> | string
+    employeeId?: StringWithAggregatesFilter<"EmployeeRecurringDeduction"> | string
+    name?: StringWithAggregatesFilter<"EmployeeRecurringDeduction"> | string
+    description?: StringNullableWithAggregatesFilter<"EmployeeRecurringDeduction"> | string | null
+    amount?: DecimalWithAggregatesFilter<"EmployeeRecurringDeduction"> | Decimal | DecimalJsLike | number | string
+    frequency?: EnumDeductionFrequencyWithAggregatesFilter<"EmployeeRecurringDeduction"> | $Enums.DeductionFrequency
+    isActive?: BoolWithAggregatesFilter<"EmployeeRecurringDeduction"> | boolean
+    startDate?: DateTimeWithAggregatesFilter<"EmployeeRecurringDeduction"> | Date | string
+    endDate?: DateTimeNullableWithAggregatesFilter<"EmployeeRecurringDeduction"> | Date | string | null
+    targetAmount?: DecimalNullableWithAggregatesFilter<"EmployeeRecurringDeduction"> | Decimal | DecimalJsLike | number | string | null
+    currentBalance?: DecimalNullableWithAggregatesFilter<"EmployeeRecurringDeduction"> | Decimal | DecimalJsLike | number | string | null
+    createdAt?: DateTimeWithAggregatesFilter<"EmployeeRecurringDeduction"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"EmployeeRecurringDeduction"> | Date | string
   }
 
   export type PayrollRunWhereInput = {
@@ -22441,6 +23934,7 @@ export namespace Prisma {
     description?: StringFilter<"Deduction"> | string
     amount?: DecimalFilter<"Deduction"> | Decimal | DecimalJsLike | number | string
     isFixed?: BoolFilter<"Deduction"> | boolean
+    recurringDeductionId?: StringNullableFilter<"Deduction"> | string | null
     createdAt?: DateTimeFilter<"Deduction"> | Date | string
     updatedAt?: DateTimeFilter<"Deduction"> | Date | string
     payroll?: XOR<PayrollNullableScalarRelationFilter, PayrollWhereInput> | null
@@ -22455,6 +23949,7 @@ export namespace Prisma {
     description?: SortOrder
     amount?: SortOrder
     isFixed?: SortOrder
+    recurringDeductionId?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     payroll?: PayrollOrderByWithRelationInput
@@ -22472,6 +23967,7 @@ export namespace Prisma {
     description?: StringFilter<"Deduction"> | string
     amount?: DecimalFilter<"Deduction"> | Decimal | DecimalJsLike | number | string
     isFixed?: BoolFilter<"Deduction"> | boolean
+    recurringDeductionId?: StringNullableFilter<"Deduction"> | string | null
     createdAt?: DateTimeFilter<"Deduction"> | Date | string
     updatedAt?: DateTimeFilter<"Deduction"> | Date | string
     payroll?: XOR<PayrollNullableScalarRelationFilter, PayrollWhereInput> | null
@@ -22486,6 +23982,7 @@ export namespace Prisma {
     description?: SortOrder
     amount?: SortOrder
     isFixed?: SortOrder
+    recurringDeductionId?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     _count?: DeductionCountOrderByAggregateInput
@@ -22506,6 +24003,7 @@ export namespace Prisma {
     description?: StringWithAggregatesFilter<"Deduction"> | string
     amount?: DecimalWithAggregatesFilter<"Deduction"> | Decimal | DecimalJsLike | number | string
     isFixed?: BoolWithAggregatesFilter<"Deduction"> | boolean
+    recurringDeductionId?: StringNullableWithAggregatesFilter<"Deduction"> | string | null
     createdAt?: DateTimeWithAggregatesFilter<"Deduction"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"Deduction"> | Date | string
   }
@@ -23536,6 +25034,7 @@ export namespace Prisma {
     allowances?: AllowanceCreateNestedManyWithoutEmployeeInput
     attendanceRecords?: AttendanceRecordCreateNestedManyWithoutEmployeeInput
     leaves?: LeaveCreateNestedManyWithoutEmployeeInput
+    recurringDeductions?: EmployeeRecurringDeductionCreateNestedManyWithoutEmployeeInput
   }
 
   export type EmployeeUncheckedCreateInput = {
@@ -23562,6 +25061,7 @@ export namespace Prisma {
     allowances?: AllowanceUncheckedCreateNestedManyWithoutEmployeeInput
     attendanceRecords?: AttendanceRecordUncheckedCreateNestedManyWithoutEmployeeInput
     leaves?: LeaveUncheckedCreateNestedManyWithoutEmployeeInput
+    recurringDeductions?: EmployeeRecurringDeductionUncheckedCreateNestedManyWithoutEmployeeInput
   }
 
   export type EmployeeUpdateInput = {
@@ -23588,6 +25088,7 @@ export namespace Prisma {
     allowances?: AllowanceUpdateManyWithoutEmployeeNestedInput
     attendanceRecords?: AttendanceRecordUpdateManyWithoutEmployeeNestedInput
     leaves?: LeaveUpdateManyWithoutEmployeeNestedInput
+    recurringDeductions?: EmployeeRecurringDeductionUpdateManyWithoutEmployeeNestedInput
   }
 
   export type EmployeeUncheckedUpdateInput = {
@@ -23614,6 +25115,7 @@ export namespace Prisma {
     allowances?: AllowanceUncheckedUpdateManyWithoutEmployeeNestedInput
     attendanceRecords?: AttendanceRecordUncheckedUpdateManyWithoutEmployeeNestedInput
     leaves?: LeaveUncheckedUpdateManyWithoutEmployeeNestedInput
+    recurringDeductions?: EmployeeRecurringDeductionUncheckedUpdateManyWithoutEmployeeNestedInput
   }
 
   export type EmployeeCreateManyInput = {
@@ -23673,6 +25175,117 @@ export namespace Prisma {
     bankName?: NullableStringFieldUpdateOperationsInput | string | null
     userId?: NullableStringFieldUpdateOperationsInput | string | null
     companyId?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type EmployeeRecurringDeductionCreateInput = {
+    id?: string
+    name: string
+    description?: string | null
+    amount?: Decimal | DecimalJsLike | number | string
+    frequency?: $Enums.DeductionFrequency
+    isActive?: boolean
+    startDate?: Date | string
+    endDate?: Date | string | null
+    targetAmount?: Decimal | DecimalJsLike | number | string | null
+    currentBalance?: Decimal | DecimalJsLike | number | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    employee: EmployeeCreateNestedOneWithoutRecurringDeductionsInput
+  }
+
+  export type EmployeeRecurringDeductionUncheckedCreateInput = {
+    id?: string
+    employeeId: string
+    name: string
+    description?: string | null
+    amount?: Decimal | DecimalJsLike | number | string
+    frequency?: $Enums.DeductionFrequency
+    isActive?: boolean
+    startDate?: Date | string
+    endDate?: Date | string | null
+    targetAmount?: Decimal | DecimalJsLike | number | string | null
+    currentBalance?: Decimal | DecimalJsLike | number | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type EmployeeRecurringDeductionUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    frequency?: EnumDeductionFrequencyFieldUpdateOperationsInput | $Enums.DeductionFrequency
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    startDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    endDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    targetAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    currentBalance?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    employee?: EmployeeUpdateOneRequiredWithoutRecurringDeductionsNestedInput
+  }
+
+  export type EmployeeRecurringDeductionUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    employeeId?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    frequency?: EnumDeductionFrequencyFieldUpdateOperationsInput | $Enums.DeductionFrequency
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    startDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    endDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    targetAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    currentBalance?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type EmployeeRecurringDeductionCreateManyInput = {
+    id?: string
+    employeeId: string
+    name: string
+    description?: string | null
+    amount?: Decimal | DecimalJsLike | number | string
+    frequency?: $Enums.DeductionFrequency
+    isActive?: boolean
+    startDate?: Date | string
+    endDate?: Date | string | null
+    targetAmount?: Decimal | DecimalJsLike | number | string | null
+    currentBalance?: Decimal | DecimalJsLike | number | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type EmployeeRecurringDeductionUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    frequency?: EnumDeductionFrequencyFieldUpdateOperationsInput | $Enums.DeductionFrequency
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    startDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    endDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    targetAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    currentBalance?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type EmployeeRecurringDeductionUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    employeeId?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    frequency?: EnumDeductionFrequencyFieldUpdateOperationsInput | $Enums.DeductionFrequency
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    startDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    endDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    targetAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    currentBalance?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -23999,6 +25612,7 @@ export namespace Prisma {
     description: string
     amount: Decimal | DecimalJsLike | number | string
     isFixed?: boolean
+    recurringDeductionId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     payroll?: PayrollCreateNestedOneWithoutDeductionsInput
@@ -24013,6 +25627,7 @@ export namespace Prisma {
     description: string
     amount: Decimal | DecimalJsLike | number | string
     isFixed?: boolean
+    recurringDeductionId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -24023,6 +25638,7 @@ export namespace Prisma {
     description?: StringFieldUpdateOperationsInput | string
     amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     isFixed?: BoolFieldUpdateOperationsInput | boolean
+    recurringDeductionId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     payroll?: PayrollUpdateOneWithoutDeductionsNestedInput
@@ -24037,6 +25653,7 @@ export namespace Prisma {
     description?: StringFieldUpdateOperationsInput | string
     amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     isFixed?: BoolFieldUpdateOperationsInput | boolean
+    recurringDeductionId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -24049,6 +25666,7 @@ export namespace Prisma {
     description: string
     amount: Decimal | DecimalJsLike | number | string
     isFixed?: boolean
+    recurringDeductionId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -24059,6 +25677,7 @@ export namespace Prisma {
     description?: StringFieldUpdateOperationsInput | string
     amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     isFixed?: BoolFieldUpdateOperationsInput | boolean
+    recurringDeductionId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -24071,6 +25690,7 @@ export namespace Prisma {
     description?: StringFieldUpdateOperationsInput | string
     amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     isFixed?: BoolFieldUpdateOperationsInput | boolean
+    recurringDeductionId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -25132,11 +26752,21 @@ export namespace Prisma {
     none?: AllowanceWhereInput
   }
 
+  export type EmployeeRecurringDeductionListRelationFilter = {
+    every?: EmployeeRecurringDeductionWhereInput
+    some?: EmployeeRecurringDeductionWhereInput
+    none?: EmployeeRecurringDeductionWhereInput
+  }
+
   export type DeductionOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
   export type AllowanceOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type EmployeeRecurringDeductionOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -25245,6 +26875,140 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedEnumEmployeeStatusFilter<$PrismaModel>
     _max?: NestedEnumEmployeeStatusFilter<$PrismaModel>
+  }
+
+  export type EnumDeductionFrequencyFilter<$PrismaModel = never> = {
+    equals?: $Enums.DeductionFrequency | EnumDeductionFrequencyFieldRefInput<$PrismaModel>
+    in?: $Enums.DeductionFrequency[] | ListEnumDeductionFrequencyFieldRefInput<$PrismaModel>
+    notIn?: $Enums.DeductionFrequency[] | ListEnumDeductionFrequencyFieldRefInput<$PrismaModel>
+    not?: NestedEnumDeductionFrequencyFilter<$PrismaModel> | $Enums.DeductionFrequency
+  }
+
+  export type DateTimeNullableFilter<$PrismaModel = never> = {
+    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
+    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    not?: NestedDateTimeNullableFilter<$PrismaModel> | Date | string | null
+  }
+
+  export type DecimalNullableFilter<$PrismaModel = never> = {
+    equals?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel> | null
+    in?: Decimal[] | DecimalJsLike[] | number[] | string[] | ListDecimalFieldRefInput<$PrismaModel> | null
+    notIn?: Decimal[] | DecimalJsLike[] | number[] | string[] | ListDecimalFieldRefInput<$PrismaModel> | null
+    lt?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    lte?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    gt?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    gte?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    not?: NestedDecimalNullableFilter<$PrismaModel> | Decimal | DecimalJsLike | number | string | null
+  }
+
+  export type EmployeeScalarRelationFilter = {
+    is?: EmployeeWhereInput
+    isNot?: EmployeeWhereInput
+  }
+
+  export type EmployeeRecurringDeductionCountOrderByAggregateInput = {
+    id?: SortOrder
+    employeeId?: SortOrder
+    name?: SortOrder
+    description?: SortOrder
+    amount?: SortOrder
+    frequency?: SortOrder
+    isActive?: SortOrder
+    startDate?: SortOrder
+    endDate?: SortOrder
+    targetAmount?: SortOrder
+    currentBalance?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type EmployeeRecurringDeductionAvgOrderByAggregateInput = {
+    amount?: SortOrder
+    targetAmount?: SortOrder
+    currentBalance?: SortOrder
+  }
+
+  export type EmployeeRecurringDeductionMaxOrderByAggregateInput = {
+    id?: SortOrder
+    employeeId?: SortOrder
+    name?: SortOrder
+    description?: SortOrder
+    amount?: SortOrder
+    frequency?: SortOrder
+    isActive?: SortOrder
+    startDate?: SortOrder
+    endDate?: SortOrder
+    targetAmount?: SortOrder
+    currentBalance?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type EmployeeRecurringDeductionMinOrderByAggregateInput = {
+    id?: SortOrder
+    employeeId?: SortOrder
+    name?: SortOrder
+    description?: SortOrder
+    amount?: SortOrder
+    frequency?: SortOrder
+    isActive?: SortOrder
+    startDate?: SortOrder
+    endDate?: SortOrder
+    targetAmount?: SortOrder
+    currentBalance?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type EmployeeRecurringDeductionSumOrderByAggregateInput = {
+    amount?: SortOrder
+    targetAmount?: SortOrder
+    currentBalance?: SortOrder
+  }
+
+  export type EnumDeductionFrequencyWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.DeductionFrequency | EnumDeductionFrequencyFieldRefInput<$PrismaModel>
+    in?: $Enums.DeductionFrequency[] | ListEnumDeductionFrequencyFieldRefInput<$PrismaModel>
+    notIn?: $Enums.DeductionFrequency[] | ListEnumDeductionFrequencyFieldRefInput<$PrismaModel>
+    not?: NestedEnumDeductionFrequencyWithAggregatesFilter<$PrismaModel> | $Enums.DeductionFrequency
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumDeductionFrequencyFilter<$PrismaModel>
+    _max?: NestedEnumDeductionFrequencyFilter<$PrismaModel>
+  }
+
+  export type DateTimeNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
+    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    not?: NestedDateTimeNullableWithAggregatesFilter<$PrismaModel> | Date | string | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedDateTimeNullableFilter<$PrismaModel>
+    _max?: NestedDateTimeNullableFilter<$PrismaModel>
+  }
+
+  export type DecimalNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel> | null
+    in?: Decimal[] | DecimalJsLike[] | number[] | string[] | ListDecimalFieldRefInput<$PrismaModel> | null
+    notIn?: Decimal[] | DecimalJsLike[] | number[] | string[] | ListDecimalFieldRefInput<$PrismaModel> | null
+    lt?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    lte?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    gt?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    gte?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    not?: NestedDecimalNullableWithAggregatesFilter<$PrismaModel> | Decimal | DecimalJsLike | number | string | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _avg?: NestedDecimalNullableFilter<$PrismaModel>
+    _sum?: NestedDecimalNullableFilter<$PrismaModel>
+    _min?: NestedDecimalNullableFilter<$PrismaModel>
+    _max?: NestedDecimalNullableFilter<$PrismaModel>
   }
 
   export type IntFilter<$PrismaModel = never> = {
@@ -25374,17 +27138,6 @@ export namespace Prisma {
     _max?: NestedEnumPayrollRunStatusFilter<$PrismaModel>
   }
 
-  export type DecimalNullableFilter<$PrismaModel = never> = {
-    equals?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel> | null
-    in?: Decimal[] | DecimalJsLike[] | number[] | string[] | ListDecimalFieldRefInput<$PrismaModel> | null
-    notIn?: Decimal[] | DecimalJsLike[] | number[] | string[] | ListDecimalFieldRefInput<$PrismaModel> | null
-    lt?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
-    lte?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
-    gt?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
-    gte?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
-    not?: NestedDecimalNullableFilter<$PrismaModel> | Decimal | DecimalJsLike | number | string | null
-  }
-
   export type EnumPayrollStatusFilter<$PrismaModel = never> = {
     equals?: $Enums.PayrollStatus | EnumPayrollStatusFieldRefInput<$PrismaModel>
     in?: $Enums.PayrollStatus[] | ListEnumPayrollStatusFieldRefInput<$PrismaModel>
@@ -25392,25 +27145,9 @@ export namespace Prisma {
     not?: NestedEnumPayrollStatusFilter<$PrismaModel> | $Enums.PayrollStatus
   }
 
-  export type DateTimeNullableFilter<$PrismaModel = never> = {
-    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
-    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
-    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
-    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    not?: NestedDateTimeNullableFilter<$PrismaModel> | Date | string | null
-  }
-
   export type PayrollRunNullableScalarRelationFilter = {
     is?: PayrollRunWhereInput | null
     isNot?: PayrollRunWhereInput | null
-  }
-
-  export type EmployeeScalarRelationFilter = {
-    is?: EmployeeWhereInput
-    isNot?: EmployeeWhereInput
   }
 
   export type PayrollCountOrderByAggregateInput = {
@@ -25528,22 +27265,6 @@ export namespace Prisma {
     thirteenthMonthAmount?: SortOrder
   }
 
-  export type DecimalNullableWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel> | null
-    in?: Decimal[] | DecimalJsLike[] | number[] | string[] | ListDecimalFieldRefInput<$PrismaModel> | null
-    notIn?: Decimal[] | DecimalJsLike[] | number[] | string[] | ListDecimalFieldRefInput<$PrismaModel> | null
-    lt?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
-    lte?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
-    gt?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
-    gte?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
-    not?: NestedDecimalNullableWithAggregatesFilter<$PrismaModel> | Decimal | DecimalJsLike | number | string | null
-    _count?: NestedIntNullableFilter<$PrismaModel>
-    _avg?: NestedDecimalNullableFilter<$PrismaModel>
-    _sum?: NestedDecimalNullableFilter<$PrismaModel>
-    _min?: NestedDecimalNullableFilter<$PrismaModel>
-    _max?: NestedDecimalNullableFilter<$PrismaModel>
-  }
-
   export type EnumPayrollStatusWithAggregatesFilter<$PrismaModel = never> = {
     equals?: $Enums.PayrollStatus | EnumPayrollStatusFieldRefInput<$PrismaModel>
     in?: $Enums.PayrollStatus[] | ListEnumPayrollStatusFieldRefInput<$PrismaModel>
@@ -25552,20 +27273,6 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedEnumPayrollStatusFilter<$PrismaModel>
     _max?: NestedEnumPayrollStatusFilter<$PrismaModel>
-  }
-
-  export type DateTimeNullableWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
-    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
-    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
-    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    not?: NestedDateTimeNullableWithAggregatesFilter<$PrismaModel> | Date | string | null
-    _count?: NestedIntNullableFilter<$PrismaModel>
-    _min?: NestedDateTimeNullableFilter<$PrismaModel>
-    _max?: NestedDateTimeNullableFilter<$PrismaModel>
   }
 
   export type EnumDeductionTypeFilter<$PrismaModel = never> = {
@@ -25588,6 +27295,7 @@ export namespace Prisma {
     description?: SortOrder
     amount?: SortOrder
     isFixed?: SortOrder
+    recurringDeductionId?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -25604,6 +27312,7 @@ export namespace Prisma {
     description?: SortOrder
     amount?: SortOrder
     isFixed?: SortOrder
+    recurringDeductionId?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -25616,6 +27325,7 @@ export namespace Prisma {
     description?: SortOrder
     amount?: SortOrder
     isFixed?: SortOrder
+    recurringDeductionId?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -26830,6 +28540,13 @@ export namespace Prisma {
     connect?: LeaveWhereUniqueInput | LeaveWhereUniqueInput[]
   }
 
+  export type EmployeeRecurringDeductionCreateNestedManyWithoutEmployeeInput = {
+    create?: XOR<EmployeeRecurringDeductionCreateWithoutEmployeeInput, EmployeeRecurringDeductionUncheckedCreateWithoutEmployeeInput> | EmployeeRecurringDeductionCreateWithoutEmployeeInput[] | EmployeeRecurringDeductionUncheckedCreateWithoutEmployeeInput[]
+    connectOrCreate?: EmployeeRecurringDeductionCreateOrConnectWithoutEmployeeInput | EmployeeRecurringDeductionCreateOrConnectWithoutEmployeeInput[]
+    createMany?: EmployeeRecurringDeductionCreateManyEmployeeInputEnvelope
+    connect?: EmployeeRecurringDeductionWhereUniqueInput | EmployeeRecurringDeductionWhereUniqueInput[]
+  }
+
   export type PayrollUncheckedCreateNestedManyWithoutEmployeeInput = {
     create?: XOR<PayrollCreateWithoutEmployeeInput, PayrollUncheckedCreateWithoutEmployeeInput> | PayrollCreateWithoutEmployeeInput[] | PayrollUncheckedCreateWithoutEmployeeInput[]
     connectOrCreate?: PayrollCreateOrConnectWithoutEmployeeInput | PayrollCreateOrConnectWithoutEmployeeInput[]
@@ -26863,6 +28580,13 @@ export namespace Prisma {
     connectOrCreate?: LeaveCreateOrConnectWithoutEmployeeInput | LeaveCreateOrConnectWithoutEmployeeInput[]
     createMany?: LeaveCreateManyEmployeeInputEnvelope
     connect?: LeaveWhereUniqueInput | LeaveWhereUniqueInput[]
+  }
+
+  export type EmployeeRecurringDeductionUncheckedCreateNestedManyWithoutEmployeeInput = {
+    create?: XOR<EmployeeRecurringDeductionCreateWithoutEmployeeInput, EmployeeRecurringDeductionUncheckedCreateWithoutEmployeeInput> | EmployeeRecurringDeductionCreateWithoutEmployeeInput[] | EmployeeRecurringDeductionUncheckedCreateWithoutEmployeeInput[]
+    connectOrCreate?: EmployeeRecurringDeductionCreateOrConnectWithoutEmployeeInput | EmployeeRecurringDeductionCreateOrConnectWithoutEmployeeInput[]
+    createMany?: EmployeeRecurringDeductionCreateManyEmployeeInputEnvelope
+    connect?: EmployeeRecurringDeductionWhereUniqueInput | EmployeeRecurringDeductionWhereUniqueInput[]
   }
 
   export type DecimalFieldUpdateOperationsInput = {
@@ -26969,6 +28693,20 @@ export namespace Prisma {
     deleteMany?: LeaveScalarWhereInput | LeaveScalarWhereInput[]
   }
 
+  export type EmployeeRecurringDeductionUpdateManyWithoutEmployeeNestedInput = {
+    create?: XOR<EmployeeRecurringDeductionCreateWithoutEmployeeInput, EmployeeRecurringDeductionUncheckedCreateWithoutEmployeeInput> | EmployeeRecurringDeductionCreateWithoutEmployeeInput[] | EmployeeRecurringDeductionUncheckedCreateWithoutEmployeeInput[]
+    connectOrCreate?: EmployeeRecurringDeductionCreateOrConnectWithoutEmployeeInput | EmployeeRecurringDeductionCreateOrConnectWithoutEmployeeInput[]
+    upsert?: EmployeeRecurringDeductionUpsertWithWhereUniqueWithoutEmployeeInput | EmployeeRecurringDeductionUpsertWithWhereUniqueWithoutEmployeeInput[]
+    createMany?: EmployeeRecurringDeductionCreateManyEmployeeInputEnvelope
+    set?: EmployeeRecurringDeductionWhereUniqueInput | EmployeeRecurringDeductionWhereUniqueInput[]
+    disconnect?: EmployeeRecurringDeductionWhereUniqueInput | EmployeeRecurringDeductionWhereUniqueInput[]
+    delete?: EmployeeRecurringDeductionWhereUniqueInput | EmployeeRecurringDeductionWhereUniqueInput[]
+    connect?: EmployeeRecurringDeductionWhereUniqueInput | EmployeeRecurringDeductionWhereUniqueInput[]
+    update?: EmployeeRecurringDeductionUpdateWithWhereUniqueWithoutEmployeeInput | EmployeeRecurringDeductionUpdateWithWhereUniqueWithoutEmployeeInput[]
+    updateMany?: EmployeeRecurringDeductionUpdateManyWithWhereWithoutEmployeeInput | EmployeeRecurringDeductionUpdateManyWithWhereWithoutEmployeeInput[]
+    deleteMany?: EmployeeRecurringDeductionScalarWhereInput | EmployeeRecurringDeductionScalarWhereInput[]
+  }
+
   export type PayrollUncheckedUpdateManyWithoutEmployeeNestedInput = {
     create?: XOR<PayrollCreateWithoutEmployeeInput, PayrollUncheckedCreateWithoutEmployeeInput> | PayrollCreateWithoutEmployeeInput[] | PayrollUncheckedCreateWithoutEmployeeInput[]
     connectOrCreate?: PayrollCreateOrConnectWithoutEmployeeInput | PayrollCreateOrConnectWithoutEmployeeInput[]
@@ -27037,6 +28775,50 @@ export namespace Prisma {
     update?: LeaveUpdateWithWhereUniqueWithoutEmployeeInput | LeaveUpdateWithWhereUniqueWithoutEmployeeInput[]
     updateMany?: LeaveUpdateManyWithWhereWithoutEmployeeInput | LeaveUpdateManyWithWhereWithoutEmployeeInput[]
     deleteMany?: LeaveScalarWhereInput | LeaveScalarWhereInput[]
+  }
+
+  export type EmployeeRecurringDeductionUncheckedUpdateManyWithoutEmployeeNestedInput = {
+    create?: XOR<EmployeeRecurringDeductionCreateWithoutEmployeeInput, EmployeeRecurringDeductionUncheckedCreateWithoutEmployeeInput> | EmployeeRecurringDeductionCreateWithoutEmployeeInput[] | EmployeeRecurringDeductionUncheckedCreateWithoutEmployeeInput[]
+    connectOrCreate?: EmployeeRecurringDeductionCreateOrConnectWithoutEmployeeInput | EmployeeRecurringDeductionCreateOrConnectWithoutEmployeeInput[]
+    upsert?: EmployeeRecurringDeductionUpsertWithWhereUniqueWithoutEmployeeInput | EmployeeRecurringDeductionUpsertWithWhereUniqueWithoutEmployeeInput[]
+    createMany?: EmployeeRecurringDeductionCreateManyEmployeeInputEnvelope
+    set?: EmployeeRecurringDeductionWhereUniqueInput | EmployeeRecurringDeductionWhereUniqueInput[]
+    disconnect?: EmployeeRecurringDeductionWhereUniqueInput | EmployeeRecurringDeductionWhereUniqueInput[]
+    delete?: EmployeeRecurringDeductionWhereUniqueInput | EmployeeRecurringDeductionWhereUniqueInput[]
+    connect?: EmployeeRecurringDeductionWhereUniqueInput | EmployeeRecurringDeductionWhereUniqueInput[]
+    update?: EmployeeRecurringDeductionUpdateWithWhereUniqueWithoutEmployeeInput | EmployeeRecurringDeductionUpdateWithWhereUniqueWithoutEmployeeInput[]
+    updateMany?: EmployeeRecurringDeductionUpdateManyWithWhereWithoutEmployeeInput | EmployeeRecurringDeductionUpdateManyWithWhereWithoutEmployeeInput[]
+    deleteMany?: EmployeeRecurringDeductionScalarWhereInput | EmployeeRecurringDeductionScalarWhereInput[]
+  }
+
+  export type EmployeeCreateNestedOneWithoutRecurringDeductionsInput = {
+    create?: XOR<EmployeeCreateWithoutRecurringDeductionsInput, EmployeeUncheckedCreateWithoutRecurringDeductionsInput>
+    connectOrCreate?: EmployeeCreateOrConnectWithoutRecurringDeductionsInput
+    connect?: EmployeeWhereUniqueInput
+  }
+
+  export type EnumDeductionFrequencyFieldUpdateOperationsInput = {
+    set?: $Enums.DeductionFrequency
+  }
+
+  export type NullableDateTimeFieldUpdateOperationsInput = {
+    set?: Date | string | null
+  }
+
+  export type NullableDecimalFieldUpdateOperationsInput = {
+    set?: Decimal | DecimalJsLike | number | string | null
+    increment?: Decimal | DecimalJsLike | number | string
+    decrement?: Decimal | DecimalJsLike | number | string
+    multiply?: Decimal | DecimalJsLike | number | string
+    divide?: Decimal | DecimalJsLike | number | string
+  }
+
+  export type EmployeeUpdateOneRequiredWithoutRecurringDeductionsNestedInput = {
+    create?: XOR<EmployeeCreateWithoutRecurringDeductionsInput, EmployeeUncheckedCreateWithoutRecurringDeductionsInput>
+    connectOrCreate?: EmployeeCreateOrConnectWithoutRecurringDeductionsInput
+    upsert?: EmployeeUpsertWithoutRecurringDeductionsInput
+    connect?: EmployeeWhereUniqueInput
+    update?: XOR<XOR<EmployeeUpdateToOneWithWhereWithoutRecurringDeductionsInput, EmployeeUpdateWithoutRecurringDeductionsInput>, EmployeeUncheckedUpdateWithoutRecurringDeductionsInput>
   }
 
   export type CompanyCreateNestedOneWithoutPayrollRunsInput = {
@@ -27157,20 +28939,8 @@ export namespace Prisma {
     connect?: AllowanceWhereUniqueInput | AllowanceWhereUniqueInput[]
   }
 
-  export type NullableDecimalFieldUpdateOperationsInput = {
-    set?: Decimal | DecimalJsLike | number | string | null
-    increment?: Decimal | DecimalJsLike | number | string
-    decrement?: Decimal | DecimalJsLike | number | string
-    multiply?: Decimal | DecimalJsLike | number | string
-    divide?: Decimal | DecimalJsLike | number | string
-  }
-
   export type EnumPayrollStatusFieldUpdateOperationsInput = {
     set?: $Enums.PayrollStatus
-  }
-
-  export type NullableDateTimeFieldUpdateOperationsInput = {
-    set?: Date | string | null
   }
 
   export type PayrollRunUpdateOneWithoutPayrollsNestedInput = {
@@ -27664,6 +29434,75 @@ export namespace Prisma {
     _max?: NestedEnumEmployeeStatusFilter<$PrismaModel>
   }
 
+  export type NestedEnumDeductionFrequencyFilter<$PrismaModel = never> = {
+    equals?: $Enums.DeductionFrequency | EnumDeductionFrequencyFieldRefInput<$PrismaModel>
+    in?: $Enums.DeductionFrequency[] | ListEnumDeductionFrequencyFieldRefInput<$PrismaModel>
+    notIn?: $Enums.DeductionFrequency[] | ListEnumDeductionFrequencyFieldRefInput<$PrismaModel>
+    not?: NestedEnumDeductionFrequencyFilter<$PrismaModel> | $Enums.DeductionFrequency
+  }
+
+  export type NestedDateTimeNullableFilter<$PrismaModel = never> = {
+    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
+    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    not?: NestedDateTimeNullableFilter<$PrismaModel> | Date | string | null
+  }
+
+  export type NestedDecimalNullableFilter<$PrismaModel = never> = {
+    equals?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel> | null
+    in?: Decimal[] | DecimalJsLike[] | number[] | string[] | ListDecimalFieldRefInput<$PrismaModel> | null
+    notIn?: Decimal[] | DecimalJsLike[] | number[] | string[] | ListDecimalFieldRefInput<$PrismaModel> | null
+    lt?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    lte?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    gt?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    gte?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    not?: NestedDecimalNullableFilter<$PrismaModel> | Decimal | DecimalJsLike | number | string | null
+  }
+
+  export type NestedEnumDeductionFrequencyWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.DeductionFrequency | EnumDeductionFrequencyFieldRefInput<$PrismaModel>
+    in?: $Enums.DeductionFrequency[] | ListEnumDeductionFrequencyFieldRefInput<$PrismaModel>
+    notIn?: $Enums.DeductionFrequency[] | ListEnumDeductionFrequencyFieldRefInput<$PrismaModel>
+    not?: NestedEnumDeductionFrequencyWithAggregatesFilter<$PrismaModel> | $Enums.DeductionFrequency
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumDeductionFrequencyFilter<$PrismaModel>
+    _max?: NestedEnumDeductionFrequencyFilter<$PrismaModel>
+  }
+
+  export type NestedDateTimeNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
+    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    not?: NestedDateTimeNullableWithAggregatesFilter<$PrismaModel> | Date | string | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedDateTimeNullableFilter<$PrismaModel>
+    _max?: NestedDateTimeNullableFilter<$PrismaModel>
+  }
+
+  export type NestedDecimalNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel> | null
+    in?: Decimal[] | DecimalJsLike[] | number[] | string[] | ListDecimalFieldRefInput<$PrismaModel> | null
+    notIn?: Decimal[] | DecimalJsLike[] | number[] | string[] | ListDecimalFieldRefInput<$PrismaModel> | null
+    lt?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    lte?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    gt?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    gte?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    not?: NestedDecimalNullableWithAggregatesFilter<$PrismaModel> | Decimal | DecimalJsLike | number | string | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _avg?: NestedDecimalNullableFilter<$PrismaModel>
+    _sum?: NestedDecimalNullableFilter<$PrismaModel>
+    _min?: NestedDecimalNullableFilter<$PrismaModel>
+    _max?: NestedDecimalNullableFilter<$PrismaModel>
+  }
+
   export type NestedEnumPayrollTypeFilter<$PrismaModel = never> = {
     equals?: $Enums.PayrollType | EnumPayrollTypeFieldRefInput<$PrismaModel>
     in?: $Enums.PayrollType[] | ListEnumPayrollTypeFieldRefInput<$PrismaModel>
@@ -27725,49 +29564,11 @@ export namespace Prisma {
     _max?: NestedEnumPayrollRunStatusFilter<$PrismaModel>
   }
 
-  export type NestedDecimalNullableFilter<$PrismaModel = never> = {
-    equals?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel> | null
-    in?: Decimal[] | DecimalJsLike[] | number[] | string[] | ListDecimalFieldRefInput<$PrismaModel> | null
-    notIn?: Decimal[] | DecimalJsLike[] | number[] | string[] | ListDecimalFieldRefInput<$PrismaModel> | null
-    lt?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
-    lte?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
-    gt?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
-    gte?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
-    not?: NestedDecimalNullableFilter<$PrismaModel> | Decimal | DecimalJsLike | number | string | null
-  }
-
   export type NestedEnumPayrollStatusFilter<$PrismaModel = never> = {
     equals?: $Enums.PayrollStatus | EnumPayrollStatusFieldRefInput<$PrismaModel>
     in?: $Enums.PayrollStatus[] | ListEnumPayrollStatusFieldRefInput<$PrismaModel>
     notIn?: $Enums.PayrollStatus[] | ListEnumPayrollStatusFieldRefInput<$PrismaModel>
     not?: NestedEnumPayrollStatusFilter<$PrismaModel> | $Enums.PayrollStatus
-  }
-
-  export type NestedDateTimeNullableFilter<$PrismaModel = never> = {
-    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
-    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
-    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
-    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    not?: NestedDateTimeNullableFilter<$PrismaModel> | Date | string | null
-  }
-
-  export type NestedDecimalNullableWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel> | null
-    in?: Decimal[] | DecimalJsLike[] | number[] | string[] | ListDecimalFieldRefInput<$PrismaModel> | null
-    notIn?: Decimal[] | DecimalJsLike[] | number[] | string[] | ListDecimalFieldRefInput<$PrismaModel> | null
-    lt?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
-    lte?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
-    gt?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
-    gte?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
-    not?: NestedDecimalNullableWithAggregatesFilter<$PrismaModel> | Decimal | DecimalJsLike | number | string | null
-    _count?: NestedIntNullableFilter<$PrismaModel>
-    _avg?: NestedDecimalNullableFilter<$PrismaModel>
-    _sum?: NestedDecimalNullableFilter<$PrismaModel>
-    _min?: NestedDecimalNullableFilter<$PrismaModel>
-    _max?: NestedDecimalNullableFilter<$PrismaModel>
   }
 
   export type NestedEnumPayrollStatusWithAggregatesFilter<$PrismaModel = never> = {
@@ -27778,20 +29579,6 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedEnumPayrollStatusFilter<$PrismaModel>
     _max?: NestedEnumPayrollStatusFilter<$PrismaModel>
-  }
-
-  export type NestedDateTimeNullableWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
-    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
-    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
-    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    not?: NestedDateTimeNullableWithAggregatesFilter<$PrismaModel> | Date | string | null
-    _count?: NestedIntNullableFilter<$PrismaModel>
-    _min?: NestedDateTimeNullableFilter<$PrismaModel>
-    _max?: NestedDateTimeNullableFilter<$PrismaModel>
   }
 
   export type NestedEnumDeductionTypeFilter<$PrismaModel = never> = {
@@ -28107,6 +29894,7 @@ export namespace Prisma {
     allowances?: AllowanceCreateNestedManyWithoutEmployeeInput
     attendanceRecords?: AttendanceRecordCreateNestedManyWithoutEmployeeInput
     leaves?: LeaveCreateNestedManyWithoutEmployeeInput
+    recurringDeductions?: EmployeeRecurringDeductionCreateNestedManyWithoutEmployeeInput
   }
 
   export type EmployeeUncheckedCreateWithoutUserInput = {
@@ -28132,6 +29920,7 @@ export namespace Prisma {
     allowances?: AllowanceUncheckedCreateNestedManyWithoutEmployeeInput
     attendanceRecords?: AttendanceRecordUncheckedCreateNestedManyWithoutEmployeeInput
     leaves?: LeaveUncheckedCreateNestedManyWithoutEmployeeInput
+    recurringDeductions?: EmployeeRecurringDeductionUncheckedCreateNestedManyWithoutEmployeeInput
   }
 
   export type EmployeeCreateOrConnectWithoutUserInput = {
@@ -28274,6 +30063,7 @@ export namespace Prisma {
     allowances?: AllowanceUpdateManyWithoutEmployeeNestedInput
     attendanceRecords?: AttendanceRecordUpdateManyWithoutEmployeeNestedInput
     leaves?: LeaveUpdateManyWithoutEmployeeNestedInput
+    recurringDeductions?: EmployeeRecurringDeductionUpdateManyWithoutEmployeeNestedInput
   }
 
   export type EmployeeUncheckedUpdateWithoutUserInput = {
@@ -28299,6 +30089,7 @@ export namespace Prisma {
     allowances?: AllowanceUncheckedUpdateManyWithoutEmployeeNestedInput
     attendanceRecords?: AttendanceRecordUncheckedUpdateManyWithoutEmployeeNestedInput
     leaves?: LeaveUncheckedUpdateManyWithoutEmployeeNestedInput
+    recurringDeductions?: EmployeeRecurringDeductionUncheckedUpdateManyWithoutEmployeeNestedInput
   }
 
   export type UserCreateWithoutCompaniesInput = {
@@ -28797,6 +30588,7 @@ export namespace Prisma {
     allowances?: AllowanceCreateNestedManyWithoutEmployeeInput
     attendanceRecords?: AttendanceRecordCreateNestedManyWithoutEmployeeInput
     leaves?: LeaveCreateNestedManyWithoutEmployeeInput
+    recurringDeductions?: EmployeeRecurringDeductionCreateNestedManyWithoutEmployeeInput
   }
 
   export type EmployeeUncheckedCreateWithoutCompanyInput = {
@@ -28822,6 +30614,7 @@ export namespace Prisma {
     allowances?: AllowanceUncheckedCreateNestedManyWithoutEmployeeInput
     attendanceRecords?: AttendanceRecordUncheckedCreateNestedManyWithoutEmployeeInput
     leaves?: LeaveUncheckedCreateNestedManyWithoutEmployeeInput
+    recurringDeductions?: EmployeeRecurringDeductionUncheckedCreateNestedManyWithoutEmployeeInput
   }
 
   export type EmployeeCreateOrConnectWithoutCompanyInput = {
@@ -29718,6 +31511,7 @@ export namespace Prisma {
     description: string
     amount: Decimal | DecimalJsLike | number | string
     isFixed?: boolean
+    recurringDeductionId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     payroll?: PayrollCreateNestedOneWithoutDeductionsInput
@@ -29730,6 +31524,7 @@ export namespace Prisma {
     description: string
     amount: Decimal | DecimalJsLike | number | string
     isFixed?: boolean
+    recurringDeductionId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -29851,6 +31646,46 @@ export namespace Prisma {
 
   export type LeaveCreateManyEmployeeInputEnvelope = {
     data: LeaveCreateManyEmployeeInput | LeaveCreateManyEmployeeInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type EmployeeRecurringDeductionCreateWithoutEmployeeInput = {
+    id?: string
+    name: string
+    description?: string | null
+    amount?: Decimal | DecimalJsLike | number | string
+    frequency?: $Enums.DeductionFrequency
+    isActive?: boolean
+    startDate?: Date | string
+    endDate?: Date | string | null
+    targetAmount?: Decimal | DecimalJsLike | number | string | null
+    currentBalance?: Decimal | DecimalJsLike | number | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type EmployeeRecurringDeductionUncheckedCreateWithoutEmployeeInput = {
+    id?: string
+    name: string
+    description?: string | null
+    amount?: Decimal | DecimalJsLike | number | string
+    frequency?: $Enums.DeductionFrequency
+    isActive?: boolean
+    startDate?: Date | string
+    endDate?: Date | string | null
+    targetAmount?: Decimal | DecimalJsLike | number | string | null
+    currentBalance?: Decimal | DecimalJsLike | number | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type EmployeeRecurringDeductionCreateOrConnectWithoutEmployeeInput = {
+    where: EmployeeRecurringDeductionWhereUniqueInput
+    create: XOR<EmployeeRecurringDeductionCreateWithoutEmployeeInput, EmployeeRecurringDeductionUncheckedCreateWithoutEmployeeInput>
+  }
+
+  export type EmployeeRecurringDeductionCreateManyEmployeeInputEnvelope = {
+    data: EmployeeRecurringDeductionCreateManyEmployeeInput | EmployeeRecurringDeductionCreateManyEmployeeInput[]
     skipDuplicates?: boolean
   }
 
@@ -29993,6 +31828,7 @@ export namespace Prisma {
     description?: StringFilter<"Deduction"> | string
     amount?: DecimalFilter<"Deduction"> | Decimal | DecimalJsLike | number | string
     isFixed?: BoolFilter<"Deduction"> | boolean
+    recurringDeductionId?: StringNullableFilter<"Deduction"> | string | null
     createdAt?: DateTimeFilter<"Deduction"> | Date | string
     updatedAt?: DateTimeFilter<"Deduction"> | Date | string
   }
@@ -30057,6 +31893,161 @@ export namespace Prisma {
   export type LeaveUpdateManyWithWhereWithoutEmployeeInput = {
     where: LeaveScalarWhereInput
     data: XOR<LeaveUpdateManyMutationInput, LeaveUncheckedUpdateManyWithoutEmployeeInput>
+  }
+
+  export type EmployeeRecurringDeductionUpsertWithWhereUniqueWithoutEmployeeInput = {
+    where: EmployeeRecurringDeductionWhereUniqueInput
+    update: XOR<EmployeeRecurringDeductionUpdateWithoutEmployeeInput, EmployeeRecurringDeductionUncheckedUpdateWithoutEmployeeInput>
+    create: XOR<EmployeeRecurringDeductionCreateWithoutEmployeeInput, EmployeeRecurringDeductionUncheckedCreateWithoutEmployeeInput>
+  }
+
+  export type EmployeeRecurringDeductionUpdateWithWhereUniqueWithoutEmployeeInput = {
+    where: EmployeeRecurringDeductionWhereUniqueInput
+    data: XOR<EmployeeRecurringDeductionUpdateWithoutEmployeeInput, EmployeeRecurringDeductionUncheckedUpdateWithoutEmployeeInput>
+  }
+
+  export type EmployeeRecurringDeductionUpdateManyWithWhereWithoutEmployeeInput = {
+    where: EmployeeRecurringDeductionScalarWhereInput
+    data: XOR<EmployeeRecurringDeductionUpdateManyMutationInput, EmployeeRecurringDeductionUncheckedUpdateManyWithoutEmployeeInput>
+  }
+
+  export type EmployeeRecurringDeductionScalarWhereInput = {
+    AND?: EmployeeRecurringDeductionScalarWhereInput | EmployeeRecurringDeductionScalarWhereInput[]
+    OR?: EmployeeRecurringDeductionScalarWhereInput[]
+    NOT?: EmployeeRecurringDeductionScalarWhereInput | EmployeeRecurringDeductionScalarWhereInput[]
+    id?: StringFilter<"EmployeeRecurringDeduction"> | string
+    employeeId?: StringFilter<"EmployeeRecurringDeduction"> | string
+    name?: StringFilter<"EmployeeRecurringDeduction"> | string
+    description?: StringNullableFilter<"EmployeeRecurringDeduction"> | string | null
+    amount?: DecimalFilter<"EmployeeRecurringDeduction"> | Decimal | DecimalJsLike | number | string
+    frequency?: EnumDeductionFrequencyFilter<"EmployeeRecurringDeduction"> | $Enums.DeductionFrequency
+    isActive?: BoolFilter<"EmployeeRecurringDeduction"> | boolean
+    startDate?: DateTimeFilter<"EmployeeRecurringDeduction"> | Date | string
+    endDate?: DateTimeNullableFilter<"EmployeeRecurringDeduction"> | Date | string | null
+    targetAmount?: DecimalNullableFilter<"EmployeeRecurringDeduction"> | Decimal | DecimalJsLike | number | string | null
+    currentBalance?: DecimalNullableFilter<"EmployeeRecurringDeduction"> | Decimal | DecimalJsLike | number | string | null
+    createdAt?: DateTimeFilter<"EmployeeRecurringDeduction"> | Date | string
+    updatedAt?: DateTimeFilter<"EmployeeRecurringDeduction"> | Date | string
+  }
+
+  export type EmployeeCreateWithoutRecurringDeductionsInput = {
+    id?: string
+    cedula: string
+    firstName: string
+    lastName: string
+    email: string
+    phoneNumber?: string | null
+    position: string
+    department?: string | null
+    hireDate: Date | string
+    salary?: Decimal | DecimalJsLike | number | string
+    salaryType?: $Enums.SalaryType
+    status?: $Enums.EmployeeStatus
+    bankAccount?: string | null
+    bankName?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    user?: UserCreateNestedOneWithoutEmployeeInput
+    company: CompanyCreateNestedOneWithoutEmployeesInput
+    payrolls?: PayrollCreateNestedManyWithoutEmployeeInput
+    deductions?: DeductionCreateNestedManyWithoutEmployeeInput
+    allowances?: AllowanceCreateNestedManyWithoutEmployeeInput
+    attendanceRecords?: AttendanceRecordCreateNestedManyWithoutEmployeeInput
+    leaves?: LeaveCreateNestedManyWithoutEmployeeInput
+  }
+
+  export type EmployeeUncheckedCreateWithoutRecurringDeductionsInput = {
+    id?: string
+    cedula: string
+    firstName: string
+    lastName: string
+    email: string
+    phoneNumber?: string | null
+    position: string
+    department?: string | null
+    hireDate: Date | string
+    salary?: Decimal | DecimalJsLike | number | string
+    salaryType?: $Enums.SalaryType
+    status?: $Enums.EmployeeStatus
+    bankAccount?: string | null
+    bankName?: string | null
+    userId?: string | null
+    companyId: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    payrolls?: PayrollUncheckedCreateNestedManyWithoutEmployeeInput
+    deductions?: DeductionUncheckedCreateNestedManyWithoutEmployeeInput
+    allowances?: AllowanceUncheckedCreateNestedManyWithoutEmployeeInput
+    attendanceRecords?: AttendanceRecordUncheckedCreateNestedManyWithoutEmployeeInput
+    leaves?: LeaveUncheckedCreateNestedManyWithoutEmployeeInput
+  }
+
+  export type EmployeeCreateOrConnectWithoutRecurringDeductionsInput = {
+    where: EmployeeWhereUniqueInput
+    create: XOR<EmployeeCreateWithoutRecurringDeductionsInput, EmployeeUncheckedCreateWithoutRecurringDeductionsInput>
+  }
+
+  export type EmployeeUpsertWithoutRecurringDeductionsInput = {
+    update: XOR<EmployeeUpdateWithoutRecurringDeductionsInput, EmployeeUncheckedUpdateWithoutRecurringDeductionsInput>
+    create: XOR<EmployeeCreateWithoutRecurringDeductionsInput, EmployeeUncheckedCreateWithoutRecurringDeductionsInput>
+    where?: EmployeeWhereInput
+  }
+
+  export type EmployeeUpdateToOneWithWhereWithoutRecurringDeductionsInput = {
+    where?: EmployeeWhereInput
+    data: XOR<EmployeeUpdateWithoutRecurringDeductionsInput, EmployeeUncheckedUpdateWithoutRecurringDeductionsInput>
+  }
+
+  export type EmployeeUpdateWithoutRecurringDeductionsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    cedula?: StringFieldUpdateOperationsInput | string
+    firstName?: StringFieldUpdateOperationsInput | string
+    lastName?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    phoneNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    position?: StringFieldUpdateOperationsInput | string
+    department?: NullableStringFieldUpdateOperationsInput | string | null
+    hireDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    salary?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    salaryType?: EnumSalaryTypeFieldUpdateOperationsInput | $Enums.SalaryType
+    status?: EnumEmployeeStatusFieldUpdateOperationsInput | $Enums.EmployeeStatus
+    bankAccount?: NullableStringFieldUpdateOperationsInput | string | null
+    bankName?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    user?: UserUpdateOneWithoutEmployeeNestedInput
+    company?: CompanyUpdateOneRequiredWithoutEmployeesNestedInput
+    payrolls?: PayrollUpdateManyWithoutEmployeeNestedInput
+    deductions?: DeductionUpdateManyWithoutEmployeeNestedInput
+    allowances?: AllowanceUpdateManyWithoutEmployeeNestedInput
+    attendanceRecords?: AttendanceRecordUpdateManyWithoutEmployeeNestedInput
+    leaves?: LeaveUpdateManyWithoutEmployeeNestedInput
+  }
+
+  export type EmployeeUncheckedUpdateWithoutRecurringDeductionsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    cedula?: StringFieldUpdateOperationsInput | string
+    firstName?: StringFieldUpdateOperationsInput | string
+    lastName?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    phoneNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    position?: StringFieldUpdateOperationsInput | string
+    department?: NullableStringFieldUpdateOperationsInput | string | null
+    hireDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    salary?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    salaryType?: EnumSalaryTypeFieldUpdateOperationsInput | $Enums.SalaryType
+    status?: EnumEmployeeStatusFieldUpdateOperationsInput | $Enums.EmployeeStatus
+    bankAccount?: NullableStringFieldUpdateOperationsInput | string | null
+    bankName?: NullableStringFieldUpdateOperationsInput | string | null
+    userId?: NullableStringFieldUpdateOperationsInput | string | null
+    companyId?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    payrolls?: PayrollUncheckedUpdateManyWithoutEmployeeNestedInput
+    deductions?: DeductionUncheckedUpdateManyWithoutEmployeeNestedInput
+    allowances?: AllowanceUncheckedUpdateManyWithoutEmployeeNestedInput
+    attendanceRecords?: AttendanceRecordUncheckedUpdateManyWithoutEmployeeNestedInput
+    leaves?: LeaveUncheckedUpdateManyWithoutEmployeeNestedInput
   }
 
   export type CompanyCreateWithoutPayrollRunsInput = {
@@ -30311,6 +32302,7 @@ export namespace Prisma {
     allowances?: AllowanceCreateNestedManyWithoutEmployeeInput
     attendanceRecords?: AttendanceRecordCreateNestedManyWithoutEmployeeInput
     leaves?: LeaveCreateNestedManyWithoutEmployeeInput
+    recurringDeductions?: EmployeeRecurringDeductionCreateNestedManyWithoutEmployeeInput
   }
 
   export type EmployeeUncheckedCreateWithoutPayrollsInput = {
@@ -30336,6 +32328,7 @@ export namespace Prisma {
     allowances?: AllowanceUncheckedCreateNestedManyWithoutEmployeeInput
     attendanceRecords?: AttendanceRecordUncheckedCreateNestedManyWithoutEmployeeInput
     leaves?: LeaveUncheckedCreateNestedManyWithoutEmployeeInput
+    recurringDeductions?: EmployeeRecurringDeductionUncheckedCreateNestedManyWithoutEmployeeInput
   }
 
   export type EmployeeCreateOrConnectWithoutPayrollsInput = {
@@ -30400,6 +32393,7 @@ export namespace Prisma {
     description: string
     amount: Decimal | DecimalJsLike | number | string
     isFixed?: boolean
+    recurringDeductionId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     employee: EmployeeCreateNestedOneWithoutDeductionsInput
@@ -30412,6 +32406,7 @@ export namespace Prisma {
     description: string
     amount: Decimal | DecimalJsLike | number | string
     isFixed?: boolean
+    recurringDeductionId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -30531,6 +32526,7 @@ export namespace Prisma {
     allowances?: AllowanceUpdateManyWithoutEmployeeNestedInput
     attendanceRecords?: AttendanceRecordUpdateManyWithoutEmployeeNestedInput
     leaves?: LeaveUpdateManyWithoutEmployeeNestedInput
+    recurringDeductions?: EmployeeRecurringDeductionUpdateManyWithoutEmployeeNestedInput
   }
 
   export type EmployeeUncheckedUpdateWithoutPayrollsInput = {
@@ -30556,6 +32552,7 @@ export namespace Prisma {
     allowances?: AllowanceUncheckedUpdateManyWithoutEmployeeNestedInput
     attendanceRecords?: AttendanceRecordUncheckedUpdateManyWithoutEmployeeNestedInput
     leaves?: LeaveUncheckedUpdateManyWithoutEmployeeNestedInput
+    recurringDeductions?: EmployeeRecurringDeductionUncheckedUpdateManyWithoutEmployeeNestedInput
   }
 
   export type CompanyUpsertWithoutPayrollsInput = {
@@ -30735,6 +32732,7 @@ export namespace Prisma {
     allowances?: AllowanceCreateNestedManyWithoutEmployeeInput
     attendanceRecords?: AttendanceRecordCreateNestedManyWithoutEmployeeInput
     leaves?: LeaveCreateNestedManyWithoutEmployeeInput
+    recurringDeductions?: EmployeeRecurringDeductionCreateNestedManyWithoutEmployeeInput
   }
 
   export type EmployeeUncheckedCreateWithoutDeductionsInput = {
@@ -30760,6 +32758,7 @@ export namespace Prisma {
     allowances?: AllowanceUncheckedCreateNestedManyWithoutEmployeeInput
     attendanceRecords?: AttendanceRecordUncheckedCreateNestedManyWithoutEmployeeInput
     leaves?: LeaveUncheckedCreateNestedManyWithoutEmployeeInput
+    recurringDeductions?: EmployeeRecurringDeductionUncheckedCreateNestedManyWithoutEmployeeInput
   }
 
   export type EmployeeCreateOrConnectWithoutDeductionsInput = {
@@ -30872,6 +32871,7 @@ export namespace Prisma {
     allowances?: AllowanceUpdateManyWithoutEmployeeNestedInput
     attendanceRecords?: AttendanceRecordUpdateManyWithoutEmployeeNestedInput
     leaves?: LeaveUpdateManyWithoutEmployeeNestedInput
+    recurringDeductions?: EmployeeRecurringDeductionUpdateManyWithoutEmployeeNestedInput
   }
 
   export type EmployeeUncheckedUpdateWithoutDeductionsInput = {
@@ -30897,6 +32897,7 @@ export namespace Prisma {
     allowances?: AllowanceUncheckedUpdateManyWithoutEmployeeNestedInput
     attendanceRecords?: AttendanceRecordUncheckedUpdateManyWithoutEmployeeNestedInput
     leaves?: LeaveUncheckedUpdateManyWithoutEmployeeNestedInput
+    recurringDeductions?: EmployeeRecurringDeductionUncheckedUpdateManyWithoutEmployeeNestedInput
   }
 
   export type PayrollCreateWithoutAllowancesInput = {
@@ -30987,6 +32988,7 @@ export namespace Prisma {
     deductions?: DeductionCreateNestedManyWithoutEmployeeInput
     attendanceRecords?: AttendanceRecordCreateNestedManyWithoutEmployeeInput
     leaves?: LeaveCreateNestedManyWithoutEmployeeInput
+    recurringDeductions?: EmployeeRecurringDeductionCreateNestedManyWithoutEmployeeInput
   }
 
   export type EmployeeUncheckedCreateWithoutAllowancesInput = {
@@ -31012,6 +33014,7 @@ export namespace Prisma {
     deductions?: DeductionUncheckedCreateNestedManyWithoutEmployeeInput
     attendanceRecords?: AttendanceRecordUncheckedCreateNestedManyWithoutEmployeeInput
     leaves?: LeaveUncheckedCreateNestedManyWithoutEmployeeInput
+    recurringDeductions?: EmployeeRecurringDeductionUncheckedCreateNestedManyWithoutEmployeeInput
   }
 
   export type EmployeeCreateOrConnectWithoutAllowancesInput = {
@@ -31124,6 +33127,7 @@ export namespace Prisma {
     deductions?: DeductionUpdateManyWithoutEmployeeNestedInput
     attendanceRecords?: AttendanceRecordUpdateManyWithoutEmployeeNestedInput
     leaves?: LeaveUpdateManyWithoutEmployeeNestedInput
+    recurringDeductions?: EmployeeRecurringDeductionUpdateManyWithoutEmployeeNestedInput
   }
 
   export type EmployeeUncheckedUpdateWithoutAllowancesInput = {
@@ -31149,6 +33153,7 @@ export namespace Prisma {
     deductions?: DeductionUncheckedUpdateManyWithoutEmployeeNestedInput
     attendanceRecords?: AttendanceRecordUncheckedUpdateManyWithoutEmployeeNestedInput
     leaves?: LeaveUncheckedUpdateManyWithoutEmployeeNestedInput
+    recurringDeductions?: EmployeeRecurringDeductionUncheckedUpdateManyWithoutEmployeeNestedInput
   }
 
   export type EmployeeCreateWithoutAttendanceRecordsInput = {
@@ -31174,6 +33179,7 @@ export namespace Prisma {
     deductions?: DeductionCreateNestedManyWithoutEmployeeInput
     allowances?: AllowanceCreateNestedManyWithoutEmployeeInput
     leaves?: LeaveCreateNestedManyWithoutEmployeeInput
+    recurringDeductions?: EmployeeRecurringDeductionCreateNestedManyWithoutEmployeeInput
   }
 
   export type EmployeeUncheckedCreateWithoutAttendanceRecordsInput = {
@@ -31199,6 +33205,7 @@ export namespace Prisma {
     deductions?: DeductionUncheckedCreateNestedManyWithoutEmployeeInput
     allowances?: AllowanceUncheckedCreateNestedManyWithoutEmployeeInput
     leaves?: LeaveUncheckedCreateNestedManyWithoutEmployeeInput
+    recurringDeductions?: EmployeeRecurringDeductionUncheckedCreateNestedManyWithoutEmployeeInput
   }
 
   export type EmployeeCreateOrConnectWithoutAttendanceRecordsInput = {
@@ -31291,6 +33298,7 @@ export namespace Prisma {
     deductions?: DeductionUpdateManyWithoutEmployeeNestedInput
     allowances?: AllowanceUpdateManyWithoutEmployeeNestedInput
     leaves?: LeaveUpdateManyWithoutEmployeeNestedInput
+    recurringDeductions?: EmployeeRecurringDeductionUpdateManyWithoutEmployeeNestedInput
   }
 
   export type EmployeeUncheckedUpdateWithoutAttendanceRecordsInput = {
@@ -31316,6 +33324,7 @@ export namespace Prisma {
     deductions?: DeductionUncheckedUpdateManyWithoutEmployeeNestedInput
     allowances?: AllowanceUncheckedUpdateManyWithoutEmployeeNestedInput
     leaves?: LeaveUncheckedUpdateManyWithoutEmployeeNestedInput
+    recurringDeductions?: EmployeeRecurringDeductionUncheckedUpdateManyWithoutEmployeeNestedInput
   }
 
   export type CompanyUpsertWithoutAttendanceRecordsInput = {
@@ -31398,6 +33407,7 @@ export namespace Prisma {
     deductions?: DeductionCreateNestedManyWithoutEmployeeInput
     allowances?: AllowanceCreateNestedManyWithoutEmployeeInput
     attendanceRecords?: AttendanceRecordCreateNestedManyWithoutEmployeeInput
+    recurringDeductions?: EmployeeRecurringDeductionCreateNestedManyWithoutEmployeeInput
   }
 
   export type EmployeeUncheckedCreateWithoutLeavesInput = {
@@ -31423,6 +33433,7 @@ export namespace Prisma {
     deductions?: DeductionUncheckedCreateNestedManyWithoutEmployeeInput
     allowances?: AllowanceUncheckedCreateNestedManyWithoutEmployeeInput
     attendanceRecords?: AttendanceRecordUncheckedCreateNestedManyWithoutEmployeeInput
+    recurringDeductions?: EmployeeRecurringDeductionUncheckedCreateNestedManyWithoutEmployeeInput
   }
 
   export type EmployeeCreateOrConnectWithoutLeavesInput = {
@@ -31515,6 +33526,7 @@ export namespace Prisma {
     deductions?: DeductionUpdateManyWithoutEmployeeNestedInput
     allowances?: AllowanceUpdateManyWithoutEmployeeNestedInput
     attendanceRecords?: AttendanceRecordUpdateManyWithoutEmployeeNestedInput
+    recurringDeductions?: EmployeeRecurringDeductionUpdateManyWithoutEmployeeNestedInput
   }
 
   export type EmployeeUncheckedUpdateWithoutLeavesInput = {
@@ -31540,6 +33552,7 @@ export namespace Prisma {
     deductions?: DeductionUncheckedUpdateManyWithoutEmployeeNestedInput
     allowances?: AllowanceUncheckedUpdateManyWithoutEmployeeNestedInput
     attendanceRecords?: AttendanceRecordUncheckedUpdateManyWithoutEmployeeNestedInput
+    recurringDeductions?: EmployeeRecurringDeductionUncheckedUpdateManyWithoutEmployeeNestedInput
   }
 
   export type CompanyUpsertWithoutLeavesInput = {
@@ -32202,6 +34215,7 @@ export namespace Prisma {
     allowances?: AllowanceUpdateManyWithoutEmployeeNestedInput
     attendanceRecords?: AttendanceRecordUpdateManyWithoutEmployeeNestedInput
     leaves?: LeaveUpdateManyWithoutEmployeeNestedInput
+    recurringDeductions?: EmployeeRecurringDeductionUpdateManyWithoutEmployeeNestedInput
   }
 
   export type EmployeeUncheckedUpdateWithoutCompanyInput = {
@@ -32227,6 +34241,7 @@ export namespace Prisma {
     allowances?: AllowanceUncheckedUpdateManyWithoutEmployeeNestedInput
     attendanceRecords?: AttendanceRecordUncheckedUpdateManyWithoutEmployeeNestedInput
     leaves?: LeaveUncheckedUpdateManyWithoutEmployeeNestedInput
+    recurringDeductions?: EmployeeRecurringDeductionUncheckedUpdateManyWithoutEmployeeNestedInput
   }
 
   export type EmployeeUncheckedUpdateManyWithoutCompanyInput = {
@@ -32570,6 +34585,7 @@ export namespace Prisma {
     description: string
     amount: Decimal | DecimalJsLike | number | string
     isFixed?: boolean
+    recurringDeductionId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -32610,6 +34626,21 @@ export namespace Prisma {
     approvedBy?: string | null
     approvalDate?: Date | string | null
     comments?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type EmployeeRecurringDeductionCreateManyEmployeeInput = {
+    id?: string
+    name: string
+    description?: string | null
+    amount?: Decimal | DecimalJsLike | number | string
+    frequency?: $Enums.DeductionFrequency
+    isActive?: boolean
+    startDate?: Date | string
+    endDate?: Date | string | null
+    targetAmount?: Decimal | DecimalJsLike | number | string | null
+    currentBalance?: Decimal | DecimalJsLike | number | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -32708,6 +34739,7 @@ export namespace Prisma {
     description?: StringFieldUpdateOperationsInput | string
     amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     isFixed?: BoolFieldUpdateOperationsInput | boolean
+    recurringDeductionId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     payroll?: PayrollUpdateOneWithoutDeductionsNestedInput
@@ -32720,6 +34752,7 @@ export namespace Prisma {
     description?: StringFieldUpdateOperationsInput | string
     amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     isFixed?: BoolFieldUpdateOperationsInput | boolean
+    recurringDeductionId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -32731,6 +34764,7 @@ export namespace Prisma {
     description?: StringFieldUpdateOperationsInput | string
     amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     isFixed?: BoolFieldUpdateOperationsInput | boolean
+    recurringDeductionId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -32851,6 +34885,51 @@ export namespace Prisma {
     approvedBy?: NullableStringFieldUpdateOperationsInput | string | null
     approvalDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     comments?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type EmployeeRecurringDeductionUpdateWithoutEmployeeInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    frequency?: EnumDeductionFrequencyFieldUpdateOperationsInput | $Enums.DeductionFrequency
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    startDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    endDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    targetAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    currentBalance?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type EmployeeRecurringDeductionUncheckedUpdateWithoutEmployeeInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    frequency?: EnumDeductionFrequencyFieldUpdateOperationsInput | $Enums.DeductionFrequency
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    startDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    endDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    targetAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    currentBalance?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type EmployeeRecurringDeductionUncheckedUpdateManyWithoutEmployeeInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    frequency?: EnumDeductionFrequencyFieldUpdateOperationsInput | $Enums.DeductionFrequency
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    startDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    endDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    targetAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    currentBalance?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -32978,6 +35057,7 @@ export namespace Prisma {
     description: string
     amount: Decimal | DecimalJsLike | number | string
     isFixed?: boolean
+    recurringDeductionId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -32998,6 +35078,7 @@ export namespace Prisma {
     description?: StringFieldUpdateOperationsInput | string
     amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     isFixed?: BoolFieldUpdateOperationsInput | boolean
+    recurringDeductionId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     employee?: EmployeeUpdateOneRequiredWithoutDeductionsNestedInput
@@ -33010,6 +35091,7 @@ export namespace Prisma {
     description?: StringFieldUpdateOperationsInput | string
     amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     isFixed?: BoolFieldUpdateOperationsInput | boolean
+    recurringDeductionId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -33021,6 +35103,7 @@ export namespace Prisma {
     description?: StringFieldUpdateOperationsInput | string
     amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     isFixed?: BoolFieldUpdateOperationsInput | boolean
+    recurringDeductionId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }

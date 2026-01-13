@@ -209,6 +209,22 @@ exports.Prisma.EmployeeScalarFieldEnum = {
   updatedAt: 'updatedAt'
 };
 
+exports.Prisma.EmployeeRecurringDeductionScalarFieldEnum = {
+  id: 'id',
+  employeeId: 'employeeId',
+  name: 'name',
+  description: 'description',
+  amount: 'amount',
+  frequency: 'frequency',
+  isActive: 'isActive',
+  startDate: 'startDate',
+  endDate: 'endDate',
+  targetAmount: 'targetAmount',
+  currentBalance: 'currentBalance',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
 exports.Prisma.PayrollRunScalarFieldEnum = {
   id: 'id',
   companyId: 'companyId',
@@ -261,6 +277,7 @@ exports.Prisma.DeductionScalarFieldEnum = {
   description: 'description',
   amount: 'amount',
   isFixed: 'isFixed',
+  recurringDeductionId: 'recurringDeductionId',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 };
@@ -380,6 +397,13 @@ exports.EmployeeStatus = exports.$Enums.EmployeeStatus = {
   TERMINATED: 'TERMINATED'
 };
 
+exports.DeductionFrequency = exports.$Enums.DeductionFrequency = {
+  FIRST_QUINCENA: 'FIRST_QUINCENA',
+  SECOND_QUINCENA: 'SECOND_QUINCENA',
+  ALWAYS: 'ALWAYS',
+  ONCE: 'ONCE'
+};
+
 exports.PayrollType = exports.$Enums.PayrollType = {
   REGULAR: 'REGULAR',
   THIRTEEN_MONTH: 'THIRTEEN_MONTH'
@@ -477,6 +501,7 @@ exports.Prisma.ModelName = {
   Department: 'Department',
   SystemConfig: 'SystemConfig',
   Employee: 'Employee',
+  EmployeeRecurringDeduction: 'EmployeeRecurringDeduction',
   PayrollRun: 'PayrollRun',
   Payroll: 'Payroll',
   Deduction: 'Deduction',
