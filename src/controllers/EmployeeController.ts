@@ -219,11 +219,11 @@ export class EmployeeController {
     }
   }
 
-  // Actualizar empleado
+  // Actualizar empleado — registra SalaryHistory si cambia salary o salaryType
   async update(req: Request, res: Response) {
     try {
       const { id } = req.params;
-      const { userId, recurringDeductions, ...restOfData } = req.body;
+      const { userId, recurringDeductions, salaryChangeReason, salaryChangeNotes, ...restOfData } = req.body;
 
       const employee = await prisma.employee.findUnique({ where: { id } });
       if (!employee) return res.status(404).json({ error: 'Empleado no encontrado.' });
@@ -232,7 +232,14 @@ export class EmployeeController {
       const updateData: any = { ...restOfData };
 
       if (restOfData.hireDate) updateData.hireDate = new Date(restOfData.hireDate);
-      if (restOfData.salary) updateData.salary = Number(restOfData.salary);
+      if (restOfData.salary !== undefined) updateData.salary = Number(restOfData.salary);
+
+      // Detectar cambio de salario ANTES de actualizar
+      const newSalary    = restOfData.salary !== undefined ? Number(restOfData.salary) : Number(employee.salary);
+      const newSalaryType = restOfData.salaryType || employee.salaryType;
+      const prevSalary   = Number(employee.salary);
+      const prevType     = employee.salaryType;
+      const salaryChanged = Math.abs(newSalary - prevSalary) > 0.001 || newSalaryType !== prevType;
 
       // Manejo de cambio de userId
       if (userId !== undefined) {
@@ -247,35 +254,87 @@ export class EmployeeController {
         }
       }
 
-    if (recurringDeductions) {
-      updateData.recurringDeductions = {
-        // Primero borramos todos los existentes para este empleado
-        deleteMany: {}, 
-        // Luego creamos los que vienen en el body
-        create: recurringDeductions.map((d: any) => ({
-          name: d.name,
-          description: d.description,
-          amount: Number(d.amount),
-          frequency: d.frequency,
-          isActive: d.isActive,
-        })),
-      };
-    }
+      if (recurringDeductions) {
+        updateData.recurringDeductions = {
+          deleteMany: {},
+          create: recurringDeductions.map((d: any) => ({
+            name: d.name,
+            description: d.description,
+            amount: Number(d.amount),
+            frequency: d.frequency,
+            isActive: d.isActive,
+          })),
+        };
+      }
 
-      const updated = await prisma.employee.update({
+      // Actualizar empleado y registrar historial en transacción
+      const updated = await prisma.$transaction(async (tx) => {
+        const emp = await tx.employee.update({
+          where: { id },
+          data: updateData,
+          include: {
+            user: { select: { id: true, username: true, email: true, role: true } },
+            company: { select: { id: true, name: true } },
+            recurringDeductions: true,
+          },
+        });
+
+        // Registrar en historial si el salario cambió
+        if (salaryChanged) {
+          await tx.salaryHistory.create({
+            data: {
+              employeeId: id,
+              previousSalary: prevSalary,
+              newSalary,
+              previousType: prevType,
+              newType: newSalaryType,
+              changeReason: salaryChangeReason || 'ADJUSTMENT',
+              notes: salaryChangeNotes || null,
+              changedBy: null,
+              effectiveDate: new Date(),
+            },
+          });
+        }
+
+        return emp;
+      });
+
+      return res.status(200).json({ ...updated, salaryHistoryRegistered: salaryChanged });
+    } catch (error: any) {
+      console.error('Error updating employee:', error);
+      return res.status(500).json({ error: 'Error al actualizar el empleado.', details: error.message });
+    }
+  }
+
+  // GET /api/payroll/employees/:id/salary-history
+  async getSalaryHistory(req: Request, res: Response) {
+    try {
+      const { id } = req.params;
+
+      const employee = await prisma.employee.findUnique({
         where: { id },
-        data: updateData,
-        include: {
-          user: { select: { id: true, username: true, email: true, role: true } },
-          company: { select: { id: true, name: true } },
-          recurringDeductions: true,
+        select: {
+          id: true, firstName: true, lastName: true,
+          cedula: true, salary: true, salaryType: true,
         },
       });
 
-      return res.status(200).json(updated);
+      if (!employee) {
+        return res.status(404).json({ error: 'Empleado no encontrado.' });
+      }
+
+      const history = await prisma.salaryHistory.findMany({
+        where: { employeeId: id },
+        orderBy: { effectiveDate: 'desc' },
+      });
+
+      return res.status(200).json({ employee, history, total: history.length });
     } catch (error: any) {
-      console.error('Error updating employee:', error);
-      return res.status(500).json({ error: 'Error al actualizar el empleado.' });
+      console.error('Error fetching salary history:', error);
+      return res.status(500).json({
+        error: 'Error al obtener el historial de salarios.',
+        details: error.message,
+      });
     }
   }
 

@@ -1,9 +1,11 @@
 import { Router } from 'express';
 import multer from 'multer';
 import { EmployeeController } from '../controllers/EmployeeController.js';
+import { SalaryHistoryController } from '../controllers/SalaryHistoryController.js';
 
 const EmployeeRouter = Router();
 const employeeController = new EmployeeController();
+const salaryHistoryController = new SalaryHistoryController();
 
 // ============================================
 // MULTER CONFIGURATION
@@ -67,6 +69,15 @@ EmployeeRouter.post('/employees', (req, res) =>
  */
 EmployeeRouter.get('/employees', (req, res) =>
   employeeController.getAll(req, res)
+);
+
+
+/**
+ * GET /api/payroll/employees/:id/salary-history
+ * Obtener historial de cambios de salario del empleado
+ */
+EmployeeRouter.get('/employees/:id/salary-history', (req, res) =>
+  employeeController.getSalaryHistory(req, res)
 );
 
 /**

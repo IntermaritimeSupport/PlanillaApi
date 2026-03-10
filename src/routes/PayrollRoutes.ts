@@ -55,6 +55,26 @@ PayrollRouter.get('/payrolls', (req, res) =>
   payrollController.getPayrolls(req, res)
 );
 
+// Obtener lotes de nómina con filtros (year, month, status)
+PayrollRouter.get('/payrolls/runs', (req, res) =>
+  payrollController.getPayrollRuns(req, res)
+);
+
+// Resumen anual de nóminas por mes
+PayrollRouter.get('/payrolls/summary', (req, res) =>
+  payrollController.getPayrollSummary(req, res)
+);
+
+// Bloquear nómina (APPROVED)
+PayrollRouter.patch('/payrolls/:id/lock', (req, res) =>
+  payrollController.lockPayroll(req, res)
+);
+
+// Anular nómina (CANCELLED)
+PayrollRouter.patch('/payrolls/:id/void', (req, res) =>
+  payrollController.voidPayroll(req, res)
+);
+
 // Obtener nómina por ID
 PayrollRouter.get('/payrolls/:id', (req, res) =>
   payrollController.getPayrollById(req, res)
@@ -122,5 +142,11 @@ PayrollRouter.put('/leaves/:id/reject', (req, res) =>
 PayrollRouter.put('/leaves/:id/cancel', (req, res) =>
   leaveController.cancelLeave(req, res)
 );
+
+
+// ============================================
+// PAYROLL RUN ROUTES (Lotes de nómina)
+// ============================================
+
 
 export default PayrollRouter;

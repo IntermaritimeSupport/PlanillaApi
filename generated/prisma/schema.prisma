@@ -78,6 +78,7 @@ model Company {
   attendanceRecords    AttendanceRecord[]     @relation("AttendanceCompany")
   leaves               Leave[]                @relation("LeaveCompany")
   payrollRuns          PayrollRun[]
+  decimoPayments       DecimoPayment[]
 }
 
 model Department {
@@ -134,6 +135,7 @@ model Employee {
   attendanceRecords   AttendanceRecord[]
   leaves              Leave[]
   recurringDeductions EmployeeRecurringDeduction[]
+  salaryHistory       SalaryHistory[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -512,4 +514,61 @@ enum DeductionFrequency {
   SECOND_QUINCENA // Solo en la segunda quincena
   ALWAYS // En todas las nóminas regulares
   ONCE // Una sola vez (y luego se desactiva)
+}
+
+// ============================================
+// SALARY HISTORY — Historial de cambios de salario
+// ============================================
+
+model SalaryHistory {
+  id         String   @id @default(uuid())
+  employeeId String
+  employee   Employee @relation(fields: [employeeId], references: [id], onDelete: Cascade)
+
+  previousSalary Decimal            @default(0.00)
+  newSalary      Decimal            @default(0.00)
+  previousType   String // "MONTHLY" | "BIWEEKLY"
+  newType        String
+  changeReason   SalaryChangeReason @default(ADJUSTMENT)
+  notes          String?
+  effectiveDate  DateTime           @default(now())
+  changedBy      String? // userId del admin (opcional)
+
+  createdAt DateTime @default(now())
+
+  @@index([employeeId])
+  @@map("salary_history")
+}
+
+enum SalaryChangeReason {
+  PROMOTION
+  ADJUSTMENT
+  CORRECTION
+  COST_OF_LIVING
+  PERFORMANCE
+  RESTRUCTURE
+  OTHER
+}
+
+// ============================================
+// DECIMO PAYMENT — Registro de pagos del décimo
+// ============================================
+
+model DecimoPayment {
+  id        String  @id @default(uuid())
+  companyId String
+  company   Company @relation(fields: [companyId], references: [id], onDelete: Cascade)
+
+  year        Int
+  partida     Int // 1, 2, o 3
+  paymentDate DateTime @default(now())
+  totalAmount Decimal  @default(0.00)
+  notes       String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([companyId, year, partida])
+  @@index([companyId])
+  @@map("decimo_payments")
 }

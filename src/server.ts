@@ -18,6 +18,7 @@ import legalParameterRouter from './routes/LegalParameterRoutes.js';
 import DepartmentRouter from './routes/DepartmentRoutes.js';
 import legalDecimoParameterRouter from './routes/LegalDecimoParameterRoutes.js';
 import DashboardRouter from './routes/DashboardRoutes.js';
+import DecimoRouter from './routes/DecimoRoutes.js';
 
 dotenv.config({ path: '.env' });
 
@@ -75,6 +76,7 @@ app.use('/api/payroll', PayrollRouter);
 app.use('/api/payroll', EmployeeRouter);
 app.use('/api/seed', SeedRouter);
 app.use('/api/dashboard', DashboardRouter);
+app.use('/api/payroll', DecimoRouter);
 app.use(errorMiddleware);
 
 app.listen(port, () => {

@@ -359,6 +359,32 @@ exports.Prisma.LegalDecimoParameterScalarFieldEnum = {
   updatedAt: 'updatedAt'
 };
 
+exports.Prisma.SalaryHistoryScalarFieldEnum = {
+  id: 'id',
+  employeeId: 'employeeId',
+  previousSalary: 'previousSalary',
+  newSalary: 'newSalary',
+  previousType: 'previousType',
+  newType: 'newType',
+  changeReason: 'changeReason',
+  notes: 'notes',
+  effectiveDate: 'effectiveDate',
+  changedBy: 'changedBy',
+  createdAt: 'createdAt'
+};
+
+exports.Prisma.DecimoPaymentScalarFieldEnum = {
+  id: 'id',
+  companyId: 'companyId',
+  year: 'year',
+  partida: 'partida',
+  paymentDate: 'paymentDate',
+  totalAmount: 'totalAmount',
+  notes: 'notes',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -493,6 +519,16 @@ exports.ParameterCategory = exports.$Enums.ParameterCategory = {
   other: 'other'
 };
 
+exports.SalaryChangeReason = exports.$Enums.SalaryChangeReason = {
+  PROMOTION: 'PROMOTION',
+  ADJUSTMENT: 'ADJUSTMENT',
+  CORRECTION: 'CORRECTION',
+  COST_OF_LIVING: 'COST_OF_LIVING',
+  PERFORMANCE: 'PERFORMANCE',
+  RESTRUCTURE: 'RESTRUCTURE',
+  OTHER: 'OTHER'
+};
+
 exports.Prisma.ModelName = {
   User: 'User',
   UserCompany: 'UserCompany',
@@ -509,7 +545,9 @@ exports.Prisma.ModelName = {
   AttendanceRecord: 'AttendanceRecord',
   Leave: 'Leave',
   LegalParameter: 'LegalParameter',
-  LegalDecimoParameter: 'LegalDecimoParameter'
+  LegalDecimoParameter: 'LegalDecimoParameter',
+  SalaryHistory: 'SalaryHistory',
+  DecimoPayment: 'DecimoPayment'
 };
 
 /**

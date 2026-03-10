@@ -3,6 +3,113 @@ import { prisma } from '../../lib/prisma.js';
 import { Decimal } from '@prisma/client/runtime/client.js';
 
 export class PayrollController {
+    // GET /api/payroll/payrolls/summary?companyId=&year=
+  async getPayrollSummary(req: Request, res: Response) {
+    try {
+      const { companyId, year } = req.query;
+      if (!companyId) return res.status(400).json({ error: 'companyId requerido.' });
+
+      const yearNum = year ? parseInt(year as string) : new Date().getFullYear();
+      const startDate = new Date(yearNum, 0, 1);
+      const endDate   = new Date(yearNum, 11, 31);
+
+      const runs = await prisma.payrollRun.findMany({
+        where: { companyId: companyId as string, periodDate: { gte: startDate, lte: endDate } },
+        include: { payrolls: { select: { grossSalary: true, netSalary: true, totalDeductions: true } } },
+        orderBy: { periodDate: 'asc' },
+      });
+
+      const summary = runs.map(r => ({
+        id: r.id,
+        month: new Date(r.periodDate).getMonth() + 1,
+        periodDate: r.periodDate,
+        quincena: r.quincena,
+        payrollType: r.payrollType,
+        status: r.status,
+        totalGross: Number(r.totalGross),
+        totalNet: Number(r.totalNet),
+        totalDeductions: Number(r.totalDeductions),
+        count: r.payrolls.length,
+      }));
+
+      return res.status(200).json({ year: yearNum, companyId, summary });
+    } catch (error: any) {
+      return res.status(500).json({ error: 'Error al obtener resumen de nóminas.', details: error.message });
+    }
+  }
+  // PATCH /api/payroll/payrolls/:id/lock  → cambia status a APPROVED
+  async lockPayroll(req: Request, res: Response) {
+    try {
+      const { id } = req.params;
+      const run = await prisma.payrollRun.findUnique({ where: { id } });
+      if (!run) return res.status(404).json({ error: 'Nómina no encontrada.' });
+      if (run.status === 'APPROVED') return res.status(409).json({ error: 'La nómina ya está bloqueada.' });
+
+      const updated = await prisma.payrollRun.update({
+        where: { id },
+        data: { status: 'APPROVED', updatedAt: new Date() },
+      });
+      return res.status(200).json(updated);
+    } catch (error: any) {
+      return res.status(500).json({ error: 'Error al bloquear la nómina.', details: error.message });
+    }
+  }
+
+  // PATCH /api/payroll/payrolls/:id/void  → cambia status a CANCELLED
+  async voidPayroll(req: Request, res: Response) {
+    try {
+      const { id } = req.params;
+      const run = await prisma.payrollRun.findUnique({ where: { id } });
+      if (!run) return res.status(404).json({ error: 'Nómina no encontrada.' });
+
+      const updated = await prisma.payrollRun.update({
+        where: { id },
+        data: { status: 'CANCELLED', updatedAt: new Date() },
+      });
+      return res.status(200).json(updated);
+    } catch (error: any) {
+      return res.status(500).json({ error: 'Error al anular la nómina.', details: error.message });
+    }
+  }
+
+  // GET /api/payroll/payrolls/runs?companyId=&year=&month=&status=
+  async getPayrollRuns(req: Request, res: Response) {
+    try {
+      const { companyId, year, month, status } = req.query;
+      if (!companyId) return res.status(400).json({ error: 'companyId requerido.' });
+
+      const where: any = { companyId };
+      if (status) where.status = status;
+      if (year) {
+        const y = parseInt(year as string);
+        const m = month ? parseInt(month as string) - 1 : undefined;
+        if (m !== undefined) {
+          where.periodDate = { gte: new Date(y, m, 1), lte: new Date(y, m, 31) };
+        } else {
+          where.periodDate = { gte: new Date(y, 0, 1), lte: new Date(y, 11, 31) };
+        }
+      }
+
+      const runs = await prisma.payrollRun.findMany({
+        where,
+        include: {
+          payrolls: {
+            include: {
+              employee: { select: { id: true, cedula: true, firstName: true, lastName: true, department: true } },
+              deductions: true,
+              allowances: true,
+            },
+          },
+          company: { select: { id: true, name: true } },
+        },
+        orderBy: { periodDate: 'desc' },
+      });
+
+      return res.status(200).json(runs);
+    } catch (error: any) {
+      return res.status(500).json({ error: 'Error al obtener nóminas.', details: error.message });
+    }
+  }
   async generatePayroll(req: Request, res: Response) {
     const {
       employeeId,
@@ -607,6 +714,7 @@ export class PayrollController {
       });
     }
   }
+  
 
   private async updatePayrollRunTotals(payrollRunId: string): Promise<void> {
     try {
@@ -652,4 +760,4 @@ export class PayrollController {
       );
     }
   }
-}
+  }
