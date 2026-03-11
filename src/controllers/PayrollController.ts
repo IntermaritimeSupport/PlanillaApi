@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import { prisma } from '../../lib/prisma.js';
-import { Prisma } from '../../generated/prisma/index.js';
+import { Prisma, PayrollRunStatus, PayrollStatus } from '../../generated/prisma/index.js';
 import { Decimal } from '@prisma/client/runtime/library.js';
 
 type DeductionInput = { type?: string; description?: string; amount: number | string; isFixed?: boolean };
@@ -84,7 +84,7 @@ export class PayrollController {
       if (!companyId) return res.status(400).json({ error: 'companyId requerido.' });
 
       const where: Prisma.PayrollRunWhereInput = { companyId: companyId as string };
-      if (status) where.status = status as string;
+      if (status) where.status = status as PayrollRunStatus;
       if (year) {
         const y = parseInt(year as string);
         const m = month ? parseInt(month as string) - 1 : undefined;
@@ -463,7 +463,7 @@ export class PayrollController {
       if (employeeId)   where.employeeId   = employeeId   as string;
       if (companyId)    where.companyId    = companyId    as string;
       if (payrollRunId) where.payrollRunId = payrollRunId as string;
-      if (status)       where.status       = status       as string;
+      if (status)       where.status       = status       as PayrollStatus;
 
       if (startDate || endDate) {
         where.payPeriod = {};
