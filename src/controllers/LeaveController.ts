@@ -181,6 +181,7 @@ export class LeaveController {
   async markAsPaid(req: Request, res: Response) {
     try {
       const { id } = req.params;
+      const { paidAt } = req.body;
 
       const leave = await prisma.leave.findUnique({ where: { id } });
 
@@ -196,9 +197,14 @@ export class LeaveController {
         return res.status(400).json({ error: 'Este permiso ya fue marcado como pagado.' });
       }
 
+      const resolvedPaidAt = paidAt ? new Date(paidAt) : new Date();
+      if (isNaN(resolvedPaidAt.getTime())) {
+        return res.status(400).json({ error: 'Fecha de pago inválida.' });
+      }
+
       const updated = await prisma.leave.update({
         where: { id },
-        data: { isPaid: true, paidAt: new Date() },
+        data: { isPaid: true, paidAt: resolvedPaidAt },
         include: { employee: { select: { firstName: true, lastName: true, cedula: true } } },
       });
 

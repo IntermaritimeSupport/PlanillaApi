@@ -3,6 +3,7 @@ import { AttendanceController } from '../controllers/AttendanceController.js';
 import { EmployeeController } from '../controllers/EmployeeController.js';
 import { PayrollController } from '../controllers/PayrollController.js';
 import { LeaveController } from '../controllers/LeaveController.js';
+import { EmailController } from '../controllers/EmailController.js';
 import { verifyJWT } from '../middlewares/AuthMiddleware.js';
 
 const PayrollRouter = Router();
@@ -11,6 +12,7 @@ const employeeController = new EmployeeController();
 const payrollController = new PayrollController();
 const attendanceController = new AttendanceController();
 const leaveController = new LeaveController();
+const emailController = new EmailController();
 
 PayrollRouter.use(verifyJWT);
 
@@ -56,5 +58,11 @@ PayrollRouter.get('/leaves', (req, res) => leaveController.getLeaveRequests(req,
 PayrollRouter.put('/leaves/:id/approve', (req, res) => leaveController.approveLeave(req, res));
 PayrollRouter.put('/leaves/:id/reject', (req, res) => leaveController.rejectLeave(req, res));
 PayrollRouter.put('/leaves/:id/cancel', (req, res) => leaveController.cancelLeave(req, res));
+
+// ============================================
+// EMAIL ROUTES
+// ============================================
+
+PayrollRouter.post('/send-payslip', (req, res) => emailController.sendPayslip(req, res));
 
 export default PayrollRouter;
