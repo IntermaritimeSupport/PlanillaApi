@@ -21,6 +21,8 @@ import DepartmentRouter from './routes/DepartmentRoutes.js';
 import legalDecimoParameterRouter from './routes/LegalDecimoParameterRoutes.js';
 import DashboardRouter from './routes/DashboardRoutes.js';
 import DecimoRouter from './routes/DecimoRoutes.js';
+import ChatRouter from './routes/ChatRoutes.js';
+import LeaveRouter from './routes/LeaveRoutes.js';
 
 const app = express();
 const port = process.env.PORT ?? '3000';
@@ -77,6 +79,8 @@ app.use('/api/payroll', EmployeeRouter);
 app.use('/api/seed', SeedRouter);
 app.use('/api/dashboard', DashboardRouter);
 app.use('/api/payroll', DecimoRouter);
+app.use('/api', ChatRouter);
+app.use('/api/payroll', LeaveRouter);
 app.use(errorMiddleware);
 
 app.listen(port, () => {
