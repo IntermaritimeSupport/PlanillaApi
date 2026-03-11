@@ -5,9 +5,12 @@
 
 import { Router } from 'express';
 import { VoucherController } from '../controllers/VoucherController.js';
+import { verifyJWT } from '../middlewares/AuthMiddleware.js';
 
 const VoucherRouter = Router();
 const voucherController = new VoucherController();
+
+VoucherRouter.use(verifyJWT);
 
 /**
  * POST /api/payroll/voucher/send

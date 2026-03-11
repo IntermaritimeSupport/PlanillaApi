@@ -1,11 +1,14 @@
 import { Router } from 'express'
 import { LegalDecimoParameterController } from '../controllers/LegalDecimoParameterController.js'
+import { verifyJWT } from '../middlewares/AuthMiddleware.js'
 
 const legalDecimoParameterRouter = Router()
 const controller = new LegalDecimoParameterController()
 
+legalDecimoParameterRouter.use(verifyJWT)
+
 /**
- * NOTA: El orden de las rutas es importante. 
+ * NOTA: El orden de las rutas es importante.
  * Las rutas específicas deben ir ANTES de las rutas con parámetros dinámicos (:id).
  */
 
@@ -32,7 +35,7 @@ legalDecimoParameterRouter.get('/legal-decimo-parameters', (req, res) =>
   controller.getAll(req, res)
 )
 
-legalDecimoParameterRouter.get('/legal-parameters/keys', (req, res) => 
+legalDecimoParameterRouter.get('/legal-decimo-parameters/keys', (req, res) =>
   controller.getAvailableKeys(req, res)
 );
 

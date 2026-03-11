@@ -398,7 +398,7 @@ export class CompanyController {
      */
     async getMyCompanies(req: Request, res: Response, next: NextFunction) {
         try {
-            const { id: userId } = req.params
+            const { userId } = req.params
 
             if (!userId) {
                 return res.status(400).json({ error: 'ID de usuario es requerido.' })

@@ -1,19 +1,20 @@
 // src/companies/company.routes.ts
 import { Router } from 'express';
 import { CompanyController } from '../controllers/CompaniesController.js';
+import { verifyJWT } from '../middlewares/AuthMiddleware.js';
 
 const CompaniesRouter = Router();
 const companyController = new CompanyController();
 
-// POST routes (específicas)
+CompaniesRouter.use(verifyJWT);
+
+// POST routes
 CompaniesRouter.post('/create', companyController.Create.bind(companyController));
 CompaniesRouter.post('/:id/disassociate-users', companyController.disassociateUsers.bind(companyController));
 
 // GET routes (específicas primero)
 CompaniesRouter.get('/all', companyController.getAll.bind(companyController));
-CompaniesRouter.get('/:id/my-companies', companyController.getMyCompanies.bind(companyController));
-
-// ✅ RUTA ESPECÍFICA PARA DEPARTAMENTOS (debe ir ANTES de /:id)
+CompaniesRouter.get('/:userId/my-companies', companyController.getMyCompanies.bind(companyController));
 CompaniesRouter.get('/departments/by-code/:companyCode', companyController.getDepartmentsByCompanyCode.bind(companyController));
 
 // GET routes (genéricas al final)

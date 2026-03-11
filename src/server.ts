@@ -1,7 +1,9 @@
 // src/server.ts
+// ⚠️  config.ts DEBE ser el primer import — carga dotenv antes que cualquier otro módulo
+import './config/config.js';
+
 import express from 'express';
 import session from 'express-session';
-import dotenv from 'dotenv';
 import path from 'path';
 import AuthRouter from './routes/AuthRoutes.js';
 import expressLayouts from 'express-ejs-layouts';
@@ -20,10 +22,8 @@ import legalDecimoParameterRouter from './routes/LegalDecimoParameterRoutes.js';
 import DashboardRouter from './routes/DashboardRoutes.js';
 import DecimoRouter from './routes/DecimoRoutes.js';
 
-dotenv.config({ path: '.env' });
-
 const app = express();
-const port = process.env.PORT || 3000;
+const port = process.env.PORT ?? '3000';
 const __dirname = path.resolve();
 
 app.use(expressLayouts);
@@ -45,12 +45,12 @@ app.use((req, res, next) => {
 });
 
 app.use(session({
-  secret: process.env.SESSION_SECRET || 'super_secret_key_for_session',
+  secret: process.env.SESSION_SECRET!,
   resave: false,
   saveUninitialized: false,
   cookie: {
-    maxAge: 1000 * 60 * 60 * 24
-  }
+    maxAge: 1000 * 60 * 60 * 24,
+  },
 }));
 
 app.use(flash());
@@ -58,12 +58,12 @@ app.use((req, res, next) => {
   res.locals.success_msg = req.flash('success_msg');
   res.locals.error_msg = req.flash('error_msg');
   res.locals.error = req.flash('error');
-  res.locals.user = req.session.user || null;
+  res.locals.user = req.session.user ?? null;
   next();
 });
 
-app.get('/', (req, res) => {
-  res.send('Welcome to IT System')
+app.get('/', (_req, res) => {
+  res.send('Welcome to IT System');
 });
 
 app.use('/api/user/auth', AuthRouter);
@@ -81,5 +81,4 @@ app.use(errorMiddleware);
 
 app.listen(port, () => {
   console.log(`Servidor escuchando en http://localhost:${port}`);
-  console.log(`Página de inicio: http://localhost:${port}`);
 });

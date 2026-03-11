@@ -1,8 +1,18 @@
 // src/middlewares/auth.middleware.ts
 import { NextFunction, Request as ExpressRequest, Response as ExpressResponse } from "express";
 import session from "express-session";
+import jwt from "jsonwebtoken";
 import { UserRole } from "../../generated/prisma";
 
+// ─── Augmentar Express.Request para datos JWT ─────────────────────────────────
+declare global {
+  namespace Express {
+    interface Request {
+      userId?: string;
+      userRole?: string;
+    }
+  }
+}
 
 declare module 'express-session' {
   interface SessionData {
@@ -15,26 +25,46 @@ declare module 'express-session' {
   }
 }
 
-// Extend Express Request to include session
 interface Request extends ExpressRequest {
   session: session.Session & Partial<session.SessionData>;
 }
 type Response = ExpressResponse;
 
+// ─── Middleware JWT para la API REST ─────────────────────────────────────────
+// Verifica el Bearer token y adjunta userId/userRole al request.
+export const verifyJWT = (req: Request, res: Response, next: NextFunction): void => {
+  const authHeader = req.headers.authorization;
+  if (!authHeader || !authHeader.startsWith('Bearer ')) {
+    res.status(401).json({ error: 'Token de autenticación requerido.' });
+    return;
+  }
+
+  const token = authHeader.slice(7);
+
+  try {
+    const decoded = jwt.verify(token, process.env.JWT_SECRET!) as { id: string; roles: string };
+    req.userId = decoded.id;
+    req.userRole = decoded.roles;
+    next();
+  } catch {
+    res.status(401).json({ error: 'Token inválido o expirado.' });
+  }
+};
+
+// ─── Middleware de sesión (para vistas EJS) ───────────────────────────────────
 export const isAuthenticated = (req: Request, res: Response, next: NextFunction) => {
-  if (req.session && req.session.user) {
+  if (req.session?.user) {
     return next();
   }
   req.flash('error_msg', 'Por favor, inicia sesión para acceder a esta página.');
   res.redirect('/login');
 };
 
-// Middleware para autorizar roles
 export const authorizeRolesMiddleware = (allowedRoles: UserRole[]) => {
   return (req: Request, res: Response, next: NextFunction) => {
-    if (!req.session || !req.session.user || !allowedRoles.includes(req.session.user.role)) {
+    if (!req.session?.user || !allowedRoles.includes(req.session.user.role)) {
       req.flash('error_msg', 'No tienes permisos para acceder a esta sección.');
-      return res.status(403).redirect('/dashboard'); // O a una página de "Acceso Denegado"
+      return res.status(403).redirect('/dashboard');
     }
     next();
   };
@@ -47,32 +77,23 @@ export const authorizeCompanyAccessMiddleware = (req: Request, res: Response, ne
 
   const userCompanyId = req.session?.user?.companyId;
 
-  // Para peticiones GET (lectura), la companyId puede venir en los query params o no ser necesaria si se lista todo de la empresa del usuario
-  // Para peticiones POST/PUT/DELETE, la companyId del recurso debería venir en el body o params
   let resourceCompanyId: string | undefined;
 
-  // Priorizar body para creación/actualización, luego params, luego query para filtros
-  if (req.body.companyId) {
+  if (req.body?.companyId) {
     resourceCompanyId = req.body.companyId;
-  } else if (req.params.companyId) { // Si la companyId es parte de la URL (ej. /equipments/:companyId/:id)
+  } else if (req.params.companyId) {
     resourceCompanyId = req.params.companyId;
-  } else if (req.query.companyId) { // Si la companyId es un filtro en la URL (ej. /equipments?companyId=xyz)
+  } else if (req.query.companyId) {
     resourceCompanyId = req.query.companyId as string;
   }
 
-  // Si no se especifica companyId en la petición, se asume que se opera sobre la empresa del usuario
   if (!resourceCompanyId) {
-    // Si la petición es para crear o listar, y no se especifica companyId, se asume la del usuario.
-    // Si la petición es para un recurso específico (GET /equipments/:id, PUT /equipments/:id),
-    // la lógica del servicio deberá verificar que el recurso pertenece a la empresa del usuario.
-    // Por ahora, permitimos pasar si no hay companyId en la petición, y el servicio se encargará.
     return next();
   }
 
-  // Si se especifica una companyId en la petición, debe coincidir con la del usuario
   if (userCompanyId !== resourceCompanyId) {
     req.flash('error_msg', 'No tienes permisos para acceder o modificar recursos de esta empresa.');
-    return res.status(403).redirect('/dashboard'); // Redirigir o enviar JSON de error
+    return res.status(403).redirect('/dashboard');
   }
 
   next();

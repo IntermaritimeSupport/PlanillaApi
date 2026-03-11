@@ -1,11 +1,14 @@
 import { Router } from 'express'
 import { LegalParameterController } from '../controllers/LegalParameterController.js'
+import { verifyJWT } from '../middlewares/AuthMiddleware.js'
 
 const legalParameterRouter = Router()
 const controller = new LegalParameterController()
 
+legalParameterRouter.use(verifyJWT)
+
 /**
- * NOTA: El orden de las rutas es importante. 
+ * NOTA: El orden de las rutas es importante.
  * Las rutas específicas deben ir ANTES de las rutas con parámetros dinámicos (:id).
  */
 

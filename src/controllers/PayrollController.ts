@@ -1,6 +1,10 @@
 import { Request, Response } from 'express';
 import { prisma } from '../../lib/prisma.js';
-import { Decimal } from '@prisma/client/runtime/client.js';
+import { Prisma } from '../../generated/prisma/index.js';
+import { Decimal } from '@prisma/client/runtime/library.js';
+
+type DeductionInput = { type?: string; description?: string; amount: number | string; isFixed?: boolean };
+type AllowanceInput  = { type?: string; description?: string; amount: number | string };
 
 export class PayrollController {
     // GET /api/payroll/payrolls/summary?companyId=&year=
@@ -33,8 +37,9 @@ export class PayrollController {
       }));
 
       return res.status(200).json({ year: yearNum, companyId, summary });
-    } catch (error: any) {
-      return res.status(500).json({ error: 'Error al obtener resumen de nóminas.', details: error.message });
+    } catch (error: unknown) {
+      const msg = error instanceof Error ? error.message : 'Error desconocido';
+      return res.status(500).json({ error: 'Error al obtener resumen de nóminas.', details: msg });
     }
   }
   // PATCH /api/payroll/payrolls/:id/lock  → cambia status a APPROVED
@@ -50,8 +55,8 @@ export class PayrollController {
         data: { status: 'APPROVED', updatedAt: new Date() },
       });
       return res.status(200).json(updated);
-    } catch (error: any) {
-      return res.status(500).json({ error: 'Error al bloquear la nómina.', details: error.message });
+    } catch (error: unknown) {
+      return res.status(500).json({ error: 'Error al bloquear la nómina.', details: error instanceof Error ? error.message : String(error) });
     }
   }
 
@@ -67,8 +72,8 @@ export class PayrollController {
         data: { status: 'CANCELLED', updatedAt: new Date() },
       });
       return res.status(200).json(updated);
-    } catch (error: any) {
-      return res.status(500).json({ error: 'Error al anular la nómina.', details: error.message });
+    } catch (error: unknown) {
+      return res.status(500).json({ error: 'Error al anular la nómina.', details: error instanceof Error ? error.message : String(error) });
     }
   }
 
@@ -78,8 +83,8 @@ export class PayrollController {
       const { companyId, year, month, status } = req.query;
       if (!companyId) return res.status(400).json({ error: 'companyId requerido.' });
 
-      const where: any = { companyId };
-      if (status) where.status = status;
+      const where: Prisma.PayrollRunWhereInput = { companyId: companyId as string };
+      if (status) where.status = status as string;
       if (year) {
         const y = parseInt(year as string);
         const m = month ? parseInt(month as string) - 1 : undefined;
@@ -106,8 +111,8 @@ export class PayrollController {
       });
 
       return res.status(200).json(runs);
-    } catch (error: any) {
-      return res.status(500).json({ error: 'Error al obtener nóminas.', details: error.message });
+    } catch (error: unknown) {
+      return res.status(500).json({ error: 'Error al obtener nóminas.', details: error instanceof Error ? error.message : String(error) });
     }
   }
   async generatePayroll(req: Request, res: Response) {
@@ -143,8 +148,8 @@ export class PayrollController {
       const periodDate = new Date(payPeriod);
       periodDate.setDate(1);
 
-      // Buscar o crear el PayrollRun
-      let payrollRun = await prisma.payrollRun.findUnique({
+      // Upsert atómico — evita race condition del findUnique+create anterior
+      const payrollRun = await prisma.payrollRun.upsert({
         where: {
           companyId_periodDate_quincena_payrollType: {
             companyId: employee.companyId,
@@ -153,48 +158,35 @@ export class PayrollController {
             payrollType,
           },
         },
+        update: {},
+        create: {
+          companyId: employee.companyId,
+          periodDate,
+          quincena,
+          payrollType,
+          status: 'DRAFT',
+        },
       });
-
-      if (!payrollRun) {
-        payrollRun = await prisma.payrollRun.create({
-          data: {
-            companyId: employee.companyId,
-            periodDate,
-            quincena,
-            payrollType,
-            status: 'DRAFT',
-          },
-        });
-      }
 
       // Calcular salario prorrateado
       const dailySalary = new Decimal(baseSalary).dividedBy(workingDays);
       const prorateSalary = dailySalary.times(daysWorked);
 
       // Calcular deducciones totales
-      let totalDeductions = new Decimal(0);
-      let incomeTax = new Decimal(0);
-      let sss = new Decimal(0);
-      let privateInsurance = new Decimal(0);
+      const sss            = prorateSalary.times(0.0875);
+      const taxableIncome  = prorateSalary.minus(sss);
+      const incomeTax      = this.calculatePanamaCorporateTax(taxableIncome);
+      const privateInsurance = new Decimal(0);
 
-      // SSS: 8.75% del salario
-      sss = prorateSalary.times(0.0875);
-
-      // ISR: Se calcula según la ley panameña
-      const taxableIncome = prorateSalary.minus(sss);
-      incomeTax = this.calculatePanamaCorporateTax(taxableIncome);
-
-      // Otras deducciones
       let customDeductions = new Decimal(0);
-      deductions.forEach((d: any) => {
+      (deductions as DeductionInput[]).forEach((d) => {
         customDeductions = customDeductions.plus(d.amount);
       });
 
-      totalDeductions = sss.plus(incomeTax).plus(privateInsurance).plus(customDeductions);
+      const totalDeductions = sss.plus(incomeTax).plus(privateInsurance).plus(customDeductions);
 
-      // Calcular bonificaciones
       let totalAllowances = new Decimal(0);
-      allowances.forEach((a: any) => {
+      (allowances as AllowanceInput[]).forEach((a) => {
         totalAllowances = totalAllowances.plus(a.amount);
       });
 
@@ -209,14 +201,14 @@ export class PayrollController {
       let thirteenthMonthNote = '';
 
       if (payrollType === 'THIRTEEN_MONTH') {
-        const hireDateThisYear = new Date(employee.hireDate);
+        const hireDate  = new Date(employee.hireDate);
         const endOfYear = new Date(periodDate.getFullYear(), 11, 31);
 
         let monthsWorkedThisYear = 12;
 
-        if (hireDateThisYear.getFullYear() === periodDate.getFullYear()) {
-          const diffTime = endOfYear.getTime() - hireDateThisYear.getTime();
-          monthsWorkedThisYear = Math.ceil(diffTime / (1000 * 60 * 60 * 24 * 30));
+        if (hireDate.getFullYear() === periodDate.getFullYear()) {
+          const diffTime = endOfYear.getTime() - hireDate.getTime();
+          monthsWorkedThisYear = Math.max(1, Math.ceil(diffTime / (1000 * 60 * 60 * 24 * 30)));
           thirteenthMonthNote = `Proporcional: ${monthsWorkedThisYear} meses trabajados en el año`;
         }
 
@@ -233,7 +225,7 @@ export class PayrollController {
           employeeId,
           companyId: employee.companyId,
           payPeriod: new Date(payPeriod),
-          paymentDate: new Date(paymentDate || new Date()),
+          paymentDate: new Date(paymentDate ?? new Date()),
           payrollType,
           baseSalary: new Decimal(baseSalary),
           workingDays,
@@ -249,21 +241,21 @@ export class PayrollController {
           thirteenthMonthNote,
           status: 'DRAFT',
           deductions: {
-            create: deductions.map((d: any) => ({
+            create: (deductions as DeductionInput[]).map((d) => ({
               employeeId,
-              deductionType: d.type || 'OTHER',
+              deductionType: d.type ?? 'OTHER',
               description: d.description,
               amount: new Decimal(d.amount),
-              isFixed: d.isFixed || false,
-            })),
+              isFixed: d.isFixed ?? false,
+            })) as Prisma.DeductionUncheckedCreateWithoutPayrollInput[],
           },
           allowances: {
-            create: allowances.map((a: any) => ({
+            create: (allowances as AllowanceInput[]).map((a) => ({
               employeeId,
-              allowanceType: a.type || 'OTHER',
+              allowanceType: a.type ?? 'OTHER',
               description: a.description,
               amount: new Decimal(a.amount),
-            })),
+            })) as Prisma.AllowanceUncheckedCreateWithoutPayrollInput[],
           },
         },
         include: {
@@ -279,11 +271,11 @@ export class PayrollController {
       await this.updatePayrollRunTotals(payrollRun.id);
 
       return res.status(201).json(payroll);
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error('Error generating payroll:', error);
       return res.status(500).json({
         error: 'Error al generar la nómina.',
-        details: error.message,
+        details: error instanceof Error ? error.message : String(error),
       });
     }
   }
@@ -334,7 +326,17 @@ export class PayrollController {
       let batchTotalDeductions = new Decimal(0);
       let batchTotalNet = new Decimal(0);
 
-      for (const payrollData of payrollsData) {
+      // ─── Batch fetch de empleados — evita N+1 ──────────────────────────────
+      const employeeIds: string[] = (payrollsData as Array<{ employeeId: string }>).map((p) => p.employeeId);
+      const employees = await prisma.employee.findMany({ where: { id: { in: employeeIds } } });
+      const employeeMap = new Map(employees.map((e) => [e.id, e]));
+      // ────────────────────────────────────────────────────────────────────────
+
+      for (const payrollData of payrollsData as Array<{
+        employeeId: string; payPeriod: string; paymentDate?: string;
+        baseSalary: number | string; workingDays?: number; daysWorked?: number;
+        deductions?: DeductionInput[]; allowances?: AllowanceInput[];
+      }>) {
         const {
           employeeId,
           payPeriod,
@@ -346,31 +348,24 @@ export class PayrollController {
           allowances = [],
         } = payrollData;
 
-        const employee = await prisma.employee.findUnique({
-          where: { id: employeeId },
-        });
-
+        const employee = employeeMap.get(employeeId);
         if (!employee) continue;
 
-        const dailySalary = new Decimal(baseSalary).dividedBy(workingDays);
+        const dailySalary   = new Decimal(baseSalary).dividedBy(workingDays);
         const prorateSalary = dailySalary.times(daysWorked);
 
-        let sss = prorateSalary.times(0.0875);
-        const taxableIncome = prorateSalary.minus(sss);
-        let incomeTax = this.calculatePanamaCorporateTax(taxableIncome);
-        let privateInsurance = new Decimal(0);
+        const sss            = prorateSalary.times(0.0875);
+        const taxableIncome  = prorateSalary.minus(sss);
+        const incomeTax      = this.calculatePanamaCorporateTax(taxableIncome);
+        const privateInsurance = new Decimal(0);
 
         let customDeductions = new Decimal(0);
-        deductions.forEach((d: any) => {
-          customDeductions = customDeductions.plus(d.amount);
-        });
+        deductions.forEach((d) => { customDeductions = customDeductions.plus(d.amount); });
 
-        let totalDeductions = sss.plus(incomeTax).plus(privateInsurance).plus(customDeductions);
+        const totalDeductions = sss.plus(incomeTax).plus(privateInsurance).plus(customDeductions);
 
         let totalAllowances = new Decimal(0);
-        allowances.forEach((a: any) => {
-          totalAllowances = totalAllowances.plus(a.amount);
-        });
+        allowances.forEach((a) => { totalAllowances = totalAllowances.plus(a.amount); });
 
         const grossSalary = prorateSalary.plus(totalAllowances);
         const netSalary = grossSalary.minus(totalDeductions);
@@ -384,7 +379,7 @@ export class PayrollController {
             employeeId,
             companyId,
             payPeriod: new Date(payPeriod),
-            paymentDate: new Date(paymentDate || new Date()),
+            paymentDate: new Date(paymentDate ?? new Date()),
             payrollType,
             baseSalary: new Decimal(baseSalary),
             workingDays,
@@ -398,21 +393,21 @@ export class PayrollController {
             netSalary,
             status: 'DRAFT',
             deductions: {
-              create: deductions.map((d: any) => ({
+              create: deductions.map((d) => ({
                 employeeId,
-                deductionType: d.type || 'OTHER',
+                deductionType: d.type ?? 'OTHER',
                 description: d.description,
                 amount: new Decimal(d.amount),
-                isFixed: d.isFixed || false,
-              })),
+                isFixed: d.isFixed ?? false,
+              })) as Prisma.DeductionUncheckedCreateWithoutPayrollInput[],
             },
             allowances: {
-              create: allowances.map((a: any) => ({
+              create: allowances.map((a) => ({
                 employeeId,
-                allowanceType: a.type || 'OTHER',
+                allowanceType: a.type ?? 'OTHER',
                 description: a.description,
                 amount: new Decimal(a.amount),
-              })),
+              })) as Prisma.AllowanceUncheckedCreateWithoutPayrollInput[],
             },
           },
           include: {
@@ -451,11 +446,11 @@ export class PayrollController {
         payrollRun: updatedPayrollRun,
         payrollsCreated: createdPayrolls.length,
       });
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error('Error generating batch payroll:', error);
       return res.status(500).json({
         error: 'Error al generar el lote de nóminas.',
-        details: error.message,
+        details: error instanceof Error ? error.message : String(error),
       });
     }
   }
@@ -464,16 +459,16 @@ export class PayrollController {
     try {
       const { employeeId, companyId, payrollRunId, status, startDate, endDate } = req.query;
 
-      const where: any = {};
-      if (employeeId) where.employeeId = employeeId;
-      if (companyId) where.companyId = companyId;
-      if (payrollRunId) where.payrollRunId = payrollRunId;
-      if (status) where.status = status;
+      const where: Prisma.PayrollWhereInput = {};
+      if (employeeId)   where.employeeId   = employeeId   as string;
+      if (companyId)    where.companyId    = companyId    as string;
+      if (payrollRunId) where.payrollRunId = payrollRunId as string;
+      if (status)       where.status       = status       as string;
 
       if (startDate || endDate) {
         where.payPeriod = {};
         if (startDate) where.payPeriod.gte = new Date(startDate as string);
-        if (endDate) where.payPeriod.lte = new Date(endDate as string);
+        if (endDate)   where.payPeriod.lte = new Date(endDate   as string);
       }
 
       const payrolls = await prisma.payroll.findMany({
@@ -508,11 +503,11 @@ export class PayrollController {
       });
 
       return res.status(200).json(payrolls);
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error('Error fetching payrolls:', error);
       return res.status(500).json({
         error: 'Error al obtener las nóminas.',
-        details: error.message,
+        details: error instanceof Error ? error.message : String(error),
       });
     }
   }
@@ -537,11 +532,11 @@ export class PayrollController {
       }
 
       return res.status(200).json(payroll);
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error('Error fetching payroll:', error);
       return res.status(500).json({
         error: 'Error al obtener la nómina.',
-        details: error.message,
+        details: error instanceof Error ? error.message : String(error),
       });
     }
   }
@@ -581,11 +576,11 @@ export class PayrollController {
       }
 
       return res.status(200).json(payrollRun);
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error('Error fetching payroll run:', error);
       return res.status(500).json({
         error: 'Error al obtener el lote de nóminas.',
-        details: error.message,
+        details: error instanceof Error ? error.message : String(error),
       });
     }
   }
@@ -624,11 +619,11 @@ export class PayrollController {
       }
 
       return res.status(200).json(updated);
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error('Error approving payroll:', error);
       return res.status(500).json({
         error: 'Error al aprobar la nómina.',
-        details: error.message,
+        details: error instanceof Error ? error.message : String(error),
       });
     }
   }
@@ -665,11 +660,11 @@ export class PayrollController {
       });
 
       return res.status(200).json(updated);
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error('Error approving payroll run:', error);
       return res.status(500).json({
         error: 'Error al aprobar el lote de nóminas.',
-        details: error.message,
+        details: error instanceof Error ? error.message : String(error),
       });
     }
   }
@@ -706,11 +701,11 @@ export class PayrollController {
       }
 
       return res.status(200).json(updated);
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error('Error rejecting payroll:', error);
       return res.status(500).json({
         error: 'Error al rechazar la nómina.',
-        details: error.message,
+        details: error instanceof Error ? error.message : String(error),
       });
     }
   }

@@ -1,8 +1,11 @@
 import { Router } from 'express';
 import { SystemConfigController } from '../controllers/SystemConfigController.js';
+import { verifyJWT } from '../middlewares/AuthMiddleware.js';
 
 const SystemRouter = Router();
 const systemController = new SystemConfigController();
+
+SystemRouter.use(verifyJWT);
 
 // Get all configurations or filter by category
 SystemRouter.get('/config', (req, res) =>

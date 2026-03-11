@@ -1,9 +1,12 @@
 // src/routes/DecimoRoutes.ts
 import { Router } from 'express';
 import { DecimoController } from '../controllers/DecimoController.js';
+import { verifyJWT } from '../middlewares/AuthMiddleware.js';
 
 const DecimoRouter = Router();
 const decimoController = new DecimoController();
+
+DecimoRouter.use(verifyJWT);
 
 /**
  * GET /api/payroll/decimo/history?companyId=&year=

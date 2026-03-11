@@ -1,4 +1,5 @@
 import { Request, Response } from 'express';
+import { Prisma } from '../../generated/prisma/index.js';
 import prisma from '../../lib/prisma.js';
 
 export class DashboardController {
@@ -27,11 +28,11 @@ export class DashboardController {
         success: true,
         data: stats,
       });
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error('Error fetching general stats:', error);
       res.status(500).json({
         error: 'Error al obtener estadísticas generales',
-        details: error.message,
+        details: error instanceof Error ? error.message : String(error),
       });
     }
   }
@@ -44,7 +45,7 @@ export class DashboardController {
       const { limit = 10, companyId } = req.query;
 
       // Construir filtro de compañía si se proporciona
-      const where: any = {};
+      const where: Prisma.PayrollWhereInput = {};
       if (companyId) {
         where.companyId = String(companyId);
       }
@@ -76,11 +77,11 @@ export class DashboardController {
         success: true,
         data: payrolls,
       });
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error('Error fetching recent payrolls:', error);
       res.status(500).json({
         error: 'Error al obtener nóminas recientes',
-        details: error.message,
+        details: error instanceof Error ? error.message : String(error),
       });
     }
   }
@@ -93,7 +94,7 @@ export class DashboardController {
       const { companyId, monthYear } = req.query;
 
       // Construir filtro
-      const where: any = {};
+      const where: Prisma.PayrollWhereInput = {};
       if (companyId) {
         where.companyId = String(companyId);
       }
@@ -146,11 +147,11 @@ export class DashboardController {
         success: true,
         data: summary,
       });
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error('Error fetching financial summary:', error);
       res.status(500).json({
         error: 'Error al obtener resumen financiero',
-        details: error.message,
+        details: error instanceof Error ? error.message : String(error),
       });
     }
   }
@@ -162,47 +163,36 @@ export class DashboardController {
     try {
       const { companyId } = req.query;
 
-      // Construir filtro
-      const where: any = {};
+      const deptWhere: Prisma.DepartmentWhereInput = {};
+      const empWhere: Prisma.EmployeeWhereInput = {};
       if (companyId) {
-        where.companyId = String(companyId);
+        deptWhere.companyId = String(companyId);
+        empWhere.companyId  = String(companyId);
       }
 
       const departments = await prisma.department.findMany({
-        where,
+        where: deptWhere,
         include: {
           persons: {
-            select: {
-              id: true,
-              firstName: true,
-              lastName: true,
-              status: true,
-            },
+            select: { id: true, firstName: true, lastName: true, status: true },
           },
         },
       });
 
       const employeesByDept = await prisma.employee.groupBy({
         by: ['department'],
-        where,
-        _count: {
-          id: true,
-        },
+        where: empWhere,
+        _count: { id: true },
       });
 
       res.status(200).json({
         success: true,
-        data: {
-          departments,
-          employeesByDept,
-        },
+        data: { departments, employeesByDept },
       });
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error('Error fetching employees by department:', error);
-      res.status(500).json({
-        error: 'Error al obtener empleados por departamento',
-        details: error.message,
-      });
+      const msg = error instanceof Error ? error.message : String(error);
+      res.status(500).json({ error: 'Error al obtener empleados por departamento', details: msg });
     }
   }
 
@@ -213,40 +203,21 @@ export class DashboardController {
     try {
       const { companyId, days = 30 } = req.query;
 
-      // Construir filtro
-      const where: any = {};
-      if (companyId) {
-        where.companyId = String(companyId);
-      }
+      const companyFilter = companyId ? { companyId: String(companyId) } : {};
 
-      // Calcular fecha de hace X días
       const daysAgo = new Date();
       daysAgo.setDate(daysAgo.getDate() - parseInt(days as string));
 
       const attendanceStats = await prisma.attendanceRecord.groupBy({
         by: ['status'],
-        where: {
-          ...where,
-          date: {
-            gte: daysAgo,
-          },
-        },
-        _count: {
-          id: true,
-        },
+        where: { ...companyFilter, date: { gte: daysAgo } },
+        _count: { id: true },
       });
 
       const leaveStats = await prisma.leave.groupBy({
         by: ['leaveType'],
-        where: {
-          ...where,
-          createdAt: {
-            gte: daysAgo,
-          },
-        },
-        _count: {
-          id: true,
-        },
+        where: { ...companyFilter, createdAt: { gte: daysAgo } },
+        _count: { id: true },
       });
 
       res.status(200).json({
@@ -256,11 +227,11 @@ export class DashboardController {
           leaves: leaveStats,
         },
       });
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error('Error fetching attendance stats:', error);
       res.status(500).json({
         error: 'Error al obtener estadísticas de asistencia',
-        details: error.message,
+        details: error instanceof Error ? error.message : String(error),
       });
     }
   }
@@ -270,7 +241,7 @@ export class DashboardController {
    */
   async getCurrentUserInfo(req: Request, res: Response): Promise<void> {
     try {
-      const requestingUserId = (req as any).userId;
+      const requestingUserId = req.userId;
 
       // Si no hay usuario autenticado, retornar información anónima
       if (!requestingUserId) {
@@ -314,11 +285,11 @@ export class DashboardController {
         success: true,
         data: user,
       });
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error('Error fetching current user info:', error);
       res.status(500).json({
         error: 'Error al obtener información del usuario',
-        details: error.message,
+        details: error instanceof Error ? error.message : String(error),
       });
     }
   }
@@ -328,7 +299,7 @@ export class DashboardController {
    */
   async getUserCompanies(req: Request, res: Response): Promise<void> {
     try {
-      const requestingUserId = (req as any).userId;
+      const requestingUserId = req.userId;
 
       // Si hay usuario autenticado, obtener sus compañías
       if (requestingUserId) {
@@ -368,11 +339,11 @@ export class DashboardController {
         success: true,
         data: companies,
       });
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error('Error fetching user companies:', error);
       res.status(500).json({
         error: 'Error al obtener compañías del usuario',
-        details: error.message,
+        details: error instanceof Error ? error.message : String(error),
       });
     }
   }
