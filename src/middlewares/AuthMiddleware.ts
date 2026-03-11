@@ -2,7 +2,7 @@
 import { NextFunction, Request as ExpressRequest, Response as ExpressResponse } from "express";
 import session from "express-session";
 import jwt from "jsonwebtoken";
-import { UserRole } from "../../generated/prisma";
+import { UserRole } from "../../generated/prisma/index.js";
 
 // ─── Augmentar Express.Request para datos JWT ─────────────────────────────────
 declare global {
