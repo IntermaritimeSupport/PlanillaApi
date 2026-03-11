@@ -178,6 +178,38 @@ export class LeaveController {
     }
   }
 
+  async markAsPaid(req: Request, res: Response) {
+    try {
+      const { id } = req.params;
+
+      const leave = await prisma.leave.findUnique({ where: { id } });
+
+      if (!leave) {
+        return res.status(404).json({ error: 'Solicitud no encontrada.' });
+      }
+
+      if (leave.status !== 'APPROVED') {
+        return res.status(400).json({ error: 'Solo se pueden marcar como pagados los permisos aprobados.' });
+      }
+
+      if (leave.isPaid) {
+        return res.status(400).json({ error: 'Este permiso ya fue marcado como pagado.' });
+      }
+
+      const updated = await prisma.leave.update({
+        where: { id },
+        data: { isPaid: true, paidAt: new Date() },
+        include: { employee: { select: { firstName: true, lastName: true, cedula: true } } },
+      });
+
+      return res.status(200).json(updated);
+    } catch (error: unknown) {
+      const msg = error instanceof Error ? error.message : String(error);
+      console.error('Error marking leave as paid:', msg);
+      return res.status(500).json({ error: 'Error al marcar permiso como pagado.' });
+    }
+  }
+
   async cancelLeave(req: Request, res: Response) {
     try {
       const { id } = req.params;

@@ -18953,6 +18953,8 @@ export namespace Prisma {
     approvedBy: string | null
     approvalDate: Date | null
     comments: string | null
+    isPaid: boolean | null
+    paidAt: Date | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -18971,6 +18973,8 @@ export namespace Prisma {
     approvedBy: string | null
     approvalDate: Date | null
     comments: string | null
+    isPaid: boolean | null
+    paidAt: Date | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -18989,6 +18993,8 @@ export namespace Prisma {
     approvedBy: number
     approvalDate: number
     comments: number
+    isPaid: number
+    paidAt: number
     createdAt: number
     updatedAt: number
     _all: number
@@ -19019,6 +19025,8 @@ export namespace Prisma {
     approvedBy?: true
     approvalDate?: true
     comments?: true
+    isPaid?: true
+    paidAt?: true
     createdAt?: true
     updatedAt?: true
   }
@@ -19037,6 +19045,8 @@ export namespace Prisma {
     approvedBy?: true
     approvalDate?: true
     comments?: true
+    isPaid?: true
+    paidAt?: true
     createdAt?: true
     updatedAt?: true
   }
@@ -19055,6 +19065,8 @@ export namespace Prisma {
     approvedBy?: true
     approvalDate?: true
     comments?: true
+    isPaid?: true
+    paidAt?: true
     createdAt?: true
     updatedAt?: true
     _all?: true
@@ -19160,6 +19172,8 @@ export namespace Prisma {
     approvedBy: string | null
     approvalDate: Date | null
     comments: string | null
+    isPaid: boolean
+    paidAt: Date | null
     createdAt: Date
     updatedAt: Date
     _count: LeaveCountAggregateOutputType | null
@@ -19197,6 +19211,8 @@ export namespace Prisma {
     approvedBy?: boolean
     approvalDate?: boolean
     comments?: boolean
+    isPaid?: boolean
+    paidAt?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     employee?: boolean | EmployeeDefaultArgs<ExtArgs>
@@ -19217,6 +19233,8 @@ export namespace Prisma {
     approvedBy?: boolean
     approvalDate?: boolean
     comments?: boolean
+    isPaid?: boolean
+    paidAt?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     employee?: boolean | EmployeeDefaultArgs<ExtArgs>
@@ -19237,6 +19255,8 @@ export namespace Prisma {
     approvedBy?: boolean
     approvalDate?: boolean
     comments?: boolean
+    isPaid?: boolean
+    paidAt?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     employee?: boolean | EmployeeDefaultArgs<ExtArgs>
@@ -19257,11 +19277,13 @@ export namespace Prisma {
     approvedBy?: boolean
     approvalDate?: boolean
     comments?: boolean
+    isPaid?: boolean
+    paidAt?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }
 
-  export type LeaveOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "employeeId" | "companyId" | "leaveType" | "startDate" | "endDate" | "daysRequested" | "daysApproved" | "reason" | "status" | "approvedBy" | "approvalDate" | "comments" | "createdAt" | "updatedAt", ExtArgs["result"]["leave"]>
+  export type LeaveOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "employeeId" | "companyId" | "leaveType" | "startDate" | "endDate" | "daysRequested" | "daysApproved" | "reason" | "status" | "approvedBy" | "approvalDate" | "comments" | "isPaid" | "paidAt" | "createdAt" | "updatedAt", ExtArgs["result"]["leave"]>
   export type LeaveInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     employee?: boolean | EmployeeDefaultArgs<ExtArgs>
     company?: boolean | CompanyDefaultArgs<ExtArgs>
@@ -19295,6 +19317,8 @@ export namespace Prisma {
       approvedBy: string | null
       approvalDate: Date | null
       comments: string | null
+      isPaid: boolean
+      paidAt: Date | null
       createdAt: Date
       updatedAt: Date
     }, ExtArgs["result"]["leave"]>
@@ -19735,6 +19759,8 @@ export namespace Prisma {
     readonly approvedBy: FieldRef<"Leave", 'String'>
     readonly approvalDate: FieldRef<"Leave", 'DateTime'>
     readonly comments: FieldRef<"Leave", 'String'>
+    readonly isPaid: FieldRef<"Leave", 'Boolean'>
+    readonly paidAt: FieldRef<"Leave", 'DateTime'>
     readonly createdAt: FieldRef<"Leave", 'DateTime'>
     readonly updatedAt: FieldRef<"Leave", 'DateTime'>
   }
@@ -25164,6 +25190,8 @@ export namespace Prisma {
     approvedBy: 'approvedBy',
     approvalDate: 'approvalDate',
     comments: 'comments',
+    isPaid: 'isPaid',
+    paidAt: 'paidAt',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt'
   };
@@ -26842,6 +26870,8 @@ export namespace Prisma {
     approvedBy?: StringNullableFilter<"Leave"> | string | null
     approvalDate?: DateTimeNullableFilter<"Leave"> | Date | string | null
     comments?: StringNullableFilter<"Leave"> | string | null
+    isPaid?: BoolFilter<"Leave"> | boolean
+    paidAt?: DateTimeNullableFilter<"Leave"> | Date | string | null
     createdAt?: DateTimeFilter<"Leave"> | Date | string
     updatedAt?: DateTimeFilter<"Leave"> | Date | string
     employee?: XOR<EmployeeScalarRelationFilter, EmployeeWhereInput>
@@ -26862,6 +26892,8 @@ export namespace Prisma {
     approvedBy?: SortOrderInput | SortOrder
     approvalDate?: SortOrderInput | SortOrder
     comments?: SortOrderInput | SortOrder
+    isPaid?: SortOrder
+    paidAt?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     employee?: EmployeeOrderByWithRelationInput
@@ -26885,6 +26917,8 @@ export namespace Prisma {
     approvedBy?: StringNullableFilter<"Leave"> | string | null
     approvalDate?: DateTimeNullableFilter<"Leave"> | Date | string | null
     comments?: StringNullableFilter<"Leave"> | string | null
+    isPaid?: BoolFilter<"Leave"> | boolean
+    paidAt?: DateTimeNullableFilter<"Leave"> | Date | string | null
     createdAt?: DateTimeFilter<"Leave"> | Date | string
     updatedAt?: DateTimeFilter<"Leave"> | Date | string
     employee?: XOR<EmployeeScalarRelationFilter, EmployeeWhereInput>
@@ -26905,6 +26939,8 @@ export namespace Prisma {
     approvedBy?: SortOrderInput | SortOrder
     approvalDate?: SortOrderInput | SortOrder
     comments?: SortOrderInput | SortOrder
+    isPaid?: SortOrder
+    paidAt?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     _count?: LeaveCountOrderByAggregateInput
@@ -26931,6 +26967,8 @@ export namespace Prisma {
     approvedBy?: StringNullableWithAggregatesFilter<"Leave"> | string | null
     approvalDate?: DateTimeNullableWithAggregatesFilter<"Leave"> | Date | string | null
     comments?: StringNullableWithAggregatesFilter<"Leave"> | string | null
+    isPaid?: BoolWithAggregatesFilter<"Leave"> | boolean
+    paidAt?: DateTimeNullableWithAggregatesFilter<"Leave"> | Date | string | null
     createdAt?: DateTimeWithAggregatesFilter<"Leave"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"Leave"> | Date | string
   }
@@ -28702,6 +28740,8 @@ export namespace Prisma {
     approvedBy?: string | null
     approvalDate?: Date | string | null
     comments?: string | null
+    isPaid?: boolean
+    paidAt?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     employee: EmployeeCreateNestedOneWithoutLeavesInput
@@ -28722,6 +28762,8 @@ export namespace Prisma {
     approvedBy?: string | null
     approvalDate?: Date | string | null
     comments?: string | null
+    isPaid?: boolean
+    paidAt?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -28738,6 +28780,8 @@ export namespace Prisma {
     approvedBy?: NullableStringFieldUpdateOperationsInput | string | null
     approvalDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     comments?: NullableStringFieldUpdateOperationsInput | string | null
+    isPaid?: BoolFieldUpdateOperationsInput | boolean
+    paidAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     employee?: EmployeeUpdateOneRequiredWithoutLeavesNestedInput
@@ -28758,6 +28802,8 @@ export namespace Prisma {
     approvedBy?: NullableStringFieldUpdateOperationsInput | string | null
     approvalDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     comments?: NullableStringFieldUpdateOperationsInput | string | null
+    isPaid?: BoolFieldUpdateOperationsInput | boolean
+    paidAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -28776,6 +28822,8 @@ export namespace Prisma {
     approvedBy?: string | null
     approvalDate?: Date | string | null
     comments?: string | null
+    isPaid?: boolean
+    paidAt?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -28792,6 +28840,8 @@ export namespace Prisma {
     approvedBy?: NullableStringFieldUpdateOperationsInput | string | null
     approvalDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     comments?: NullableStringFieldUpdateOperationsInput | string | null
+    isPaid?: BoolFieldUpdateOperationsInput | boolean
+    paidAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -28810,6 +28860,8 @@ export namespace Prisma {
     approvedBy?: NullableStringFieldUpdateOperationsInput | string | null
     approvalDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     comments?: NullableStringFieldUpdateOperationsInput | string | null
+    isPaid?: BoolFieldUpdateOperationsInput | boolean
+    paidAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -30537,6 +30589,8 @@ export namespace Prisma {
     approvedBy?: SortOrder
     approvalDate?: SortOrder
     comments?: SortOrder
+    isPaid?: SortOrder
+    paidAt?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -30560,6 +30614,8 @@ export namespace Prisma {
     approvedBy?: SortOrder
     approvalDate?: SortOrder
     comments?: SortOrder
+    isPaid?: SortOrder
+    paidAt?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -30578,6 +30634,8 @@ export namespace Prisma {
     approvedBy?: SortOrder
     approvalDate?: SortOrder
     comments?: SortOrder
+    isPaid?: SortOrder
+    paidAt?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -34037,6 +34095,8 @@ export namespace Prisma {
     approvedBy?: string | null
     approvalDate?: Date | string | null
     comments?: string | null
+    isPaid?: boolean
+    paidAt?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     employee: EmployeeCreateNestedOneWithoutLeavesInput
@@ -34055,6 +34115,8 @@ export namespace Prisma {
     approvedBy?: string | null
     approvalDate?: Date | string | null
     comments?: string | null
+    isPaid?: boolean
+    paidAt?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -34451,6 +34513,8 @@ export namespace Prisma {
     approvedBy?: StringNullableFilter<"Leave"> | string | null
     approvalDate?: DateTimeNullableFilter<"Leave"> | Date | string | null
     comments?: StringNullableFilter<"Leave"> | string | null
+    isPaid?: BoolFilter<"Leave"> | boolean
+    paidAt?: DateTimeNullableFilter<"Leave"> | Date | string | null
     createdAt?: DateTimeFilter<"Leave"> | Date | string
     updatedAt?: DateTimeFilter<"Leave"> | Date | string
   }
@@ -34978,6 +35042,8 @@ export namespace Prisma {
     approvedBy?: string | null
     approvalDate?: Date | string | null
     comments?: string | null
+    isPaid?: boolean
+    paidAt?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     company: CompanyCreateNestedOneWithoutLeavesInput
@@ -34996,6 +35062,8 @@ export namespace Prisma {
     approvedBy?: string | null
     approvalDate?: Date | string | null
     comments?: string | null
+    isPaid?: boolean
+    paidAt?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -37755,6 +37823,8 @@ export namespace Prisma {
     approvedBy?: string | null
     approvalDate?: Date | string | null
     comments?: string | null
+    isPaid?: boolean
+    paidAt?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -38134,6 +38204,8 @@ export namespace Prisma {
     approvedBy?: NullableStringFieldUpdateOperationsInput | string | null
     approvalDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     comments?: NullableStringFieldUpdateOperationsInput | string | null
+    isPaid?: BoolFieldUpdateOperationsInput | boolean
+    paidAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     employee?: EmployeeUpdateOneRequiredWithoutLeavesNestedInput
@@ -38152,6 +38224,8 @@ export namespace Prisma {
     approvedBy?: NullableStringFieldUpdateOperationsInput | string | null
     approvalDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     comments?: NullableStringFieldUpdateOperationsInput | string | null
+    isPaid?: BoolFieldUpdateOperationsInput | boolean
+    paidAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -38169,6 +38243,8 @@ export namespace Prisma {
     approvedBy?: NullableStringFieldUpdateOperationsInput | string | null
     approvalDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     comments?: NullableStringFieldUpdateOperationsInput | string | null
+    isPaid?: BoolFieldUpdateOperationsInput | boolean
+    paidAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -38390,6 +38466,8 @@ export namespace Prisma {
     approvedBy?: string | null
     approvalDate?: Date | string | null
     comments?: string | null
+    isPaid?: boolean
+    paidAt?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -38627,6 +38705,8 @@ export namespace Prisma {
     approvedBy?: NullableStringFieldUpdateOperationsInput | string | null
     approvalDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     comments?: NullableStringFieldUpdateOperationsInput | string | null
+    isPaid?: BoolFieldUpdateOperationsInput | boolean
+    paidAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     company?: CompanyUpdateOneRequiredWithoutLeavesNestedInput
@@ -38645,6 +38725,8 @@ export namespace Prisma {
     approvedBy?: NullableStringFieldUpdateOperationsInput | string | null
     approvalDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     comments?: NullableStringFieldUpdateOperationsInput | string | null
+    isPaid?: BoolFieldUpdateOperationsInput | boolean
+    paidAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -38662,6 +38744,8 @@ export namespace Prisma {
     approvedBy?: NullableStringFieldUpdateOperationsInput | string | null
     approvalDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     comments?: NullableStringFieldUpdateOperationsInput | string | null
+    isPaid?: BoolFieldUpdateOperationsInput | boolean
+    paidAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }

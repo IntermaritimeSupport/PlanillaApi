@@ -321,6 +321,8 @@ exports.Prisma.LeaveScalarFieldEnum = {
   approvedBy: 'approvedBy',
   approvalDate: 'approvalDate',
   comments: 'comments',
+  isPaid: 'isPaid',
+  paidAt: 'paidAt',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 };

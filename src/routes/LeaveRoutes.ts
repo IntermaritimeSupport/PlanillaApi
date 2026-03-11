@@ -12,5 +12,6 @@ leaveRouter.post('/leaves', (req, res) => controller.requestLeave(req, res));
 leaveRouter.patch('/leaves/:id/approve', (req, res) => controller.approveLeave(req, res));
 leaveRouter.patch('/leaves/:id/reject', (req, res) => controller.rejectLeave(req, res));
 leaveRouter.patch('/leaves/:id/cancel', (req, res) => controller.cancelLeave(req, res));
+leaveRouter.patch('/leaves/:id/pay', (req, res) => controller.markAsPaid(req, res));
 
 export default leaveRouter;
