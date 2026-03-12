@@ -438,6 +438,7 @@ enum PayrollStatus {
 
 enum DeductionType {
   SSS
+  SE
   ISR
   PRIVATE_INSURANCE
   LOAN

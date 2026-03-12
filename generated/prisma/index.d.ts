@@ -163,6 +163,7 @@ export type PayrollStatus = (typeof PayrollStatus)[keyof typeof PayrollStatus]
 
 export const DeductionType: {
   SSS: 'SSS',
+  SE: 'SE',
   ISR: 'ISR',
   PRIVATE_INSURANCE: 'PRIVATE_INSURANCE',
   LOAN: 'LOAN',
