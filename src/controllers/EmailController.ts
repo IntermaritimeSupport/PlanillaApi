@@ -9,6 +9,7 @@ interface PayslipData {
   otherIncome: number;
   grossSalary: number;
   sss: number;
+  se: number;
   isr: number;
   recurringAmount: number;
   otherDeductions: number;
@@ -164,11 +165,15 @@ function buildPayslipHtml(employee: EmployeePayslip): string {
                 </thead>
                 <tbody>
                   <tr>
-                    <td style="padding: 8px 12px; border-bottom: 1px solid #e5e7eb;">Seguro Social (9.75%)</td>
+                    <td style="padding: 8px 12px; border-bottom: 1px solid #e5e7eb;">Seguro Social Empleado (9.75%)</td>
                     <td style="padding: 8px 12px; border-bottom: 1px solid #e5e7eb; text-align: right; color: #dc2626;">${formatCurrency(d.sss)}</td>
                   </tr>
                   <tr style="background-color: #f9fafb;">
-                    <td style="padding: 8px 12px; border-bottom: 1px solid #e5e7eb;">ISR (Impuesto Sobre la Renta)</td>
+                    <td style="padding: 8px 12px; border-bottom: 1px solid #e5e7eb;">Seguro Educativo (1.25%)</td>
+                    <td style="padding: 8px 12px; border-bottom: 1px solid #e5e7eb; text-align: right; color: #dc2626;">${formatCurrency(d.se ?? 0)}</td>
+                  </tr>
+                  <tr>
+                    <td style="padding: 8px 12px; border-bottom: 1px solid #e5e7eb;">ISR (Impuesto sobre la Renta)</td>
                     <td style="padding: 8px 12px; border-bottom: 1px solid #e5e7eb; text-align: right; color: #dc2626;">${formatCurrency(d.isr)}</td>
                   </tr>
                   <tr>
