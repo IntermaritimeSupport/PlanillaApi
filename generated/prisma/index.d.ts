@@ -144,7 +144,8 @@ export const EmployeeStatus: {
   ACTIVE: 'ACTIVE',
   INACTIVE: 'INACTIVE',
   SUSPENDED: 'SUSPENDED',
-  TERMINATED: 'TERMINATED'
+  TERMINATED: 'TERMINATED',
+  MATERNITY_LEAVE: 'MATERNITY_LEAVE'
 };
 
 export type EmployeeStatus = (typeof EmployeeStatus)[keyof typeof EmployeeStatus]
@@ -10020,6 +10021,9 @@ export namespace Prisma {
     status: $Enums.EmployeeStatus | null
     bankAccount: string | null
     bankName: string | null
+    maternityStartDate: Date | null
+    maternityEndDate: Date | null
+    inactivityReason: string | null
     userId: string | null
     companyId: string | null
     createdAt: Date | null
@@ -10041,6 +10045,9 @@ export namespace Prisma {
     status: $Enums.EmployeeStatus | null
     bankAccount: string | null
     bankName: string | null
+    maternityStartDate: Date | null
+    maternityEndDate: Date | null
+    inactivityReason: string | null
     userId: string | null
     companyId: string | null
     createdAt: Date | null
@@ -10062,6 +10069,9 @@ export namespace Prisma {
     status: number
     bankAccount: number
     bankName: number
+    maternityStartDate: number
+    maternityEndDate: number
+    inactivityReason: number
     userId: number
     companyId: number
     createdAt: number
@@ -10093,6 +10103,9 @@ export namespace Prisma {
     status?: true
     bankAccount?: true
     bankName?: true
+    maternityStartDate?: true
+    maternityEndDate?: true
+    inactivityReason?: true
     userId?: true
     companyId?: true
     createdAt?: true
@@ -10114,6 +10127,9 @@ export namespace Prisma {
     status?: true
     bankAccount?: true
     bankName?: true
+    maternityStartDate?: true
+    maternityEndDate?: true
+    inactivityReason?: true
     userId?: true
     companyId?: true
     createdAt?: true
@@ -10135,6 +10151,9 @@ export namespace Prisma {
     status?: true
     bankAccount?: true
     bankName?: true
+    maternityStartDate?: true
+    maternityEndDate?: true
+    inactivityReason?: true
     userId?: true
     companyId?: true
     createdAt?: true
@@ -10243,6 +10262,9 @@ export namespace Prisma {
     status: $Enums.EmployeeStatus
     bankAccount: string | null
     bankName: string | null
+    maternityStartDate: Date | null
+    maternityEndDate: Date | null
+    inactivityReason: string | null
     userId: string | null
     companyId: string
     createdAt: Date
@@ -10283,6 +10305,9 @@ export namespace Prisma {
     status?: boolean
     bankAccount?: boolean
     bankName?: boolean
+    maternityStartDate?: boolean
+    maternityEndDate?: boolean
+    inactivityReason?: boolean
     userId?: boolean
     companyId?: boolean
     createdAt?: boolean
@@ -10314,6 +10339,9 @@ export namespace Prisma {
     status?: boolean
     bankAccount?: boolean
     bankName?: boolean
+    maternityStartDate?: boolean
+    maternityEndDate?: boolean
+    inactivityReason?: boolean
     userId?: boolean
     companyId?: boolean
     createdAt?: boolean
@@ -10337,6 +10365,9 @@ export namespace Prisma {
     status?: boolean
     bankAccount?: boolean
     bankName?: boolean
+    maternityStartDate?: boolean
+    maternityEndDate?: boolean
+    inactivityReason?: boolean
     userId?: boolean
     companyId?: boolean
     createdAt?: boolean
@@ -10360,13 +10391,16 @@ export namespace Prisma {
     status?: boolean
     bankAccount?: boolean
     bankName?: boolean
+    maternityStartDate?: boolean
+    maternityEndDate?: boolean
+    inactivityReason?: boolean
     userId?: boolean
     companyId?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }
 
-  export type EmployeeOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "cedula" | "firstName" | "lastName" | "email" | "phoneNumber" | "position" | "department" | "hireDate" | "salary" | "salaryType" | "status" | "bankAccount" | "bankName" | "userId" | "companyId" | "createdAt" | "updatedAt", ExtArgs["result"]["employee"]>
+  export type EmployeeOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "cedula" | "firstName" | "lastName" | "email" | "phoneNumber" | "position" | "department" | "hireDate" | "salary" | "salaryType" | "status" | "bankAccount" | "bankName" | "maternityStartDate" | "maternityEndDate" | "inactivityReason" | "userId" | "companyId" | "createdAt" | "updatedAt", ExtArgs["result"]["employee"]>
   export type EmployeeInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     user?: boolean | Employee$userArgs<ExtArgs>
     company?: boolean | CompanyDefaultArgs<ExtArgs>
@@ -10416,6 +10450,9 @@ export namespace Prisma {
       status: $Enums.EmployeeStatus
       bankAccount: string | null
       bankName: string | null
+      maternityStartDate: Date | null
+      maternityEndDate: Date | null
+      inactivityReason: string | null
       userId: string | null
       companyId: string
       createdAt: Date
@@ -10866,6 +10903,9 @@ export namespace Prisma {
     readonly status: FieldRef<"Employee", 'EmployeeStatus'>
     readonly bankAccount: FieldRef<"Employee", 'String'>
     readonly bankName: FieldRef<"Employee", 'String'>
+    readonly maternityStartDate: FieldRef<"Employee", 'DateTime'>
+    readonly maternityEndDate: FieldRef<"Employee", 'DateTime'>
+    readonly inactivityReason: FieldRef<"Employee", 'String'>
     readonly userId: FieldRef<"Employee", 'String'>
     readonly companyId: FieldRef<"Employee", 'String'>
     readonly createdAt: FieldRef<"Employee", 'DateTime'>
@@ -25052,6 +25092,9 @@ export namespace Prisma {
     status: 'status',
     bankAccount: 'bankAccount',
     bankName: 'bankName',
+    maternityStartDate: 'maternityStartDate',
+    maternityEndDate: 'maternityEndDate',
+    inactivityReason: 'inactivityReason',
     userId: 'userId',
     companyId: 'companyId',
     createdAt: 'createdAt',
@@ -26108,6 +26151,9 @@ export namespace Prisma {
     status?: EnumEmployeeStatusFilter<"Employee"> | $Enums.EmployeeStatus
     bankAccount?: StringNullableFilter<"Employee"> | string | null
     bankName?: StringNullableFilter<"Employee"> | string | null
+    maternityStartDate?: DateTimeNullableFilter<"Employee"> | Date | string | null
+    maternityEndDate?: DateTimeNullableFilter<"Employee"> | Date | string | null
+    inactivityReason?: StringNullableFilter<"Employee"> | string | null
     userId?: StringNullableFilter<"Employee"> | string | null
     companyId?: StringFilter<"Employee"> | string
     createdAt?: DateTimeFilter<"Employee"> | Date | string
@@ -26138,6 +26184,9 @@ export namespace Prisma {
     status?: SortOrder
     bankAccount?: SortOrderInput | SortOrder
     bankName?: SortOrderInput | SortOrder
+    maternityStartDate?: SortOrderInput | SortOrder
+    maternityEndDate?: SortOrderInput | SortOrder
+    inactivityReason?: SortOrderInput | SortOrder
     userId?: SortOrderInput | SortOrder
     companyId?: SortOrder
     createdAt?: SortOrder
@@ -26172,6 +26221,9 @@ export namespace Prisma {
     status?: EnumEmployeeStatusFilter<"Employee"> | $Enums.EmployeeStatus
     bankAccount?: StringNullableFilter<"Employee"> | string | null
     bankName?: StringNullableFilter<"Employee"> | string | null
+    maternityStartDate?: DateTimeNullableFilter<"Employee"> | Date | string | null
+    maternityEndDate?: DateTimeNullableFilter<"Employee"> | Date | string | null
+    inactivityReason?: StringNullableFilter<"Employee"> | string | null
     companyId?: StringFilter<"Employee"> | string
     createdAt?: DateTimeFilter<"Employee"> | Date | string
     updatedAt?: DateTimeFilter<"Employee"> | Date | string
@@ -26201,6 +26253,9 @@ export namespace Prisma {
     status?: SortOrder
     bankAccount?: SortOrderInput | SortOrder
     bankName?: SortOrderInput | SortOrder
+    maternityStartDate?: SortOrderInput | SortOrder
+    maternityEndDate?: SortOrderInput | SortOrder
+    inactivityReason?: SortOrderInput | SortOrder
     userId?: SortOrderInput | SortOrder
     companyId?: SortOrder
     createdAt?: SortOrder
@@ -26230,6 +26285,9 @@ export namespace Prisma {
     status?: EnumEmployeeStatusWithAggregatesFilter<"Employee"> | $Enums.EmployeeStatus
     bankAccount?: StringNullableWithAggregatesFilter<"Employee"> | string | null
     bankName?: StringNullableWithAggregatesFilter<"Employee"> | string | null
+    maternityStartDate?: DateTimeNullableWithAggregatesFilter<"Employee"> | Date | string | null
+    maternityEndDate?: DateTimeNullableWithAggregatesFilter<"Employee"> | Date | string | null
+    inactivityReason?: StringNullableWithAggregatesFilter<"Employee"> | string | null
     userId?: StringNullableWithAggregatesFilter<"Employee"> | string | null
     companyId?: StringWithAggregatesFilter<"Employee"> | string
     createdAt?: DateTimeWithAggregatesFilter<"Employee"> | Date | string
@@ -27884,6 +27942,9 @@ export namespace Prisma {
     status?: $Enums.EmployeeStatus
     bankAccount?: string | null
     bankName?: string | null
+    maternityStartDate?: Date | string | null
+    maternityEndDate?: Date | string | null
+    inactivityReason?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     user?: UserCreateNestedOneWithoutEmployeeInput
@@ -27912,6 +27973,9 @@ export namespace Prisma {
     status?: $Enums.EmployeeStatus
     bankAccount?: string | null
     bankName?: string | null
+    maternityStartDate?: Date | string | null
+    maternityEndDate?: Date | string | null
+    inactivityReason?: string | null
     userId?: string | null
     companyId: string
     createdAt?: Date | string
@@ -27940,6 +28004,9 @@ export namespace Prisma {
     status?: EnumEmployeeStatusFieldUpdateOperationsInput | $Enums.EmployeeStatus
     bankAccount?: NullableStringFieldUpdateOperationsInput | string | null
     bankName?: NullableStringFieldUpdateOperationsInput | string | null
+    maternityStartDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    maternityEndDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    inactivityReason?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     user?: UserUpdateOneWithoutEmployeeNestedInput
@@ -27968,6 +28035,9 @@ export namespace Prisma {
     status?: EnumEmployeeStatusFieldUpdateOperationsInput | $Enums.EmployeeStatus
     bankAccount?: NullableStringFieldUpdateOperationsInput | string | null
     bankName?: NullableStringFieldUpdateOperationsInput | string | null
+    maternityStartDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    maternityEndDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    inactivityReason?: NullableStringFieldUpdateOperationsInput | string | null
     userId?: NullableStringFieldUpdateOperationsInput | string | null
     companyId?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -27996,6 +28066,9 @@ export namespace Prisma {
     status?: $Enums.EmployeeStatus
     bankAccount?: string | null
     bankName?: string | null
+    maternityStartDate?: Date | string | null
+    maternityEndDate?: Date | string | null
+    inactivityReason?: string | null
     userId?: string | null
     companyId: string
     createdAt?: Date | string
@@ -28017,6 +28090,9 @@ export namespace Prisma {
     status?: EnumEmployeeStatusFieldUpdateOperationsInput | $Enums.EmployeeStatus
     bankAccount?: NullableStringFieldUpdateOperationsInput | string | null
     bankName?: NullableStringFieldUpdateOperationsInput | string | null
+    maternityStartDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    maternityEndDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    inactivityReason?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -28036,6 +28112,9 @@ export namespace Prisma {
     status?: EnumEmployeeStatusFieldUpdateOperationsInput | $Enums.EmployeeStatus
     bankAccount?: NullableStringFieldUpdateOperationsInput | string | null
     bankName?: NullableStringFieldUpdateOperationsInput | string | null
+    maternityStartDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    maternityEndDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    inactivityReason?: NullableStringFieldUpdateOperationsInput | string | null
     userId?: NullableStringFieldUpdateOperationsInput | string | null
     companyId?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -29807,6 +29886,17 @@ export namespace Prisma {
     not?: NestedEnumEmployeeStatusFilter<$PrismaModel> | $Enums.EmployeeStatus
   }
 
+  export type DateTimeNullableFilter<$PrismaModel = never> = {
+    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
+    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    not?: NestedDateTimeNullableFilter<$PrismaModel> | Date | string | null
+  }
+
   export type DeductionListRelationFilter = {
     every?: DeductionWhereInput
     some?: DeductionWhereInput
@@ -29862,6 +29952,9 @@ export namespace Prisma {
     status?: SortOrder
     bankAccount?: SortOrder
     bankName?: SortOrder
+    maternityStartDate?: SortOrder
+    maternityEndDate?: SortOrder
+    inactivityReason?: SortOrder
     userId?: SortOrder
     companyId?: SortOrder
     createdAt?: SortOrder
@@ -29887,6 +29980,9 @@ export namespace Prisma {
     status?: SortOrder
     bankAccount?: SortOrder
     bankName?: SortOrder
+    maternityStartDate?: SortOrder
+    maternityEndDate?: SortOrder
+    inactivityReason?: SortOrder
     userId?: SortOrder
     companyId?: SortOrder
     createdAt?: SortOrder
@@ -29908,6 +30004,9 @@ export namespace Prisma {
     status?: SortOrder
     bankAccount?: SortOrder
     bankName?: SortOrder
+    maternityStartDate?: SortOrder
+    maternityEndDate?: SortOrder
+    inactivityReason?: SortOrder
     userId?: SortOrder
     companyId?: SortOrder
     createdAt?: SortOrder
@@ -29954,14 +30053,7 @@ export namespace Prisma {
     _max?: NestedEnumEmployeeStatusFilter<$PrismaModel>
   }
 
-  export type EnumDeductionFrequencyFilter<$PrismaModel = never> = {
-    equals?: $Enums.DeductionFrequency | EnumDeductionFrequencyFieldRefInput<$PrismaModel>
-    in?: $Enums.DeductionFrequency[] | ListEnumDeductionFrequencyFieldRefInput<$PrismaModel>
-    notIn?: $Enums.DeductionFrequency[] | ListEnumDeductionFrequencyFieldRefInput<$PrismaModel>
-    not?: NestedEnumDeductionFrequencyFilter<$PrismaModel> | $Enums.DeductionFrequency
-  }
-
-  export type DateTimeNullableFilter<$PrismaModel = never> = {
+  export type DateTimeNullableWithAggregatesFilter<$PrismaModel = never> = {
     equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
     in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
     notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
@@ -29969,7 +30061,17 @@ export namespace Prisma {
     lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
     gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
     gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    not?: NestedDateTimeNullableFilter<$PrismaModel> | Date | string | null
+    not?: NestedDateTimeNullableWithAggregatesFilter<$PrismaModel> | Date | string | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedDateTimeNullableFilter<$PrismaModel>
+    _max?: NestedDateTimeNullableFilter<$PrismaModel>
+  }
+
+  export type EnumDeductionFrequencyFilter<$PrismaModel = never> = {
+    equals?: $Enums.DeductionFrequency | EnumDeductionFrequencyFieldRefInput<$PrismaModel>
+    in?: $Enums.DeductionFrequency[] | ListEnumDeductionFrequencyFieldRefInput<$PrismaModel>
+    notIn?: $Enums.DeductionFrequency[] | ListEnumDeductionFrequencyFieldRefInput<$PrismaModel>
+    not?: NestedEnumDeductionFrequencyFilter<$PrismaModel> | $Enums.DeductionFrequency
   }
 
   export type DecimalNullableFilter<$PrismaModel = never> = {
@@ -30056,20 +30158,6 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedEnumDeductionFrequencyFilter<$PrismaModel>
     _max?: NestedEnumDeductionFrequencyFilter<$PrismaModel>
-  }
-
-  export type DateTimeNullableWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
-    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
-    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
-    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    not?: NestedDateTimeNullableWithAggregatesFilter<$PrismaModel> | Date | string | null
-    _count?: NestedIntNullableFilter<$PrismaModel>
-    _min?: NestedDateTimeNullableFilter<$PrismaModel>
-    _max?: NestedDateTimeNullableFilter<$PrismaModel>
   }
 
   export type DecimalNullableWithAggregatesFilter<$PrismaModel = never> = {
@@ -31867,6 +31955,10 @@ export namespace Prisma {
     set?: $Enums.EmployeeStatus
   }
 
+  export type NullableDateTimeFieldUpdateOperationsInput = {
+    set?: Date | string | null
+  }
+
   export type UserUpdateOneWithoutEmployeeNestedInput = {
     create?: XOR<UserCreateWithoutEmployeeInput, UserUncheckedCreateWithoutEmployeeInput>
     connectOrCreate?: UserCreateOrConnectWithoutEmployeeInput
@@ -32089,10 +32181,6 @@ export namespace Prisma {
 
   export type EnumDeductionFrequencyFieldUpdateOperationsInput = {
     set?: $Enums.DeductionFrequency
-  }
-
-  export type NullableDateTimeFieldUpdateOperationsInput = {
-    set?: Date | string | null
   }
 
   export type NullableDecimalFieldUpdateOperationsInput = {
@@ -32720,6 +32808,17 @@ export namespace Prisma {
     not?: NestedEnumEmployeeStatusFilter<$PrismaModel> | $Enums.EmployeeStatus
   }
 
+  export type NestedDateTimeNullableFilter<$PrismaModel = never> = {
+    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
+    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    not?: NestedDateTimeNullableFilter<$PrismaModel> | Date | string | null
+  }
+
   export type NestedDecimalWithAggregatesFilter<$PrismaModel = never> = {
     equals?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
     in?: Decimal[] | DecimalJsLike[] | number[] | string[] | ListDecimalFieldRefInput<$PrismaModel>
@@ -32756,14 +32855,7 @@ export namespace Prisma {
     _max?: NestedEnumEmployeeStatusFilter<$PrismaModel>
   }
 
-  export type NestedEnumDeductionFrequencyFilter<$PrismaModel = never> = {
-    equals?: $Enums.DeductionFrequency | EnumDeductionFrequencyFieldRefInput<$PrismaModel>
-    in?: $Enums.DeductionFrequency[] | ListEnumDeductionFrequencyFieldRefInput<$PrismaModel>
-    notIn?: $Enums.DeductionFrequency[] | ListEnumDeductionFrequencyFieldRefInput<$PrismaModel>
-    not?: NestedEnumDeductionFrequencyFilter<$PrismaModel> | $Enums.DeductionFrequency
-  }
-
-  export type NestedDateTimeNullableFilter<$PrismaModel = never> = {
+  export type NestedDateTimeNullableWithAggregatesFilter<$PrismaModel = never> = {
     equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
     in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
     notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
@@ -32771,7 +32863,17 @@ export namespace Prisma {
     lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
     gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
     gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    not?: NestedDateTimeNullableFilter<$PrismaModel> | Date | string | null
+    not?: NestedDateTimeNullableWithAggregatesFilter<$PrismaModel> | Date | string | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedDateTimeNullableFilter<$PrismaModel>
+    _max?: NestedDateTimeNullableFilter<$PrismaModel>
+  }
+
+  export type NestedEnumDeductionFrequencyFilter<$PrismaModel = never> = {
+    equals?: $Enums.DeductionFrequency | EnumDeductionFrequencyFieldRefInput<$PrismaModel>
+    in?: $Enums.DeductionFrequency[] | ListEnumDeductionFrequencyFieldRefInput<$PrismaModel>
+    notIn?: $Enums.DeductionFrequency[] | ListEnumDeductionFrequencyFieldRefInput<$PrismaModel>
+    not?: NestedEnumDeductionFrequencyFilter<$PrismaModel> | $Enums.DeductionFrequency
   }
 
   export type NestedDecimalNullableFilter<$PrismaModel = never> = {
@@ -32793,20 +32895,6 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedEnumDeductionFrequencyFilter<$PrismaModel>
     _max?: NestedEnumDeductionFrequencyFilter<$PrismaModel>
-  }
-
-  export type NestedDateTimeNullableWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
-    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
-    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
-    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    not?: NestedDateTimeNullableWithAggregatesFilter<$PrismaModel> | Date | string | null
-    _count?: NestedIntNullableFilter<$PrismaModel>
-    _min?: NestedDateTimeNullableFilter<$PrismaModel>
-    _max?: NestedDateTimeNullableFilter<$PrismaModel>
   }
 
   export type NestedDecimalNullableWithAggregatesFilter<$PrismaModel = never> = {
@@ -33227,6 +33315,9 @@ export namespace Prisma {
     status?: $Enums.EmployeeStatus
     bankAccount?: string | null
     bankName?: string | null
+    maternityStartDate?: Date | string | null
+    maternityEndDate?: Date | string | null
+    inactivityReason?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     company: CompanyCreateNestedOneWithoutEmployeesInput
@@ -33254,6 +33345,9 @@ export namespace Prisma {
     status?: $Enums.EmployeeStatus
     bankAccount?: string | null
     bankName?: string | null
+    maternityStartDate?: Date | string | null
+    maternityEndDate?: Date | string | null
+    inactivityReason?: string | null
     companyId: string
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -33398,6 +33492,9 @@ export namespace Prisma {
     status?: EnumEmployeeStatusFieldUpdateOperationsInput | $Enums.EmployeeStatus
     bankAccount?: NullableStringFieldUpdateOperationsInput | string | null
     bankName?: NullableStringFieldUpdateOperationsInput | string | null
+    maternityStartDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    maternityEndDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    inactivityReason?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     company?: CompanyUpdateOneRequiredWithoutEmployeesNestedInput
@@ -33425,6 +33522,9 @@ export namespace Prisma {
     status?: EnumEmployeeStatusFieldUpdateOperationsInput | $Enums.EmployeeStatus
     bankAccount?: NullableStringFieldUpdateOperationsInput | string | null
     bankName?: NullableStringFieldUpdateOperationsInput | string | null
+    maternityStartDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    maternityEndDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    inactivityReason?: NullableStringFieldUpdateOperationsInput | string | null
     companyId?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -33929,6 +34029,9 @@ export namespace Prisma {
     status?: $Enums.EmployeeStatus
     bankAccount?: string | null
     bankName?: string | null
+    maternityStartDate?: Date | string | null
+    maternityEndDate?: Date | string | null
+    inactivityReason?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     user?: UserCreateNestedOneWithoutEmployeeInput
@@ -33956,6 +34059,9 @@ export namespace Prisma {
     status?: $Enums.EmployeeStatus
     bankAccount?: string | null
     bankName?: string | null
+    maternityStartDate?: Date | string | null
+    maternityEndDate?: Date | string | null
+    inactivityReason?: string | null
     userId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -34394,6 +34500,9 @@ export namespace Prisma {
     status?: EnumEmployeeStatusFilter<"Employee"> | $Enums.EmployeeStatus
     bankAccount?: StringNullableFilter<"Employee"> | string | null
     bankName?: StringNullableFilter<"Employee"> | string | null
+    maternityStartDate?: DateTimeNullableFilter<"Employee"> | Date | string | null
+    maternityEndDate?: DateTimeNullableFilter<"Employee"> | Date | string | null
+    inactivityReason?: StringNullableFilter<"Employee"> | string | null
     userId?: StringNullableFilter<"Employee"> | string | null
     companyId?: StringFilter<"Employee"> | string
     createdAt?: DateTimeFilter<"Employee"> | Date | string
@@ -35446,6 +35555,9 @@ export namespace Prisma {
     status?: $Enums.EmployeeStatus
     bankAccount?: string | null
     bankName?: string | null
+    maternityStartDate?: Date | string | null
+    maternityEndDate?: Date | string | null
+    inactivityReason?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     user?: UserCreateNestedOneWithoutEmployeeInput
@@ -35473,6 +35585,9 @@ export namespace Prisma {
     status?: $Enums.EmployeeStatus
     bankAccount?: string | null
     bankName?: string | null
+    maternityStartDate?: Date | string | null
+    maternityEndDate?: Date | string | null
+    inactivityReason?: string | null
     userId?: string | null
     companyId: string
     createdAt?: Date | string
@@ -35516,6 +35631,9 @@ export namespace Prisma {
     status?: EnumEmployeeStatusFieldUpdateOperationsInput | $Enums.EmployeeStatus
     bankAccount?: NullableStringFieldUpdateOperationsInput | string | null
     bankName?: NullableStringFieldUpdateOperationsInput | string | null
+    maternityStartDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    maternityEndDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    inactivityReason?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     user?: UserUpdateOneWithoutEmployeeNestedInput
@@ -35543,6 +35661,9 @@ export namespace Prisma {
     status?: EnumEmployeeStatusFieldUpdateOperationsInput | $Enums.EmployeeStatus
     bankAccount?: NullableStringFieldUpdateOperationsInput | string | null
     bankName?: NullableStringFieldUpdateOperationsInput | string | null
+    maternityStartDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    maternityEndDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    inactivityReason?: NullableStringFieldUpdateOperationsInput | string | null
     userId?: NullableStringFieldUpdateOperationsInput | string | null
     companyId?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -35803,6 +35924,9 @@ export namespace Prisma {
     status?: $Enums.EmployeeStatus
     bankAccount?: string | null
     bankName?: string | null
+    maternityStartDate?: Date | string | null
+    maternityEndDate?: Date | string | null
+    inactivityReason?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     user?: UserCreateNestedOneWithoutEmployeeInput
@@ -35830,6 +35954,9 @@ export namespace Prisma {
     status?: $Enums.EmployeeStatus
     bankAccount?: string | null
     bankName?: string | null
+    maternityStartDate?: Date | string | null
+    maternityEndDate?: Date | string | null
+    inactivityReason?: string | null
     userId?: string | null
     companyId: string
     createdAt?: Date | string
@@ -36031,6 +36158,9 @@ export namespace Prisma {
     status?: EnumEmployeeStatusFieldUpdateOperationsInput | $Enums.EmployeeStatus
     bankAccount?: NullableStringFieldUpdateOperationsInput | string | null
     bankName?: NullableStringFieldUpdateOperationsInput | string | null
+    maternityStartDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    maternityEndDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    inactivityReason?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     user?: UserUpdateOneWithoutEmployeeNestedInput
@@ -36058,6 +36188,9 @@ export namespace Prisma {
     status?: EnumEmployeeStatusFieldUpdateOperationsInput | $Enums.EmployeeStatus
     bankAccount?: NullableStringFieldUpdateOperationsInput | string | null
     bankName?: NullableStringFieldUpdateOperationsInput | string | null
+    maternityStartDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    maternityEndDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    inactivityReason?: NullableStringFieldUpdateOperationsInput | string | null
     userId?: NullableStringFieldUpdateOperationsInput | string | null
     companyId?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -36241,6 +36374,9 @@ export namespace Prisma {
     status?: $Enums.EmployeeStatus
     bankAccount?: string | null
     bankName?: string | null
+    maternityStartDate?: Date | string | null
+    maternityEndDate?: Date | string | null
+    inactivityReason?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     user?: UserCreateNestedOneWithoutEmployeeInput
@@ -36268,6 +36404,9 @@ export namespace Prisma {
     status?: $Enums.EmployeeStatus
     bankAccount?: string | null
     bankName?: string | null
+    maternityStartDate?: Date | string | null
+    maternityEndDate?: Date | string | null
+    inactivityReason?: string | null
     userId?: string | null
     companyId: string
     createdAt?: Date | string
@@ -36382,6 +36521,9 @@ export namespace Prisma {
     status?: EnumEmployeeStatusFieldUpdateOperationsInput | $Enums.EmployeeStatus
     bankAccount?: NullableStringFieldUpdateOperationsInput | string | null
     bankName?: NullableStringFieldUpdateOperationsInput | string | null
+    maternityStartDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    maternityEndDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    inactivityReason?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     user?: UserUpdateOneWithoutEmployeeNestedInput
@@ -36409,6 +36551,9 @@ export namespace Prisma {
     status?: EnumEmployeeStatusFieldUpdateOperationsInput | $Enums.EmployeeStatus
     bankAccount?: NullableStringFieldUpdateOperationsInput | string | null
     bankName?: NullableStringFieldUpdateOperationsInput | string | null
+    maternityStartDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    maternityEndDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    inactivityReason?: NullableStringFieldUpdateOperationsInput | string | null
     userId?: NullableStringFieldUpdateOperationsInput | string | null
     companyId?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -36501,6 +36646,9 @@ export namespace Prisma {
     status?: $Enums.EmployeeStatus
     bankAccount?: string | null
     bankName?: string | null
+    maternityStartDate?: Date | string | null
+    maternityEndDate?: Date | string | null
+    inactivityReason?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     user?: UserCreateNestedOneWithoutEmployeeInput
@@ -36528,6 +36676,9 @@ export namespace Prisma {
     status?: $Enums.EmployeeStatus
     bankAccount?: string | null
     bankName?: string | null
+    maternityStartDate?: Date | string | null
+    maternityEndDate?: Date | string | null
+    inactivityReason?: string | null
     userId?: string | null
     companyId: string
     createdAt?: Date | string
@@ -36642,6 +36793,9 @@ export namespace Prisma {
     status?: EnumEmployeeStatusFieldUpdateOperationsInput | $Enums.EmployeeStatus
     bankAccount?: NullableStringFieldUpdateOperationsInput | string | null
     bankName?: NullableStringFieldUpdateOperationsInput | string | null
+    maternityStartDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    maternityEndDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    inactivityReason?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     user?: UserUpdateOneWithoutEmployeeNestedInput
@@ -36669,6 +36823,9 @@ export namespace Prisma {
     status?: EnumEmployeeStatusFieldUpdateOperationsInput | $Enums.EmployeeStatus
     bankAccount?: NullableStringFieldUpdateOperationsInput | string | null
     bankName?: NullableStringFieldUpdateOperationsInput | string | null
+    maternityStartDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    maternityEndDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    inactivityReason?: NullableStringFieldUpdateOperationsInput | string | null
     userId?: NullableStringFieldUpdateOperationsInput | string | null
     companyId?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -36696,6 +36853,9 @@ export namespace Prisma {
     status?: $Enums.EmployeeStatus
     bankAccount?: string | null
     bankName?: string | null
+    maternityStartDate?: Date | string | null
+    maternityEndDate?: Date | string | null
+    inactivityReason?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     user?: UserCreateNestedOneWithoutEmployeeInput
@@ -36723,6 +36883,9 @@ export namespace Prisma {
     status?: $Enums.EmployeeStatus
     bankAccount?: string | null
     bankName?: string | null
+    maternityStartDate?: Date | string | null
+    maternityEndDate?: Date | string | null
+    inactivityReason?: string | null
     userId?: string | null
     companyId: string
     createdAt?: Date | string
@@ -36819,6 +36982,9 @@ export namespace Prisma {
     status?: EnumEmployeeStatusFieldUpdateOperationsInput | $Enums.EmployeeStatus
     bankAccount?: NullableStringFieldUpdateOperationsInput | string | null
     bankName?: NullableStringFieldUpdateOperationsInput | string | null
+    maternityStartDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    maternityEndDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    inactivityReason?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     user?: UserUpdateOneWithoutEmployeeNestedInput
@@ -36846,6 +37012,9 @@ export namespace Prisma {
     status?: EnumEmployeeStatusFieldUpdateOperationsInput | $Enums.EmployeeStatus
     bankAccount?: NullableStringFieldUpdateOperationsInput | string | null
     bankName?: NullableStringFieldUpdateOperationsInput | string | null
+    maternityStartDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    maternityEndDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    inactivityReason?: NullableStringFieldUpdateOperationsInput | string | null
     userId?: NullableStringFieldUpdateOperationsInput | string | null
     companyId?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -36932,6 +37101,9 @@ export namespace Prisma {
     status?: $Enums.EmployeeStatus
     bankAccount?: string | null
     bankName?: string | null
+    maternityStartDate?: Date | string | null
+    maternityEndDate?: Date | string | null
+    inactivityReason?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     user?: UserCreateNestedOneWithoutEmployeeInput
@@ -36959,6 +37131,9 @@ export namespace Prisma {
     status?: $Enums.EmployeeStatus
     bankAccount?: string | null
     bankName?: string | null
+    maternityStartDate?: Date | string | null
+    maternityEndDate?: Date | string | null
+    inactivityReason?: string | null
     userId?: string | null
     companyId: string
     createdAt?: Date | string
@@ -37055,6 +37230,9 @@ export namespace Prisma {
     status?: EnumEmployeeStatusFieldUpdateOperationsInput | $Enums.EmployeeStatus
     bankAccount?: NullableStringFieldUpdateOperationsInput | string | null
     bankName?: NullableStringFieldUpdateOperationsInput | string | null
+    maternityStartDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    maternityEndDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    inactivityReason?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     user?: UserUpdateOneWithoutEmployeeNestedInput
@@ -37082,6 +37260,9 @@ export namespace Prisma {
     status?: EnumEmployeeStatusFieldUpdateOperationsInput | $Enums.EmployeeStatus
     bankAccount?: NullableStringFieldUpdateOperationsInput | string | null
     bankName?: NullableStringFieldUpdateOperationsInput | string | null
+    maternityStartDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    maternityEndDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    inactivityReason?: NullableStringFieldUpdateOperationsInput | string | null
     userId?: NullableStringFieldUpdateOperationsInput | string | null
     companyId?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -37392,6 +37573,9 @@ export namespace Prisma {
     status?: $Enums.EmployeeStatus
     bankAccount?: string | null
     bankName?: string | null
+    maternityStartDate?: Date | string | null
+    maternityEndDate?: Date | string | null
+    inactivityReason?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     user?: UserCreateNestedOneWithoutEmployeeInput
@@ -37419,6 +37603,9 @@ export namespace Prisma {
     status?: $Enums.EmployeeStatus
     bankAccount?: string | null
     bankName?: string | null
+    maternityStartDate?: Date | string | null
+    maternityEndDate?: Date | string | null
+    inactivityReason?: string | null
     userId?: string | null
     companyId: string
     createdAt?: Date | string
@@ -37462,6 +37649,9 @@ export namespace Prisma {
     status?: EnumEmployeeStatusFieldUpdateOperationsInput | $Enums.EmployeeStatus
     bankAccount?: NullableStringFieldUpdateOperationsInput | string | null
     bankName?: NullableStringFieldUpdateOperationsInput | string | null
+    maternityStartDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    maternityEndDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    inactivityReason?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     user?: UserUpdateOneWithoutEmployeeNestedInput
@@ -37489,6 +37679,9 @@ export namespace Prisma {
     status?: EnumEmployeeStatusFieldUpdateOperationsInput | $Enums.EmployeeStatus
     bankAccount?: NullableStringFieldUpdateOperationsInput | string | null
     bankName?: NullableStringFieldUpdateOperationsInput | string | null
+    maternityStartDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    maternityEndDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    inactivityReason?: NullableStringFieldUpdateOperationsInput | string | null
     userId?: NullableStringFieldUpdateOperationsInput | string | null
     companyId?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -37765,6 +37958,9 @@ export namespace Prisma {
     status?: $Enums.EmployeeStatus
     bankAccount?: string | null
     bankName?: string | null
+    maternityStartDate?: Date | string | null
+    maternityEndDate?: Date | string | null
+    inactivityReason?: string | null
     userId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -38007,6 +38203,9 @@ export namespace Prisma {
     status?: EnumEmployeeStatusFieldUpdateOperationsInput | $Enums.EmployeeStatus
     bankAccount?: NullableStringFieldUpdateOperationsInput | string | null
     bankName?: NullableStringFieldUpdateOperationsInput | string | null
+    maternityStartDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    maternityEndDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    inactivityReason?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     user?: UserUpdateOneWithoutEmployeeNestedInput
@@ -38034,6 +38233,9 @@ export namespace Prisma {
     status?: EnumEmployeeStatusFieldUpdateOperationsInput | $Enums.EmployeeStatus
     bankAccount?: NullableStringFieldUpdateOperationsInput | string | null
     bankName?: NullableStringFieldUpdateOperationsInput | string | null
+    maternityStartDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    maternityEndDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    inactivityReason?: NullableStringFieldUpdateOperationsInput | string | null
     userId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -38061,6 +38263,9 @@ export namespace Prisma {
     status?: EnumEmployeeStatusFieldUpdateOperationsInput | $Enums.EmployeeStatus
     bankAccount?: NullableStringFieldUpdateOperationsInput | string | null
     bankName?: NullableStringFieldUpdateOperationsInput | string | null
+    maternityStartDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    maternityEndDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    inactivityReason?: NullableStringFieldUpdateOperationsInput | string | null
     userId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string

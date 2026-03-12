@@ -123,6 +123,11 @@ model Employee {
   bankAccount String?
   bankName    String?
 
+  // Licencia de Maternidad
+  maternityStartDate DateTime?
+  maternityEndDate   DateTime?
+  inactivityReason   String?
+
   userId String? @unique
   user   User?   @relation("EmployeeUser", fields: [userId], references: [id], onDelete: SetNull)
 
@@ -425,6 +430,7 @@ enum EmployeeStatus {
   INACTIVE
   SUSPENDED
   TERMINATED
+  MATERNITY_LEAVE
 }
 
 enum PayrollStatus {

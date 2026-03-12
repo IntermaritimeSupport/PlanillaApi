@@ -374,12 +374,17 @@ export class EmployeeController {
   async updateStatus(req: Request, res: Response) {
     try {
       const { id } = req.params;
-      const { status } = req.body;
+      const { status, maternityStartDate, maternityEndDate, inactivityReason } = req.body;
 
-      if (!status || !['ACTIVE', 'INACTIVE', 'SUSPENDED', 'TERMINATED'].includes(status)) {
+      const VALID_STATUSES = ['ACTIVE', 'INACTIVE', 'SUSPENDED', 'TERMINATED', 'MATERNITY_LEAVE'];
+      if (!status || !VALID_STATUSES.includes(status)) {
         return res.status(400).json({
-          error: 'Estado inválido. Debe ser: ACTIVE, INACTIVE, SUSPENDED o TERMINATED',
+          error: 'Estado inválido. Debe ser: ACTIVE, INACTIVE, SUSPENDED, TERMINATED o MATERNITY_LEAVE',
         });
+      }
+
+      if (status === 'MATERNITY_LEAVE' && !maternityStartDate) {
+        return res.status(400).json({ error: 'Fecha de inicio de maternidad es obligatoria.' });
       }
 
       const employee = await prisma.employee.findUnique({
@@ -390,9 +395,20 @@ export class EmployeeController {
         return res.status(404).json({ error: 'Empleado no encontrado.' });
       }
 
+      const updateData: any = { status, inactivityReason: inactivityReason || null };
+      if (status === 'MATERNITY_LEAVE') {
+        updateData.maternityStartDate = maternityStartDate ? new Date(maternityStartDate) : null;
+        updateData.maternityEndDate = maternityEndDate ? new Date(maternityEndDate) : null;
+      } else if (status === 'ACTIVE') {
+        // Al reactivar, limpiar datos de maternidad
+        updateData.maternityStartDate = null;
+        updateData.maternityEndDate = null;
+        updateData.inactivityReason = null;
+      }
+
       const updated = await prisma.employee.update({
         where: { id },
-        data: { status },
+        data: updateData,
         include: {
           user: {
             select: {
@@ -449,6 +465,7 @@ export class EmployeeController {
         inactiveEmployees: employees.filter((e) => e.status === 'INACTIVE').length,
         suspendedEmployees: employees.filter((e) => e.status === 'SUSPENDED').length,
         terminatedEmployees: employees.filter((e) => e.status === 'TERMINATED').length,
+        maternityLeaveEmployees: employees.filter((e) => e.status === 'MATERNITY_LEAVE').length,
         totalSalary,
         averageSalary,
         employees,

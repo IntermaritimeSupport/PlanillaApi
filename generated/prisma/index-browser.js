@@ -203,6 +203,9 @@ exports.Prisma.EmployeeScalarFieldEnum = {
   status: 'status',
   bankAccount: 'bankAccount',
   bankName: 'bankName',
+  maternityStartDate: 'maternityStartDate',
+  maternityEndDate: 'maternityEndDate',
+  inactivityReason: 'inactivityReason',
   userId: 'userId',
   companyId: 'companyId',
   createdAt: 'createdAt',
@@ -422,7 +425,8 @@ exports.EmployeeStatus = exports.$Enums.EmployeeStatus = {
   ACTIVE: 'ACTIVE',
   INACTIVE: 'INACTIVE',
   SUSPENDED: 'SUSPENDED',
-  TERMINATED: 'TERMINATED'
+  TERMINATED: 'TERMINATED',
+  MATERNITY_LEAVE: 'MATERNITY_LEAVE'
 };
 
 exports.DeductionFrequency = exports.$Enums.DeductionFrequency = {
