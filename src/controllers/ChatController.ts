@@ -194,7 +194,14 @@ export class ChatController {
       })
 
       const text = completion.choices[0]?.message?.content ?? ''
-      res.json({ message: text })
+      res.json({
+        message: text,
+        usage: {
+          prompt_tokens: completion.usage?.prompt_tokens ?? 0,
+          completion_tokens: completion.usage?.completion_tokens ?? 0,
+          total_tokens: completion.usage?.total_tokens ?? 0,
+        },
+      })
     } catch (error: unknown) {
       const msg = error instanceof Error ? error.message : String(error)
       console.error('[ChatController] Error:', msg)
