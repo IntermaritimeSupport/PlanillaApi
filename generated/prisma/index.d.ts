@@ -84,6 +84,11 @@ export type AttendanceRecord = $Result.DefaultSelection<Prisma.$AttendanceRecord
  */
 export type Leave = $Result.DefaultSelection<Prisma.$LeavePayload>
 /**
+ * Model Liquidacion
+ * 
+ */
+export type Liquidacion = $Result.DefaultSelection<Prisma.$LiquidacionPayload>
+/**
  * Model LegalParameter
  * 
  */
@@ -619,6 +624,16 @@ export class PrismaClient<
   get leave(): Prisma.LeaveDelegate<ExtArgs, ClientOptions>;
 
   /**
+   * `prisma.liquidacion`: Exposes CRUD operations for the **Liquidacion** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more Liquidacions
+    * const liquidacions = await prisma.liquidacion.findMany()
+    * ```
+    */
+  get liquidacion(): Prisma.LiquidacionDelegate<ExtArgs, ClientOptions>;
+
+  /**
    * `prisma.legalParameter`: Exposes CRUD operations for the **LegalParameter** model.
     * Example usage:
     * ```ts
@@ -1112,6 +1127,7 @@ export namespace Prisma {
     Allowance: 'Allowance',
     AttendanceRecord: 'AttendanceRecord',
     Leave: 'Leave',
+    Liquidacion: 'Liquidacion',
     LegalParameter: 'LegalParameter',
     LegalDecimoParameter: 'LegalDecimoParameter',
     SalaryHistory: 'SalaryHistory',
@@ -1134,7 +1150,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "user" | "userCompany" | "person" | "company" | "department" | "systemConfig" | "employee" | "employeeRecurringDeduction" | "payrollRun" | "payroll" | "deduction" | "allowance" | "attendanceRecord" | "leave" | "legalParameter" | "legalDecimoParameter" | "salaryHistory" | "decimoPayment"
+      modelProps: "user" | "userCompany" | "person" | "company" | "department" | "systemConfig" | "employee" | "employeeRecurringDeduction" | "payrollRun" | "payroll" | "deduction" | "allowance" | "attendanceRecord" | "leave" | "liquidacion" | "legalParameter" | "legalDecimoParameter" | "salaryHistory" | "decimoPayment"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -2174,6 +2190,80 @@ export namespace Prisma {
           }
         }
       }
+      Liquidacion: {
+        payload: Prisma.$LiquidacionPayload<ExtArgs>
+        fields: Prisma.LiquidacionFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.LiquidacionFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$LiquidacionPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.LiquidacionFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$LiquidacionPayload>
+          }
+          findFirst: {
+            args: Prisma.LiquidacionFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$LiquidacionPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.LiquidacionFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$LiquidacionPayload>
+          }
+          findMany: {
+            args: Prisma.LiquidacionFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$LiquidacionPayload>[]
+          }
+          create: {
+            args: Prisma.LiquidacionCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$LiquidacionPayload>
+          }
+          createMany: {
+            args: Prisma.LiquidacionCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.LiquidacionCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$LiquidacionPayload>[]
+          }
+          delete: {
+            args: Prisma.LiquidacionDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$LiquidacionPayload>
+          }
+          update: {
+            args: Prisma.LiquidacionUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$LiquidacionPayload>
+          }
+          deleteMany: {
+            args: Prisma.LiquidacionDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.LiquidacionUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.LiquidacionUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$LiquidacionPayload>[]
+          }
+          upsert: {
+            args: Prisma.LiquidacionUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$LiquidacionPayload>
+          }
+          aggregate: {
+            args: Prisma.LiquidacionAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateLiquidacion>
+          }
+          groupBy: {
+            args: Prisma.LiquidacionGroupByArgs<ExtArgs>
+            result: $Utils.Optional<LiquidacionGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.LiquidacionCountArgs<ExtArgs>
+            result: $Utils.Optional<LiquidacionCountAggregateOutputType> | number
+          }
+        }
+      }
       LegalParameter: {
         payload: Prisma.$LegalParameterPayload<ExtArgs>
         fields: Prisma.LegalParameterFieldRefs
@@ -2580,6 +2670,7 @@ export namespace Prisma {
     allowance?: AllowanceOmit
     attendanceRecord?: AttendanceRecordOmit
     leave?: LeaveOmit
+    liquidacion?: LiquidacionOmit
     legalParameter?: LegalParameterOmit
     legalDecimoParameter?: LegalDecimoParameterOmit
     salaryHistory?: SalaryHistoryOmit
@@ -2714,6 +2805,7 @@ export namespace Prisma {
     leaves: number
     payrollRuns: number
     decimoPayments: number
+    liquidaciones: number
   }
 
   export type CompanyCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -2727,6 +2819,7 @@ export namespace Prisma {
     leaves?: boolean | CompanyCountOutputTypeCountLeavesArgs
     payrollRuns?: boolean | CompanyCountOutputTypeCountPayrollRunsArgs
     decimoPayments?: boolean | CompanyCountOutputTypeCountDecimoPaymentsArgs
+    liquidaciones?: boolean | CompanyCountOutputTypeCountLiquidacionesArgs
   }
 
   // Custom InputTypes
@@ -2810,6 +2903,13 @@ export namespace Prisma {
     where?: DecimoPaymentWhereInput
   }
 
+  /**
+   * CompanyCountOutputType without action
+   */
+  export type CompanyCountOutputTypeCountLiquidacionesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: LiquidacionWhereInput
+  }
+
 
   /**
    * Count Type DepartmentCountOutputType
@@ -2854,6 +2954,7 @@ export namespace Prisma {
     leaves: number
     recurringDeductions: number
     salaryHistory: number
+    liquidaciones: number
   }
 
   export type EmployeeCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -2864,6 +2965,7 @@ export namespace Prisma {
     leaves?: boolean | EmployeeCountOutputTypeCountLeavesArgs
     recurringDeductions?: boolean | EmployeeCountOutputTypeCountRecurringDeductionsArgs
     salaryHistory?: boolean | EmployeeCountOutputTypeCountSalaryHistoryArgs
+    liquidaciones?: boolean | EmployeeCountOutputTypeCountLiquidacionesArgs
   }
 
   // Custom InputTypes
@@ -2924,6 +3026,13 @@ export namespace Prisma {
    */
   export type EmployeeCountOutputTypeCountSalaryHistoryArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: SalaryHistoryWhereInput
+  }
+
+  /**
+   * EmployeeCountOutputType without action
+   */
+  export type EmployeeCountOutputTypeCountLiquidacionesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: LiquidacionWhereInput
   }
 
 
@@ -6645,6 +6754,7 @@ export namespace Prisma {
     leaves?: boolean | Company$leavesArgs<ExtArgs>
     payrollRuns?: boolean | Company$payrollRunsArgs<ExtArgs>
     decimoPayments?: boolean | Company$decimoPaymentsArgs<ExtArgs>
+    liquidaciones?: boolean | Company$liquidacionesArgs<ExtArgs>
     _count?: boolean | CompanyCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["company"]>
 
@@ -6708,6 +6818,7 @@ export namespace Prisma {
     leaves?: boolean | Company$leavesArgs<ExtArgs>
     payrollRuns?: boolean | Company$payrollRunsArgs<ExtArgs>
     decimoPayments?: boolean | Company$decimoPaymentsArgs<ExtArgs>
+    liquidaciones?: boolean | Company$liquidacionesArgs<ExtArgs>
     _count?: boolean | CompanyCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type CompanyIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -6731,6 +6842,7 @@ export namespace Prisma {
       leaves: Prisma.$LeavePayload<ExtArgs>[]
       payrollRuns: Prisma.$PayrollRunPayload<ExtArgs>[]
       decimoPayments: Prisma.$DecimoPaymentPayload<ExtArgs>[]
+      liquidaciones: Prisma.$LiquidacionPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -7150,6 +7262,7 @@ export namespace Prisma {
     leaves<T extends Company$leavesArgs<ExtArgs> = {}>(args?: Subset<T, Company$leavesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$LeavePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     payrollRuns<T extends Company$payrollRunsArgs<ExtArgs> = {}>(args?: Subset<T, Company$payrollRunsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PayrollRunPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     decimoPayments<T extends Company$decimoPaymentsArgs<ExtArgs> = {}>(args?: Subset<T, Company$decimoPaymentsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DecimoPaymentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    liquidaciones<T extends Company$liquidacionesArgs<ExtArgs> = {}>(args?: Subset<T, Company$liquidacionesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$LiquidacionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -7843,6 +7956,30 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: DecimoPaymentScalarFieldEnum | DecimoPaymentScalarFieldEnum[]
+  }
+
+  /**
+   * Company.liquidaciones
+   */
+  export type Company$liquidacionesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Liquidacion
+     */
+    select?: LiquidacionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Liquidacion
+     */
+    omit?: LiquidacionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: LiquidacionInclude<ExtArgs> | null
+    where?: LiquidacionWhereInput
+    orderBy?: LiquidacionOrderByWithRelationInput | LiquidacionOrderByWithRelationInput[]
+    cursor?: LiquidacionWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: LiquidacionScalarFieldEnum | LiquidacionScalarFieldEnum[]
   }
 
   /**
@@ -10321,6 +10458,7 @@ export namespace Prisma {
     leaves?: boolean | Employee$leavesArgs<ExtArgs>
     recurringDeductions?: boolean | Employee$recurringDeductionsArgs<ExtArgs>
     salaryHistory?: boolean | Employee$salaryHistoryArgs<ExtArgs>
+    liquidaciones?: boolean | Employee$liquidacionesArgs<ExtArgs>
     _count?: boolean | EmployeeCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["employee"]>
 
@@ -10411,6 +10549,7 @@ export namespace Prisma {
     leaves?: boolean | Employee$leavesArgs<ExtArgs>
     recurringDeductions?: boolean | Employee$recurringDeductionsArgs<ExtArgs>
     salaryHistory?: boolean | Employee$salaryHistoryArgs<ExtArgs>
+    liquidaciones?: boolean | Employee$liquidacionesArgs<ExtArgs>
     _count?: boolean | EmployeeCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type EmployeeIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -10434,6 +10573,7 @@ export namespace Prisma {
       leaves: Prisma.$LeavePayload<ExtArgs>[]
       recurringDeductions: Prisma.$EmployeeRecurringDeductionPayload<ExtArgs>[]
       salaryHistory: Prisma.$SalaryHistoryPayload<ExtArgs>[]
+      liquidaciones: Prisma.$LiquidacionPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -10860,6 +11000,7 @@ export namespace Prisma {
     leaves<T extends Employee$leavesArgs<ExtArgs> = {}>(args?: Subset<T, Employee$leavesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$LeavePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     recurringDeductions<T extends Employee$recurringDeductionsArgs<ExtArgs> = {}>(args?: Subset<T, Employee$recurringDeductionsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$EmployeeRecurringDeductionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     salaryHistory<T extends Employee$salaryHistoryArgs<ExtArgs> = {}>(args?: Subset<T, Employee$salaryHistoryArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SalaryHistoryPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    liquidaciones<T extends Employee$liquidacionesArgs<ExtArgs> = {}>(args?: Subset<T, Employee$liquidacionesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$LiquidacionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -11490,6 +11631,30 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: SalaryHistoryScalarFieldEnum | SalaryHistoryScalarFieldEnum[]
+  }
+
+  /**
+   * Employee.liquidaciones
+   */
+  export type Employee$liquidacionesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Liquidacion
+     */
+    select?: LiquidacionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Liquidacion
+     */
+    omit?: LiquidacionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: LiquidacionInclude<ExtArgs> | null
+    where?: LiquidacionWhereInput
+    orderBy?: LiquidacionOrderByWithRelationInput | LiquidacionOrderByWithRelationInput[]
+    cursor?: LiquidacionWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: LiquidacionScalarFieldEnum | LiquidacionScalarFieldEnum[]
   }
 
   /**
@@ -20219,6 +20384,1452 @@ export namespace Prisma {
 
 
   /**
+   * Model Liquidacion
+   */
+
+  export type AggregateLiquidacion = {
+    _count: LiquidacionCountAggregateOutputType | null
+    _avg: LiquidacionAvgAggregateOutputType | null
+    _sum: LiquidacionSumAggregateOutputType | null
+    _min: LiquidacionMinAggregateOutputType | null
+    _max: LiquidacionMaxAggregateOutputType | null
+  }
+
+  export type LiquidacionAvgAggregateOutputType = {
+    salarioMensual: Decimal | null
+    anosTrabajados: number | null
+    mesesTrabajados: number | null
+    diasTrabajados: number | null
+    primaAntiguedad: Decimal | null
+    preaviso: Decimal | null
+    vacaciones: Decimal | null
+    decimo: Decimal | null
+    indemnizacion: Decimal | null
+    salariosPendientes: Decimal | null
+    totalBruto: Decimal | null
+    ss: Decimal | null
+    se: Decimal | null
+    isr: Decimal | null
+    totalDeducciones: Decimal | null
+    totalNeto: Decimal | null
+  }
+
+  export type LiquidacionSumAggregateOutputType = {
+    salarioMensual: Decimal | null
+    anosTrabajados: number | null
+    mesesTrabajados: number | null
+    diasTrabajados: number | null
+    primaAntiguedad: Decimal | null
+    preaviso: Decimal | null
+    vacaciones: Decimal | null
+    decimo: Decimal | null
+    indemnizacion: Decimal | null
+    salariosPendientes: Decimal | null
+    totalBruto: Decimal | null
+    ss: Decimal | null
+    se: Decimal | null
+    isr: Decimal | null
+    totalDeducciones: Decimal | null
+    totalNeto: Decimal | null
+  }
+
+  export type LiquidacionMinAggregateOutputType = {
+    id: string | null
+    employeeId: string | null
+    companyId: string | null
+    tipoTerminacion: string | null
+    fechaTerminacion: Date | null
+    previousStatus: string | null
+    salarioMensual: Decimal | null
+    anosTrabajados: number | null
+    mesesTrabajados: number | null
+    diasTrabajados: number | null
+    primaAntiguedad: Decimal | null
+    preaviso: Decimal | null
+    vacaciones: Decimal | null
+    decimo: Decimal | null
+    indemnizacion: Decimal | null
+    salariosPendientes: Decimal | null
+    totalBruto: Decimal | null
+    ss: Decimal | null
+    se: Decimal | null
+    isr: Decimal | null
+    totalDeducciones: Decimal | null
+    totalNeto: Decimal | null
+    revertedAt: Date | null
+    revertedBy: string | null
+    notes: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type LiquidacionMaxAggregateOutputType = {
+    id: string | null
+    employeeId: string | null
+    companyId: string | null
+    tipoTerminacion: string | null
+    fechaTerminacion: Date | null
+    previousStatus: string | null
+    salarioMensual: Decimal | null
+    anosTrabajados: number | null
+    mesesTrabajados: number | null
+    diasTrabajados: number | null
+    primaAntiguedad: Decimal | null
+    preaviso: Decimal | null
+    vacaciones: Decimal | null
+    decimo: Decimal | null
+    indemnizacion: Decimal | null
+    salariosPendientes: Decimal | null
+    totalBruto: Decimal | null
+    ss: Decimal | null
+    se: Decimal | null
+    isr: Decimal | null
+    totalDeducciones: Decimal | null
+    totalNeto: Decimal | null
+    revertedAt: Date | null
+    revertedBy: string | null
+    notes: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type LiquidacionCountAggregateOutputType = {
+    id: number
+    employeeId: number
+    companyId: number
+    tipoTerminacion: number
+    fechaTerminacion: number
+    previousStatus: number
+    salarioMensual: number
+    anosTrabajados: number
+    mesesTrabajados: number
+    diasTrabajados: number
+    primaAntiguedad: number
+    preaviso: number
+    vacaciones: number
+    decimo: number
+    indemnizacion: number
+    salariosPendientes: number
+    totalBruto: number
+    ss: number
+    se: number
+    isr: number
+    totalDeducciones: number
+    totalNeto: number
+    revertedAt: number
+    revertedBy: number
+    notes: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type LiquidacionAvgAggregateInputType = {
+    salarioMensual?: true
+    anosTrabajados?: true
+    mesesTrabajados?: true
+    diasTrabajados?: true
+    primaAntiguedad?: true
+    preaviso?: true
+    vacaciones?: true
+    decimo?: true
+    indemnizacion?: true
+    salariosPendientes?: true
+    totalBruto?: true
+    ss?: true
+    se?: true
+    isr?: true
+    totalDeducciones?: true
+    totalNeto?: true
+  }
+
+  export type LiquidacionSumAggregateInputType = {
+    salarioMensual?: true
+    anosTrabajados?: true
+    mesesTrabajados?: true
+    diasTrabajados?: true
+    primaAntiguedad?: true
+    preaviso?: true
+    vacaciones?: true
+    decimo?: true
+    indemnizacion?: true
+    salariosPendientes?: true
+    totalBruto?: true
+    ss?: true
+    se?: true
+    isr?: true
+    totalDeducciones?: true
+    totalNeto?: true
+  }
+
+  export type LiquidacionMinAggregateInputType = {
+    id?: true
+    employeeId?: true
+    companyId?: true
+    tipoTerminacion?: true
+    fechaTerminacion?: true
+    previousStatus?: true
+    salarioMensual?: true
+    anosTrabajados?: true
+    mesesTrabajados?: true
+    diasTrabajados?: true
+    primaAntiguedad?: true
+    preaviso?: true
+    vacaciones?: true
+    decimo?: true
+    indemnizacion?: true
+    salariosPendientes?: true
+    totalBruto?: true
+    ss?: true
+    se?: true
+    isr?: true
+    totalDeducciones?: true
+    totalNeto?: true
+    revertedAt?: true
+    revertedBy?: true
+    notes?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type LiquidacionMaxAggregateInputType = {
+    id?: true
+    employeeId?: true
+    companyId?: true
+    tipoTerminacion?: true
+    fechaTerminacion?: true
+    previousStatus?: true
+    salarioMensual?: true
+    anosTrabajados?: true
+    mesesTrabajados?: true
+    diasTrabajados?: true
+    primaAntiguedad?: true
+    preaviso?: true
+    vacaciones?: true
+    decimo?: true
+    indemnizacion?: true
+    salariosPendientes?: true
+    totalBruto?: true
+    ss?: true
+    se?: true
+    isr?: true
+    totalDeducciones?: true
+    totalNeto?: true
+    revertedAt?: true
+    revertedBy?: true
+    notes?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type LiquidacionCountAggregateInputType = {
+    id?: true
+    employeeId?: true
+    companyId?: true
+    tipoTerminacion?: true
+    fechaTerminacion?: true
+    previousStatus?: true
+    salarioMensual?: true
+    anosTrabajados?: true
+    mesesTrabajados?: true
+    diasTrabajados?: true
+    primaAntiguedad?: true
+    preaviso?: true
+    vacaciones?: true
+    decimo?: true
+    indemnizacion?: true
+    salariosPendientes?: true
+    totalBruto?: true
+    ss?: true
+    se?: true
+    isr?: true
+    totalDeducciones?: true
+    totalNeto?: true
+    revertedAt?: true
+    revertedBy?: true
+    notes?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type LiquidacionAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Liquidacion to aggregate.
+     */
+    where?: LiquidacionWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Liquidacions to fetch.
+     */
+    orderBy?: LiquidacionOrderByWithRelationInput | LiquidacionOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: LiquidacionWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Liquidacions from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Liquidacions.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned Liquidacions
+    **/
+    _count?: true | LiquidacionCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: LiquidacionAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: LiquidacionSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: LiquidacionMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: LiquidacionMaxAggregateInputType
+  }
+
+  export type GetLiquidacionAggregateType<T extends LiquidacionAggregateArgs> = {
+        [P in keyof T & keyof AggregateLiquidacion]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateLiquidacion[P]>
+      : GetScalarType<T[P], AggregateLiquidacion[P]>
+  }
+
+
+
+
+  export type LiquidacionGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: LiquidacionWhereInput
+    orderBy?: LiquidacionOrderByWithAggregationInput | LiquidacionOrderByWithAggregationInput[]
+    by: LiquidacionScalarFieldEnum[] | LiquidacionScalarFieldEnum
+    having?: LiquidacionScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: LiquidacionCountAggregateInputType | true
+    _avg?: LiquidacionAvgAggregateInputType
+    _sum?: LiquidacionSumAggregateInputType
+    _min?: LiquidacionMinAggregateInputType
+    _max?: LiquidacionMaxAggregateInputType
+  }
+
+  export type LiquidacionGroupByOutputType = {
+    id: string
+    employeeId: string
+    companyId: string
+    tipoTerminacion: string
+    fechaTerminacion: Date
+    previousStatus: string
+    salarioMensual: Decimal
+    anosTrabajados: number
+    mesesTrabajados: number
+    diasTrabajados: number
+    primaAntiguedad: Decimal
+    preaviso: Decimal
+    vacaciones: Decimal
+    decimo: Decimal
+    indemnizacion: Decimal
+    salariosPendientes: Decimal
+    totalBruto: Decimal
+    ss: Decimal
+    se: Decimal
+    isr: Decimal
+    totalDeducciones: Decimal
+    totalNeto: Decimal
+    revertedAt: Date | null
+    revertedBy: string | null
+    notes: string | null
+    createdAt: Date
+    updatedAt: Date
+    _count: LiquidacionCountAggregateOutputType | null
+    _avg: LiquidacionAvgAggregateOutputType | null
+    _sum: LiquidacionSumAggregateOutputType | null
+    _min: LiquidacionMinAggregateOutputType | null
+    _max: LiquidacionMaxAggregateOutputType | null
+  }
+
+  type GetLiquidacionGroupByPayload<T extends LiquidacionGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<LiquidacionGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof LiquidacionGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], LiquidacionGroupByOutputType[P]>
+            : GetScalarType<T[P], LiquidacionGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type LiquidacionSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    employeeId?: boolean
+    companyId?: boolean
+    tipoTerminacion?: boolean
+    fechaTerminacion?: boolean
+    previousStatus?: boolean
+    salarioMensual?: boolean
+    anosTrabajados?: boolean
+    mesesTrabajados?: boolean
+    diasTrabajados?: boolean
+    primaAntiguedad?: boolean
+    preaviso?: boolean
+    vacaciones?: boolean
+    decimo?: boolean
+    indemnizacion?: boolean
+    salariosPendientes?: boolean
+    totalBruto?: boolean
+    ss?: boolean
+    se?: boolean
+    isr?: boolean
+    totalDeducciones?: boolean
+    totalNeto?: boolean
+    revertedAt?: boolean
+    revertedBy?: boolean
+    notes?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    employee?: boolean | EmployeeDefaultArgs<ExtArgs>
+    company?: boolean | CompanyDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["liquidacion"]>
+
+  export type LiquidacionSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    employeeId?: boolean
+    companyId?: boolean
+    tipoTerminacion?: boolean
+    fechaTerminacion?: boolean
+    previousStatus?: boolean
+    salarioMensual?: boolean
+    anosTrabajados?: boolean
+    mesesTrabajados?: boolean
+    diasTrabajados?: boolean
+    primaAntiguedad?: boolean
+    preaviso?: boolean
+    vacaciones?: boolean
+    decimo?: boolean
+    indemnizacion?: boolean
+    salariosPendientes?: boolean
+    totalBruto?: boolean
+    ss?: boolean
+    se?: boolean
+    isr?: boolean
+    totalDeducciones?: boolean
+    totalNeto?: boolean
+    revertedAt?: boolean
+    revertedBy?: boolean
+    notes?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    employee?: boolean | EmployeeDefaultArgs<ExtArgs>
+    company?: boolean | CompanyDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["liquidacion"]>
+
+  export type LiquidacionSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    employeeId?: boolean
+    companyId?: boolean
+    tipoTerminacion?: boolean
+    fechaTerminacion?: boolean
+    previousStatus?: boolean
+    salarioMensual?: boolean
+    anosTrabajados?: boolean
+    mesesTrabajados?: boolean
+    diasTrabajados?: boolean
+    primaAntiguedad?: boolean
+    preaviso?: boolean
+    vacaciones?: boolean
+    decimo?: boolean
+    indemnizacion?: boolean
+    salariosPendientes?: boolean
+    totalBruto?: boolean
+    ss?: boolean
+    se?: boolean
+    isr?: boolean
+    totalDeducciones?: boolean
+    totalNeto?: boolean
+    revertedAt?: boolean
+    revertedBy?: boolean
+    notes?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    employee?: boolean | EmployeeDefaultArgs<ExtArgs>
+    company?: boolean | CompanyDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["liquidacion"]>
+
+  export type LiquidacionSelectScalar = {
+    id?: boolean
+    employeeId?: boolean
+    companyId?: boolean
+    tipoTerminacion?: boolean
+    fechaTerminacion?: boolean
+    previousStatus?: boolean
+    salarioMensual?: boolean
+    anosTrabajados?: boolean
+    mesesTrabajados?: boolean
+    diasTrabajados?: boolean
+    primaAntiguedad?: boolean
+    preaviso?: boolean
+    vacaciones?: boolean
+    decimo?: boolean
+    indemnizacion?: boolean
+    salariosPendientes?: boolean
+    totalBruto?: boolean
+    ss?: boolean
+    se?: boolean
+    isr?: boolean
+    totalDeducciones?: boolean
+    totalNeto?: boolean
+    revertedAt?: boolean
+    revertedBy?: boolean
+    notes?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type LiquidacionOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "employeeId" | "companyId" | "tipoTerminacion" | "fechaTerminacion" | "previousStatus" | "salarioMensual" | "anosTrabajados" | "mesesTrabajados" | "diasTrabajados" | "primaAntiguedad" | "preaviso" | "vacaciones" | "decimo" | "indemnizacion" | "salariosPendientes" | "totalBruto" | "ss" | "se" | "isr" | "totalDeducciones" | "totalNeto" | "revertedAt" | "revertedBy" | "notes" | "createdAt" | "updatedAt", ExtArgs["result"]["liquidacion"]>
+  export type LiquidacionInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    employee?: boolean | EmployeeDefaultArgs<ExtArgs>
+    company?: boolean | CompanyDefaultArgs<ExtArgs>
+  }
+  export type LiquidacionIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    employee?: boolean | EmployeeDefaultArgs<ExtArgs>
+    company?: boolean | CompanyDefaultArgs<ExtArgs>
+  }
+  export type LiquidacionIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    employee?: boolean | EmployeeDefaultArgs<ExtArgs>
+    company?: boolean | CompanyDefaultArgs<ExtArgs>
+  }
+
+  export type $LiquidacionPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "Liquidacion"
+    objects: {
+      employee: Prisma.$EmployeePayload<ExtArgs>
+      company: Prisma.$CompanyPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      employeeId: string
+      companyId: string
+      tipoTerminacion: string
+      fechaTerminacion: Date
+      previousStatus: string
+      salarioMensual: Prisma.Decimal
+      anosTrabajados: number
+      mesesTrabajados: number
+      diasTrabajados: number
+      primaAntiguedad: Prisma.Decimal
+      preaviso: Prisma.Decimal
+      vacaciones: Prisma.Decimal
+      decimo: Prisma.Decimal
+      indemnizacion: Prisma.Decimal
+      salariosPendientes: Prisma.Decimal
+      totalBruto: Prisma.Decimal
+      ss: Prisma.Decimal
+      se: Prisma.Decimal
+      isr: Prisma.Decimal
+      totalDeducciones: Prisma.Decimal
+      totalNeto: Prisma.Decimal
+      revertedAt: Date | null
+      revertedBy: string | null
+      notes: string | null
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["liquidacion"]>
+    composites: {}
+  }
+
+  type LiquidacionGetPayload<S extends boolean | null | undefined | LiquidacionDefaultArgs> = $Result.GetResult<Prisma.$LiquidacionPayload, S>
+
+  type LiquidacionCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<LiquidacionFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: LiquidacionCountAggregateInputType | true
+    }
+
+  export interface LiquidacionDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['Liquidacion'], meta: { name: 'Liquidacion' } }
+    /**
+     * Find zero or one Liquidacion that matches the filter.
+     * @param {LiquidacionFindUniqueArgs} args - Arguments to find a Liquidacion
+     * @example
+     * // Get one Liquidacion
+     * const liquidacion = await prisma.liquidacion.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends LiquidacionFindUniqueArgs>(args: SelectSubset<T, LiquidacionFindUniqueArgs<ExtArgs>>): Prisma__LiquidacionClient<$Result.GetResult<Prisma.$LiquidacionPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one Liquidacion that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {LiquidacionFindUniqueOrThrowArgs} args - Arguments to find a Liquidacion
+     * @example
+     * // Get one Liquidacion
+     * const liquidacion = await prisma.liquidacion.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends LiquidacionFindUniqueOrThrowArgs>(args: SelectSubset<T, LiquidacionFindUniqueOrThrowArgs<ExtArgs>>): Prisma__LiquidacionClient<$Result.GetResult<Prisma.$LiquidacionPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Liquidacion that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {LiquidacionFindFirstArgs} args - Arguments to find a Liquidacion
+     * @example
+     * // Get one Liquidacion
+     * const liquidacion = await prisma.liquidacion.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends LiquidacionFindFirstArgs>(args?: SelectSubset<T, LiquidacionFindFirstArgs<ExtArgs>>): Prisma__LiquidacionClient<$Result.GetResult<Prisma.$LiquidacionPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Liquidacion that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {LiquidacionFindFirstOrThrowArgs} args - Arguments to find a Liquidacion
+     * @example
+     * // Get one Liquidacion
+     * const liquidacion = await prisma.liquidacion.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends LiquidacionFindFirstOrThrowArgs>(args?: SelectSubset<T, LiquidacionFindFirstOrThrowArgs<ExtArgs>>): Prisma__LiquidacionClient<$Result.GetResult<Prisma.$LiquidacionPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more Liquidacions that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {LiquidacionFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all Liquidacions
+     * const liquidacions = await prisma.liquidacion.findMany()
+     * 
+     * // Get first 10 Liquidacions
+     * const liquidacions = await prisma.liquidacion.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const liquidacionWithIdOnly = await prisma.liquidacion.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends LiquidacionFindManyArgs>(args?: SelectSubset<T, LiquidacionFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$LiquidacionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a Liquidacion.
+     * @param {LiquidacionCreateArgs} args - Arguments to create a Liquidacion.
+     * @example
+     * // Create one Liquidacion
+     * const Liquidacion = await prisma.liquidacion.create({
+     *   data: {
+     *     // ... data to create a Liquidacion
+     *   }
+     * })
+     * 
+     */
+    create<T extends LiquidacionCreateArgs>(args: SelectSubset<T, LiquidacionCreateArgs<ExtArgs>>): Prisma__LiquidacionClient<$Result.GetResult<Prisma.$LiquidacionPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many Liquidacions.
+     * @param {LiquidacionCreateManyArgs} args - Arguments to create many Liquidacions.
+     * @example
+     * // Create many Liquidacions
+     * const liquidacion = await prisma.liquidacion.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends LiquidacionCreateManyArgs>(args?: SelectSubset<T, LiquidacionCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many Liquidacions and returns the data saved in the database.
+     * @param {LiquidacionCreateManyAndReturnArgs} args - Arguments to create many Liquidacions.
+     * @example
+     * // Create many Liquidacions
+     * const liquidacion = await prisma.liquidacion.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many Liquidacions and only return the `id`
+     * const liquidacionWithIdOnly = await prisma.liquidacion.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends LiquidacionCreateManyAndReturnArgs>(args?: SelectSubset<T, LiquidacionCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$LiquidacionPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a Liquidacion.
+     * @param {LiquidacionDeleteArgs} args - Arguments to delete one Liquidacion.
+     * @example
+     * // Delete one Liquidacion
+     * const Liquidacion = await prisma.liquidacion.delete({
+     *   where: {
+     *     // ... filter to delete one Liquidacion
+     *   }
+     * })
+     * 
+     */
+    delete<T extends LiquidacionDeleteArgs>(args: SelectSubset<T, LiquidacionDeleteArgs<ExtArgs>>): Prisma__LiquidacionClient<$Result.GetResult<Prisma.$LiquidacionPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one Liquidacion.
+     * @param {LiquidacionUpdateArgs} args - Arguments to update one Liquidacion.
+     * @example
+     * // Update one Liquidacion
+     * const liquidacion = await prisma.liquidacion.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends LiquidacionUpdateArgs>(args: SelectSubset<T, LiquidacionUpdateArgs<ExtArgs>>): Prisma__LiquidacionClient<$Result.GetResult<Prisma.$LiquidacionPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more Liquidacions.
+     * @param {LiquidacionDeleteManyArgs} args - Arguments to filter Liquidacions to delete.
+     * @example
+     * // Delete a few Liquidacions
+     * const { count } = await prisma.liquidacion.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends LiquidacionDeleteManyArgs>(args?: SelectSubset<T, LiquidacionDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Liquidacions.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {LiquidacionUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many Liquidacions
+     * const liquidacion = await prisma.liquidacion.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends LiquidacionUpdateManyArgs>(args: SelectSubset<T, LiquidacionUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Liquidacions and returns the data updated in the database.
+     * @param {LiquidacionUpdateManyAndReturnArgs} args - Arguments to update many Liquidacions.
+     * @example
+     * // Update many Liquidacions
+     * const liquidacion = await prisma.liquidacion.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more Liquidacions and only return the `id`
+     * const liquidacionWithIdOnly = await prisma.liquidacion.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends LiquidacionUpdateManyAndReturnArgs>(args: SelectSubset<T, LiquidacionUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$LiquidacionPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one Liquidacion.
+     * @param {LiquidacionUpsertArgs} args - Arguments to update or create a Liquidacion.
+     * @example
+     * // Update or create a Liquidacion
+     * const liquidacion = await prisma.liquidacion.upsert({
+     *   create: {
+     *     // ... data to create a Liquidacion
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the Liquidacion we want to update
+     *   }
+     * })
+     */
+    upsert<T extends LiquidacionUpsertArgs>(args: SelectSubset<T, LiquidacionUpsertArgs<ExtArgs>>): Prisma__LiquidacionClient<$Result.GetResult<Prisma.$LiquidacionPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of Liquidacions.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {LiquidacionCountArgs} args - Arguments to filter Liquidacions to count.
+     * @example
+     * // Count the number of Liquidacions
+     * const count = await prisma.liquidacion.count({
+     *   where: {
+     *     // ... the filter for the Liquidacions we want to count
+     *   }
+     * })
+    **/
+    count<T extends LiquidacionCountArgs>(
+      args?: Subset<T, LiquidacionCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], LiquidacionCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a Liquidacion.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {LiquidacionAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends LiquidacionAggregateArgs>(args: Subset<T, LiquidacionAggregateArgs>): Prisma.PrismaPromise<GetLiquidacionAggregateType<T>>
+
+    /**
+     * Group by Liquidacion.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {LiquidacionGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends LiquidacionGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: LiquidacionGroupByArgs['orderBy'] }
+        : { orderBy?: LiquidacionGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, LiquidacionGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetLiquidacionGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the Liquidacion model
+   */
+  readonly fields: LiquidacionFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for Liquidacion.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__LiquidacionClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    employee<T extends EmployeeDefaultArgs<ExtArgs> = {}>(args?: Subset<T, EmployeeDefaultArgs<ExtArgs>>): Prisma__EmployeeClient<$Result.GetResult<Prisma.$EmployeePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    company<T extends CompanyDefaultArgs<ExtArgs> = {}>(args?: Subset<T, CompanyDefaultArgs<ExtArgs>>): Prisma__CompanyClient<$Result.GetResult<Prisma.$CompanyPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the Liquidacion model
+   */
+  interface LiquidacionFieldRefs {
+    readonly id: FieldRef<"Liquidacion", 'String'>
+    readonly employeeId: FieldRef<"Liquidacion", 'String'>
+    readonly companyId: FieldRef<"Liquidacion", 'String'>
+    readonly tipoTerminacion: FieldRef<"Liquidacion", 'String'>
+    readonly fechaTerminacion: FieldRef<"Liquidacion", 'DateTime'>
+    readonly previousStatus: FieldRef<"Liquidacion", 'String'>
+    readonly salarioMensual: FieldRef<"Liquidacion", 'Decimal'>
+    readonly anosTrabajados: FieldRef<"Liquidacion", 'Int'>
+    readonly mesesTrabajados: FieldRef<"Liquidacion", 'Int'>
+    readonly diasTrabajados: FieldRef<"Liquidacion", 'Int'>
+    readonly primaAntiguedad: FieldRef<"Liquidacion", 'Decimal'>
+    readonly preaviso: FieldRef<"Liquidacion", 'Decimal'>
+    readonly vacaciones: FieldRef<"Liquidacion", 'Decimal'>
+    readonly decimo: FieldRef<"Liquidacion", 'Decimal'>
+    readonly indemnizacion: FieldRef<"Liquidacion", 'Decimal'>
+    readonly salariosPendientes: FieldRef<"Liquidacion", 'Decimal'>
+    readonly totalBruto: FieldRef<"Liquidacion", 'Decimal'>
+    readonly ss: FieldRef<"Liquidacion", 'Decimal'>
+    readonly se: FieldRef<"Liquidacion", 'Decimal'>
+    readonly isr: FieldRef<"Liquidacion", 'Decimal'>
+    readonly totalDeducciones: FieldRef<"Liquidacion", 'Decimal'>
+    readonly totalNeto: FieldRef<"Liquidacion", 'Decimal'>
+    readonly revertedAt: FieldRef<"Liquidacion", 'DateTime'>
+    readonly revertedBy: FieldRef<"Liquidacion", 'String'>
+    readonly notes: FieldRef<"Liquidacion", 'String'>
+    readonly createdAt: FieldRef<"Liquidacion", 'DateTime'>
+    readonly updatedAt: FieldRef<"Liquidacion", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * Liquidacion findUnique
+   */
+  export type LiquidacionFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Liquidacion
+     */
+    select?: LiquidacionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Liquidacion
+     */
+    omit?: LiquidacionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: LiquidacionInclude<ExtArgs> | null
+    /**
+     * Filter, which Liquidacion to fetch.
+     */
+    where: LiquidacionWhereUniqueInput
+  }
+
+  /**
+   * Liquidacion findUniqueOrThrow
+   */
+  export type LiquidacionFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Liquidacion
+     */
+    select?: LiquidacionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Liquidacion
+     */
+    omit?: LiquidacionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: LiquidacionInclude<ExtArgs> | null
+    /**
+     * Filter, which Liquidacion to fetch.
+     */
+    where: LiquidacionWhereUniqueInput
+  }
+
+  /**
+   * Liquidacion findFirst
+   */
+  export type LiquidacionFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Liquidacion
+     */
+    select?: LiquidacionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Liquidacion
+     */
+    omit?: LiquidacionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: LiquidacionInclude<ExtArgs> | null
+    /**
+     * Filter, which Liquidacion to fetch.
+     */
+    where?: LiquidacionWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Liquidacions to fetch.
+     */
+    orderBy?: LiquidacionOrderByWithRelationInput | LiquidacionOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Liquidacions.
+     */
+    cursor?: LiquidacionWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Liquidacions from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Liquidacions.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Liquidacions.
+     */
+    distinct?: LiquidacionScalarFieldEnum | LiquidacionScalarFieldEnum[]
+  }
+
+  /**
+   * Liquidacion findFirstOrThrow
+   */
+  export type LiquidacionFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Liquidacion
+     */
+    select?: LiquidacionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Liquidacion
+     */
+    omit?: LiquidacionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: LiquidacionInclude<ExtArgs> | null
+    /**
+     * Filter, which Liquidacion to fetch.
+     */
+    where?: LiquidacionWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Liquidacions to fetch.
+     */
+    orderBy?: LiquidacionOrderByWithRelationInput | LiquidacionOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Liquidacions.
+     */
+    cursor?: LiquidacionWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Liquidacions from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Liquidacions.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Liquidacions.
+     */
+    distinct?: LiquidacionScalarFieldEnum | LiquidacionScalarFieldEnum[]
+  }
+
+  /**
+   * Liquidacion findMany
+   */
+  export type LiquidacionFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Liquidacion
+     */
+    select?: LiquidacionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Liquidacion
+     */
+    omit?: LiquidacionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: LiquidacionInclude<ExtArgs> | null
+    /**
+     * Filter, which Liquidacions to fetch.
+     */
+    where?: LiquidacionWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Liquidacions to fetch.
+     */
+    orderBy?: LiquidacionOrderByWithRelationInput | LiquidacionOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing Liquidacions.
+     */
+    cursor?: LiquidacionWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Liquidacions from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Liquidacions.
+     */
+    skip?: number
+    distinct?: LiquidacionScalarFieldEnum | LiquidacionScalarFieldEnum[]
+  }
+
+  /**
+   * Liquidacion create
+   */
+  export type LiquidacionCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Liquidacion
+     */
+    select?: LiquidacionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Liquidacion
+     */
+    omit?: LiquidacionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: LiquidacionInclude<ExtArgs> | null
+    /**
+     * The data needed to create a Liquidacion.
+     */
+    data: XOR<LiquidacionCreateInput, LiquidacionUncheckedCreateInput>
+  }
+
+  /**
+   * Liquidacion createMany
+   */
+  export type LiquidacionCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many Liquidacions.
+     */
+    data: LiquidacionCreateManyInput | LiquidacionCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * Liquidacion createManyAndReturn
+   */
+  export type LiquidacionCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Liquidacion
+     */
+    select?: LiquidacionSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the Liquidacion
+     */
+    omit?: LiquidacionOmit<ExtArgs> | null
+    /**
+     * The data used to create many Liquidacions.
+     */
+    data: LiquidacionCreateManyInput | LiquidacionCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: LiquidacionIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * Liquidacion update
+   */
+  export type LiquidacionUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Liquidacion
+     */
+    select?: LiquidacionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Liquidacion
+     */
+    omit?: LiquidacionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: LiquidacionInclude<ExtArgs> | null
+    /**
+     * The data needed to update a Liquidacion.
+     */
+    data: XOR<LiquidacionUpdateInput, LiquidacionUncheckedUpdateInput>
+    /**
+     * Choose, which Liquidacion to update.
+     */
+    where: LiquidacionWhereUniqueInput
+  }
+
+  /**
+   * Liquidacion updateMany
+   */
+  export type LiquidacionUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update Liquidacions.
+     */
+    data: XOR<LiquidacionUpdateManyMutationInput, LiquidacionUncheckedUpdateManyInput>
+    /**
+     * Filter which Liquidacions to update
+     */
+    where?: LiquidacionWhereInput
+    /**
+     * Limit how many Liquidacions to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * Liquidacion updateManyAndReturn
+   */
+  export type LiquidacionUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Liquidacion
+     */
+    select?: LiquidacionSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the Liquidacion
+     */
+    omit?: LiquidacionOmit<ExtArgs> | null
+    /**
+     * The data used to update Liquidacions.
+     */
+    data: XOR<LiquidacionUpdateManyMutationInput, LiquidacionUncheckedUpdateManyInput>
+    /**
+     * Filter which Liquidacions to update
+     */
+    where?: LiquidacionWhereInput
+    /**
+     * Limit how many Liquidacions to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: LiquidacionIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * Liquidacion upsert
+   */
+  export type LiquidacionUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Liquidacion
+     */
+    select?: LiquidacionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Liquidacion
+     */
+    omit?: LiquidacionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: LiquidacionInclude<ExtArgs> | null
+    /**
+     * The filter to search for the Liquidacion to update in case it exists.
+     */
+    where: LiquidacionWhereUniqueInput
+    /**
+     * In case the Liquidacion found by the `where` argument doesn't exist, create a new Liquidacion with this data.
+     */
+    create: XOR<LiquidacionCreateInput, LiquidacionUncheckedCreateInput>
+    /**
+     * In case the Liquidacion was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<LiquidacionUpdateInput, LiquidacionUncheckedUpdateInput>
+  }
+
+  /**
+   * Liquidacion delete
+   */
+  export type LiquidacionDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Liquidacion
+     */
+    select?: LiquidacionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Liquidacion
+     */
+    omit?: LiquidacionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: LiquidacionInclude<ExtArgs> | null
+    /**
+     * Filter which Liquidacion to delete.
+     */
+    where: LiquidacionWhereUniqueInput
+  }
+
+  /**
+   * Liquidacion deleteMany
+   */
+  export type LiquidacionDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Liquidacions to delete
+     */
+    where?: LiquidacionWhereInput
+    /**
+     * Limit how many Liquidacions to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * Liquidacion without action
+   */
+  export type LiquidacionDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Liquidacion
+     */
+    select?: LiquidacionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Liquidacion
+     */
+    omit?: LiquidacionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: LiquidacionInclude<ExtArgs> | null
+  }
+
+
+  /**
    * Model LegalParameter
    */
 
@@ -25243,6 +26854,39 @@ export namespace Prisma {
   export type LeaveScalarFieldEnum = (typeof LeaveScalarFieldEnum)[keyof typeof LeaveScalarFieldEnum]
 
 
+  export const LiquidacionScalarFieldEnum: {
+    id: 'id',
+    employeeId: 'employeeId',
+    companyId: 'companyId',
+    tipoTerminacion: 'tipoTerminacion',
+    fechaTerminacion: 'fechaTerminacion',
+    previousStatus: 'previousStatus',
+    salarioMensual: 'salarioMensual',
+    anosTrabajados: 'anosTrabajados',
+    mesesTrabajados: 'mesesTrabajados',
+    diasTrabajados: 'diasTrabajados',
+    primaAntiguedad: 'primaAntiguedad',
+    preaviso: 'preaviso',
+    vacaciones: 'vacaciones',
+    decimo: 'decimo',
+    indemnizacion: 'indemnizacion',
+    salariosPendientes: 'salariosPendientes',
+    totalBruto: 'totalBruto',
+    ss: 'ss',
+    se: 'se',
+    isr: 'isr',
+    totalDeducciones: 'totalDeducciones',
+    totalNeto: 'totalNeto',
+    revertedAt: 'revertedAt',
+    revertedBy: 'revertedBy',
+    notes: 'notes',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type LiquidacionScalarFieldEnum = (typeof LiquidacionScalarFieldEnum)[keyof typeof LiquidacionScalarFieldEnum]
+
+
   export const LegalParameterScalarFieldEnum: {
     id: 'id',
     key: 'key',
@@ -25915,6 +27559,7 @@ export namespace Prisma {
     leaves?: LeaveListRelationFilter
     payrollRuns?: PayrollRunListRelationFilter
     decimoPayments?: DecimoPaymentListRelationFilter
+    liquidaciones?: LiquidacionListRelationFilter
   }
 
   export type CompanyOrderByWithRelationInput = {
@@ -25941,6 +27586,7 @@ export namespace Prisma {
     leaves?: LeaveOrderByRelationAggregateInput
     payrollRuns?: PayrollRunOrderByRelationAggregateInput
     decimoPayments?: DecimoPaymentOrderByRelationAggregateInput
+    liquidaciones?: LiquidacionOrderByRelationAggregateInput
   }
 
   export type CompanyWhereUniqueInput = Prisma.AtLeast<{
@@ -25970,6 +27616,7 @@ export namespace Prisma {
     leaves?: LeaveListRelationFilter
     payrollRuns?: PayrollRunListRelationFilter
     decimoPayments?: DecimoPaymentListRelationFilter
+    liquidaciones?: LiquidacionListRelationFilter
   }, "id" | "code" | "name" | "ruc">
 
   export type CompanyOrderByWithAggregationInput = {
@@ -26167,6 +27814,7 @@ export namespace Prisma {
     leaves?: LeaveListRelationFilter
     recurringDeductions?: EmployeeRecurringDeductionListRelationFilter
     salaryHistory?: SalaryHistoryListRelationFilter
+    liquidaciones?: LiquidacionListRelationFilter
   }
 
   export type EmployeeOrderByWithRelationInput = {
@@ -26200,6 +27848,7 @@ export namespace Prisma {
     leaves?: LeaveOrderByRelationAggregateInput
     recurringDeductions?: EmployeeRecurringDeductionOrderByRelationAggregateInput
     salaryHistory?: SalaryHistoryOrderByRelationAggregateInput
+    liquidaciones?: LiquidacionOrderByRelationAggregateInput
   }
 
   export type EmployeeWhereUniqueInput = Prisma.AtLeast<{
@@ -26236,6 +27885,7 @@ export namespace Prisma {
     leaves?: LeaveListRelationFilter
     recurringDeductions?: EmployeeRecurringDeductionListRelationFilter
     salaryHistory?: SalaryHistoryListRelationFilter
+    liquidaciones?: LiquidacionListRelationFilter
   }, "id" | "cedula" | "email" | "userId">
 
   export type EmployeeOrderByWithAggregationInput = {
@@ -27032,6 +28682,176 @@ export namespace Prisma {
     updatedAt?: DateTimeWithAggregatesFilter<"Leave"> | Date | string
   }
 
+  export type LiquidacionWhereInput = {
+    AND?: LiquidacionWhereInput | LiquidacionWhereInput[]
+    OR?: LiquidacionWhereInput[]
+    NOT?: LiquidacionWhereInput | LiquidacionWhereInput[]
+    id?: StringFilter<"Liquidacion"> | string
+    employeeId?: StringFilter<"Liquidacion"> | string
+    companyId?: StringFilter<"Liquidacion"> | string
+    tipoTerminacion?: StringFilter<"Liquidacion"> | string
+    fechaTerminacion?: DateTimeFilter<"Liquidacion"> | Date | string
+    previousStatus?: StringFilter<"Liquidacion"> | string
+    salarioMensual?: DecimalFilter<"Liquidacion"> | Decimal | DecimalJsLike | number | string
+    anosTrabajados?: IntFilter<"Liquidacion"> | number
+    mesesTrabajados?: IntFilter<"Liquidacion"> | number
+    diasTrabajados?: IntFilter<"Liquidacion"> | number
+    primaAntiguedad?: DecimalFilter<"Liquidacion"> | Decimal | DecimalJsLike | number | string
+    preaviso?: DecimalFilter<"Liquidacion"> | Decimal | DecimalJsLike | number | string
+    vacaciones?: DecimalFilter<"Liquidacion"> | Decimal | DecimalJsLike | number | string
+    decimo?: DecimalFilter<"Liquidacion"> | Decimal | DecimalJsLike | number | string
+    indemnizacion?: DecimalFilter<"Liquidacion"> | Decimal | DecimalJsLike | number | string
+    salariosPendientes?: DecimalFilter<"Liquidacion"> | Decimal | DecimalJsLike | number | string
+    totalBruto?: DecimalFilter<"Liquidacion"> | Decimal | DecimalJsLike | number | string
+    ss?: DecimalFilter<"Liquidacion"> | Decimal | DecimalJsLike | number | string
+    se?: DecimalFilter<"Liquidacion"> | Decimal | DecimalJsLike | number | string
+    isr?: DecimalFilter<"Liquidacion"> | Decimal | DecimalJsLike | number | string
+    totalDeducciones?: DecimalFilter<"Liquidacion"> | Decimal | DecimalJsLike | number | string
+    totalNeto?: DecimalFilter<"Liquidacion"> | Decimal | DecimalJsLike | number | string
+    revertedAt?: DateTimeNullableFilter<"Liquidacion"> | Date | string | null
+    revertedBy?: StringNullableFilter<"Liquidacion"> | string | null
+    notes?: StringNullableFilter<"Liquidacion"> | string | null
+    createdAt?: DateTimeFilter<"Liquidacion"> | Date | string
+    updatedAt?: DateTimeFilter<"Liquidacion"> | Date | string
+    employee?: XOR<EmployeeScalarRelationFilter, EmployeeWhereInput>
+    company?: XOR<CompanyScalarRelationFilter, CompanyWhereInput>
+  }
+
+  export type LiquidacionOrderByWithRelationInput = {
+    id?: SortOrder
+    employeeId?: SortOrder
+    companyId?: SortOrder
+    tipoTerminacion?: SortOrder
+    fechaTerminacion?: SortOrder
+    previousStatus?: SortOrder
+    salarioMensual?: SortOrder
+    anosTrabajados?: SortOrder
+    mesesTrabajados?: SortOrder
+    diasTrabajados?: SortOrder
+    primaAntiguedad?: SortOrder
+    preaviso?: SortOrder
+    vacaciones?: SortOrder
+    decimo?: SortOrder
+    indemnizacion?: SortOrder
+    salariosPendientes?: SortOrder
+    totalBruto?: SortOrder
+    ss?: SortOrder
+    se?: SortOrder
+    isr?: SortOrder
+    totalDeducciones?: SortOrder
+    totalNeto?: SortOrder
+    revertedAt?: SortOrderInput | SortOrder
+    revertedBy?: SortOrderInput | SortOrder
+    notes?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    employee?: EmployeeOrderByWithRelationInput
+    company?: CompanyOrderByWithRelationInput
+  }
+
+  export type LiquidacionWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: LiquidacionWhereInput | LiquidacionWhereInput[]
+    OR?: LiquidacionWhereInput[]
+    NOT?: LiquidacionWhereInput | LiquidacionWhereInput[]
+    employeeId?: StringFilter<"Liquidacion"> | string
+    companyId?: StringFilter<"Liquidacion"> | string
+    tipoTerminacion?: StringFilter<"Liquidacion"> | string
+    fechaTerminacion?: DateTimeFilter<"Liquidacion"> | Date | string
+    previousStatus?: StringFilter<"Liquidacion"> | string
+    salarioMensual?: DecimalFilter<"Liquidacion"> | Decimal | DecimalJsLike | number | string
+    anosTrabajados?: IntFilter<"Liquidacion"> | number
+    mesesTrabajados?: IntFilter<"Liquidacion"> | number
+    diasTrabajados?: IntFilter<"Liquidacion"> | number
+    primaAntiguedad?: DecimalFilter<"Liquidacion"> | Decimal | DecimalJsLike | number | string
+    preaviso?: DecimalFilter<"Liquidacion"> | Decimal | DecimalJsLike | number | string
+    vacaciones?: DecimalFilter<"Liquidacion"> | Decimal | DecimalJsLike | number | string
+    decimo?: DecimalFilter<"Liquidacion"> | Decimal | DecimalJsLike | number | string
+    indemnizacion?: DecimalFilter<"Liquidacion"> | Decimal | DecimalJsLike | number | string
+    salariosPendientes?: DecimalFilter<"Liquidacion"> | Decimal | DecimalJsLike | number | string
+    totalBruto?: DecimalFilter<"Liquidacion"> | Decimal | DecimalJsLike | number | string
+    ss?: DecimalFilter<"Liquidacion"> | Decimal | DecimalJsLike | number | string
+    se?: DecimalFilter<"Liquidacion"> | Decimal | DecimalJsLike | number | string
+    isr?: DecimalFilter<"Liquidacion"> | Decimal | DecimalJsLike | number | string
+    totalDeducciones?: DecimalFilter<"Liquidacion"> | Decimal | DecimalJsLike | number | string
+    totalNeto?: DecimalFilter<"Liquidacion"> | Decimal | DecimalJsLike | number | string
+    revertedAt?: DateTimeNullableFilter<"Liquidacion"> | Date | string | null
+    revertedBy?: StringNullableFilter<"Liquidacion"> | string | null
+    notes?: StringNullableFilter<"Liquidacion"> | string | null
+    createdAt?: DateTimeFilter<"Liquidacion"> | Date | string
+    updatedAt?: DateTimeFilter<"Liquidacion"> | Date | string
+    employee?: XOR<EmployeeScalarRelationFilter, EmployeeWhereInput>
+    company?: XOR<CompanyScalarRelationFilter, CompanyWhereInput>
+  }, "id">
+
+  export type LiquidacionOrderByWithAggregationInput = {
+    id?: SortOrder
+    employeeId?: SortOrder
+    companyId?: SortOrder
+    tipoTerminacion?: SortOrder
+    fechaTerminacion?: SortOrder
+    previousStatus?: SortOrder
+    salarioMensual?: SortOrder
+    anosTrabajados?: SortOrder
+    mesesTrabajados?: SortOrder
+    diasTrabajados?: SortOrder
+    primaAntiguedad?: SortOrder
+    preaviso?: SortOrder
+    vacaciones?: SortOrder
+    decimo?: SortOrder
+    indemnizacion?: SortOrder
+    salariosPendientes?: SortOrder
+    totalBruto?: SortOrder
+    ss?: SortOrder
+    se?: SortOrder
+    isr?: SortOrder
+    totalDeducciones?: SortOrder
+    totalNeto?: SortOrder
+    revertedAt?: SortOrderInput | SortOrder
+    revertedBy?: SortOrderInput | SortOrder
+    notes?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: LiquidacionCountOrderByAggregateInput
+    _avg?: LiquidacionAvgOrderByAggregateInput
+    _max?: LiquidacionMaxOrderByAggregateInput
+    _min?: LiquidacionMinOrderByAggregateInput
+    _sum?: LiquidacionSumOrderByAggregateInput
+  }
+
+  export type LiquidacionScalarWhereWithAggregatesInput = {
+    AND?: LiquidacionScalarWhereWithAggregatesInput | LiquidacionScalarWhereWithAggregatesInput[]
+    OR?: LiquidacionScalarWhereWithAggregatesInput[]
+    NOT?: LiquidacionScalarWhereWithAggregatesInput | LiquidacionScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"Liquidacion"> | string
+    employeeId?: StringWithAggregatesFilter<"Liquidacion"> | string
+    companyId?: StringWithAggregatesFilter<"Liquidacion"> | string
+    tipoTerminacion?: StringWithAggregatesFilter<"Liquidacion"> | string
+    fechaTerminacion?: DateTimeWithAggregatesFilter<"Liquidacion"> | Date | string
+    previousStatus?: StringWithAggregatesFilter<"Liquidacion"> | string
+    salarioMensual?: DecimalWithAggregatesFilter<"Liquidacion"> | Decimal | DecimalJsLike | number | string
+    anosTrabajados?: IntWithAggregatesFilter<"Liquidacion"> | number
+    mesesTrabajados?: IntWithAggregatesFilter<"Liquidacion"> | number
+    diasTrabajados?: IntWithAggregatesFilter<"Liquidacion"> | number
+    primaAntiguedad?: DecimalWithAggregatesFilter<"Liquidacion"> | Decimal | DecimalJsLike | number | string
+    preaviso?: DecimalWithAggregatesFilter<"Liquidacion"> | Decimal | DecimalJsLike | number | string
+    vacaciones?: DecimalWithAggregatesFilter<"Liquidacion"> | Decimal | DecimalJsLike | number | string
+    decimo?: DecimalWithAggregatesFilter<"Liquidacion"> | Decimal | DecimalJsLike | number | string
+    indemnizacion?: DecimalWithAggregatesFilter<"Liquidacion"> | Decimal | DecimalJsLike | number | string
+    salariosPendientes?: DecimalWithAggregatesFilter<"Liquidacion"> | Decimal | DecimalJsLike | number | string
+    totalBruto?: DecimalWithAggregatesFilter<"Liquidacion"> | Decimal | DecimalJsLike | number | string
+    ss?: DecimalWithAggregatesFilter<"Liquidacion"> | Decimal | DecimalJsLike | number | string
+    se?: DecimalWithAggregatesFilter<"Liquidacion"> | Decimal | DecimalJsLike | number | string
+    isr?: DecimalWithAggregatesFilter<"Liquidacion"> | Decimal | DecimalJsLike | number | string
+    totalDeducciones?: DecimalWithAggregatesFilter<"Liquidacion"> | Decimal | DecimalJsLike | number | string
+    totalNeto?: DecimalWithAggregatesFilter<"Liquidacion"> | Decimal | DecimalJsLike | number | string
+    revertedAt?: DateTimeNullableWithAggregatesFilter<"Liquidacion"> | Date | string | null
+    revertedBy?: StringNullableWithAggregatesFilter<"Liquidacion"> | string | null
+    notes?: StringNullableWithAggregatesFilter<"Liquidacion"> | string | null
+    createdAt?: DateTimeWithAggregatesFilter<"Liquidacion"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"Liquidacion"> | Date | string
+  }
+
   export type LegalParameterWhereInput = {
     AND?: LegalParameterWhereInput | LegalParameterWhereInput[]
     OR?: LegalParameterWhereInput[]
@@ -27670,6 +29490,7 @@ export namespace Prisma {
     leaves?: LeaveCreateNestedManyWithoutCompanyInput
     payrollRuns?: PayrollRunCreateNestedManyWithoutCompanyInput
     decimoPayments?: DecimoPaymentCreateNestedManyWithoutCompanyInput
+    liquidaciones?: LiquidacionCreateNestedManyWithoutCompanyInput
   }
 
   export type CompanyUncheckedCreateInput = {
@@ -27695,6 +29516,7 @@ export namespace Prisma {
     leaves?: LeaveUncheckedCreateNestedManyWithoutCompanyInput
     payrollRuns?: PayrollRunUncheckedCreateNestedManyWithoutCompanyInput
     decimoPayments?: DecimoPaymentUncheckedCreateNestedManyWithoutCompanyInput
+    liquidaciones?: LiquidacionUncheckedCreateNestedManyWithoutCompanyInput
   }
 
   export type CompanyUpdateInput = {
@@ -27720,6 +29542,7 @@ export namespace Prisma {
     leaves?: LeaveUpdateManyWithoutCompanyNestedInput
     payrollRuns?: PayrollRunUpdateManyWithoutCompanyNestedInput
     decimoPayments?: DecimoPaymentUpdateManyWithoutCompanyNestedInput
+    liquidaciones?: LiquidacionUpdateManyWithoutCompanyNestedInput
   }
 
   export type CompanyUncheckedUpdateInput = {
@@ -27745,6 +29568,7 @@ export namespace Prisma {
     leaves?: LeaveUncheckedUpdateManyWithoutCompanyNestedInput
     payrollRuns?: PayrollRunUncheckedUpdateManyWithoutCompanyNestedInput
     decimoPayments?: DecimoPaymentUncheckedUpdateManyWithoutCompanyNestedInput
+    liquidaciones?: LiquidacionUncheckedUpdateManyWithoutCompanyNestedInput
   }
 
   export type CompanyCreateManyInput = {
@@ -27956,6 +29780,7 @@ export namespace Prisma {
     leaves?: LeaveCreateNestedManyWithoutEmployeeInput
     recurringDeductions?: EmployeeRecurringDeductionCreateNestedManyWithoutEmployeeInput
     salaryHistory?: SalaryHistoryCreateNestedManyWithoutEmployeeInput
+    liquidaciones?: LiquidacionCreateNestedManyWithoutEmployeeInput
   }
 
   export type EmployeeUncheckedCreateInput = {
@@ -27987,6 +29812,7 @@ export namespace Prisma {
     leaves?: LeaveUncheckedCreateNestedManyWithoutEmployeeInput
     recurringDeductions?: EmployeeRecurringDeductionUncheckedCreateNestedManyWithoutEmployeeInput
     salaryHistory?: SalaryHistoryUncheckedCreateNestedManyWithoutEmployeeInput
+    liquidaciones?: LiquidacionUncheckedCreateNestedManyWithoutEmployeeInput
   }
 
   export type EmployeeUpdateInput = {
@@ -28018,6 +29844,7 @@ export namespace Prisma {
     leaves?: LeaveUpdateManyWithoutEmployeeNestedInput
     recurringDeductions?: EmployeeRecurringDeductionUpdateManyWithoutEmployeeNestedInput
     salaryHistory?: SalaryHistoryUpdateManyWithoutEmployeeNestedInput
+    liquidaciones?: LiquidacionUpdateManyWithoutEmployeeNestedInput
   }
 
   export type EmployeeUncheckedUpdateInput = {
@@ -28049,6 +29876,7 @@ export namespace Prisma {
     leaves?: LeaveUncheckedUpdateManyWithoutEmployeeNestedInput
     recurringDeductions?: EmployeeRecurringDeductionUncheckedUpdateManyWithoutEmployeeNestedInput
     salaryHistory?: SalaryHistoryUncheckedUpdateManyWithoutEmployeeNestedInput
+    liquidaciones?: LiquidacionUncheckedUpdateManyWithoutEmployeeNestedInput
   }
 
   export type EmployeeCreateManyInput = {
@@ -28946,6 +30774,214 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type LiquidacionCreateInput = {
+    id?: string
+    tipoTerminacion: string
+    fechaTerminacion: Date | string
+    previousStatus: string
+    salarioMensual: Decimal | DecimalJsLike | number | string
+    anosTrabajados: number
+    mesesTrabajados: number
+    diasTrabajados: number
+    primaAntiguedad?: Decimal | DecimalJsLike | number | string
+    preaviso?: Decimal | DecimalJsLike | number | string
+    vacaciones?: Decimal | DecimalJsLike | number | string
+    decimo?: Decimal | DecimalJsLike | number | string
+    indemnizacion?: Decimal | DecimalJsLike | number | string
+    salariosPendientes?: Decimal | DecimalJsLike | number | string
+    totalBruto?: Decimal | DecimalJsLike | number | string
+    ss?: Decimal | DecimalJsLike | number | string
+    se?: Decimal | DecimalJsLike | number | string
+    isr?: Decimal | DecimalJsLike | number | string
+    totalDeducciones?: Decimal | DecimalJsLike | number | string
+    totalNeto?: Decimal | DecimalJsLike | number | string
+    revertedAt?: Date | string | null
+    revertedBy?: string | null
+    notes?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    employee: EmployeeCreateNestedOneWithoutLiquidacionesInput
+    company: CompanyCreateNestedOneWithoutLiquidacionesInput
+  }
+
+  export type LiquidacionUncheckedCreateInput = {
+    id?: string
+    employeeId: string
+    companyId: string
+    tipoTerminacion: string
+    fechaTerminacion: Date | string
+    previousStatus: string
+    salarioMensual: Decimal | DecimalJsLike | number | string
+    anosTrabajados: number
+    mesesTrabajados: number
+    diasTrabajados: number
+    primaAntiguedad?: Decimal | DecimalJsLike | number | string
+    preaviso?: Decimal | DecimalJsLike | number | string
+    vacaciones?: Decimal | DecimalJsLike | number | string
+    decimo?: Decimal | DecimalJsLike | number | string
+    indemnizacion?: Decimal | DecimalJsLike | number | string
+    salariosPendientes?: Decimal | DecimalJsLike | number | string
+    totalBruto?: Decimal | DecimalJsLike | number | string
+    ss?: Decimal | DecimalJsLike | number | string
+    se?: Decimal | DecimalJsLike | number | string
+    isr?: Decimal | DecimalJsLike | number | string
+    totalDeducciones?: Decimal | DecimalJsLike | number | string
+    totalNeto?: Decimal | DecimalJsLike | number | string
+    revertedAt?: Date | string | null
+    revertedBy?: string | null
+    notes?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type LiquidacionUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    tipoTerminacion?: StringFieldUpdateOperationsInput | string
+    fechaTerminacion?: DateTimeFieldUpdateOperationsInput | Date | string
+    previousStatus?: StringFieldUpdateOperationsInput | string
+    salarioMensual?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    anosTrabajados?: IntFieldUpdateOperationsInput | number
+    mesesTrabajados?: IntFieldUpdateOperationsInput | number
+    diasTrabajados?: IntFieldUpdateOperationsInput | number
+    primaAntiguedad?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    preaviso?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    vacaciones?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    decimo?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    indemnizacion?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    salariosPendientes?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    totalBruto?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    ss?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    se?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    isr?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    totalDeducciones?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    totalNeto?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    revertedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    revertedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    employee?: EmployeeUpdateOneRequiredWithoutLiquidacionesNestedInput
+    company?: CompanyUpdateOneRequiredWithoutLiquidacionesNestedInput
+  }
+
+  export type LiquidacionUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    employeeId?: StringFieldUpdateOperationsInput | string
+    companyId?: StringFieldUpdateOperationsInput | string
+    tipoTerminacion?: StringFieldUpdateOperationsInput | string
+    fechaTerminacion?: DateTimeFieldUpdateOperationsInput | Date | string
+    previousStatus?: StringFieldUpdateOperationsInput | string
+    salarioMensual?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    anosTrabajados?: IntFieldUpdateOperationsInput | number
+    mesesTrabajados?: IntFieldUpdateOperationsInput | number
+    diasTrabajados?: IntFieldUpdateOperationsInput | number
+    primaAntiguedad?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    preaviso?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    vacaciones?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    decimo?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    indemnizacion?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    salariosPendientes?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    totalBruto?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    ss?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    se?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    isr?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    totalDeducciones?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    totalNeto?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    revertedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    revertedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type LiquidacionCreateManyInput = {
+    id?: string
+    employeeId: string
+    companyId: string
+    tipoTerminacion: string
+    fechaTerminacion: Date | string
+    previousStatus: string
+    salarioMensual: Decimal | DecimalJsLike | number | string
+    anosTrabajados: number
+    mesesTrabajados: number
+    diasTrabajados: number
+    primaAntiguedad?: Decimal | DecimalJsLike | number | string
+    preaviso?: Decimal | DecimalJsLike | number | string
+    vacaciones?: Decimal | DecimalJsLike | number | string
+    decimo?: Decimal | DecimalJsLike | number | string
+    indemnizacion?: Decimal | DecimalJsLike | number | string
+    salariosPendientes?: Decimal | DecimalJsLike | number | string
+    totalBruto?: Decimal | DecimalJsLike | number | string
+    ss?: Decimal | DecimalJsLike | number | string
+    se?: Decimal | DecimalJsLike | number | string
+    isr?: Decimal | DecimalJsLike | number | string
+    totalDeducciones?: Decimal | DecimalJsLike | number | string
+    totalNeto?: Decimal | DecimalJsLike | number | string
+    revertedAt?: Date | string | null
+    revertedBy?: string | null
+    notes?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type LiquidacionUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    tipoTerminacion?: StringFieldUpdateOperationsInput | string
+    fechaTerminacion?: DateTimeFieldUpdateOperationsInput | Date | string
+    previousStatus?: StringFieldUpdateOperationsInput | string
+    salarioMensual?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    anosTrabajados?: IntFieldUpdateOperationsInput | number
+    mesesTrabajados?: IntFieldUpdateOperationsInput | number
+    diasTrabajados?: IntFieldUpdateOperationsInput | number
+    primaAntiguedad?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    preaviso?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    vacaciones?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    decimo?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    indemnizacion?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    salariosPendientes?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    totalBruto?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    ss?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    se?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    isr?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    totalDeducciones?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    totalNeto?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    revertedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    revertedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type LiquidacionUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    employeeId?: StringFieldUpdateOperationsInput | string
+    companyId?: StringFieldUpdateOperationsInput | string
+    tipoTerminacion?: StringFieldUpdateOperationsInput | string
+    fechaTerminacion?: DateTimeFieldUpdateOperationsInput | Date | string
+    previousStatus?: StringFieldUpdateOperationsInput | string
+    salarioMensual?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    anosTrabajados?: IntFieldUpdateOperationsInput | number
+    mesesTrabajados?: IntFieldUpdateOperationsInput | number
+    diasTrabajados?: IntFieldUpdateOperationsInput | number
+    primaAntiguedad?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    preaviso?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    vacaciones?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    decimo?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    indemnizacion?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    salariosPendientes?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    totalBruto?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    ss?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    se?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    isr?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    totalDeducciones?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    totalNeto?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    revertedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    revertedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type LegalParameterCreateInput = {
     id?: string
     key: $Enums.LegalParameterKey
@@ -29713,6 +31749,12 @@ export namespace Prisma {
     none?: DecimoPaymentWhereInput
   }
 
+  export type LiquidacionListRelationFilter = {
+    every?: LiquidacionWhereInput
+    some?: LiquidacionWhereInput
+    none?: LiquidacionWhereInput
+  }
+
   export type LegalDecimoParameterOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
@@ -29746,6 +31788,10 @@ export namespace Prisma {
   }
 
   export type DecimoPaymentOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type LiquidacionOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -30770,6 +32816,134 @@ export namespace Prisma {
     _max?: NestedEnumLeaveStatusFilter<$PrismaModel>
   }
 
+  export type LiquidacionCountOrderByAggregateInput = {
+    id?: SortOrder
+    employeeId?: SortOrder
+    companyId?: SortOrder
+    tipoTerminacion?: SortOrder
+    fechaTerminacion?: SortOrder
+    previousStatus?: SortOrder
+    salarioMensual?: SortOrder
+    anosTrabajados?: SortOrder
+    mesesTrabajados?: SortOrder
+    diasTrabajados?: SortOrder
+    primaAntiguedad?: SortOrder
+    preaviso?: SortOrder
+    vacaciones?: SortOrder
+    decimo?: SortOrder
+    indemnizacion?: SortOrder
+    salariosPendientes?: SortOrder
+    totalBruto?: SortOrder
+    ss?: SortOrder
+    se?: SortOrder
+    isr?: SortOrder
+    totalDeducciones?: SortOrder
+    totalNeto?: SortOrder
+    revertedAt?: SortOrder
+    revertedBy?: SortOrder
+    notes?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type LiquidacionAvgOrderByAggregateInput = {
+    salarioMensual?: SortOrder
+    anosTrabajados?: SortOrder
+    mesesTrabajados?: SortOrder
+    diasTrabajados?: SortOrder
+    primaAntiguedad?: SortOrder
+    preaviso?: SortOrder
+    vacaciones?: SortOrder
+    decimo?: SortOrder
+    indemnizacion?: SortOrder
+    salariosPendientes?: SortOrder
+    totalBruto?: SortOrder
+    ss?: SortOrder
+    se?: SortOrder
+    isr?: SortOrder
+    totalDeducciones?: SortOrder
+    totalNeto?: SortOrder
+  }
+
+  export type LiquidacionMaxOrderByAggregateInput = {
+    id?: SortOrder
+    employeeId?: SortOrder
+    companyId?: SortOrder
+    tipoTerminacion?: SortOrder
+    fechaTerminacion?: SortOrder
+    previousStatus?: SortOrder
+    salarioMensual?: SortOrder
+    anosTrabajados?: SortOrder
+    mesesTrabajados?: SortOrder
+    diasTrabajados?: SortOrder
+    primaAntiguedad?: SortOrder
+    preaviso?: SortOrder
+    vacaciones?: SortOrder
+    decimo?: SortOrder
+    indemnizacion?: SortOrder
+    salariosPendientes?: SortOrder
+    totalBruto?: SortOrder
+    ss?: SortOrder
+    se?: SortOrder
+    isr?: SortOrder
+    totalDeducciones?: SortOrder
+    totalNeto?: SortOrder
+    revertedAt?: SortOrder
+    revertedBy?: SortOrder
+    notes?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type LiquidacionMinOrderByAggregateInput = {
+    id?: SortOrder
+    employeeId?: SortOrder
+    companyId?: SortOrder
+    tipoTerminacion?: SortOrder
+    fechaTerminacion?: SortOrder
+    previousStatus?: SortOrder
+    salarioMensual?: SortOrder
+    anosTrabajados?: SortOrder
+    mesesTrabajados?: SortOrder
+    diasTrabajados?: SortOrder
+    primaAntiguedad?: SortOrder
+    preaviso?: SortOrder
+    vacaciones?: SortOrder
+    decimo?: SortOrder
+    indemnizacion?: SortOrder
+    salariosPendientes?: SortOrder
+    totalBruto?: SortOrder
+    ss?: SortOrder
+    se?: SortOrder
+    isr?: SortOrder
+    totalDeducciones?: SortOrder
+    totalNeto?: SortOrder
+    revertedAt?: SortOrder
+    revertedBy?: SortOrder
+    notes?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type LiquidacionSumOrderByAggregateInput = {
+    salarioMensual?: SortOrder
+    anosTrabajados?: SortOrder
+    mesesTrabajados?: SortOrder
+    diasTrabajados?: SortOrder
+    primaAntiguedad?: SortOrder
+    preaviso?: SortOrder
+    vacaciones?: SortOrder
+    decimo?: SortOrder
+    indemnizacion?: SortOrder
+    salariosPendientes?: SortOrder
+    totalBruto?: SortOrder
+    ss?: SortOrder
+    se?: SortOrder
+    isr?: SortOrder
+    totalDeducciones?: SortOrder
+    totalNeto?: SortOrder
+  }
+
   export type EnumLegalParameterKeyFilter<$PrismaModel = never> = {
     equals?: $Enums.LegalParameterKey | EnumLegalParameterKeyFieldRefInput<$PrismaModel>
     in?: $Enums.LegalParameterKey[] | ListEnumLegalParameterKeyFieldRefInput<$PrismaModel>
@@ -31413,6 +33587,13 @@ export namespace Prisma {
     connect?: DecimoPaymentWhereUniqueInput | DecimoPaymentWhereUniqueInput[]
   }
 
+  export type LiquidacionCreateNestedManyWithoutCompanyInput = {
+    create?: XOR<LiquidacionCreateWithoutCompanyInput, LiquidacionUncheckedCreateWithoutCompanyInput> | LiquidacionCreateWithoutCompanyInput[] | LiquidacionUncheckedCreateWithoutCompanyInput[]
+    connectOrCreate?: LiquidacionCreateOrConnectWithoutCompanyInput | LiquidacionCreateOrConnectWithoutCompanyInput[]
+    createMany?: LiquidacionCreateManyCompanyInputEnvelope
+    connect?: LiquidacionWhereUniqueInput | LiquidacionWhereUniqueInput[]
+  }
+
   export type LegalDecimoParameterUncheckedCreateNestedManyWithoutCompanyInput = {
     create?: XOR<LegalDecimoParameterCreateWithoutCompanyInput, LegalDecimoParameterUncheckedCreateWithoutCompanyInput> | LegalDecimoParameterCreateWithoutCompanyInput[] | LegalDecimoParameterUncheckedCreateWithoutCompanyInput[]
     connectOrCreate?: LegalDecimoParameterCreateOrConnectWithoutCompanyInput | LegalDecimoParameterCreateOrConnectWithoutCompanyInput[]
@@ -31481,6 +33662,13 @@ export namespace Prisma {
     connectOrCreate?: DecimoPaymentCreateOrConnectWithoutCompanyInput | DecimoPaymentCreateOrConnectWithoutCompanyInput[]
     createMany?: DecimoPaymentCreateManyCompanyInputEnvelope
     connect?: DecimoPaymentWhereUniqueInput | DecimoPaymentWhereUniqueInput[]
+  }
+
+  export type LiquidacionUncheckedCreateNestedManyWithoutCompanyInput = {
+    create?: XOR<LiquidacionCreateWithoutCompanyInput, LiquidacionUncheckedCreateWithoutCompanyInput> | LiquidacionCreateWithoutCompanyInput[] | LiquidacionUncheckedCreateWithoutCompanyInput[]
+    connectOrCreate?: LiquidacionCreateOrConnectWithoutCompanyInput | LiquidacionCreateOrConnectWithoutCompanyInput[]
+    createMany?: LiquidacionCreateManyCompanyInputEnvelope
+    connect?: LiquidacionWhereUniqueInput | LiquidacionWhereUniqueInput[]
   }
 
   export type LegalDecimoParameterUpdateManyWithoutCompanyNestedInput = {
@@ -31633,6 +33821,20 @@ export namespace Prisma {
     deleteMany?: DecimoPaymentScalarWhereInput | DecimoPaymentScalarWhereInput[]
   }
 
+  export type LiquidacionUpdateManyWithoutCompanyNestedInput = {
+    create?: XOR<LiquidacionCreateWithoutCompanyInput, LiquidacionUncheckedCreateWithoutCompanyInput> | LiquidacionCreateWithoutCompanyInput[] | LiquidacionUncheckedCreateWithoutCompanyInput[]
+    connectOrCreate?: LiquidacionCreateOrConnectWithoutCompanyInput | LiquidacionCreateOrConnectWithoutCompanyInput[]
+    upsert?: LiquidacionUpsertWithWhereUniqueWithoutCompanyInput | LiquidacionUpsertWithWhereUniqueWithoutCompanyInput[]
+    createMany?: LiquidacionCreateManyCompanyInputEnvelope
+    set?: LiquidacionWhereUniqueInput | LiquidacionWhereUniqueInput[]
+    disconnect?: LiquidacionWhereUniqueInput | LiquidacionWhereUniqueInput[]
+    delete?: LiquidacionWhereUniqueInput | LiquidacionWhereUniqueInput[]
+    connect?: LiquidacionWhereUniqueInput | LiquidacionWhereUniqueInput[]
+    update?: LiquidacionUpdateWithWhereUniqueWithoutCompanyInput | LiquidacionUpdateWithWhereUniqueWithoutCompanyInput[]
+    updateMany?: LiquidacionUpdateManyWithWhereWithoutCompanyInput | LiquidacionUpdateManyWithWhereWithoutCompanyInput[]
+    deleteMany?: LiquidacionScalarWhereInput | LiquidacionScalarWhereInput[]
+  }
+
   export type LegalDecimoParameterUncheckedUpdateManyWithoutCompanyNestedInput = {
     create?: XOR<LegalDecimoParameterCreateWithoutCompanyInput, LegalDecimoParameterUncheckedCreateWithoutCompanyInput> | LegalDecimoParameterCreateWithoutCompanyInput[] | LegalDecimoParameterUncheckedCreateWithoutCompanyInput[]
     connectOrCreate?: LegalDecimoParameterCreateOrConnectWithoutCompanyInput | LegalDecimoParameterCreateOrConnectWithoutCompanyInput[]
@@ -31773,6 +33975,20 @@ export namespace Prisma {
     deleteMany?: DecimoPaymentScalarWhereInput | DecimoPaymentScalarWhereInput[]
   }
 
+  export type LiquidacionUncheckedUpdateManyWithoutCompanyNestedInput = {
+    create?: XOR<LiquidacionCreateWithoutCompanyInput, LiquidacionUncheckedCreateWithoutCompanyInput> | LiquidacionCreateWithoutCompanyInput[] | LiquidacionUncheckedCreateWithoutCompanyInput[]
+    connectOrCreate?: LiquidacionCreateOrConnectWithoutCompanyInput | LiquidacionCreateOrConnectWithoutCompanyInput[]
+    upsert?: LiquidacionUpsertWithWhereUniqueWithoutCompanyInput | LiquidacionUpsertWithWhereUniqueWithoutCompanyInput[]
+    createMany?: LiquidacionCreateManyCompanyInputEnvelope
+    set?: LiquidacionWhereUniqueInput | LiquidacionWhereUniqueInput[]
+    disconnect?: LiquidacionWhereUniqueInput | LiquidacionWhereUniqueInput[]
+    delete?: LiquidacionWhereUniqueInput | LiquidacionWhereUniqueInput[]
+    connect?: LiquidacionWhereUniqueInput | LiquidacionWhereUniqueInput[]
+    update?: LiquidacionUpdateWithWhereUniqueWithoutCompanyInput | LiquidacionUpdateWithWhereUniqueWithoutCompanyInput[]
+    updateMany?: LiquidacionUpdateManyWithWhereWithoutCompanyInput | LiquidacionUpdateManyWithWhereWithoutCompanyInput[]
+    deleteMany?: LiquidacionScalarWhereInput | LiquidacionScalarWhereInput[]
+  }
+
   export type CompanyCreateNestedOneWithoutDepartmentsInput = {
     create?: XOR<CompanyCreateWithoutDepartmentsInput, CompanyUncheckedCreateWithoutDepartmentsInput>
     connectOrCreate?: CompanyCreateOrConnectWithoutDepartmentsInput
@@ -31890,6 +34106,13 @@ export namespace Prisma {
     connect?: SalaryHistoryWhereUniqueInput | SalaryHistoryWhereUniqueInput[]
   }
 
+  export type LiquidacionCreateNestedManyWithoutEmployeeInput = {
+    create?: XOR<LiquidacionCreateWithoutEmployeeInput, LiquidacionUncheckedCreateWithoutEmployeeInput> | LiquidacionCreateWithoutEmployeeInput[] | LiquidacionUncheckedCreateWithoutEmployeeInput[]
+    connectOrCreate?: LiquidacionCreateOrConnectWithoutEmployeeInput | LiquidacionCreateOrConnectWithoutEmployeeInput[]
+    createMany?: LiquidacionCreateManyEmployeeInputEnvelope
+    connect?: LiquidacionWhereUniqueInput | LiquidacionWhereUniqueInput[]
+  }
+
   export type PayrollUncheckedCreateNestedManyWithoutEmployeeInput = {
     create?: XOR<PayrollCreateWithoutEmployeeInput, PayrollUncheckedCreateWithoutEmployeeInput> | PayrollCreateWithoutEmployeeInput[] | PayrollUncheckedCreateWithoutEmployeeInput[]
     connectOrCreate?: PayrollCreateOrConnectWithoutEmployeeInput | PayrollCreateOrConnectWithoutEmployeeInput[]
@@ -31937,6 +34160,13 @@ export namespace Prisma {
     connectOrCreate?: SalaryHistoryCreateOrConnectWithoutEmployeeInput | SalaryHistoryCreateOrConnectWithoutEmployeeInput[]
     createMany?: SalaryHistoryCreateManyEmployeeInputEnvelope
     connect?: SalaryHistoryWhereUniqueInput | SalaryHistoryWhereUniqueInput[]
+  }
+
+  export type LiquidacionUncheckedCreateNestedManyWithoutEmployeeInput = {
+    create?: XOR<LiquidacionCreateWithoutEmployeeInput, LiquidacionUncheckedCreateWithoutEmployeeInput> | LiquidacionCreateWithoutEmployeeInput[] | LiquidacionUncheckedCreateWithoutEmployeeInput[]
+    connectOrCreate?: LiquidacionCreateOrConnectWithoutEmployeeInput | LiquidacionCreateOrConnectWithoutEmployeeInput[]
+    createMany?: LiquidacionCreateManyEmployeeInputEnvelope
+    connect?: LiquidacionWhereUniqueInput | LiquidacionWhereUniqueInput[]
   }
 
   export type DecimalFieldUpdateOperationsInput = {
@@ -32075,6 +34305,20 @@ export namespace Prisma {
     deleteMany?: SalaryHistoryScalarWhereInput | SalaryHistoryScalarWhereInput[]
   }
 
+  export type LiquidacionUpdateManyWithoutEmployeeNestedInput = {
+    create?: XOR<LiquidacionCreateWithoutEmployeeInput, LiquidacionUncheckedCreateWithoutEmployeeInput> | LiquidacionCreateWithoutEmployeeInput[] | LiquidacionUncheckedCreateWithoutEmployeeInput[]
+    connectOrCreate?: LiquidacionCreateOrConnectWithoutEmployeeInput | LiquidacionCreateOrConnectWithoutEmployeeInput[]
+    upsert?: LiquidacionUpsertWithWhereUniqueWithoutEmployeeInput | LiquidacionUpsertWithWhereUniqueWithoutEmployeeInput[]
+    createMany?: LiquidacionCreateManyEmployeeInputEnvelope
+    set?: LiquidacionWhereUniqueInput | LiquidacionWhereUniqueInput[]
+    disconnect?: LiquidacionWhereUniqueInput | LiquidacionWhereUniqueInput[]
+    delete?: LiquidacionWhereUniqueInput | LiquidacionWhereUniqueInput[]
+    connect?: LiquidacionWhereUniqueInput | LiquidacionWhereUniqueInput[]
+    update?: LiquidacionUpdateWithWhereUniqueWithoutEmployeeInput | LiquidacionUpdateWithWhereUniqueWithoutEmployeeInput[]
+    updateMany?: LiquidacionUpdateManyWithWhereWithoutEmployeeInput | LiquidacionUpdateManyWithWhereWithoutEmployeeInput[]
+    deleteMany?: LiquidacionScalarWhereInput | LiquidacionScalarWhereInput[]
+  }
+
   export type PayrollUncheckedUpdateManyWithoutEmployeeNestedInput = {
     create?: XOR<PayrollCreateWithoutEmployeeInput, PayrollUncheckedCreateWithoutEmployeeInput> | PayrollCreateWithoutEmployeeInput[] | PayrollUncheckedCreateWithoutEmployeeInput[]
     connectOrCreate?: PayrollCreateOrConnectWithoutEmployeeInput | PayrollCreateOrConnectWithoutEmployeeInput[]
@@ -32171,6 +34415,20 @@ export namespace Prisma {
     update?: SalaryHistoryUpdateWithWhereUniqueWithoutEmployeeInput | SalaryHistoryUpdateWithWhereUniqueWithoutEmployeeInput[]
     updateMany?: SalaryHistoryUpdateManyWithWhereWithoutEmployeeInput | SalaryHistoryUpdateManyWithWhereWithoutEmployeeInput[]
     deleteMany?: SalaryHistoryScalarWhereInput | SalaryHistoryScalarWhereInput[]
+  }
+
+  export type LiquidacionUncheckedUpdateManyWithoutEmployeeNestedInput = {
+    create?: XOR<LiquidacionCreateWithoutEmployeeInput, LiquidacionUncheckedCreateWithoutEmployeeInput> | LiquidacionCreateWithoutEmployeeInput[] | LiquidacionUncheckedCreateWithoutEmployeeInput[]
+    connectOrCreate?: LiquidacionCreateOrConnectWithoutEmployeeInput | LiquidacionCreateOrConnectWithoutEmployeeInput[]
+    upsert?: LiquidacionUpsertWithWhereUniqueWithoutEmployeeInput | LiquidacionUpsertWithWhereUniqueWithoutEmployeeInput[]
+    createMany?: LiquidacionCreateManyEmployeeInputEnvelope
+    set?: LiquidacionWhereUniqueInput | LiquidacionWhereUniqueInput[]
+    disconnect?: LiquidacionWhereUniqueInput | LiquidacionWhereUniqueInput[]
+    delete?: LiquidacionWhereUniqueInput | LiquidacionWhereUniqueInput[]
+    connect?: LiquidacionWhereUniqueInput | LiquidacionWhereUniqueInput[]
+    update?: LiquidacionUpdateWithWhereUniqueWithoutEmployeeInput | LiquidacionUpdateWithWhereUniqueWithoutEmployeeInput[]
+    updateMany?: LiquidacionUpdateManyWithWhereWithoutEmployeeInput | LiquidacionUpdateManyWithWhereWithoutEmployeeInput[]
+    deleteMany?: LiquidacionScalarWhereInput | LiquidacionScalarWhereInput[]
   }
 
   export type EmployeeCreateNestedOneWithoutRecurringDeductionsInput = {
@@ -32545,6 +34803,34 @@ export namespace Prisma {
     upsert?: CompanyUpsertWithoutLeavesInput
     connect?: CompanyWhereUniqueInput
     update?: XOR<XOR<CompanyUpdateToOneWithWhereWithoutLeavesInput, CompanyUpdateWithoutLeavesInput>, CompanyUncheckedUpdateWithoutLeavesInput>
+  }
+
+  export type EmployeeCreateNestedOneWithoutLiquidacionesInput = {
+    create?: XOR<EmployeeCreateWithoutLiquidacionesInput, EmployeeUncheckedCreateWithoutLiquidacionesInput>
+    connectOrCreate?: EmployeeCreateOrConnectWithoutLiquidacionesInput
+    connect?: EmployeeWhereUniqueInput
+  }
+
+  export type CompanyCreateNestedOneWithoutLiquidacionesInput = {
+    create?: XOR<CompanyCreateWithoutLiquidacionesInput, CompanyUncheckedCreateWithoutLiquidacionesInput>
+    connectOrCreate?: CompanyCreateOrConnectWithoutLiquidacionesInput
+    connect?: CompanyWhereUniqueInput
+  }
+
+  export type EmployeeUpdateOneRequiredWithoutLiquidacionesNestedInput = {
+    create?: XOR<EmployeeCreateWithoutLiquidacionesInput, EmployeeUncheckedCreateWithoutLiquidacionesInput>
+    connectOrCreate?: EmployeeCreateOrConnectWithoutLiquidacionesInput
+    upsert?: EmployeeUpsertWithoutLiquidacionesInput
+    connect?: EmployeeWhereUniqueInput
+    update?: XOR<XOR<EmployeeUpdateToOneWithWhereWithoutLiquidacionesInput, EmployeeUpdateWithoutLiquidacionesInput>, EmployeeUncheckedUpdateWithoutLiquidacionesInput>
+  }
+
+  export type CompanyUpdateOneRequiredWithoutLiquidacionesNestedInput = {
+    create?: XOR<CompanyCreateWithoutLiquidacionesInput, CompanyUncheckedCreateWithoutLiquidacionesInput>
+    connectOrCreate?: CompanyCreateOrConnectWithoutLiquidacionesInput
+    upsert?: CompanyUpsertWithoutLiquidacionesInput
+    connect?: CompanyWhereUniqueInput
+    update?: XOR<XOR<CompanyUpdateToOneWithWhereWithoutLiquidacionesInput, CompanyUpdateWithoutLiquidacionesInput>, CompanyUncheckedUpdateWithoutLiquidacionesInput>
   }
 
   export type CompanyCreateNestedOneWithoutLegalParametersInput = {
@@ -33227,6 +35513,7 @@ export namespace Prisma {
     leaves?: LeaveCreateNestedManyWithoutCompanyInput
     payrollRuns?: PayrollRunCreateNestedManyWithoutCompanyInput
     decimoPayments?: DecimoPaymentCreateNestedManyWithoutCompanyInput
+    liquidaciones?: LiquidacionCreateNestedManyWithoutCompanyInput
   }
 
   export type CompanyUncheckedCreateWithoutCreatedByInput = {
@@ -33251,6 +35538,7 @@ export namespace Prisma {
     leaves?: LeaveUncheckedCreateNestedManyWithoutCompanyInput
     payrollRuns?: PayrollRunUncheckedCreateNestedManyWithoutCompanyInput
     decimoPayments?: DecimoPaymentUncheckedCreateNestedManyWithoutCompanyInput
+    liquidaciones?: LiquidacionUncheckedCreateNestedManyWithoutCompanyInput
   }
 
   export type CompanyCreateOrConnectWithoutCreatedByInput = {
@@ -33328,6 +35616,7 @@ export namespace Prisma {
     leaves?: LeaveCreateNestedManyWithoutEmployeeInput
     recurringDeductions?: EmployeeRecurringDeductionCreateNestedManyWithoutEmployeeInput
     salaryHistory?: SalaryHistoryCreateNestedManyWithoutEmployeeInput
+    liquidaciones?: LiquidacionCreateNestedManyWithoutEmployeeInput
   }
 
   export type EmployeeUncheckedCreateWithoutUserInput = {
@@ -33358,6 +35647,7 @@ export namespace Prisma {
     leaves?: LeaveUncheckedCreateNestedManyWithoutEmployeeInput
     recurringDeductions?: EmployeeRecurringDeductionUncheckedCreateNestedManyWithoutEmployeeInput
     salaryHistory?: SalaryHistoryUncheckedCreateNestedManyWithoutEmployeeInput
+    liquidaciones?: LiquidacionUncheckedCreateNestedManyWithoutEmployeeInput
   }
 
   export type EmployeeCreateOrConnectWithoutUserInput = {
@@ -33505,6 +35795,7 @@ export namespace Prisma {
     leaves?: LeaveUpdateManyWithoutEmployeeNestedInput
     recurringDeductions?: EmployeeRecurringDeductionUpdateManyWithoutEmployeeNestedInput
     salaryHistory?: SalaryHistoryUpdateManyWithoutEmployeeNestedInput
+    liquidaciones?: LiquidacionUpdateManyWithoutEmployeeNestedInput
   }
 
   export type EmployeeUncheckedUpdateWithoutUserInput = {
@@ -33535,6 +35826,7 @@ export namespace Prisma {
     leaves?: LeaveUncheckedUpdateManyWithoutEmployeeNestedInput
     recurringDeductions?: EmployeeRecurringDeductionUncheckedUpdateManyWithoutEmployeeNestedInput
     salaryHistory?: SalaryHistoryUncheckedUpdateManyWithoutEmployeeNestedInput
+    liquidaciones?: LiquidacionUncheckedUpdateManyWithoutEmployeeNestedInput
   }
 
   export type UserCreateWithoutCompaniesInput = {
@@ -33592,6 +35884,7 @@ export namespace Prisma {
     leaves?: LeaveCreateNestedManyWithoutCompanyInput
     payrollRuns?: PayrollRunCreateNestedManyWithoutCompanyInput
     decimoPayments?: DecimoPaymentCreateNestedManyWithoutCompanyInput
+    liquidaciones?: LiquidacionCreateNestedManyWithoutCompanyInput
   }
 
   export type CompanyUncheckedCreateWithoutUsersInput = {
@@ -33616,6 +35909,7 @@ export namespace Prisma {
     leaves?: LeaveUncheckedCreateNestedManyWithoutCompanyInput
     payrollRuns?: PayrollRunUncheckedCreateNestedManyWithoutCompanyInput
     decimoPayments?: DecimoPaymentUncheckedCreateNestedManyWithoutCompanyInput
+    liquidaciones?: LiquidacionUncheckedCreateNestedManyWithoutCompanyInput
   }
 
   export type CompanyCreateOrConnectWithoutUsersInput = {
@@ -33695,6 +35989,7 @@ export namespace Prisma {
     leaves?: LeaveUpdateManyWithoutCompanyNestedInput
     payrollRuns?: PayrollRunUpdateManyWithoutCompanyNestedInput
     decimoPayments?: DecimoPaymentUpdateManyWithoutCompanyNestedInput
+    liquidaciones?: LiquidacionUpdateManyWithoutCompanyNestedInput
   }
 
   export type CompanyUncheckedUpdateWithoutUsersInput = {
@@ -33719,6 +36014,7 @@ export namespace Prisma {
     leaves?: LeaveUncheckedUpdateManyWithoutCompanyNestedInput
     payrollRuns?: PayrollRunUncheckedUpdateManyWithoutCompanyNestedInput
     decimoPayments?: DecimoPaymentUncheckedUpdateManyWithoutCompanyNestedInput
+    liquidaciones?: LiquidacionUncheckedUpdateManyWithoutCompanyNestedInput
   }
 
   export type DepartmentCreateWithoutPersonsInput = {
@@ -34042,6 +36338,7 @@ export namespace Prisma {
     leaves?: LeaveCreateNestedManyWithoutEmployeeInput
     recurringDeductions?: EmployeeRecurringDeductionCreateNestedManyWithoutEmployeeInput
     salaryHistory?: SalaryHistoryCreateNestedManyWithoutEmployeeInput
+    liquidaciones?: LiquidacionCreateNestedManyWithoutEmployeeInput
   }
 
   export type EmployeeUncheckedCreateWithoutCompanyInput = {
@@ -34072,6 +36369,7 @@ export namespace Prisma {
     leaves?: LeaveUncheckedCreateNestedManyWithoutEmployeeInput
     recurringDeductions?: EmployeeRecurringDeductionUncheckedCreateNestedManyWithoutEmployeeInput
     salaryHistory?: SalaryHistoryUncheckedCreateNestedManyWithoutEmployeeInput
+    liquidaciones?: LiquidacionUncheckedCreateNestedManyWithoutEmployeeInput
   }
 
   export type EmployeeCreateOrConnectWithoutCompanyInput = {
@@ -34307,6 +36605,74 @@ export namespace Prisma {
 
   export type DecimoPaymentCreateManyCompanyInputEnvelope = {
     data: DecimoPaymentCreateManyCompanyInput | DecimoPaymentCreateManyCompanyInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type LiquidacionCreateWithoutCompanyInput = {
+    id?: string
+    tipoTerminacion: string
+    fechaTerminacion: Date | string
+    previousStatus: string
+    salarioMensual: Decimal | DecimalJsLike | number | string
+    anosTrabajados: number
+    mesesTrabajados: number
+    diasTrabajados: number
+    primaAntiguedad?: Decimal | DecimalJsLike | number | string
+    preaviso?: Decimal | DecimalJsLike | number | string
+    vacaciones?: Decimal | DecimalJsLike | number | string
+    decimo?: Decimal | DecimalJsLike | number | string
+    indemnizacion?: Decimal | DecimalJsLike | number | string
+    salariosPendientes?: Decimal | DecimalJsLike | number | string
+    totalBruto?: Decimal | DecimalJsLike | number | string
+    ss?: Decimal | DecimalJsLike | number | string
+    se?: Decimal | DecimalJsLike | number | string
+    isr?: Decimal | DecimalJsLike | number | string
+    totalDeducciones?: Decimal | DecimalJsLike | number | string
+    totalNeto?: Decimal | DecimalJsLike | number | string
+    revertedAt?: Date | string | null
+    revertedBy?: string | null
+    notes?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    employee: EmployeeCreateNestedOneWithoutLiquidacionesInput
+  }
+
+  export type LiquidacionUncheckedCreateWithoutCompanyInput = {
+    id?: string
+    employeeId: string
+    tipoTerminacion: string
+    fechaTerminacion: Date | string
+    previousStatus: string
+    salarioMensual: Decimal | DecimalJsLike | number | string
+    anosTrabajados: number
+    mesesTrabajados: number
+    diasTrabajados: number
+    primaAntiguedad?: Decimal | DecimalJsLike | number | string
+    preaviso?: Decimal | DecimalJsLike | number | string
+    vacaciones?: Decimal | DecimalJsLike | number | string
+    decimo?: Decimal | DecimalJsLike | number | string
+    indemnizacion?: Decimal | DecimalJsLike | number | string
+    salariosPendientes?: Decimal | DecimalJsLike | number | string
+    totalBruto?: Decimal | DecimalJsLike | number | string
+    ss?: Decimal | DecimalJsLike | number | string
+    se?: Decimal | DecimalJsLike | number | string
+    isr?: Decimal | DecimalJsLike | number | string
+    totalDeducciones?: Decimal | DecimalJsLike | number | string
+    totalNeto?: Decimal | DecimalJsLike | number | string
+    revertedAt?: Date | string | null
+    revertedBy?: string | null
+    notes?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type LiquidacionCreateOrConnectWithoutCompanyInput = {
+    where: LiquidacionWhereUniqueInput
+    create: XOR<LiquidacionCreateWithoutCompanyInput, LiquidacionUncheckedCreateWithoutCompanyInput>
+  }
+
+  export type LiquidacionCreateManyCompanyInputEnvelope = {
+    data: LiquidacionCreateManyCompanyInput | LiquidacionCreateManyCompanyInput[]
     skipDuplicates?: boolean
   }
 
@@ -34694,6 +37060,55 @@ export namespace Prisma {
     updatedAt?: DateTimeFilter<"DecimoPayment"> | Date | string
   }
 
+  export type LiquidacionUpsertWithWhereUniqueWithoutCompanyInput = {
+    where: LiquidacionWhereUniqueInput
+    update: XOR<LiquidacionUpdateWithoutCompanyInput, LiquidacionUncheckedUpdateWithoutCompanyInput>
+    create: XOR<LiquidacionCreateWithoutCompanyInput, LiquidacionUncheckedCreateWithoutCompanyInput>
+  }
+
+  export type LiquidacionUpdateWithWhereUniqueWithoutCompanyInput = {
+    where: LiquidacionWhereUniqueInput
+    data: XOR<LiquidacionUpdateWithoutCompanyInput, LiquidacionUncheckedUpdateWithoutCompanyInput>
+  }
+
+  export type LiquidacionUpdateManyWithWhereWithoutCompanyInput = {
+    where: LiquidacionScalarWhereInput
+    data: XOR<LiquidacionUpdateManyMutationInput, LiquidacionUncheckedUpdateManyWithoutCompanyInput>
+  }
+
+  export type LiquidacionScalarWhereInput = {
+    AND?: LiquidacionScalarWhereInput | LiquidacionScalarWhereInput[]
+    OR?: LiquidacionScalarWhereInput[]
+    NOT?: LiquidacionScalarWhereInput | LiquidacionScalarWhereInput[]
+    id?: StringFilter<"Liquidacion"> | string
+    employeeId?: StringFilter<"Liquidacion"> | string
+    companyId?: StringFilter<"Liquidacion"> | string
+    tipoTerminacion?: StringFilter<"Liquidacion"> | string
+    fechaTerminacion?: DateTimeFilter<"Liquidacion"> | Date | string
+    previousStatus?: StringFilter<"Liquidacion"> | string
+    salarioMensual?: DecimalFilter<"Liquidacion"> | Decimal | DecimalJsLike | number | string
+    anosTrabajados?: IntFilter<"Liquidacion"> | number
+    mesesTrabajados?: IntFilter<"Liquidacion"> | number
+    diasTrabajados?: IntFilter<"Liquidacion"> | number
+    primaAntiguedad?: DecimalFilter<"Liquidacion"> | Decimal | DecimalJsLike | number | string
+    preaviso?: DecimalFilter<"Liquidacion"> | Decimal | DecimalJsLike | number | string
+    vacaciones?: DecimalFilter<"Liquidacion"> | Decimal | DecimalJsLike | number | string
+    decimo?: DecimalFilter<"Liquidacion"> | Decimal | DecimalJsLike | number | string
+    indemnizacion?: DecimalFilter<"Liquidacion"> | Decimal | DecimalJsLike | number | string
+    salariosPendientes?: DecimalFilter<"Liquidacion"> | Decimal | DecimalJsLike | number | string
+    totalBruto?: DecimalFilter<"Liquidacion"> | Decimal | DecimalJsLike | number | string
+    ss?: DecimalFilter<"Liquidacion"> | Decimal | DecimalJsLike | number | string
+    se?: DecimalFilter<"Liquidacion"> | Decimal | DecimalJsLike | number | string
+    isr?: DecimalFilter<"Liquidacion"> | Decimal | DecimalJsLike | number | string
+    totalDeducciones?: DecimalFilter<"Liquidacion"> | Decimal | DecimalJsLike | number | string
+    totalNeto?: DecimalFilter<"Liquidacion"> | Decimal | DecimalJsLike | number | string
+    revertedAt?: DateTimeNullableFilter<"Liquidacion"> | Date | string | null
+    revertedBy?: StringNullableFilter<"Liquidacion"> | string | null
+    notes?: StringNullableFilter<"Liquidacion"> | string | null
+    createdAt?: DateTimeFilter<"Liquidacion"> | Date | string
+    updatedAt?: DateTimeFilter<"Liquidacion"> | Date | string
+  }
+
   export type CompanyCreateWithoutDepartmentsInput = {
     id?: string
     code: string
@@ -34716,6 +37131,7 @@ export namespace Prisma {
     leaves?: LeaveCreateNestedManyWithoutCompanyInput
     payrollRuns?: PayrollRunCreateNestedManyWithoutCompanyInput
     decimoPayments?: DecimoPaymentCreateNestedManyWithoutCompanyInput
+    liquidaciones?: LiquidacionCreateNestedManyWithoutCompanyInput
   }
 
   export type CompanyUncheckedCreateWithoutDepartmentsInput = {
@@ -34740,6 +37156,7 @@ export namespace Prisma {
     leaves?: LeaveUncheckedCreateNestedManyWithoutCompanyInput
     payrollRuns?: PayrollRunUncheckedCreateNestedManyWithoutCompanyInput
     decimoPayments?: DecimoPaymentUncheckedCreateNestedManyWithoutCompanyInput
+    liquidaciones?: LiquidacionUncheckedCreateNestedManyWithoutCompanyInput
   }
 
   export type CompanyCreateOrConnectWithoutDepartmentsInput = {
@@ -34822,6 +37239,7 @@ export namespace Prisma {
     leaves?: LeaveUpdateManyWithoutCompanyNestedInput
     payrollRuns?: PayrollRunUpdateManyWithoutCompanyNestedInput
     decimoPayments?: DecimoPaymentUpdateManyWithoutCompanyNestedInput
+    liquidaciones?: LiquidacionUpdateManyWithoutCompanyNestedInput
   }
 
   export type CompanyUncheckedUpdateWithoutDepartmentsInput = {
@@ -34846,6 +37264,7 @@ export namespace Prisma {
     leaves?: LeaveUncheckedUpdateManyWithoutCompanyNestedInput
     payrollRuns?: PayrollRunUncheckedUpdateManyWithoutCompanyNestedInput
     decimoPayments?: DecimoPaymentUncheckedUpdateManyWithoutCompanyNestedInput
+    liquidaciones?: LiquidacionUncheckedUpdateManyWithoutCompanyNestedInput
   }
 
   export type PersonUpsertWithWhereUniqueWithoutDepartmentInput = {
@@ -34939,6 +37358,7 @@ export namespace Prisma {
     leaves?: LeaveCreateNestedManyWithoutCompanyInput
     payrollRuns?: PayrollRunCreateNestedManyWithoutCompanyInput
     decimoPayments?: DecimoPaymentCreateNestedManyWithoutCompanyInput
+    liquidaciones?: LiquidacionCreateNestedManyWithoutCompanyInput
   }
 
   export type CompanyUncheckedCreateWithoutEmployeesInput = {
@@ -34963,6 +37383,7 @@ export namespace Prisma {
     leaves?: LeaveUncheckedCreateNestedManyWithoutCompanyInput
     payrollRuns?: PayrollRunUncheckedCreateNestedManyWithoutCompanyInput
     decimoPayments?: DecimoPaymentUncheckedCreateNestedManyWithoutCompanyInput
+    liquidaciones?: LiquidacionUncheckedCreateNestedManyWithoutCompanyInput
   }
 
   export type CompanyCreateOrConnectWithoutEmployeesInput = {
@@ -35264,6 +37685,74 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type LiquidacionCreateWithoutEmployeeInput = {
+    id?: string
+    tipoTerminacion: string
+    fechaTerminacion: Date | string
+    previousStatus: string
+    salarioMensual: Decimal | DecimalJsLike | number | string
+    anosTrabajados: number
+    mesesTrabajados: number
+    diasTrabajados: number
+    primaAntiguedad?: Decimal | DecimalJsLike | number | string
+    preaviso?: Decimal | DecimalJsLike | number | string
+    vacaciones?: Decimal | DecimalJsLike | number | string
+    decimo?: Decimal | DecimalJsLike | number | string
+    indemnizacion?: Decimal | DecimalJsLike | number | string
+    salariosPendientes?: Decimal | DecimalJsLike | number | string
+    totalBruto?: Decimal | DecimalJsLike | number | string
+    ss?: Decimal | DecimalJsLike | number | string
+    se?: Decimal | DecimalJsLike | number | string
+    isr?: Decimal | DecimalJsLike | number | string
+    totalDeducciones?: Decimal | DecimalJsLike | number | string
+    totalNeto?: Decimal | DecimalJsLike | number | string
+    revertedAt?: Date | string | null
+    revertedBy?: string | null
+    notes?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    company: CompanyCreateNestedOneWithoutLiquidacionesInput
+  }
+
+  export type LiquidacionUncheckedCreateWithoutEmployeeInput = {
+    id?: string
+    companyId: string
+    tipoTerminacion: string
+    fechaTerminacion: Date | string
+    previousStatus: string
+    salarioMensual: Decimal | DecimalJsLike | number | string
+    anosTrabajados: number
+    mesesTrabajados: number
+    diasTrabajados: number
+    primaAntiguedad?: Decimal | DecimalJsLike | number | string
+    preaviso?: Decimal | DecimalJsLike | number | string
+    vacaciones?: Decimal | DecimalJsLike | number | string
+    decimo?: Decimal | DecimalJsLike | number | string
+    indemnizacion?: Decimal | DecimalJsLike | number | string
+    salariosPendientes?: Decimal | DecimalJsLike | number | string
+    totalBruto?: Decimal | DecimalJsLike | number | string
+    ss?: Decimal | DecimalJsLike | number | string
+    se?: Decimal | DecimalJsLike | number | string
+    isr?: Decimal | DecimalJsLike | number | string
+    totalDeducciones?: Decimal | DecimalJsLike | number | string
+    totalNeto?: Decimal | DecimalJsLike | number | string
+    revertedAt?: Date | string | null
+    revertedBy?: string | null
+    notes?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type LiquidacionCreateOrConnectWithoutEmployeeInput = {
+    where: LiquidacionWhereUniqueInput
+    create: XOR<LiquidacionCreateWithoutEmployeeInput, LiquidacionUncheckedCreateWithoutEmployeeInput>
+  }
+
+  export type LiquidacionCreateManyEmployeeInputEnvelope = {
+    data: LiquidacionCreateManyEmployeeInput | LiquidacionCreateManyEmployeeInput[]
+    skipDuplicates?: boolean
+  }
+
   export type UserUpsertWithoutEmployeeInput = {
     update: XOR<UserUpdateWithoutEmployeeInput, UserUncheckedUpdateWithoutEmployeeInput>
     create: XOR<UserCreateWithoutEmployeeInput, UserUncheckedCreateWithoutEmployeeInput>
@@ -35336,6 +37825,7 @@ export namespace Prisma {
     leaves?: LeaveUpdateManyWithoutCompanyNestedInput
     payrollRuns?: PayrollRunUpdateManyWithoutCompanyNestedInput
     decimoPayments?: DecimoPaymentUpdateManyWithoutCompanyNestedInput
+    liquidaciones?: LiquidacionUpdateManyWithoutCompanyNestedInput
   }
 
   export type CompanyUncheckedUpdateWithoutEmployeesInput = {
@@ -35360,6 +37850,7 @@ export namespace Prisma {
     leaves?: LeaveUncheckedUpdateManyWithoutCompanyNestedInput
     payrollRuns?: PayrollRunUncheckedUpdateManyWithoutCompanyNestedInput
     decimoPayments?: DecimoPaymentUncheckedUpdateManyWithoutCompanyNestedInput
+    liquidaciones?: LiquidacionUncheckedUpdateManyWithoutCompanyNestedInput
   }
 
   export type PayrollUpsertWithWhereUniqueWithoutEmployeeInput = {
@@ -35540,6 +38031,22 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"SalaryHistory"> | Date | string
   }
 
+  export type LiquidacionUpsertWithWhereUniqueWithoutEmployeeInput = {
+    where: LiquidacionWhereUniqueInput
+    update: XOR<LiquidacionUpdateWithoutEmployeeInput, LiquidacionUncheckedUpdateWithoutEmployeeInput>
+    create: XOR<LiquidacionCreateWithoutEmployeeInput, LiquidacionUncheckedCreateWithoutEmployeeInput>
+  }
+
+  export type LiquidacionUpdateWithWhereUniqueWithoutEmployeeInput = {
+    where: LiquidacionWhereUniqueInput
+    data: XOR<LiquidacionUpdateWithoutEmployeeInput, LiquidacionUncheckedUpdateWithoutEmployeeInput>
+  }
+
+  export type LiquidacionUpdateManyWithWhereWithoutEmployeeInput = {
+    where: LiquidacionScalarWhereInput
+    data: XOR<LiquidacionUpdateManyMutationInput, LiquidacionUncheckedUpdateManyWithoutEmployeeInput>
+  }
+
   export type EmployeeCreateWithoutRecurringDeductionsInput = {
     id?: string
     cedula: string
@@ -35568,6 +38075,7 @@ export namespace Prisma {
     attendanceRecords?: AttendanceRecordCreateNestedManyWithoutEmployeeInput
     leaves?: LeaveCreateNestedManyWithoutEmployeeInput
     salaryHistory?: SalaryHistoryCreateNestedManyWithoutEmployeeInput
+    liquidaciones?: LiquidacionCreateNestedManyWithoutEmployeeInput
   }
 
   export type EmployeeUncheckedCreateWithoutRecurringDeductionsInput = {
@@ -35598,6 +38106,7 @@ export namespace Prisma {
     attendanceRecords?: AttendanceRecordUncheckedCreateNestedManyWithoutEmployeeInput
     leaves?: LeaveUncheckedCreateNestedManyWithoutEmployeeInput
     salaryHistory?: SalaryHistoryUncheckedCreateNestedManyWithoutEmployeeInput
+    liquidaciones?: LiquidacionUncheckedCreateNestedManyWithoutEmployeeInput
   }
 
   export type EmployeeCreateOrConnectWithoutRecurringDeductionsInput = {
@@ -35644,6 +38153,7 @@ export namespace Prisma {
     attendanceRecords?: AttendanceRecordUpdateManyWithoutEmployeeNestedInput
     leaves?: LeaveUpdateManyWithoutEmployeeNestedInput
     salaryHistory?: SalaryHistoryUpdateManyWithoutEmployeeNestedInput
+    liquidaciones?: LiquidacionUpdateManyWithoutEmployeeNestedInput
   }
 
   export type EmployeeUncheckedUpdateWithoutRecurringDeductionsInput = {
@@ -35674,6 +38184,7 @@ export namespace Prisma {
     attendanceRecords?: AttendanceRecordUncheckedUpdateManyWithoutEmployeeNestedInput
     leaves?: LeaveUncheckedUpdateManyWithoutEmployeeNestedInput
     salaryHistory?: SalaryHistoryUncheckedUpdateManyWithoutEmployeeNestedInput
+    liquidaciones?: LiquidacionUncheckedUpdateManyWithoutEmployeeNestedInput
   }
 
   export type CompanyCreateWithoutPayrollRunsInput = {
@@ -35698,6 +38209,7 @@ export namespace Prisma {
     attendanceRecords?: AttendanceRecordCreateNestedManyWithoutCompanyInput
     leaves?: LeaveCreateNestedManyWithoutCompanyInput
     decimoPayments?: DecimoPaymentCreateNestedManyWithoutCompanyInput
+    liquidaciones?: LiquidacionCreateNestedManyWithoutCompanyInput
   }
 
   export type CompanyUncheckedCreateWithoutPayrollRunsInput = {
@@ -35722,6 +38234,7 @@ export namespace Prisma {
     attendanceRecords?: AttendanceRecordUncheckedCreateNestedManyWithoutCompanyInput
     leaves?: LeaveUncheckedCreateNestedManyWithoutCompanyInput
     decimoPayments?: DecimoPaymentUncheckedCreateNestedManyWithoutCompanyInput
+    liquidaciones?: LiquidacionUncheckedCreateNestedManyWithoutCompanyInput
   }
 
   export type CompanyCreateOrConnectWithoutPayrollRunsInput = {
@@ -35832,6 +38345,7 @@ export namespace Prisma {
     attendanceRecords?: AttendanceRecordUpdateManyWithoutCompanyNestedInput
     leaves?: LeaveUpdateManyWithoutCompanyNestedInput
     decimoPayments?: DecimoPaymentUpdateManyWithoutCompanyNestedInput
+    liquidaciones?: LiquidacionUpdateManyWithoutCompanyNestedInput
   }
 
   export type CompanyUncheckedUpdateWithoutPayrollRunsInput = {
@@ -35856,6 +38370,7 @@ export namespace Prisma {
     attendanceRecords?: AttendanceRecordUncheckedUpdateManyWithoutCompanyNestedInput
     leaves?: LeaveUncheckedUpdateManyWithoutCompanyNestedInput
     decimoPayments?: DecimoPaymentUncheckedUpdateManyWithoutCompanyNestedInput
+    liquidaciones?: LiquidacionUncheckedUpdateManyWithoutCompanyNestedInput
   }
 
   export type PayrollUpsertWithWhereUniqueWithoutPayrollRunInput = {
@@ -35937,6 +38452,7 @@ export namespace Prisma {
     leaves?: LeaveCreateNestedManyWithoutEmployeeInput
     recurringDeductions?: EmployeeRecurringDeductionCreateNestedManyWithoutEmployeeInput
     salaryHistory?: SalaryHistoryCreateNestedManyWithoutEmployeeInput
+    liquidaciones?: LiquidacionCreateNestedManyWithoutEmployeeInput
   }
 
   export type EmployeeUncheckedCreateWithoutPayrollsInput = {
@@ -35967,6 +38483,7 @@ export namespace Prisma {
     leaves?: LeaveUncheckedCreateNestedManyWithoutEmployeeInput
     recurringDeductions?: EmployeeRecurringDeductionUncheckedCreateNestedManyWithoutEmployeeInput
     salaryHistory?: SalaryHistoryUncheckedCreateNestedManyWithoutEmployeeInput
+    liquidaciones?: LiquidacionUncheckedCreateNestedManyWithoutEmployeeInput
   }
 
   export type EmployeeCreateOrConnectWithoutPayrollsInput = {
@@ -35996,6 +38513,7 @@ export namespace Prisma {
     leaves?: LeaveCreateNestedManyWithoutCompanyInput
     payrollRuns?: PayrollRunCreateNestedManyWithoutCompanyInput
     decimoPayments?: DecimoPaymentCreateNestedManyWithoutCompanyInput
+    liquidaciones?: LiquidacionCreateNestedManyWithoutCompanyInput
   }
 
   export type CompanyUncheckedCreateWithoutPayrollsInput = {
@@ -36020,6 +38538,7 @@ export namespace Prisma {
     leaves?: LeaveUncheckedCreateNestedManyWithoutCompanyInput
     payrollRuns?: PayrollRunUncheckedCreateNestedManyWithoutCompanyInput
     decimoPayments?: DecimoPaymentUncheckedCreateNestedManyWithoutCompanyInput
+    liquidaciones?: LiquidacionUncheckedCreateNestedManyWithoutCompanyInput
   }
 
   export type CompanyCreateOrConnectWithoutPayrollsInput = {
@@ -36171,6 +38690,7 @@ export namespace Prisma {
     leaves?: LeaveUpdateManyWithoutEmployeeNestedInput
     recurringDeductions?: EmployeeRecurringDeductionUpdateManyWithoutEmployeeNestedInput
     salaryHistory?: SalaryHistoryUpdateManyWithoutEmployeeNestedInput
+    liquidaciones?: LiquidacionUpdateManyWithoutEmployeeNestedInput
   }
 
   export type EmployeeUncheckedUpdateWithoutPayrollsInput = {
@@ -36201,6 +38721,7 @@ export namespace Prisma {
     leaves?: LeaveUncheckedUpdateManyWithoutEmployeeNestedInput
     recurringDeductions?: EmployeeRecurringDeductionUncheckedUpdateManyWithoutEmployeeNestedInput
     salaryHistory?: SalaryHistoryUncheckedUpdateManyWithoutEmployeeNestedInput
+    liquidaciones?: LiquidacionUncheckedUpdateManyWithoutEmployeeNestedInput
   }
 
   export type CompanyUpsertWithoutPayrollsInput = {
@@ -36236,6 +38757,7 @@ export namespace Prisma {
     leaves?: LeaveUpdateManyWithoutCompanyNestedInput
     payrollRuns?: PayrollRunUpdateManyWithoutCompanyNestedInput
     decimoPayments?: DecimoPaymentUpdateManyWithoutCompanyNestedInput
+    liquidaciones?: LiquidacionUpdateManyWithoutCompanyNestedInput
   }
 
   export type CompanyUncheckedUpdateWithoutPayrollsInput = {
@@ -36260,6 +38782,7 @@ export namespace Prisma {
     leaves?: LeaveUncheckedUpdateManyWithoutCompanyNestedInput
     payrollRuns?: PayrollRunUncheckedUpdateManyWithoutCompanyNestedInput
     decimoPayments?: DecimoPaymentUncheckedUpdateManyWithoutCompanyNestedInput
+    liquidaciones?: LiquidacionUncheckedUpdateManyWithoutCompanyNestedInput
   }
 
   export type DeductionUpsertWithWhereUniqueWithoutPayrollInput = {
@@ -36387,6 +38910,7 @@ export namespace Prisma {
     leaves?: LeaveCreateNestedManyWithoutEmployeeInput
     recurringDeductions?: EmployeeRecurringDeductionCreateNestedManyWithoutEmployeeInput
     salaryHistory?: SalaryHistoryCreateNestedManyWithoutEmployeeInput
+    liquidaciones?: LiquidacionCreateNestedManyWithoutEmployeeInput
   }
 
   export type EmployeeUncheckedCreateWithoutDeductionsInput = {
@@ -36417,6 +38941,7 @@ export namespace Prisma {
     leaves?: LeaveUncheckedCreateNestedManyWithoutEmployeeInput
     recurringDeductions?: EmployeeRecurringDeductionUncheckedCreateNestedManyWithoutEmployeeInput
     salaryHistory?: SalaryHistoryUncheckedCreateNestedManyWithoutEmployeeInput
+    liquidaciones?: LiquidacionUncheckedCreateNestedManyWithoutEmployeeInput
   }
 
   export type EmployeeCreateOrConnectWithoutDeductionsInput = {
@@ -36534,6 +39059,7 @@ export namespace Prisma {
     leaves?: LeaveUpdateManyWithoutEmployeeNestedInput
     recurringDeductions?: EmployeeRecurringDeductionUpdateManyWithoutEmployeeNestedInput
     salaryHistory?: SalaryHistoryUpdateManyWithoutEmployeeNestedInput
+    liquidaciones?: LiquidacionUpdateManyWithoutEmployeeNestedInput
   }
 
   export type EmployeeUncheckedUpdateWithoutDeductionsInput = {
@@ -36564,6 +39090,7 @@ export namespace Prisma {
     leaves?: LeaveUncheckedUpdateManyWithoutEmployeeNestedInput
     recurringDeductions?: EmployeeRecurringDeductionUncheckedUpdateManyWithoutEmployeeNestedInput
     salaryHistory?: SalaryHistoryUncheckedUpdateManyWithoutEmployeeNestedInput
+    liquidaciones?: LiquidacionUncheckedUpdateManyWithoutEmployeeNestedInput
   }
 
   export type PayrollCreateWithoutAllowancesInput = {
@@ -36659,6 +39186,7 @@ export namespace Prisma {
     leaves?: LeaveCreateNestedManyWithoutEmployeeInput
     recurringDeductions?: EmployeeRecurringDeductionCreateNestedManyWithoutEmployeeInput
     salaryHistory?: SalaryHistoryCreateNestedManyWithoutEmployeeInput
+    liquidaciones?: LiquidacionCreateNestedManyWithoutEmployeeInput
   }
 
   export type EmployeeUncheckedCreateWithoutAllowancesInput = {
@@ -36689,6 +39217,7 @@ export namespace Prisma {
     leaves?: LeaveUncheckedCreateNestedManyWithoutEmployeeInput
     recurringDeductions?: EmployeeRecurringDeductionUncheckedCreateNestedManyWithoutEmployeeInput
     salaryHistory?: SalaryHistoryUncheckedCreateNestedManyWithoutEmployeeInput
+    liquidaciones?: LiquidacionUncheckedCreateNestedManyWithoutEmployeeInput
   }
 
   export type EmployeeCreateOrConnectWithoutAllowancesInput = {
@@ -36806,6 +39335,7 @@ export namespace Prisma {
     leaves?: LeaveUpdateManyWithoutEmployeeNestedInput
     recurringDeductions?: EmployeeRecurringDeductionUpdateManyWithoutEmployeeNestedInput
     salaryHistory?: SalaryHistoryUpdateManyWithoutEmployeeNestedInput
+    liquidaciones?: LiquidacionUpdateManyWithoutEmployeeNestedInput
   }
 
   export type EmployeeUncheckedUpdateWithoutAllowancesInput = {
@@ -36836,6 +39366,7 @@ export namespace Prisma {
     leaves?: LeaveUncheckedUpdateManyWithoutEmployeeNestedInput
     recurringDeductions?: EmployeeRecurringDeductionUncheckedUpdateManyWithoutEmployeeNestedInput
     salaryHistory?: SalaryHistoryUncheckedUpdateManyWithoutEmployeeNestedInput
+    liquidaciones?: LiquidacionUncheckedUpdateManyWithoutEmployeeNestedInput
   }
 
   export type EmployeeCreateWithoutAttendanceRecordsInput = {
@@ -36866,6 +39397,7 @@ export namespace Prisma {
     leaves?: LeaveCreateNestedManyWithoutEmployeeInput
     recurringDeductions?: EmployeeRecurringDeductionCreateNestedManyWithoutEmployeeInput
     salaryHistory?: SalaryHistoryCreateNestedManyWithoutEmployeeInput
+    liquidaciones?: LiquidacionCreateNestedManyWithoutEmployeeInput
   }
 
   export type EmployeeUncheckedCreateWithoutAttendanceRecordsInput = {
@@ -36896,6 +39428,7 @@ export namespace Prisma {
     leaves?: LeaveUncheckedCreateNestedManyWithoutEmployeeInput
     recurringDeductions?: EmployeeRecurringDeductionUncheckedCreateNestedManyWithoutEmployeeInput
     salaryHistory?: SalaryHistoryUncheckedCreateNestedManyWithoutEmployeeInput
+    liquidaciones?: LiquidacionUncheckedCreateNestedManyWithoutEmployeeInput
   }
 
   export type EmployeeCreateOrConnectWithoutAttendanceRecordsInput = {
@@ -36925,6 +39458,7 @@ export namespace Prisma {
     leaves?: LeaveCreateNestedManyWithoutCompanyInput
     payrollRuns?: PayrollRunCreateNestedManyWithoutCompanyInput
     decimoPayments?: DecimoPaymentCreateNestedManyWithoutCompanyInput
+    liquidaciones?: LiquidacionCreateNestedManyWithoutCompanyInput
   }
 
   export type CompanyUncheckedCreateWithoutAttendanceRecordsInput = {
@@ -36949,6 +39483,7 @@ export namespace Prisma {
     leaves?: LeaveUncheckedCreateNestedManyWithoutCompanyInput
     payrollRuns?: PayrollRunUncheckedCreateNestedManyWithoutCompanyInput
     decimoPayments?: DecimoPaymentUncheckedCreateNestedManyWithoutCompanyInput
+    liquidaciones?: LiquidacionUncheckedCreateNestedManyWithoutCompanyInput
   }
 
   export type CompanyCreateOrConnectWithoutAttendanceRecordsInput = {
@@ -36995,6 +39530,7 @@ export namespace Prisma {
     leaves?: LeaveUpdateManyWithoutEmployeeNestedInput
     recurringDeductions?: EmployeeRecurringDeductionUpdateManyWithoutEmployeeNestedInput
     salaryHistory?: SalaryHistoryUpdateManyWithoutEmployeeNestedInput
+    liquidaciones?: LiquidacionUpdateManyWithoutEmployeeNestedInput
   }
 
   export type EmployeeUncheckedUpdateWithoutAttendanceRecordsInput = {
@@ -37025,6 +39561,7 @@ export namespace Prisma {
     leaves?: LeaveUncheckedUpdateManyWithoutEmployeeNestedInput
     recurringDeductions?: EmployeeRecurringDeductionUncheckedUpdateManyWithoutEmployeeNestedInput
     salaryHistory?: SalaryHistoryUncheckedUpdateManyWithoutEmployeeNestedInput
+    liquidaciones?: LiquidacionUncheckedUpdateManyWithoutEmployeeNestedInput
   }
 
   export type CompanyUpsertWithoutAttendanceRecordsInput = {
@@ -37060,6 +39597,7 @@ export namespace Prisma {
     leaves?: LeaveUpdateManyWithoutCompanyNestedInput
     payrollRuns?: PayrollRunUpdateManyWithoutCompanyNestedInput
     decimoPayments?: DecimoPaymentUpdateManyWithoutCompanyNestedInput
+    liquidaciones?: LiquidacionUpdateManyWithoutCompanyNestedInput
   }
 
   export type CompanyUncheckedUpdateWithoutAttendanceRecordsInput = {
@@ -37084,6 +39622,7 @@ export namespace Prisma {
     leaves?: LeaveUncheckedUpdateManyWithoutCompanyNestedInput
     payrollRuns?: PayrollRunUncheckedUpdateManyWithoutCompanyNestedInput
     decimoPayments?: DecimoPaymentUncheckedUpdateManyWithoutCompanyNestedInput
+    liquidaciones?: LiquidacionUncheckedUpdateManyWithoutCompanyNestedInput
   }
 
   export type EmployeeCreateWithoutLeavesInput = {
@@ -37114,6 +39653,7 @@ export namespace Prisma {
     attendanceRecords?: AttendanceRecordCreateNestedManyWithoutEmployeeInput
     recurringDeductions?: EmployeeRecurringDeductionCreateNestedManyWithoutEmployeeInput
     salaryHistory?: SalaryHistoryCreateNestedManyWithoutEmployeeInput
+    liquidaciones?: LiquidacionCreateNestedManyWithoutEmployeeInput
   }
 
   export type EmployeeUncheckedCreateWithoutLeavesInput = {
@@ -37144,6 +39684,7 @@ export namespace Prisma {
     attendanceRecords?: AttendanceRecordUncheckedCreateNestedManyWithoutEmployeeInput
     recurringDeductions?: EmployeeRecurringDeductionUncheckedCreateNestedManyWithoutEmployeeInput
     salaryHistory?: SalaryHistoryUncheckedCreateNestedManyWithoutEmployeeInput
+    liquidaciones?: LiquidacionUncheckedCreateNestedManyWithoutEmployeeInput
   }
 
   export type EmployeeCreateOrConnectWithoutLeavesInput = {
@@ -37173,6 +39714,7 @@ export namespace Prisma {
     attendanceRecords?: AttendanceRecordCreateNestedManyWithoutCompanyInput
     payrollRuns?: PayrollRunCreateNestedManyWithoutCompanyInput
     decimoPayments?: DecimoPaymentCreateNestedManyWithoutCompanyInput
+    liquidaciones?: LiquidacionCreateNestedManyWithoutCompanyInput
   }
 
   export type CompanyUncheckedCreateWithoutLeavesInput = {
@@ -37197,6 +39739,7 @@ export namespace Prisma {
     attendanceRecords?: AttendanceRecordUncheckedCreateNestedManyWithoutCompanyInput
     payrollRuns?: PayrollRunUncheckedCreateNestedManyWithoutCompanyInput
     decimoPayments?: DecimoPaymentUncheckedCreateNestedManyWithoutCompanyInput
+    liquidaciones?: LiquidacionUncheckedCreateNestedManyWithoutCompanyInput
   }
 
   export type CompanyCreateOrConnectWithoutLeavesInput = {
@@ -37243,6 +39786,7 @@ export namespace Prisma {
     attendanceRecords?: AttendanceRecordUpdateManyWithoutEmployeeNestedInput
     recurringDeductions?: EmployeeRecurringDeductionUpdateManyWithoutEmployeeNestedInput
     salaryHistory?: SalaryHistoryUpdateManyWithoutEmployeeNestedInput
+    liquidaciones?: LiquidacionUpdateManyWithoutEmployeeNestedInput
   }
 
   export type EmployeeUncheckedUpdateWithoutLeavesInput = {
@@ -37273,6 +39817,7 @@ export namespace Prisma {
     attendanceRecords?: AttendanceRecordUncheckedUpdateManyWithoutEmployeeNestedInput
     recurringDeductions?: EmployeeRecurringDeductionUncheckedUpdateManyWithoutEmployeeNestedInput
     salaryHistory?: SalaryHistoryUncheckedUpdateManyWithoutEmployeeNestedInput
+    liquidaciones?: LiquidacionUncheckedUpdateManyWithoutEmployeeNestedInput
   }
 
   export type CompanyUpsertWithoutLeavesInput = {
@@ -37308,6 +39853,7 @@ export namespace Prisma {
     attendanceRecords?: AttendanceRecordUpdateManyWithoutCompanyNestedInput
     payrollRuns?: PayrollRunUpdateManyWithoutCompanyNestedInput
     decimoPayments?: DecimoPaymentUpdateManyWithoutCompanyNestedInput
+    liquidaciones?: LiquidacionUpdateManyWithoutCompanyNestedInput
   }
 
   export type CompanyUncheckedUpdateWithoutLeavesInput = {
@@ -37330,6 +39876,263 @@ export namespace Prisma {
     employees?: EmployeeUncheckedUpdateManyWithoutCompanyNestedInput
     payrolls?: PayrollUncheckedUpdateManyWithoutCompanyNestedInput
     attendanceRecords?: AttendanceRecordUncheckedUpdateManyWithoutCompanyNestedInput
+    payrollRuns?: PayrollRunUncheckedUpdateManyWithoutCompanyNestedInput
+    decimoPayments?: DecimoPaymentUncheckedUpdateManyWithoutCompanyNestedInput
+    liquidaciones?: LiquidacionUncheckedUpdateManyWithoutCompanyNestedInput
+  }
+
+  export type EmployeeCreateWithoutLiquidacionesInput = {
+    id?: string
+    cedula: string
+    firstName: string
+    lastName: string
+    email: string
+    phoneNumber?: string | null
+    position: string
+    department?: string | null
+    hireDate: Date | string
+    salary?: Decimal | DecimalJsLike | number | string
+    salaryType?: $Enums.SalaryType
+    status?: $Enums.EmployeeStatus
+    bankAccount?: string | null
+    bankName?: string | null
+    maternityStartDate?: Date | string | null
+    maternityEndDate?: Date | string | null
+    inactivityReason?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    user?: UserCreateNestedOneWithoutEmployeeInput
+    company: CompanyCreateNestedOneWithoutEmployeesInput
+    payrolls?: PayrollCreateNestedManyWithoutEmployeeInput
+    deductions?: DeductionCreateNestedManyWithoutEmployeeInput
+    allowances?: AllowanceCreateNestedManyWithoutEmployeeInput
+    attendanceRecords?: AttendanceRecordCreateNestedManyWithoutEmployeeInput
+    leaves?: LeaveCreateNestedManyWithoutEmployeeInput
+    recurringDeductions?: EmployeeRecurringDeductionCreateNestedManyWithoutEmployeeInput
+    salaryHistory?: SalaryHistoryCreateNestedManyWithoutEmployeeInput
+  }
+
+  export type EmployeeUncheckedCreateWithoutLiquidacionesInput = {
+    id?: string
+    cedula: string
+    firstName: string
+    lastName: string
+    email: string
+    phoneNumber?: string | null
+    position: string
+    department?: string | null
+    hireDate: Date | string
+    salary?: Decimal | DecimalJsLike | number | string
+    salaryType?: $Enums.SalaryType
+    status?: $Enums.EmployeeStatus
+    bankAccount?: string | null
+    bankName?: string | null
+    maternityStartDate?: Date | string | null
+    maternityEndDate?: Date | string | null
+    inactivityReason?: string | null
+    userId?: string | null
+    companyId: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    payrolls?: PayrollUncheckedCreateNestedManyWithoutEmployeeInput
+    deductions?: DeductionUncheckedCreateNestedManyWithoutEmployeeInput
+    allowances?: AllowanceUncheckedCreateNestedManyWithoutEmployeeInput
+    attendanceRecords?: AttendanceRecordUncheckedCreateNestedManyWithoutEmployeeInput
+    leaves?: LeaveUncheckedCreateNestedManyWithoutEmployeeInput
+    recurringDeductions?: EmployeeRecurringDeductionUncheckedCreateNestedManyWithoutEmployeeInput
+    salaryHistory?: SalaryHistoryUncheckedCreateNestedManyWithoutEmployeeInput
+  }
+
+  export type EmployeeCreateOrConnectWithoutLiquidacionesInput = {
+    where: EmployeeWhereUniqueInput
+    create: XOR<EmployeeCreateWithoutLiquidacionesInput, EmployeeUncheckedCreateWithoutLiquidacionesInput>
+  }
+
+  export type CompanyCreateWithoutLiquidacionesInput = {
+    id?: string
+    code: string
+    name: string
+    address?: string | null
+    phone?: string | null
+    email?: string | null
+    ruc?: string | null
+    logoUrl?: string | null
+    isActive?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    LegalDecimoParameter?: LegalDecimoParameterCreateNestedManyWithoutCompanyInput
+    legalParameters?: LegalParameterCreateNestedManyWithoutCompanyInput
+    createdBy?: UserCreateNestedOneWithoutCreatedCompaniesInput
+    departments?: DepartmentCreateNestedManyWithoutCompanyInput
+    users?: UserCompanyCreateNestedManyWithoutCompanyInput
+    employees?: EmployeeCreateNestedManyWithoutCompanyInput
+    payrolls?: PayrollCreateNestedManyWithoutCompanyInput
+    attendanceRecords?: AttendanceRecordCreateNestedManyWithoutCompanyInput
+    leaves?: LeaveCreateNestedManyWithoutCompanyInput
+    payrollRuns?: PayrollRunCreateNestedManyWithoutCompanyInput
+    decimoPayments?: DecimoPaymentCreateNestedManyWithoutCompanyInput
+  }
+
+  export type CompanyUncheckedCreateWithoutLiquidacionesInput = {
+    id?: string
+    code: string
+    name: string
+    address?: string | null
+    phone?: string | null
+    email?: string | null
+    ruc?: string | null
+    logoUrl?: string | null
+    isActive?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    createdByUserId?: string | null
+    LegalDecimoParameter?: LegalDecimoParameterUncheckedCreateNestedManyWithoutCompanyInput
+    legalParameters?: LegalParameterUncheckedCreateNestedManyWithoutCompanyInput
+    departments?: DepartmentUncheckedCreateNestedManyWithoutCompanyInput
+    users?: UserCompanyUncheckedCreateNestedManyWithoutCompanyInput
+    employees?: EmployeeUncheckedCreateNestedManyWithoutCompanyInput
+    payrolls?: PayrollUncheckedCreateNestedManyWithoutCompanyInput
+    attendanceRecords?: AttendanceRecordUncheckedCreateNestedManyWithoutCompanyInput
+    leaves?: LeaveUncheckedCreateNestedManyWithoutCompanyInput
+    payrollRuns?: PayrollRunUncheckedCreateNestedManyWithoutCompanyInput
+    decimoPayments?: DecimoPaymentUncheckedCreateNestedManyWithoutCompanyInput
+  }
+
+  export type CompanyCreateOrConnectWithoutLiquidacionesInput = {
+    where: CompanyWhereUniqueInput
+    create: XOR<CompanyCreateWithoutLiquidacionesInput, CompanyUncheckedCreateWithoutLiquidacionesInput>
+  }
+
+  export type EmployeeUpsertWithoutLiquidacionesInput = {
+    update: XOR<EmployeeUpdateWithoutLiquidacionesInput, EmployeeUncheckedUpdateWithoutLiquidacionesInput>
+    create: XOR<EmployeeCreateWithoutLiquidacionesInput, EmployeeUncheckedCreateWithoutLiquidacionesInput>
+    where?: EmployeeWhereInput
+  }
+
+  export type EmployeeUpdateToOneWithWhereWithoutLiquidacionesInput = {
+    where?: EmployeeWhereInput
+    data: XOR<EmployeeUpdateWithoutLiquidacionesInput, EmployeeUncheckedUpdateWithoutLiquidacionesInput>
+  }
+
+  export type EmployeeUpdateWithoutLiquidacionesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    cedula?: StringFieldUpdateOperationsInput | string
+    firstName?: StringFieldUpdateOperationsInput | string
+    lastName?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    phoneNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    position?: StringFieldUpdateOperationsInput | string
+    department?: NullableStringFieldUpdateOperationsInput | string | null
+    hireDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    salary?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    salaryType?: EnumSalaryTypeFieldUpdateOperationsInput | $Enums.SalaryType
+    status?: EnumEmployeeStatusFieldUpdateOperationsInput | $Enums.EmployeeStatus
+    bankAccount?: NullableStringFieldUpdateOperationsInput | string | null
+    bankName?: NullableStringFieldUpdateOperationsInput | string | null
+    maternityStartDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    maternityEndDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    inactivityReason?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    user?: UserUpdateOneWithoutEmployeeNestedInput
+    company?: CompanyUpdateOneRequiredWithoutEmployeesNestedInput
+    payrolls?: PayrollUpdateManyWithoutEmployeeNestedInput
+    deductions?: DeductionUpdateManyWithoutEmployeeNestedInput
+    allowances?: AllowanceUpdateManyWithoutEmployeeNestedInput
+    attendanceRecords?: AttendanceRecordUpdateManyWithoutEmployeeNestedInput
+    leaves?: LeaveUpdateManyWithoutEmployeeNestedInput
+    recurringDeductions?: EmployeeRecurringDeductionUpdateManyWithoutEmployeeNestedInput
+    salaryHistory?: SalaryHistoryUpdateManyWithoutEmployeeNestedInput
+  }
+
+  export type EmployeeUncheckedUpdateWithoutLiquidacionesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    cedula?: StringFieldUpdateOperationsInput | string
+    firstName?: StringFieldUpdateOperationsInput | string
+    lastName?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    phoneNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    position?: StringFieldUpdateOperationsInput | string
+    department?: NullableStringFieldUpdateOperationsInput | string | null
+    hireDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    salary?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    salaryType?: EnumSalaryTypeFieldUpdateOperationsInput | $Enums.SalaryType
+    status?: EnumEmployeeStatusFieldUpdateOperationsInput | $Enums.EmployeeStatus
+    bankAccount?: NullableStringFieldUpdateOperationsInput | string | null
+    bankName?: NullableStringFieldUpdateOperationsInput | string | null
+    maternityStartDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    maternityEndDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    inactivityReason?: NullableStringFieldUpdateOperationsInput | string | null
+    userId?: NullableStringFieldUpdateOperationsInput | string | null
+    companyId?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    payrolls?: PayrollUncheckedUpdateManyWithoutEmployeeNestedInput
+    deductions?: DeductionUncheckedUpdateManyWithoutEmployeeNestedInput
+    allowances?: AllowanceUncheckedUpdateManyWithoutEmployeeNestedInput
+    attendanceRecords?: AttendanceRecordUncheckedUpdateManyWithoutEmployeeNestedInput
+    leaves?: LeaveUncheckedUpdateManyWithoutEmployeeNestedInput
+    recurringDeductions?: EmployeeRecurringDeductionUncheckedUpdateManyWithoutEmployeeNestedInput
+    salaryHistory?: SalaryHistoryUncheckedUpdateManyWithoutEmployeeNestedInput
+  }
+
+  export type CompanyUpsertWithoutLiquidacionesInput = {
+    update: XOR<CompanyUpdateWithoutLiquidacionesInput, CompanyUncheckedUpdateWithoutLiquidacionesInput>
+    create: XOR<CompanyCreateWithoutLiquidacionesInput, CompanyUncheckedCreateWithoutLiquidacionesInput>
+    where?: CompanyWhereInput
+  }
+
+  export type CompanyUpdateToOneWithWhereWithoutLiquidacionesInput = {
+    where?: CompanyWhereInput
+    data: XOR<CompanyUpdateWithoutLiquidacionesInput, CompanyUncheckedUpdateWithoutLiquidacionesInput>
+  }
+
+  export type CompanyUpdateWithoutLiquidacionesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    code?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    address?: NullableStringFieldUpdateOperationsInput | string | null
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    ruc?: NullableStringFieldUpdateOperationsInput | string | null
+    logoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    LegalDecimoParameter?: LegalDecimoParameterUpdateManyWithoutCompanyNestedInput
+    legalParameters?: LegalParameterUpdateManyWithoutCompanyNestedInput
+    createdBy?: UserUpdateOneWithoutCreatedCompaniesNestedInput
+    departments?: DepartmentUpdateManyWithoutCompanyNestedInput
+    users?: UserCompanyUpdateManyWithoutCompanyNestedInput
+    employees?: EmployeeUpdateManyWithoutCompanyNestedInput
+    payrolls?: PayrollUpdateManyWithoutCompanyNestedInput
+    attendanceRecords?: AttendanceRecordUpdateManyWithoutCompanyNestedInput
+    leaves?: LeaveUpdateManyWithoutCompanyNestedInput
+    payrollRuns?: PayrollRunUpdateManyWithoutCompanyNestedInput
+    decimoPayments?: DecimoPaymentUpdateManyWithoutCompanyNestedInput
+  }
+
+  export type CompanyUncheckedUpdateWithoutLiquidacionesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    code?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    address?: NullableStringFieldUpdateOperationsInput | string | null
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    ruc?: NullableStringFieldUpdateOperationsInput | string | null
+    logoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdByUserId?: NullableStringFieldUpdateOperationsInput | string | null
+    LegalDecimoParameter?: LegalDecimoParameterUncheckedUpdateManyWithoutCompanyNestedInput
+    legalParameters?: LegalParameterUncheckedUpdateManyWithoutCompanyNestedInput
+    departments?: DepartmentUncheckedUpdateManyWithoutCompanyNestedInput
+    users?: UserCompanyUncheckedUpdateManyWithoutCompanyNestedInput
+    employees?: EmployeeUncheckedUpdateManyWithoutCompanyNestedInput
+    payrolls?: PayrollUncheckedUpdateManyWithoutCompanyNestedInput
+    attendanceRecords?: AttendanceRecordUncheckedUpdateManyWithoutCompanyNestedInput
+    leaves?: LeaveUncheckedUpdateManyWithoutCompanyNestedInput
     payrollRuns?: PayrollRunUncheckedUpdateManyWithoutCompanyNestedInput
     decimoPayments?: DecimoPaymentUncheckedUpdateManyWithoutCompanyNestedInput
   }
@@ -37356,6 +40159,7 @@ export namespace Prisma {
     leaves?: LeaveCreateNestedManyWithoutCompanyInput
     payrollRuns?: PayrollRunCreateNestedManyWithoutCompanyInput
     decimoPayments?: DecimoPaymentCreateNestedManyWithoutCompanyInput
+    liquidaciones?: LiquidacionCreateNestedManyWithoutCompanyInput
   }
 
   export type CompanyUncheckedCreateWithoutLegalParametersInput = {
@@ -37380,6 +40184,7 @@ export namespace Prisma {
     leaves?: LeaveUncheckedCreateNestedManyWithoutCompanyInput
     payrollRuns?: PayrollRunUncheckedCreateNestedManyWithoutCompanyInput
     decimoPayments?: DecimoPaymentUncheckedCreateNestedManyWithoutCompanyInput
+    liquidaciones?: LiquidacionUncheckedCreateNestedManyWithoutCompanyInput
   }
 
   export type CompanyCreateOrConnectWithoutLegalParametersInput = {
@@ -37420,6 +40225,7 @@ export namespace Prisma {
     leaves?: LeaveUpdateManyWithoutCompanyNestedInput
     payrollRuns?: PayrollRunUpdateManyWithoutCompanyNestedInput
     decimoPayments?: DecimoPaymentUpdateManyWithoutCompanyNestedInput
+    liquidaciones?: LiquidacionUpdateManyWithoutCompanyNestedInput
   }
 
   export type CompanyUncheckedUpdateWithoutLegalParametersInput = {
@@ -37444,6 +40250,7 @@ export namespace Prisma {
     leaves?: LeaveUncheckedUpdateManyWithoutCompanyNestedInput
     payrollRuns?: PayrollRunUncheckedUpdateManyWithoutCompanyNestedInput
     decimoPayments?: DecimoPaymentUncheckedUpdateManyWithoutCompanyNestedInput
+    liquidaciones?: LiquidacionUncheckedUpdateManyWithoutCompanyNestedInput
   }
 
   export type CompanyCreateWithoutLegalDecimoParameterInput = {
@@ -37468,6 +40275,7 @@ export namespace Prisma {
     leaves?: LeaveCreateNestedManyWithoutCompanyInput
     payrollRuns?: PayrollRunCreateNestedManyWithoutCompanyInput
     decimoPayments?: DecimoPaymentCreateNestedManyWithoutCompanyInput
+    liquidaciones?: LiquidacionCreateNestedManyWithoutCompanyInput
   }
 
   export type CompanyUncheckedCreateWithoutLegalDecimoParameterInput = {
@@ -37492,6 +40300,7 @@ export namespace Prisma {
     leaves?: LeaveUncheckedCreateNestedManyWithoutCompanyInput
     payrollRuns?: PayrollRunUncheckedCreateNestedManyWithoutCompanyInput
     decimoPayments?: DecimoPaymentUncheckedCreateNestedManyWithoutCompanyInput
+    liquidaciones?: LiquidacionUncheckedCreateNestedManyWithoutCompanyInput
   }
 
   export type CompanyCreateOrConnectWithoutLegalDecimoParameterInput = {
@@ -37532,6 +40341,7 @@ export namespace Prisma {
     leaves?: LeaveUpdateManyWithoutCompanyNestedInput
     payrollRuns?: PayrollRunUpdateManyWithoutCompanyNestedInput
     decimoPayments?: DecimoPaymentUpdateManyWithoutCompanyNestedInput
+    liquidaciones?: LiquidacionUpdateManyWithoutCompanyNestedInput
   }
 
   export type CompanyUncheckedUpdateWithoutLegalDecimoParameterInput = {
@@ -37556,6 +40366,7 @@ export namespace Prisma {
     leaves?: LeaveUncheckedUpdateManyWithoutCompanyNestedInput
     payrollRuns?: PayrollRunUncheckedUpdateManyWithoutCompanyNestedInput
     decimoPayments?: DecimoPaymentUncheckedUpdateManyWithoutCompanyNestedInput
+    liquidaciones?: LiquidacionUncheckedUpdateManyWithoutCompanyNestedInput
   }
 
   export type EmployeeCreateWithoutSalaryHistoryInput = {
@@ -37586,6 +40397,7 @@ export namespace Prisma {
     attendanceRecords?: AttendanceRecordCreateNestedManyWithoutEmployeeInput
     leaves?: LeaveCreateNestedManyWithoutEmployeeInput
     recurringDeductions?: EmployeeRecurringDeductionCreateNestedManyWithoutEmployeeInput
+    liquidaciones?: LiquidacionCreateNestedManyWithoutEmployeeInput
   }
 
   export type EmployeeUncheckedCreateWithoutSalaryHistoryInput = {
@@ -37616,6 +40428,7 @@ export namespace Prisma {
     attendanceRecords?: AttendanceRecordUncheckedCreateNestedManyWithoutEmployeeInput
     leaves?: LeaveUncheckedCreateNestedManyWithoutEmployeeInput
     recurringDeductions?: EmployeeRecurringDeductionUncheckedCreateNestedManyWithoutEmployeeInput
+    liquidaciones?: LiquidacionUncheckedCreateNestedManyWithoutEmployeeInput
   }
 
   export type EmployeeCreateOrConnectWithoutSalaryHistoryInput = {
@@ -37662,6 +40475,7 @@ export namespace Prisma {
     attendanceRecords?: AttendanceRecordUpdateManyWithoutEmployeeNestedInput
     leaves?: LeaveUpdateManyWithoutEmployeeNestedInput
     recurringDeductions?: EmployeeRecurringDeductionUpdateManyWithoutEmployeeNestedInput
+    liquidaciones?: LiquidacionUpdateManyWithoutEmployeeNestedInput
   }
 
   export type EmployeeUncheckedUpdateWithoutSalaryHistoryInput = {
@@ -37692,6 +40506,7 @@ export namespace Prisma {
     attendanceRecords?: AttendanceRecordUncheckedUpdateManyWithoutEmployeeNestedInput
     leaves?: LeaveUncheckedUpdateManyWithoutEmployeeNestedInput
     recurringDeductions?: EmployeeRecurringDeductionUncheckedUpdateManyWithoutEmployeeNestedInput
+    liquidaciones?: LiquidacionUncheckedUpdateManyWithoutEmployeeNestedInput
   }
 
   export type CompanyCreateWithoutDecimoPaymentsInput = {
@@ -37716,6 +40531,7 @@ export namespace Prisma {
     attendanceRecords?: AttendanceRecordCreateNestedManyWithoutCompanyInput
     leaves?: LeaveCreateNestedManyWithoutCompanyInput
     payrollRuns?: PayrollRunCreateNestedManyWithoutCompanyInput
+    liquidaciones?: LiquidacionCreateNestedManyWithoutCompanyInput
   }
 
   export type CompanyUncheckedCreateWithoutDecimoPaymentsInput = {
@@ -37740,6 +40556,7 @@ export namespace Prisma {
     attendanceRecords?: AttendanceRecordUncheckedCreateNestedManyWithoutCompanyInput
     leaves?: LeaveUncheckedCreateNestedManyWithoutCompanyInput
     payrollRuns?: PayrollRunUncheckedCreateNestedManyWithoutCompanyInput
+    liquidaciones?: LiquidacionUncheckedCreateNestedManyWithoutCompanyInput
   }
 
   export type CompanyCreateOrConnectWithoutDecimoPaymentsInput = {
@@ -37780,6 +40597,7 @@ export namespace Prisma {
     attendanceRecords?: AttendanceRecordUpdateManyWithoutCompanyNestedInput
     leaves?: LeaveUpdateManyWithoutCompanyNestedInput
     payrollRuns?: PayrollRunUpdateManyWithoutCompanyNestedInput
+    liquidaciones?: LiquidacionUpdateManyWithoutCompanyNestedInput
   }
 
   export type CompanyUncheckedUpdateWithoutDecimoPaymentsInput = {
@@ -37804,6 +40622,7 @@ export namespace Prisma {
     attendanceRecords?: AttendanceRecordUncheckedUpdateManyWithoutCompanyNestedInput
     leaves?: LeaveUncheckedUpdateManyWithoutCompanyNestedInput
     payrollRuns?: PayrollRunUncheckedUpdateManyWithoutCompanyNestedInput
+    liquidaciones?: LiquidacionUncheckedUpdateManyWithoutCompanyNestedInput
   }
 
   export type UserCompanyCreateManyUserInput = {
@@ -37858,6 +40677,7 @@ export namespace Prisma {
     leaves?: LeaveUpdateManyWithoutCompanyNestedInput
     payrollRuns?: PayrollRunUpdateManyWithoutCompanyNestedInput
     decimoPayments?: DecimoPaymentUpdateManyWithoutCompanyNestedInput
+    liquidaciones?: LiquidacionUpdateManyWithoutCompanyNestedInput
   }
 
   export type CompanyUncheckedUpdateWithoutCreatedByInput = {
@@ -37882,6 +40702,7 @@ export namespace Prisma {
     leaves?: LeaveUncheckedUpdateManyWithoutCompanyNestedInput
     payrollRuns?: PayrollRunUncheckedUpdateManyWithoutCompanyNestedInput
     decimoPayments?: DecimoPaymentUncheckedUpdateManyWithoutCompanyNestedInput
+    liquidaciones?: LiquidacionUncheckedUpdateManyWithoutCompanyNestedInput
   }
 
   export type CompanyUncheckedUpdateManyWithoutCreatedByInput = {
@@ -38046,6 +40867,35 @@ export namespace Prisma {
     partida: number
     paymentDate?: Date | string
     totalAmount?: Decimal | DecimalJsLike | number | string
+    notes?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type LiquidacionCreateManyCompanyInput = {
+    id?: string
+    employeeId: string
+    tipoTerminacion: string
+    fechaTerminacion: Date | string
+    previousStatus: string
+    salarioMensual: Decimal | DecimalJsLike | number | string
+    anosTrabajados: number
+    mesesTrabajados: number
+    diasTrabajados: number
+    primaAntiguedad?: Decimal | DecimalJsLike | number | string
+    preaviso?: Decimal | DecimalJsLike | number | string
+    vacaciones?: Decimal | DecimalJsLike | number | string
+    decimo?: Decimal | DecimalJsLike | number | string
+    indemnizacion?: Decimal | DecimalJsLike | number | string
+    salariosPendientes?: Decimal | DecimalJsLike | number | string
+    totalBruto?: Decimal | DecimalJsLike | number | string
+    ss?: Decimal | DecimalJsLike | number | string
+    se?: Decimal | DecimalJsLike | number | string
+    isr?: Decimal | DecimalJsLike | number | string
+    totalDeducciones?: Decimal | DecimalJsLike | number | string
+    totalNeto?: Decimal | DecimalJsLike | number | string
+    revertedAt?: Date | string | null
+    revertedBy?: string | null
     notes?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -38216,6 +41066,7 @@ export namespace Prisma {
     leaves?: LeaveUpdateManyWithoutEmployeeNestedInput
     recurringDeductions?: EmployeeRecurringDeductionUpdateManyWithoutEmployeeNestedInput
     salaryHistory?: SalaryHistoryUpdateManyWithoutEmployeeNestedInput
+    liquidaciones?: LiquidacionUpdateManyWithoutEmployeeNestedInput
   }
 
   export type EmployeeUncheckedUpdateWithoutCompanyInput = {
@@ -38246,6 +41097,7 @@ export namespace Prisma {
     leaves?: LeaveUncheckedUpdateManyWithoutEmployeeNestedInput
     recurringDeductions?: EmployeeRecurringDeductionUncheckedUpdateManyWithoutEmployeeNestedInput
     salaryHistory?: SalaryHistoryUncheckedUpdateManyWithoutEmployeeNestedInput
+    liquidaciones?: LiquidacionUncheckedUpdateManyWithoutEmployeeNestedInput
   }
 
   export type EmployeeUncheckedUpdateManyWithoutCompanyInput = {
@@ -38532,6 +41384,93 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type LiquidacionUpdateWithoutCompanyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    tipoTerminacion?: StringFieldUpdateOperationsInput | string
+    fechaTerminacion?: DateTimeFieldUpdateOperationsInput | Date | string
+    previousStatus?: StringFieldUpdateOperationsInput | string
+    salarioMensual?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    anosTrabajados?: IntFieldUpdateOperationsInput | number
+    mesesTrabajados?: IntFieldUpdateOperationsInput | number
+    diasTrabajados?: IntFieldUpdateOperationsInput | number
+    primaAntiguedad?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    preaviso?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    vacaciones?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    decimo?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    indemnizacion?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    salariosPendientes?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    totalBruto?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    ss?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    se?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    isr?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    totalDeducciones?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    totalNeto?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    revertedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    revertedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    employee?: EmployeeUpdateOneRequiredWithoutLiquidacionesNestedInput
+  }
+
+  export type LiquidacionUncheckedUpdateWithoutCompanyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    employeeId?: StringFieldUpdateOperationsInput | string
+    tipoTerminacion?: StringFieldUpdateOperationsInput | string
+    fechaTerminacion?: DateTimeFieldUpdateOperationsInput | Date | string
+    previousStatus?: StringFieldUpdateOperationsInput | string
+    salarioMensual?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    anosTrabajados?: IntFieldUpdateOperationsInput | number
+    mesesTrabajados?: IntFieldUpdateOperationsInput | number
+    diasTrabajados?: IntFieldUpdateOperationsInput | number
+    primaAntiguedad?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    preaviso?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    vacaciones?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    decimo?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    indemnizacion?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    salariosPendientes?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    totalBruto?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    ss?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    se?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    isr?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    totalDeducciones?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    totalNeto?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    revertedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    revertedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type LiquidacionUncheckedUpdateManyWithoutCompanyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    employeeId?: StringFieldUpdateOperationsInput | string
+    tipoTerminacion?: StringFieldUpdateOperationsInput | string
+    fechaTerminacion?: DateTimeFieldUpdateOperationsInput | Date | string
+    previousStatus?: StringFieldUpdateOperationsInput | string
+    salarioMensual?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    anosTrabajados?: IntFieldUpdateOperationsInput | number
+    mesesTrabajados?: IntFieldUpdateOperationsInput | number
+    diasTrabajados?: IntFieldUpdateOperationsInput | number
+    primaAntiguedad?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    preaviso?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    vacaciones?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    decimo?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    indemnizacion?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    salariosPendientes?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    totalBruto?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    ss?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    se?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    isr?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    totalDeducciones?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    totalNeto?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    revertedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    revertedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type PersonCreateManyDepartmentInput = {
     id?: string
     userId: string
@@ -38704,6 +41643,35 @@ export namespace Prisma {
     effectiveDate?: Date | string
     changedBy?: string | null
     createdAt?: Date | string
+  }
+
+  export type LiquidacionCreateManyEmployeeInput = {
+    id?: string
+    companyId: string
+    tipoTerminacion: string
+    fechaTerminacion: Date | string
+    previousStatus: string
+    salarioMensual: Decimal | DecimalJsLike | number | string
+    anosTrabajados: number
+    mesesTrabajados: number
+    diasTrabajados: number
+    primaAntiguedad?: Decimal | DecimalJsLike | number | string
+    preaviso?: Decimal | DecimalJsLike | number | string
+    vacaciones?: Decimal | DecimalJsLike | number | string
+    decimo?: Decimal | DecimalJsLike | number | string
+    indemnizacion?: Decimal | DecimalJsLike | number | string
+    salariosPendientes?: Decimal | DecimalJsLike | number | string
+    totalBruto?: Decimal | DecimalJsLike | number | string
+    ss?: Decimal | DecimalJsLike | number | string
+    se?: Decimal | DecimalJsLike | number | string
+    isr?: Decimal | DecimalJsLike | number | string
+    totalDeducciones?: Decimal | DecimalJsLike | number | string
+    totalNeto?: Decimal | DecimalJsLike | number | string
+    revertedAt?: Date | string | null
+    revertedBy?: string | null
+    notes?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
   }
 
   export type PayrollUpdateWithoutEmployeeInput = {
@@ -39038,6 +42006,93 @@ export namespace Prisma {
     effectiveDate?: DateTimeFieldUpdateOperationsInput | Date | string
     changedBy?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type LiquidacionUpdateWithoutEmployeeInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    tipoTerminacion?: StringFieldUpdateOperationsInput | string
+    fechaTerminacion?: DateTimeFieldUpdateOperationsInput | Date | string
+    previousStatus?: StringFieldUpdateOperationsInput | string
+    salarioMensual?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    anosTrabajados?: IntFieldUpdateOperationsInput | number
+    mesesTrabajados?: IntFieldUpdateOperationsInput | number
+    diasTrabajados?: IntFieldUpdateOperationsInput | number
+    primaAntiguedad?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    preaviso?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    vacaciones?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    decimo?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    indemnizacion?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    salariosPendientes?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    totalBruto?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    ss?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    se?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    isr?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    totalDeducciones?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    totalNeto?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    revertedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    revertedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    company?: CompanyUpdateOneRequiredWithoutLiquidacionesNestedInput
+  }
+
+  export type LiquidacionUncheckedUpdateWithoutEmployeeInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    companyId?: StringFieldUpdateOperationsInput | string
+    tipoTerminacion?: StringFieldUpdateOperationsInput | string
+    fechaTerminacion?: DateTimeFieldUpdateOperationsInput | Date | string
+    previousStatus?: StringFieldUpdateOperationsInput | string
+    salarioMensual?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    anosTrabajados?: IntFieldUpdateOperationsInput | number
+    mesesTrabajados?: IntFieldUpdateOperationsInput | number
+    diasTrabajados?: IntFieldUpdateOperationsInput | number
+    primaAntiguedad?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    preaviso?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    vacaciones?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    decimo?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    indemnizacion?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    salariosPendientes?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    totalBruto?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    ss?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    se?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    isr?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    totalDeducciones?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    totalNeto?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    revertedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    revertedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type LiquidacionUncheckedUpdateManyWithoutEmployeeInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    companyId?: StringFieldUpdateOperationsInput | string
+    tipoTerminacion?: StringFieldUpdateOperationsInput | string
+    fechaTerminacion?: DateTimeFieldUpdateOperationsInput | Date | string
+    previousStatus?: StringFieldUpdateOperationsInput | string
+    salarioMensual?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    anosTrabajados?: IntFieldUpdateOperationsInput | number
+    mesesTrabajados?: IntFieldUpdateOperationsInput | number
+    diasTrabajados?: IntFieldUpdateOperationsInput | number
+    primaAntiguedad?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    preaviso?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    vacaciones?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    decimo?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    indemnizacion?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    salariosPendientes?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    totalBruto?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    ss?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    se?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    isr?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    totalDeducciones?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    totalNeto?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    revertedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    revertedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type PayrollCreateManyPayrollRunInput = {

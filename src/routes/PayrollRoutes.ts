@@ -4,6 +4,7 @@ import { EmployeeController } from '../controllers/EmployeeController.js';
 import { PayrollController } from '../controllers/PayrollController.js';
 import { LeaveController } from '../controllers/LeaveController.js';
 import { EmailController } from '../controllers/EmailController.js';
+import { LiquidacionController } from '../controllers/LiquidacionController.js';
 import { verifyJWT } from '../middlewares/AuthMiddleware.js';
 
 const PayrollRouter = Router();
@@ -13,6 +14,7 @@ const payrollController = new PayrollController();
 const attendanceController = new AttendanceController();
 const leaveController = new LeaveController();
 const emailController = new EmailController();
+const liquidacionController = new LiquidacionController();
 
 PayrollRouter.use(verifyJWT);
 
@@ -64,5 +66,13 @@ PayrollRouter.put('/leaves/:id/cancel', (req, res) => leaveController.cancelLeav
 // ============================================
 
 PayrollRouter.post('/send-payslip', (req, res) => emailController.sendPayslip(req, res));
+
+// ============================================
+// LIQUIDACION ROUTES
+// ============================================
+
+PayrollRouter.post('/liquidaciones', (req, res) => liquidacionController.create(req, res));
+PayrollRouter.get('/liquidaciones', (req, res) => liquidacionController.getAll(req, res));
+PayrollRouter.post('/liquidaciones/:id/revert', (req, res) => liquidacionController.revert(req, res));
 
 export default PayrollRouter;

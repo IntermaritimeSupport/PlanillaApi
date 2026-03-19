@@ -330,6 +330,36 @@ exports.Prisma.LeaveScalarFieldEnum = {
   updatedAt: 'updatedAt'
 };
 
+exports.Prisma.LiquidacionScalarFieldEnum = {
+  id: 'id',
+  employeeId: 'employeeId',
+  companyId: 'companyId',
+  tipoTerminacion: 'tipoTerminacion',
+  fechaTerminacion: 'fechaTerminacion',
+  previousStatus: 'previousStatus',
+  salarioMensual: 'salarioMensual',
+  anosTrabajados: 'anosTrabajados',
+  mesesTrabajados: 'mesesTrabajados',
+  diasTrabajados: 'diasTrabajados',
+  primaAntiguedad: 'primaAntiguedad',
+  preaviso: 'preaviso',
+  vacaciones: 'vacaciones',
+  decimo: 'decimo',
+  indemnizacion: 'indemnizacion',
+  salariosPendientes: 'salariosPendientes',
+  totalBruto: 'totalBruto',
+  ss: 'ss',
+  se: 'se',
+  isr: 'isr',
+  totalDeducciones: 'totalDeducciones',
+  totalNeto: 'totalNeto',
+  revertedAt: 'revertedAt',
+  revertedBy: 'revertedBy',
+  notes: 'notes',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
 exports.Prisma.LegalParameterScalarFieldEnum = {
   id: 'id',
   key: 'key',
@@ -551,6 +581,7 @@ exports.Prisma.ModelName = {
   Allowance: 'Allowance',
   AttendanceRecord: 'AttendanceRecord',
   Leave: 'Leave',
+  Liquidacion: 'Liquidacion',
   LegalParameter: 'LegalParameter',
   LegalDecimoParameter: 'LegalDecimoParameter',
   SalaryHistory: 'SalaryHistory',

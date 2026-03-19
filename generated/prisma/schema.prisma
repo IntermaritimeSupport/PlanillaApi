@@ -79,6 +79,7 @@ model Company {
   leaves               Leave[]                @relation("LeaveCompany")
   payrollRuns          PayrollRun[]
   decimoPayments       DecimoPayment[]
+  liquidaciones        Liquidacion[]
 }
 
 model Department {
@@ -141,6 +142,7 @@ model Employee {
   leaves              Leave[]
   recurringDeductions EmployeeRecurringDeduction[]
   salaryHistory       SalaryHistory[]
+  liquidaciones       Liquidacion[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -337,6 +339,53 @@ model Leave {
   comments      String?
   isPaid        Boolean     @default(false)
   paidAt        DateTime?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([employeeId])
+  @@index([companyId])
+}
+
+// ============================================
+// LIQUIDACION — Terminación de contrato con snapshot de cálculos
+// ============================================
+
+model Liquidacion {
+  id         String   @id @default(uuid())
+  employeeId String
+  employee   Employee @relation(fields: [employeeId], references: [id], onDelete: Cascade)
+  companyId  String
+  company    Company  @relation(fields: [companyId], references: [id], onDelete: Cascade)
+
+  tipoTerminacion  String // "voluntaria" | "despido_justificado" | "despido_injustificado"
+  fechaTerminacion DateTime
+  previousStatus   String // Estado anterior del empleado (para revertir)
+
+  // Snapshot de datos del empleado al momento de liquidar
+  salarioMensual  Decimal
+  anosTrabajados  Int
+  mesesTrabajados Int
+  diasTrabajados  Int
+
+  // Snapshot de cálculos
+  primaAntiguedad    Decimal @default(0)
+  preaviso           Decimal @default(0)
+  vacaciones         Decimal @default(0)
+  decimo             Decimal @default(0)
+  indemnizacion      Decimal @default(0)
+  salariosPendientes Decimal @default(0)
+  totalBruto         Decimal @default(0)
+  ss                 Decimal @default(0)
+  se                 Decimal @default(0)
+  isr                Decimal @default(0)
+  totalDeducciones   Decimal @default(0)
+  totalNeto          Decimal @default(0)
+
+  // Auditoría de reversión
+  revertedAt DateTime?
+  revertedBy String?
+  notes      String?
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
