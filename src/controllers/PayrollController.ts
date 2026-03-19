@@ -457,7 +457,7 @@ export class PayrollController {
 
   async getPayrolls(req: Request, res: Response) {
     try {
-      const { employeeId, companyId, payrollRunId, status, startDate, endDate } = req.query;
+      const { employeeId, companyId, payrollRunId, status, startDate, endDate, year, month } = req.query;
 
       const where: Prisma.PayrollWhereInput = {};
       if (employeeId)   where.employeeId   = employeeId   as string;
@@ -469,6 +469,22 @@ export class PayrollController {
         where.payPeriod = {};
         if (startDate) where.payPeriod.gte = new Date(startDate as string);
         if (endDate)   where.payPeriod.lte = new Date(endDate   as string);
+      } else if (year) {
+        // Filtro por año y opcionalmente mes
+        const y = parseInt(year as string, 10);
+        const m = month ? parseInt(month as string, 10) : null;
+        if (m !== null) {
+          // Primer y último día del mes
+          const start = new Date(y, m - 1, 1);
+          const end   = new Date(y, m, 0, 23, 59, 59, 999);
+          where.payPeriod = { gte: start, lte: end };
+        } else {
+          // Todo el año
+          where.payPeriod = {
+            gte: new Date(y, 0, 1),
+            lte: new Date(y, 11, 31, 23, 59, 59, 999),
+          };
+        }
       }
 
       const payrolls = await prisma.payroll.findMany({
