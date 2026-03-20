@@ -168,13 +168,23 @@ export class PayrollController {
         },
       });
 
+      // Leer parámetros legales de la compañía desde DB
+      const legalParams = await prisma.legalParameter.findMany({
+        where: { companyId: employee.companyId, status: 'active' },
+      });
+      const ssEmpParam = legalParams.find(p => p.key === 'ss_empleado');
+      const seEmpParam = legalParams.find(p => p.key === 'se_empleado');
+      const ssEmpRate  = new Decimal(ssEmpParam?.percentage ?? 9.75).dividedBy(100);
+      const seEmpRate  = new Decimal(seEmpParam?.percentage ?? 1.25).dividedBy(100);
+
       // Calcular salario prorrateado
       const dailySalary = new Decimal(baseSalary).dividedBy(workingDays);
       const prorateSalary = dailySalary.times(daysWorked);
 
-      // Calcular deducciones totales
-      const sss            = prorateSalary.times(0.0875);
-      const taxableIncome  = prorateSalary.minus(sss);
+      // Calcular deducciones legales
+      const sss            = prorateSalary.times(ssEmpRate);
+      const seguroEducativo = prorateSalary.times(seEmpRate);
+      const taxableIncome  = prorateSalary.minus(sss).minus(seguroEducativo);
       const incomeTax      = this.calculatePanamaCorporateTax(taxableIncome);
       const privateInsurance = new Decimal(0);
 
@@ -183,7 +193,7 @@ export class PayrollController {
         customDeductions = customDeductions.plus(d.amount);
       });
 
-      const totalDeductions = sss.plus(incomeTax).plus(privateInsurance).plus(customDeductions);
+      const totalDeductions = sss.plus(seguroEducativo).plus(incomeTax).plus(privateInsurance).plus(customDeductions);
 
       let totalAllowances = new Decimal(0);
       (allowances as AllowanceInput[]).forEach((a) => {
@@ -233,7 +243,7 @@ export class PayrollController {
           grossSalary,
           incomeTax,
           sss,
-          privateInsurance,
+          privateInsurance: seguroEducativo,
           customDeductions,
           totalDeductions,
           netSalary,
@@ -332,6 +342,16 @@ export class PayrollController {
       const employeeMap = new Map(employees.map((e) => [e.id, e]));
       // ────────────────────────────────────────────────────────────────────────
 
+      // ─── Leer parámetros legales de la compañía ────────────────────────────
+      const legalParams = await prisma.legalParameter.findMany({
+        where: { companyId, status: 'active' },
+      });
+      const ssEmpParam  = legalParams.find(p => p.key === 'ss_empleado');
+      const seEmpParam  = legalParams.find(p => p.key === 'se_empleado');
+      const ssEmpRate   = new Decimal(ssEmpParam?.percentage ?? 9.75).dividedBy(100);
+      const seEmpRate   = new Decimal(seEmpParam?.percentage ?? 1.25).dividedBy(100);
+      // ────────────────────────────────────────────────────────────────────────
+
       for (const payrollData of payrollsData as Array<{
         employeeId: string; payPeriod: string; paymentDate?: string;
         baseSalary: number | string; workingDays?: number; daysWorked?: number;
@@ -354,15 +374,15 @@ export class PayrollController {
         const dailySalary   = new Decimal(baseSalary).dividedBy(workingDays);
         const prorateSalary = dailySalary.times(daysWorked);
 
-        const sss            = prorateSalary.times(0.0875);
-        const taxableIncome  = prorateSalary.minus(sss);
-        const incomeTax      = this.calculatePanamaCorporateTax(taxableIncome);
-        const privateInsurance = new Decimal(0);
+        const sss             = prorateSalary.times(ssEmpRate);
+        const seguroEducativo = prorateSalary.times(seEmpRate);
+        const taxableIncome   = prorateSalary.minus(sss).minus(seguroEducativo);
+        const incomeTax       = this.calculatePanamaCorporateTax(taxableIncome);
 
         let customDeductions = new Decimal(0);
         deductions.forEach((d) => { customDeductions = customDeductions.plus(d.amount); });
 
-        const totalDeductions = sss.plus(incomeTax).plus(privateInsurance).plus(customDeductions);
+        const totalDeductions = sss.plus(seguroEducativo).plus(incomeTax).plus(customDeductions);
 
         let totalAllowances = new Decimal(0);
         allowances.forEach((a) => { totalAllowances = totalAllowances.plus(a.amount); });
@@ -387,7 +407,7 @@ export class PayrollController {
             grossSalary,
             incomeTax,
             sss,
-            privateInsurance,
+            privateInsurance: seguroEducativo,
             customDeductions,
             totalDeductions,
             netSalary,
