@@ -58,8 +58,12 @@ PayrollRouter.get('/attendance/summary/monthly', (req, res) => attendanceControl
 PayrollRouter.post('/leaves', (req, res) => leaveController.requestLeave(req, res));
 PayrollRouter.get('/leaves', (req, res) => leaveController.getLeaveRequests(req, res));
 PayrollRouter.put('/leaves/:id/approve', (req, res) => leaveController.approveLeave(req, res));
+PayrollRouter.patch('/leaves/:id/approve', (req, res) => leaveController.approveLeave(req, res));
 PayrollRouter.put('/leaves/:id/reject', (req, res) => leaveController.rejectLeave(req, res));
+PayrollRouter.patch('/leaves/:id/reject', (req, res) => leaveController.rejectLeave(req, res));
 PayrollRouter.put('/leaves/:id/cancel', (req, res) => leaveController.cancelLeave(req, res));
+PayrollRouter.patch('/leaves/:id/cancel', (req, res) => leaveController.cancelLeave(req, res));
+PayrollRouter.patch('/leaves/:id/pay', (req, res) => leaveController.markAsPaid(req, res));
 
 // ============================================
 // EMAIL ROUTES

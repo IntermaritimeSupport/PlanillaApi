@@ -33,6 +33,22 @@ export class LeaveController {
         return res.status(404).json({ error: 'Empleado no encontrado.' });
       }
 
+      // Validar solapamiento de fechas (excluye canceladas y rechazadas)
+      const overlap = await prisma.leave.findFirst({
+        where: {
+          employeeId,
+          status: { notIn: ['CANCELLED', 'REJECTED'] },
+          startDate: { lte: new Date(endDate) },
+          endDate:   { gte: new Date(startDate) },
+        },
+      });
+
+      if (overlap) {
+        return res.status(409).json({
+          error: `Ya existe una solicitud de permiso que se superpone con las fechas indicadas (${overlap.startDate.toISOString().slice(0, 10)} — ${overlap.endDate.toISOString().slice(0, 10)}).`,
+        });
+      }
+
       const newLeave = await prisma.leave.create({
         data: {
           employeeId,
