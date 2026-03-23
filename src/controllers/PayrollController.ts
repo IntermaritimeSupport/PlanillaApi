@@ -1,7 +1,9 @@
 import { Request, Response } from 'express';
 import { prisma } from '../../lib/prisma.js';
 import { Prisma, PayrollRunStatus, PayrollStatus } from '../../generated/prisma/index.js';
+import { resolveCompanyAccess, getCompanyFilter } from '../middlewares/authGuards.js';
 import { Decimal } from '@prisma/client/runtime/library.js';
+import { calcProrateForQuincena, ContractType } from '../utils/payrollProrate.js';
 
 type DeductionInput = { type?: string; description?: string; amount: number | string; isFixed?: boolean };
 type AllowanceInput  = { type?: string; description?: string; amount: number | string };
@@ -10,8 +12,10 @@ export class PayrollController {
     // GET /api/payroll/payrolls/summary?companyId=&year=
   async getPayrollSummary(req: Request, res: Response) {
     try {
-      const { companyId, year } = req.query;
+      const companyId = getCompanyFilter(req as any, req.query.companyId as string | undefined);
       if (!companyId) return res.status(400).json({ error: 'companyId requerido.' });
+      if (!resolveCompanyAccess(req as any, res, companyId)) return;
+      const { year } = req.query;
 
       const yearNum = year ? parseInt(year as string) : new Date().getFullYear();
       const startDate = new Date(yearNum, 0, 1);
@@ -48,6 +52,7 @@ export class PayrollController {
       const { id } = req.params;
       const run = await prisma.payrollRun.findUnique({ where: { id } });
       if (!run) return res.status(404).json({ error: 'Nómina no encontrada.' });
+      if (!resolveCompanyAccess(req as any, res, run.companyId)) return;
       if (run.status === 'APPROVED') return res.status(409).json({ error: 'La nómina ya está bloqueada.' });
 
       const updated = await prisma.payrollRun.update({
@@ -66,6 +71,7 @@ export class PayrollController {
       const { id } = req.params;
       const run = await prisma.payrollRun.findUnique({ where: { id } });
       if (!run) return res.status(404).json({ error: 'Nómina no encontrada.' });
+      if (!resolveCompanyAccess(req as any, res, run.companyId)) return;
 
       const updated = await prisma.payrollRun.update({
         where: { id },
@@ -80,8 +86,10 @@ export class PayrollController {
   // GET /api/payroll/payrolls/runs?companyId=&year=&month=&status=
   async getPayrollRuns(req: Request, res: Response) {
     try {
-      const { companyId, year, month, status } = req.query;
+      const companyId = getCompanyFilter(req as any, req.query.companyId as string | undefined);
       if (!companyId) return res.status(400).json({ error: 'companyId requerido.' });
+      if (!resolveCompanyAccess(req as any, res, companyId)) return;
+      const { year, month, status } = req.query;
 
       const where: Prisma.PayrollRunWhereInput = { companyId: companyId as string };
       if (status) where.status = status as PayrollRunStatus;
@@ -306,6 +314,8 @@ export class PayrollController {
         });
       }
 
+      if (!resolveCompanyAccess(req as any, res, companyId)) return;
+
       // Convertir a primer día del mes
       const normalizedPeriodDate = new Date(periodDate);
       normalizedPeriodDate.setDate(1);
@@ -362,14 +372,28 @@ export class PayrollController {
           payPeriod,
           paymentDate,
           baseSalary,
-          workingDays = 30,
-          daysWorked = 30,
           deductions = [],
           allowances = [],
         } = payrollData;
 
         const employee = employeeMap.get(employeeId);
         if (!employee) continue;
+
+        // Calcular días proporcionales según tipo de contrato y fecha de ingreso
+        const periodDateForProrate = new Date(payPeriod);
+        const prorate = calcProrateForQuincena(
+          new Date(employee.hireDate),
+          periodDateForProrate.getFullYear(),
+          periodDateForProrate.getMonth() + 1,
+          quincena as 1 | 2,
+          (employee.contractType as ContractType) ?? 'HOURS_48',
+        );
+
+        // Si el empleado no tiene días trabajados en este período, omitirlo
+        if (prorate.daysWorked === 0) continue;
+
+        const workingDays = prorate.workingDays;
+        const daysWorked  = prorate.daysWorked;
 
         const dailySalary   = new Decimal(baseSalary).dividedBy(workingDays);
         const prorateSalary = dailySalary.times(daysWorked);
@@ -477,11 +501,12 @@ export class PayrollController {
 
   async getPayrolls(req: Request, res: Response) {
     try {
-      const { employeeId, companyId, payrollRunId, status, startDate, endDate, year, month } = req.query;
+      const { employeeId, payrollRunId, status, startDate, endDate, year, month } = req.query;
+      const companyId = getCompanyFilter(req as any, req.query.companyId as string | undefined);
 
       const where: Prisma.PayrollWhereInput = {};
       if (employeeId)   where.employeeId   = employeeId   as string;
-      if (companyId)    where.companyId    = companyId    as string;
+      if (companyId)    where.companyId    = companyId;
       if (payrollRunId) where.payrollRunId = payrollRunId as string;
       if (status)       where.status       = status       as PayrollStatus;
 
@@ -554,18 +579,11 @@ export class PayrollController {
 
       const payroll = await prisma.payroll.findUnique({
         where: { id },
-        include: {
-          employee: true,
-          company: true,
-          payrollRun: true,
-          deductions: true,
-          allowances: true,
-        },
+        include: { employee: true, company: true, payrollRun: true, deductions: true, allowances: true },
       });
 
-      if (!payroll) {
-        return res.status(404).json({ error: 'Nómina no encontrada.' });
-      }
+      if (!payroll) return res.status(404).json({ error: 'Nómina no encontrada.' });
+      if (!resolveCompanyAccess(req as any, res, payroll.companyId)) return;
 
       return res.status(200).json(payroll);
     } catch (error: unknown) {
@@ -676,6 +694,8 @@ export class PayrollController {
       if (!payrollRun) {
         return res.status(404).json({ error: 'Lote de nóminas no encontrado.' });
       }
+
+      if (!resolveCompanyAccess(req as any, res, payrollRun.companyId)) return;
 
       const updated = await prisma.payrollRun.update({
         where: { id },

@@ -18,24 +18,25 @@ export class UserServices {
     return user;
   }
     async create(username: string, email: string, password_plain: string, role: UserRole, companyId?: string): Promise<User> {
-        // 1. Hashear la contraseña antes de almacenarla
         const hashedPassword = await bcrypt.hash(password_plain, 10);
-    
         try {
-        // 2. Crear el usuario en la base de datos
-        const newUser = await prisma.user.create({
-            data: {
-            username,
-            email,
-            password: hashedPassword,
-            role,
-            companyId,
-            },
-        });
-    
-        return newUser;
+            const newUser = await prisma.user.create({
+                data: {
+                    username,
+                    email,
+                    password: hashedPassword,
+                    role,
+                    // Vincular a empresa vía UserCompany si se provee companyId
+                    ...(companyId && {
+                        companies: {
+                            create: { companyId }
+                        }
+                    }),
+                },
+            });
+            return newUser;
         } catch (error) {
-        throw new Error('Error al registrar el usuario.');
+            throw new Error('Error al registrar el usuario.');
         }
     }
 }

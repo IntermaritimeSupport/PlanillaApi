@@ -6,6 +6,7 @@ import { LeaveController } from '../controllers/LeaveController.js';
 import { EmailController } from '../controllers/EmailController.js';
 import { LiquidacionController } from '../controllers/LiquidacionController.js';
 import { verifyJWT } from '../middlewares/AuthMiddleware.js';
+import { requireActiveCompany } from '../middlewares/authGuards.js';
 
 const PayrollRouter = Router();
 
@@ -17,6 +18,7 @@ const emailController = new EmailController();
 const liquidacionController = new LiquidacionController();
 
 PayrollRouter.use(verifyJWT);
+PayrollRouter.use(requireActiveCompany);
 
 // ============================================
 // EMPLOYEE ROUTES

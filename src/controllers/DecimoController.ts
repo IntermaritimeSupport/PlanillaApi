@@ -1,6 +1,7 @@
 // src/controllers/DecimoController.ts
 import { Request, Response } from 'express';
 import { prisma } from '../../lib/prisma.js';
+import { resolveCompanyAccess } from '../middlewares/authGuards.js';
 
 export class DecimoController {
 
@@ -63,6 +64,8 @@ export class DecimoController {
         return res.status(400).json({ error: 'companyId, year y partida son obligatorios.' });
       }
 
+      if (!resolveCompanyAccess(req as any, res, companyId)) return;
+
       if (![1, 2, 3].includes(Number(partida))) {
         return res.status(400).json({ error: 'partida debe ser 1, 2 o 3.' });
       }
@@ -118,6 +121,8 @@ export class DecimoController {
       if (!payment) {
         return res.status(404).json({ error: 'Pago de décimo no encontrado.' });
       }
+
+      if (!resolveCompanyAccess(req as any, res, payment.companyId)) return;
 
       await prisma.decimoPayment.delete({ where: { id } });
 

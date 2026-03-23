@@ -203,6 +203,7 @@ exports.Prisma.EmployeeScalarFieldEnum = {
   status: 'status',
   bankAccount: 'bankAccount',
   bankName: 'bankName',
+  contractType: 'contractType',
   maternityStartDate: 'maternityStartDate',
   maternityEndDate: 'maternityEndDate',
   inactivityReason: 'inactivityReason',
@@ -438,7 +439,8 @@ exports.UserRole = exports.$Enums.UserRole = {
   USER: 'USER',
   ADMIN: 'ADMIN',
   MODERATOR: 'MODERATOR',
-  SUPER_ADMIN: 'SUPER_ADMIN'
+  SUPER_ADMIN: 'SUPER_ADMIN',
+  GLOBAL_ADMIN: 'GLOBAL_ADMIN'
 };
 
 exports.PersonStatus = exports.$Enums.PersonStatus = {
@@ -457,6 +459,13 @@ exports.EmployeeStatus = exports.$Enums.EmployeeStatus = {
   SUSPENDED: 'SUSPENDED',
   TERMINATED: 'TERMINATED',
   MATERNITY_LEAVE: 'MATERNITY_LEAVE'
+};
+
+exports.ContractType = exports.$Enums.ContractType = {
+  HOURS_48: 'HOURS_48',
+  HOURS_40: 'HOURS_40',
+  HOURS_36: 'HOURS_36',
+  HALF_TIME: 'HALF_TIME'
 };
 
 exports.DeductionFrequency = exports.$Enums.DeductionFrequency = {
@@ -534,6 +543,7 @@ exports.LegalParameterKey = exports.$Enums.LegalParameterKey = {
   ss_empleado: 'ss_empleado',
   ss_patrono: 'ss_patrono',
   ss_decimo: 'ss_decimo',
+  ss_decimo_patrono: 'ss_decimo_patrono',
   se_empleado: 'se_empleado',
   se_patrono: 'se_patrono',
   riesgo_profesional: 'riesgo_profesional',

@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
 import { Prisma } from '../../generated/prisma/index.js';
 import prisma from '../../lib/prisma.js';
+import { getCompanyFilter } from '../middlewares/authGuards.js';
 
 export class DashboardController {
   /**
@@ -9,19 +10,16 @@ export class DashboardController {
    */
   async getGeneralStats(req: Request, res: Response): Promise<void> {
     try {
-      // Estadísticas generales (sin filtro de usuario)
+      const companyId = getCompanyFilter(req as any, req.query.companyId as string | undefined);
+      const cWhere = companyId ? { companyId } : {};
       const stats = {
-        totalCompanies: await prisma.company.count(),
-        totalUsers: await prisma.user.count(),
-        totalEmployees: await prisma.employee.count(),
-        totalPayrolls: await prisma.payroll.count(),
-        totalDepartments: await prisma.department.count(),
-        activeEmployees: await prisma.employee.count({
-          where: { status: 'ACTIVE' },
-        }),
-        inactiveEmployees: await prisma.employee.count({
-          where: { status: { not: 'ACTIVE' } },
-        }),
+        totalCompanies: companyId ? 1 : await prisma.company.count(),
+        totalUsers: await prisma.user.count({ where: companyId ? { companies: { some: { companyId } } } : {} }),
+        totalEmployees: await prisma.employee.count({ where: cWhere }),
+        totalPayrolls: await prisma.payroll.count({ where: cWhere }),
+        totalDepartments: await prisma.department.count({ where: cWhere }),
+        activeEmployees: await prisma.employee.count({ where: { ...cWhere, status: 'ACTIVE' } }),
+        inactiveEmployees: await prisma.employee.count({ where: { ...cWhere, status: { not: 'ACTIVE' } } }),
       };
 
       res.status(200).json({
@@ -324,21 +322,7 @@ export class DashboardController {
         }
       }
 
-      // Si no hay usuario autenticado o no se encontró, retornar todas las compañías
-      const companies = await prisma.company.findMany({
-        select: {
-          id: true,
-          code: true,
-          name: true,
-          ruc: true,
-          isActive: true,
-        },
-      });
-
-      res.status(200).json({
-        success: true,
-        data: companies,
-      });
+      res.status(401).json({ error: 'No autenticado.' });
     } catch (error: unknown) {
       console.error('Error fetching user companies:', error);
       res.status(500).json({

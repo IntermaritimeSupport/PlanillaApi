@@ -384,8 +384,8 @@ export class CompanyController {
                             name: true,
                             description: true,
                             isActive: true,
+                            companyId: true,
                         },
-                        where: { isActive: true },
                     },
                 },
                 orderBy: {
@@ -434,8 +434,8 @@ export class CompanyController {
 
             let companies = []
 
-            // 🔥 SUPER ADMIN → TODAS las compañías
-            if (user.role === 'SUPER_ADMIN') {
+            // 🔥 GLOBAL_ADMIN → TODAS las compañías (administrador de plataforma)
+            if (user.role === 'GLOBAL_ADMIN' || user.role === 'SUPER_ADMIN') {
                 companies = await prisma.company.findMany({
                     include: {
                         _count: {

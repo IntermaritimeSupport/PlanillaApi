@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
 import { prisma } from '../../lib/prisma.js';
 import XLSX from 'xlsx';
+import { resolveCompanyAccess, getCompanyFilter } from '../middlewares/authGuards.js';
 
 export class EmployeeController {
   // Crear nuevo empleado
@@ -16,6 +17,7 @@ export class EmployeeController {
       hireDate,
       salary,
       salaryType,
+      contractType,
       bankAccount,
       bankName,
       userId,
@@ -31,9 +33,13 @@ export class EmployeeController {
         });
       }
 
+      // Verificar que el usuario tenga acceso a esta empresa
+      const allowedCompanyId = resolveCompanyAccess(req as any, res, companyId);
+      if (!allowedCompanyId) return;
+
       // 2. Validar que la compañía exista
       const companyExists = await prisma.company.findUnique({
-        where: { id: companyId },
+        where: { id: allowedCompanyId },
       });
 
       if (!companyExists) {
@@ -53,6 +59,7 @@ export class EmployeeController {
         hireDate: hireDate ? new Date(hireDate) : new Date(),
         salary: Number(salary) || 0,
         salaryType: salaryType || 'MONTHLY',
+        contractType: contractType || 'HOURS_48',
         bankAccount: bankAccount || "",
         bankName: bankName || "",
         companyId,
@@ -131,12 +138,14 @@ export class EmployeeController {
   // Obtener todos los empleados
   async getAll(req: Request, res: Response) {
     try {
-      const { companyId, status } = req.query;
-
-      const where: any = {};
-      if (companyId) {
-        where.companyId = companyId;
+      const { status } = req.query;
+      // Forzar filtro por empresa del JWT; GLOBAL_ADMIN puede filtrar con ?companyId=
+      const companyId = getCompanyFilter(req as any, req.query.companyId as string | undefined);
+      if (!companyId) {
+        return res.status(400).json({ error: 'companyId requerido.' });
       }
+
+      const where: any = { companyId };
       if (status) {
         where.status = status;
       }
@@ -180,36 +189,29 @@ export class EmployeeController {
 
       const employee = await prisma.employee.findUnique({
         where: { id },
+        // select companyId para verificar acceso antes de devolver todo
+        select: { companyId: true, id: true },
+      });
+
+      if (!employee) return res.status(404).json({ error: 'Empleado no encontrado.' });
+
+      if (!resolveCompanyAccess(req as any, res, employee.companyId)) return;
+
+      const full = await prisma.employee.findUnique({
+        where: { id },
         include: {
           user: true,
           company: true,
           recurringDeductions: true,
-          payrolls: {
-            orderBy: { payPeriod: 'desc' },
-            take: 10,
-          },
-          deductions: {
-            orderBy: { createdAt: 'desc' },
-          },
-          allowances: {
-            orderBy: { createdAt: 'desc' },
-          },
-          attendanceRecords: {
-            orderBy: { date: 'desc' },
-            take: 30,
-          },
-          leaves: {
-            orderBy: { startDate: 'desc' },
-            take: 10,
-          },
+          payrolls: { orderBy: { payPeriod: 'desc' }, take: 10 },
+          deductions: { orderBy: { createdAt: 'desc' } },
+          allowances: { orderBy: { createdAt: 'desc' } },
+          attendanceRecords: { orderBy: { date: 'desc' }, take: 30 },
+          leaves: { orderBy: { startDate: 'desc' }, take: 10 },
         },
       });
 
-      if (!employee) {
-        return res.status(404).json({ error: 'Empleado no encontrado.' });
-      }
-
-      return res.status(200).json(employee);
+      return res.status(200).json(full);
     } catch (error: any) {
       console.error('Error fetching employee:', error);
       return res.status(500).json({
@@ -225,8 +227,9 @@ export class EmployeeController {
       const { id } = req.params;
       const { userId, recurringDeductions, salaryChangeReason, salaryChangeNotes, ...restOfData } = req.body;
 
-      const employee = await prisma.employee.findUnique({ where: { id } });
+      const employee = await prisma.employee.findUnique({ where: { id }, select: { id: true, companyId: true, salary: true, salaryType: true, userId: true, hireDate: true } });
       if (!employee) return res.status(404).json({ error: 'Empleado no encontrado.' });
+      if (!resolveCompanyAccess(req as any, res, employee.companyId)) return;
 
       // Preparar objeto de actualización
       const updateData: any = { ...restOfData };
@@ -343,13 +346,9 @@ export class EmployeeController {
     try {
       const { id } = req.params;
 
-      const employee = await prisma.employee.findUnique({
-        where: { id },
-      });
-
-      if (!employee) {
-        return res.status(404).json({ error: 'Empleado no encontrado.' });
-      }
+      const employee = await prisma.employee.findUnique({ where: { id }, select: { id: true, companyId: true } });
+      if (!employee) return res.status(404).json({ error: 'Empleado no encontrado.' });
+      if (!resolveCompanyAccess(req as any, res, employee.companyId)) return;
 
       await prisma.employee.delete({
         where: { id },
@@ -387,13 +386,9 @@ export class EmployeeController {
         return res.status(400).json({ error: 'Fecha de inicio de maternidad es obligatoria.' });
       }
 
-      const employee = await prisma.employee.findUnique({
-        where: { id },
-      });
-
-      if (!employee) {
-        return res.status(404).json({ error: 'Empleado no encontrado.' });
-      }
+      const employee = await prisma.employee.findUnique({ where: { id }, select: { id: true, companyId: true } });
+      if (!employee) return res.status(404).json({ error: 'Empleado no encontrado.' });
+      if (!resolveCompanyAccess(req as any, res, employee.companyId)) return;
 
       const updateData: any = { status, inactivityReason: inactivityReason || null };
       if (status === 'MATERNITY_LEAVE') {
@@ -441,13 +436,10 @@ export class EmployeeController {
     try {
       const { companyId } = req.params;
 
-      const company = await prisma.company.findUnique({
-        where: { id: companyId },
-      });
+      if (!resolveCompanyAccess(req as any, res, companyId)) return;
 
-      if (!company) {
-        return res.status(404).json({ error: 'Compañía no encontrada.' });
-      }
+      const company = await prisma.company.findUnique({ where: { id: companyId } });
+      if (!company) return res.status(404).json({ error: 'Compañía no encontrada.' });
 
       const employees = await prisma.employee.findMany({
         where: { companyId },
@@ -491,14 +483,10 @@ export class EmployeeController {
         return res.status(400).json({ error: 'Se requiere companyId.' });
       }
 
-      // Verificar que la compañía exista
-      const companyExists = await prisma.company.findUnique({
-        where: { id: companyId },
-      });
+      if (!resolveCompanyAccess(req as any, res, companyId)) return;
 
-      if (!companyExists) {
-        return res.status(404).json({ error: 'Compañía no encontrada.' });
-      }
+      const companyExists = await prisma.company.findUnique({ where: { id: companyId } });
+      if (!companyExists) return res.status(404).json({ error: 'Compañía no encontrada.' });
 
       // Leer el archivo Excel
       const workbook = XLSX.read(req.file.buffer, { type: 'buffer' });
@@ -590,6 +578,8 @@ export class EmployeeController {
       if (!companyId) {
         return res.status(400).json({ error: 'Se requiere companyId.' });
       }
+
+      if (!resolveCompanyAccess(req as any, res, companyId)) return;
 
       const createdEmployees: any[] = [];
       const failedEmployees: any[] = [];

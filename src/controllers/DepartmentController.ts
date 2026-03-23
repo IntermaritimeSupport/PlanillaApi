@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
 import { prisma } from '../../lib/prisma.js';
+import { resolveCompanyAccess, getCompanyFilter } from '../middlewares/authGuards.js';
 
 export class DepartmentController {
 
@@ -12,15 +13,13 @@ export class DepartmentController {
         try {
             const { name, description, companyId, isActive } = req.body;
 
-            // Validate that name and companyId are provided
             if (!name || !companyId) {
                 return res.status(400).json({ error: 'El nombre del departamento y el ID de la compañía son obligatorios.' });
             }
 
-            // Optional: Check if the company exists before creating the department
-            const existingCompany = await prisma.company.findUnique({
-                where: { id: companyId }
-            });
+            if (!resolveCompanyAccess(req as any, res, companyId)) return;
+
+            const existingCompany = await prisma.company.findUnique({ where: { id: companyId } });
 
             if (!existingCompany) {
                 return res.status(404).json({ error: 'La compañía especificada no existe.' });
@@ -75,13 +74,9 @@ export class DepartmentController {
         try {
             const { id } = req.params;
 
-            const department = await prisma.department.findUnique({
-                where: { id },
-            });
-
-            if (!department) {
-                return res.status(404).json({ error: 'Departamento no encontrado.' });
-            }
+            const department = await prisma.department.findUnique({ where: { id }, select: { id: true, companyId: true } });
+            if (!department) return res.status(404).json({ error: 'Departamento no encontrado.' });
+            if (!resolveCompanyAccess(req as any, res, department.companyId)) return;
 
             // Antes de eliminar el departamento, setea a null el departmentId de todas las personas asociadas.
             // Esto es crucial si tu relación Person.department no tiene onDelete: Cascade.
@@ -116,6 +111,10 @@ export class DepartmentController {
         try {
             const { id } = req.params;
             const { name, description, isActive, companyId } = req.body;
+
+            const existing = await prisma.department.findUnique({ where: { id }, select: { id: true, companyId: true } });
+            if (!existing) return res.status(404).json({ error: 'Departamento no encontrado.' });
+            if (!resolveCompanyAccess(req as any, res, existing.companyId)) return;
 
             // Prepare data for update
             const departmentData: any = {
@@ -211,14 +210,12 @@ export class DepartmentController {
      */
     async getAll(req: Request, res: Response) {
         try {
+            const companyId = getCompanyFilter(req as any, req.query.companyId as string | undefined);
             const departments = await prisma.department.findMany({
+                where: companyId ? { companyId } : undefined,
                 include: {
-                    company: true, // Include the associated company details for each department
-                    _count: { // Include count of persons in each department
-                        select: {
-                            persons: true,
-                        }
-                    }
+                    company: true,
+                    _count: { select: { persons: true } }
                 }
             });
             res.json(departments);

@@ -13,12 +13,16 @@ export class AuthController {
 
       // Leído dentro del método para que dotenv ya haya cargado
       const secret = process.env.JWT_SECRET!;
+      // Primera empresa asociada al usuario (la usamos como contexto por defecto)
+      const primaryCompanyId = user.companies?.[0]?.companyId ?? null;
+
       const token = jwt.sign(
         {
           id: user.id,
           username: user.username,
           email: user.email,
-          roles: user.role ?? 'user',
+          roles: user.role ?? 'USER',
+          companyId: primaryCompanyId,
         },
         secret,
         { expiresIn: '30d' }

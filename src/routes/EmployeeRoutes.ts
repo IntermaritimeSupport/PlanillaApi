@@ -2,6 +2,7 @@ import { Router } from 'express';
 import multer from 'multer';
 import { EmployeeController } from '../controllers/EmployeeController.js';
 import { verifyJWT } from '../middlewares/AuthMiddleware.js';
+import { requireActiveCompany } from '../middlewares/authGuards.js';
 
 const EmployeeRouter = Router();
 const employeeController = new EmployeeController();
@@ -25,6 +26,7 @@ const upload = multer({
 });
 
 EmployeeRouter.use(verifyJWT);
+EmployeeRouter.use(requireActiveCompany);
 
 // ============================================
 // EMPLOYEE ROUTES

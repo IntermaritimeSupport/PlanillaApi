@@ -1,6 +1,7 @@
 import bcrypt from 'bcryptjs';
 import { Request, Response } from 'express';
 import { prisma } from '../../lib/prisma.js';
+import { getCompanyFilter, isGlobalAdmin, requireRole } from '../middlewares/authGuards.js';
 
 export function generateNextUserCode(): string {
   return `USR-${Math.floor(100000 + Math.random() * 900000)}`;
@@ -9,9 +10,10 @@ export function generateNextUserCode(): string {
 // Define el orden jerárquico de roles
 const ROLE_HIERARCHY: Record<string, number> = {
   USER: 1,
-  ADMIN: 2,
   MODERATOR: 2,
+  ADMIN: 2,
   SUPER_ADMIN: 3,
+  GLOBAL_ADMIN: 4,
 };
 
 export class UserController {
@@ -60,11 +62,13 @@ export class UserController {
 
   // Función para validar que exista al menos un SUPER_ADMIN
   private async validateSuperAdminExists(
+    companyId: string,
     excludeUserId?: string
   ): Promise<boolean> {
     const superAdminCount = await prisma.user.count({
       where: {
         role: 'SUPER_ADMIN',
+        companies: { some: { companyId } },
         ...(excludeUserId && { id: { not: excludeUserId } }),
       },
     });
@@ -103,20 +107,27 @@ export class UserController {
     }
 
     try {
-      // Validar permisos solo si se especifica un rol elevado
-      if (role && role !== 'USER' && requestingUserId) {
-        // La validación de permisos en Create debería usar un 'dummy-id' o validar 
-        // solo el rol del usuario que solicita la creación si no está creando un SUPER_ADMIN
-        const permissionCheck = await this.validateRolePermission(
-          requestingUserId,
-          'dummy-id', // ID temporal para chequear solo el permiso de 'edit' o 'create' de rol
-          'edit'
-        );
-        // Si el usuario no es Super Admin, se valida si tiene nivel para crear el rol solicitado
-        const requestingUserRoleLevel = ROLE_HIERARCHY[(await prisma.user.findUnique({ where: { id: requestingUserId } }))?.role || 'USER'] || 0;
-        const targetRoleLevel = ROLE_HIERARCHY[role] || 0;
-        
-        if (!permissionCheck.allowed || requestingUserRoleLevel <= targetRoleLevel) {
+      const requester = requestingUserId
+        ? await prisma.user.findUnique({ where: { id: requestingUserId } })
+        : null;
+
+      // Solo GLOBAL_ADMIN puede crear usuarios en cualquier empresa.
+      // SUPER_ADMIN/ADMIN solo pueden crear usuarios en su propia empresa.
+      if (requester && requester.role !== 'GLOBAL_ADMIN') {
+        const requesterCompanyId = (req as any).userCompanyId;
+        const forbidden = companyIds.some((cid: string) => cid !== requesterCompanyId);
+        if (forbidden) {
+          return res.status(403).json({
+            error: 'Solo puedes crear usuarios en tu propia empresa.',
+          });
+        }
+      }
+
+      // Validar que el solicitante tenga rango suficiente para asignar el rol pedido
+      if (role && role !== 'USER' && requester) {
+        const requestingLevel = ROLE_HIERARCHY[requester.role] || 0;
+        const targetLevel = ROLE_HIERARCHY[role] || 0;
+        if (requestingLevel <= targetLevel) {
           return res.status(403).json({
             error: 'No tienes permisos para asignar el rol especificado.',
           });
@@ -213,12 +224,15 @@ export class UserController {
       });
 
       if (userToDelete?.role === 'SUPER_ADMIN') {
-        const superAdminExists = await this.validateSuperAdminExists(id);
-        if (!superAdminExists) {
-          return res.status(400).json({
-            error:
-              'No se puede eliminar al último Super Administrador. Debe existir al menos uno.',
-          });
+        const callerCompanyId = (req as any).userCompanyId as string | undefined;
+        if (callerCompanyId) {
+          const superAdminExists = await this.validateSuperAdminExists(callerCompanyId, id);
+          if (!superAdminExists) {
+            return res.status(400).json({
+              error:
+                'No se puede eliminar al último Super Administrador. Debe existir al menos uno.',
+            });
+          }
         }
       }
       
@@ -286,12 +300,15 @@ export class UserController {
         role !== 'SUPER_ADMIN' &&
         userToEdit?.role === 'SUPER_ADMIN'
       ) {
-        const superAdminExists = await this.validateSuperAdminExists(id);
-        if (!superAdminExists) {
-          return res.status(400).json({
-            error:
-              'No se puede cambiar el rol del último Super Administrador. Debe existir al menos uno.',
-          });
+        const callerCompanyId = (req as any).userCompanyId as string | undefined;
+        if (callerCompanyId) {
+          const superAdminExists = await this.validateSuperAdminExists(callerCompanyId, id);
+          if (!superAdminExists) {
+            return res.status(400).json({
+              error:
+                'No se puede cambiar el rol del último Super Administrador. Debe existir al menos uno.',
+            });
+          }
         }
       }
       
@@ -490,27 +507,21 @@ export class UserController {
 
   async getAll(req: Request, res: Response) {
     try {
+      const companyId = getCompanyFilter(req as any, req.query.companyId as string | undefined);
+
       const users = await prisma.user.findMany({
+        where: companyId
+          ? { companies: { some: { companyId } } }
+          : undefined,
         include: {
-          person: {
-            include: {
-              department: true,
-            },
-          },
-          companies: {
-            include: {
-              company: true, // ✅ Mapea los detalles de la compañía
-            },
-          },
+          person: { include: { department: true } },
+          companies: { include: { company: true } },
         },
       });
       res.status(200).json(users);
     } catch (error: any) {
       console.error('Error fetching all users:', error);
-      res.status(500).json({
-        error: 'Error al obtener los usuarios.',
-        details: error.message,
-      });
+      res.status(500).json({ error: 'Error al obtener los usuarios.', details: error.message });
     }
   }
 
@@ -549,26 +560,21 @@ export class UserController {
 
   async getAllWithPerson(req: Request, res: Response) {
     try {
+      const companyId = getCompanyFilter(req as any, req.query.companyId as string | undefined);
+
       const users = await prisma.user.findMany({
+        where: companyId
+          ? { companies: { some: { companyId } } }
+          : undefined,
         include: {
-          person: {
-            include: {
-              department: true,
-            },
-          },
-          companies: {
-            include: {
-              company: true, // ✅ Mapea los detalles de la compañía
-            },
-          },
+          person: { include: { department: true } },
+          companies: { include: { company: true } },
         },
       });
       res.status(200).json(users);
     } catch (error: any) {
       console.error('Error fetching users with person data:', error);
-      res.status(500).json({
-        error: 'Error al obtener los usuarios.',
-      });
+      res.status(500).json({ error: 'Error al obtener los usuarios.' });
     }
   }
 

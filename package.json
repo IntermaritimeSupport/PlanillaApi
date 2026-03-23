@@ -13,7 +13,9 @@
     "build": "prisma generate",
     "start": "node dist/server.js",
     "postinstall": "prisma generate",
-    "seed": "tsx prisma/seed.ts"
+    "seed": "tsx prisma/seed.ts",
+    "seed:admin": "tsx prisma/seed-global-admin.ts",
+    "seed:demo": "tsx prisma/seed-demo.ts"
   },
   "prisma": {
     "seed": "tsx prisma/seed.ts"

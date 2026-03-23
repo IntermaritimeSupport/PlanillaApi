@@ -121,8 +121,9 @@ model Employee {
   salary      Decimal        @default(0.00)
   salaryType  SalaryType     @default(MONTHLY)
   status      EmployeeStatus @default(ACTIVE)
-  bankAccount String?
-  bankName    String?
+  bankAccount  String?
+  bankName     String?
+  contractType ContractType @default(HOURS_48)
 
   // Licencia de Maternidad
   maternityStartDate DateTime?
@@ -455,6 +456,7 @@ enum LegalParameterKey {
   ss_empleado
   ss_patrono
   ss_decimo
+  ss_decimo_patrono
   se_empleado
   se_patrono
   riesgo_profesional
@@ -467,6 +469,13 @@ enum LegalParameterKey {
 enum SalaryType {
   MONTHLY
   BIWEEKLY
+}
+
+enum ContractType {
+  HOURS_48    // 48 horas semanales (6 días)
+  HOURS_40    // 40 horas semanales (5 días)
+  HOURS_36    // 36 horas semanales
+  HALF_TIME   // Medio tiempo
 }
 
 enum PayrollType {
@@ -539,6 +548,7 @@ enum UserRole {
   ADMIN
   MODERATOR
   SUPER_ADMIN
+  GLOBAL_ADMIN   // Administrador de plataforma — ve todas las empresas
 }
 
 enum PersonStatus {

@@ -10,6 +10,7 @@ declare global {
     interface Request {
       userId?: string;
       userRole?: string;
+      userCompanyId?: string; // Primera empresa activa del usuario autenticado
     }
   }
 }
@@ -31,7 +32,9 @@ interface Request extends ExpressRequest {
 type Response = ExpressResponse;
 
 // ─── Middleware JWT para la API REST ─────────────────────────────────────────
-// Verifica el Bearer token y adjunta userId/userRole al request.
+// Verifica el Bearer token y adjunta userId/userRole/userCompanyId al request.
+// NO verifica si la empresa está activa aquí — eso lo hace requireActiveCompany
+// a nivel de ruta, usando el companyCode de la URL (no el companyId del token).
 export const verifyJWT = (req: Request, res: Response, next: NextFunction): void => {
   const authHeader = req.headers.authorization;
   if (!authHeader || !authHeader.startsWith('Bearer ')) {
@@ -42,9 +45,10 @@ export const verifyJWT = (req: Request, res: Response, next: NextFunction): void
   const token = authHeader.slice(7);
 
   try {
-    const decoded = jwt.verify(token, process.env.JWT_SECRET!) as { id: string; roles: string };
+    const decoded = jwt.verify(token, process.env.JWT_SECRET!) as { id: string; roles: string; companyId?: string };
     req.userId = decoded.id;
     req.userRole = decoded.roles;
+    req.userCompanyId = decoded.companyId ?? undefined;
     next();
   } catch {
     res.status(401).json({ error: 'Token inválido o expirado.' });

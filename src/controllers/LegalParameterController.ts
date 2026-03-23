@@ -1,6 +1,7 @@
 import { Request, Response } from 'express'
 import prisma from '../../lib/prisma.js'
 import { LegalParameterKey, ParameterCategory } from '../../generated/prisma/index.js'
+import { resolveCompanyAccess } from '../middlewares/authGuards.js'
 
 export class LegalParameterController {
   
@@ -117,6 +118,8 @@ export class LegalParameterController {
         })
       }
 
+      if (!resolveCompanyAccess(req as any, res, companyId)) return;
+
       // Normalizar key (lowercase, snake_case)
       const normalizedKey = key
         .toLowerCase()
@@ -191,6 +194,8 @@ export class LegalParameterController {
       if (!parameter) {
         return res.status(404).json({ error: 'Parámetro legal no encontrado' })
       }
+
+      if (!resolveCompanyAccess(req as any, res, parameter.companyId)) return;
 
       const updated = await prisma.legalParameter.update({
         where: { id },

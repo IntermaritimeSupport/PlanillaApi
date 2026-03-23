@@ -1,170 +1,96 @@
+/**
+ * seed.ts — Seed de arranque de plataforma
+ * ─────────────────────────────────────────────────────────────────────────────
+ * Solo crea el GLOBAL_ADMIN.
+ *
+ * El flujo correcto del sistema es:
+ *   1. GLOBAL_ADMIN (este seed) — administrador de la plataforma
+ *   2. GLOBAL_ADMIN crea empresas desde el panel /admin/companies
+ *   3. GLOBAL_ADMIN crea un SUPER_ADMIN por empresa y lo vincula a ella
+ *   4. SUPER_ADMIN crea ADMIN / MODERATOR / USER dentro de su empresa
+ *
+ * Variables requeridas en .env:
+ *   GLOBAL_ADMIN_EMAIL
+ *   GLOBAL_ADMIN_PASSWORD
+ *   GLOBAL_ADMIN_NAME     (opcional, default "Admin")
+ *   GLOBAL_ADMIN_LASTNAME (opcional, default "Global")
+ */
+
 import 'dotenv/config'
 import prisma from '../lib/prisma.js'
 import { hash } from 'bcryptjs'
-import { LegalParameterKey, ParameterCategory, ParameterType, UserRole } from '../generated/prisma/index.js'
-import { AdminConfig } from '../src/config/adminConfig.js'
+import { UserRole } from '../generated/prisma/index.js'
 
 async function main() {
-  console.log('🌱 Iniciando actualización de base de datos (Modo Idempotente)...')
+  const email    = process.env.GLOBAL_ADMIN_EMAIL
+  const password = process.env.GLOBAL_ADMIN_PASSWORD
+  const name     = process.env.GLOBAL_ADMIN_NAME     ?? 'Admin'
+  const lastName = process.env.GLOBAL_ADMIN_LASTNAME ?? 'Global'
 
-  if (!AdminConfig?.Email || !AdminConfig?.Password) {
-    throw new Error('ADMIN_EMAIL y ADMIN_PASSWORD deben estar definidos en el entorno.')
+  if (!email || !password) {
+    throw new Error(
+      '❌ Variables requeridas no definidas: GLOBAL_ADMIN_EMAIL, GLOBAL_ADMIN_PASSWORD\n' +
+      '   Agrégalas en .env y vuelve a ejecutar.'
+    )
   }
 
-  /* ============================
-     1. COMPAÑÍA PRINCIPAL
-  ============================ */
-  const existingCompany = await prisma.company.findUnique({ where: { name: 'Intermaritime' } })
-  const companyCode = existingCompany?.code || await generateNextCompanyCode()
+  console.log('🌱 Iniciando seed de plataforma...\n')
 
-  const companyIM = await prisma.company.upsert({
-    where: { name: 'Intermaritime' },
-    update: {
-      ruc: '8-888-8888 DV 88',
-      email: 'info@intermaritime.org',
-      isActive: true
-    },
+  const passwordHash = await hash(password, 10)
+
+  const globalAdmin = await prisma.user.upsert({
+    where:  { email: email.toLowerCase() },
+    update: { role: UserRole.GLOBAL_ADMIN, isActive: true },
     create: {
-      name: 'Intermaritime',
-      code: companyCode,
-      isActive: true,
-      ruc: '8-888-8888 DV 88',
-      email: 'info@intermaritime.org'
-    }
-  })
-  console.log(`🏢 Compañía: ${companyIM.name} [OK]`)
-
-  /* ============================
-     2. PARÁMETROS LEGALES (REGULARES Y DÉCIMO)
-  ============================ */
-  const paramsData = [
-    { key: LegalParameterKey.ss_empleado, name: 'Seguro Social - Empleado', type: 'employee', category: ParameterCategory.social_security, percentage: 9.75, description: 'Cuota regular de SS para empleados' },
-    { key: LegalParameterKey.ss_patrono, name: 'Seguro Social - Patrono', type: 'employer', category: ParameterCategory.social_security, percentage: 12.25, description: 'Cuota patronal de SS' },
-    { key: LegalParameterKey.ss_decimo, name: 'Seguro Social - Decimo Tercer Mes', type: 'employee', category: ParameterCategory.social_security, percentage: 7.25, description: 'Cuota de SS para el décimo tercer mes' },
-    { key: LegalParameterKey.se_empleado, name: 'Seguro Educativo - Empleado', type: 'employee', category: ParameterCategory.educational_insurance, percentage: 1.25, description: 'Seguro educativo empleado' },
-    { key: LegalParameterKey.se_patrono, name: 'Seguro Educativo - Patrono', type: 'employer', category: ParameterCategory.educational_insurance, percentage: 1.50, description: 'Seguro educativo patronal' },
-    { key: LegalParameterKey.riesgo_profesional, name: 'Riesgos Profesionales', type: 'employer', category: ParameterCategory.other, percentage: 0.98, description: 'Riesgos profesionales base' },
-    { key: LegalParameterKey.isr_r1, name: 'ISR Tramo 1 (Exento)', type: 'fixed', category: ParameterCategory.isr, percentage: 0, minRange: 0, maxRange: 11000, description: 'Rango exento hasta $11,000 anuales' },
-    { key: LegalParameterKey.isr_r2, name: 'ISR Tramo 2 (15%)', type: 'fixed', category: ParameterCategory.isr, percentage: 15, minRange: 11001, maxRange: 50000, description: '15% sobre excedente de $11k a $50k' },
-    { key: LegalParameterKey.isr_r3, name: 'ISR Tramo 3 (25%)', type: 'fixed', category: ParameterCategory.isr, percentage: 25, minRange: 50001, maxRange: 99999999, description: '25% sobre excedente de $50k' },
-  ]
-
-  for (const p of paramsData) {
-    const commonData = {
-      name: p.name,
-      type: p.type as ParameterType,
-      category: p.category as ParameterCategory,
-      percentage: p.percentage,
-      minRange: p.minRange ?? null,
-      maxRange: p.maxRange ?? null,
-      description: p.description,
-    }
-
-    // Upsert para LegalParameter
-    await prisma.legalParameter.upsert({
-      where: { companyId_key: { companyId: companyIM.id, key: p.key } },
-      update: commonData,
-      create: { 
-        ...commonData, 
-        key: p.key,
-        companyId: companyIM.id, 
-        status: 'active', 
-        effectiveDate: new Date() 
-      }
-    })
-
-    // Upsert para LegalDecimoParameter
-    await prisma.legalDecimoParameter.upsert({
-      where: { companyId_key: { companyId: companyIM.id, key: p.key } },
-      update: commonData,
-      create: { 
-        ...commonData, 
-        key: p.key,
-        companyId: companyIM.id, 
-        status: 'active', 
-        effectiveDate: new Date() 
-      }
-    })
-  }
-  console.log('📋 Parámetros legales actualizados.')
-
-  /* ============================
-     3. DEPARTAMENTO
-  ============================ */
-  // NOTA: Para este upsert necesitas @@unique([name, companyId]) en tu esquema de Department
-  const deptAdmin = await prisma.department.upsert({
-    where: { id: (await prisma.department.findFirst({ where: { name: 'Administración', companyId: companyIM.id } }))?.id || '00000000-0000-0000-0000-000000000000' },
-    update: { isActive: true },
-    create: {
-      name: 'Administración',
-      companyId: companyIM.id,
-      isActive: true,
-    }
-  })
-
-  /* ============================
-     4. SUPER ADMIN
-  ============================ */
-  const superAdminEmail = String(AdminConfig?.Email).toLowerCase()
-  const passwordHash = await hash(String(AdminConfig?.Password), 10)
-
-  // Primero el usuario
-  const superAdmin = await prisma.user.upsert({
-    where: { email: superAdminEmail },
-    update: { role: UserRole.SUPER_ADMIN, isActive: true },
-    create: {
-      email: superAdminEmail,
-      username: 'superadmin',
+      email:    email.toLowerCase(),
+      username: 'global_admin',
       password: passwordHash,
-      role: UserRole.SUPER_ADMIN,
+      role:     UserRole.GLOBAL_ADMIN,
       isActive: true,
-    }
+      // Sin companies[] — el GLOBAL_ADMIN no pertenece a ninguna empresa
+    },
   })
 
-  // Luego su información de persona y códigos
-  const existingPerson = await prisma.person.findUnique({ where: { userId: superAdmin.id } })
-  const userCode = existingPerson?.userCode || await generateNextUserCode()
+  // Perfil de persona (para que aparezca correctamente en el sistema)
+  const existing = await prisma.person.findUnique({ where: { userId: globalAdmin.id } })
+  const userCode = existing?.userCode ?? await generateGlobalAdminCode()
 
   await prisma.person.upsert({
-    where: { userId: superAdmin.id },
-    update: { departmentId: deptAdmin.id, companyId: companyIM.id },
-    create: {
-      userId: superAdmin.id,
-      firstName: AdminConfig?.Name || 'Admin',
-      lastName: AdminConfig?.LastName || 'Sistema',
-      fullName: `${AdminConfig?.Name || 'Admin'} ${AdminConfig?.LastName || 'Sistema'}`,
-      contactEmail: superAdminEmail,
-      userCode: userCode,
-      departmentId: deptAdmin.id,
-      companyId: companyIM.id,
-      status: 'Activo'
-    }
-  })
-
-  // Relación Usuario-Compañía
-  await prisma.userCompany.upsert({
-    where: { userId_companyId: { userId: superAdmin.id, companyId: companyIM.id } },
+    where:  { userId: globalAdmin.id },
     update: {},
-    create: { userId: superAdmin.id, companyId: companyIM.id }
+    create: {
+      userId:       globalAdmin.id,
+      firstName:    name,
+      lastName:     lastName,
+      fullName:     `${name} ${lastName}`,
+      contactEmail: email.toLowerCase(),
+      userCode,
+      status:       'Activo',
+    },
   })
 
-  console.log('👨‍💼 Super Admin configurado.')
-  console.log('\n🎉 Seed finalizado con éxito.')
+  console.log('✅ GLOBAL_ADMIN configurado:')
+  console.log(`   Email:   ${globalAdmin.email}`)
+  console.log(`   Rol:     ${globalAdmin.role}`)
+  console.log(`   Empresa: — (acceso global a todas las empresas)\n`)
+  console.log('🎉 Seed finalizado.')
+  console.log('')
+  console.log('Próximos pasos:')
+  console.log('  1. Inicia sesión con el GLOBAL_ADMIN en /login')
+  console.log('  2. Ve a /admin/companies → crea las empresas')
+  console.log('  3. Ve a /admin/users → crea un SUPER_ADMIN por empresa')
+  console.log('  4. El SUPER_ADMIN crea sus propios usuarios desde /users')
 }
 
-/* ============================
-   HELPERS
-============================ */
-async function generateNextCompanyCode(): Promise<string> {
-  const last = await prisma.company.findFirst({ orderBy: { code: 'desc' } })
-  const max = last?.code?.startsWith('CO') ? parseInt(last.code.replace('CO', ''), 10) : 0
-  return `CO${String(max + 1).padStart(3, '0')}`
-}
-
-async function generateNextUserCode(): Promise<string> {
-  const last = await prisma.person.findFirst({ orderBy: { userCode: 'desc' } })
-  const max = last?.userCode?.startsWith('USR') ? parseInt(last.userCode.replace('USR', ''), 10) : 0
-  return `USR${String(max + 1).padStart(3, '0')}`
+async function generateGlobalAdminCode(): Promise<string> {
+  const last = await prisma.person.findFirst({
+    where:   { userCode: { startsWith: 'GA' } },
+    orderBy: { userCode: 'desc' },
+  })
+  const max = last?.userCode?.startsWith('GA')
+    ? parseInt(last.userCode.replace('GA', ''), 10)
+    : 0
+  return `GA${String(max + 1).padStart(3, '0')}`
 }
 
 main()
@@ -172,6 +98,4 @@ main()
     console.error('❌ Error en seed:', err)
     process.exit(1)
   })
-  .finally(async () => {
-    await prisma.$disconnect()
-  })
+  .finally(() => prisma.$disconnect())

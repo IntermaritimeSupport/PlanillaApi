@@ -23,6 +23,7 @@ import DashboardRouter from './routes/DashboardRoutes.js';
 import DecimoRouter from './routes/DecimoRoutes.js';
 import ChatRouter from './routes/ChatRoutes.js';
 import LeaveRouter from './routes/LeaveRoutes.js';
+import AdminRouter from './routes/AdminRoutes.js';
 
 const app = express();
 const port = process.env.PORT ?? '3000';
@@ -81,6 +82,7 @@ app.use('/api/dashboard', DashboardRouter);
 app.use('/api/payroll', DecimoRouter);
 app.use('/api', ChatRouter);
 app.use('/api/payroll', LeaveRouter);
+app.use('/api/admin', AdminRouter);
 app.use(errorMiddleware);
 
 app.listen(port, () => {

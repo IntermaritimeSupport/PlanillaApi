@@ -1,11 +1,13 @@
 import { Router } from 'express';
 import { DashboardController } from '../controllers/DashboardController.js';
 import { verifyJWT } from '../middlewares/AuthMiddleware.js';
+import { requireActiveCompany } from '../middlewares/authGuards.js';
 
 const dashboardController = new DashboardController();
 const DashboardRouter = Router();
 
 DashboardRouter.use(verifyJWT);
+DashboardRouter.use(requireActiveCompany);
 
 /**
  * @route GET /api/dashboard/stats
