@@ -8,6 +8,7 @@ import { UserRole } from '../../generated/prisma/index.js';
  * Accede a datos de TODAS las empresas sin filtro de companyId.
  * Las rutas que usan este controller deben estar protegidas con requireRole(['GLOBAL_ADMIN']).
  */
+
 export class AdminController {
 
   // GET /api/admin/stats
