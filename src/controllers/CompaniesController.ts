@@ -435,7 +435,7 @@ export class CompanyController {
             let companies = []
 
             // 🔥 GLOBAL_ADMIN → TODAS las compañías (administrador de plataforma)
-            if (user.role === 'GLOBAL_ADMIN' || user.role === 'SUPER_ADMIN') {
+            if (user.role === 'GLOBAL_ADMIN') {
                 companies = await prisma.company.findMany({
                     include: {
                         _count: {
@@ -446,8 +446,8 @@ export class CompanyController {
                     },
                     orderBy: { name: 'asc' },
                 })
-            } 
-            // 👤 OTROS ROLES → SOLO sus compañías asociadas
+            }
+            // 👤 TODOS LOS DEMÁS ROLES → SOLO sus compañías asignadas en UserCompany
             else {
                 if (user.companies.length === 0) {
                     return res.status(200).json([])
@@ -456,10 +456,10 @@ export class CompanyController {
                 const companyIds = user.companies.map(uc => uc.companyId)
 
                 companies = await prisma.company.findMany({
-                    where: { 
-                        id: { 
-                            in: companyIds 
-                        } 
+                    where: {
+                        id: {
+                            in: companyIds
+                        }
                     },
                     include: {
                         _count: {
