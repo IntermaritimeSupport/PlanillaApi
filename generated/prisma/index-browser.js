@@ -164,9 +164,25 @@ exports.Prisma.CompanyScalarFieldEnum = {
   ruc: 'ruc',
   logoUrl: 'logoUrl',
   isActive: 'isActive',
+  maxUsers: 'maxUsers',
+  maxEmployees: 'maxEmployees',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
   createdByUserId: 'createdByUserId'
+};
+
+exports.Prisma.LicenseScalarFieldEnum = {
+  id: 'id',
+  companyId: 'companyId',
+  plan: 'plan',
+  maxUsers: 'maxUsers',
+  maxEmployees: 'maxEmployees',
+  startsAt: 'startsAt',
+  expiresAt: 'expiresAt',
+  isActive: 'isActive',
+  notes: 'notes',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
 };
 
 exports.Prisma.DepartmentScalarFieldEnum = {
@@ -448,6 +464,13 @@ exports.PersonStatus = exports.$Enums.PersonStatus = {
   Inactivo: 'Inactivo'
 };
 
+exports.LicensePlan = exports.$Enums.LicensePlan = {
+  TRIAL: 'TRIAL',
+  STARTER: 'STARTER',
+  PROFESSIONAL: 'PROFESSIONAL',
+  ENTERPRISE: 'ENTERPRISE'
+};
+
 exports.SalaryType = exports.$Enums.SalaryType = {
   MONTHLY: 'MONTHLY',
   BIWEEKLY: 'BIWEEKLY'
@@ -581,6 +604,7 @@ exports.Prisma.ModelName = {
   UserCompany: 'UserCompany',
   Person: 'Person',
   Company: 'Company',
+  License: 'License',
   Department: 'Department',
   SystemConfig: 'SystemConfig',
   Employee: 'Employee',

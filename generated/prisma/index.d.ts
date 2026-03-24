@@ -34,6 +34,11 @@ export type Person = $Result.DefaultSelection<Prisma.$PersonPayload>
  */
 export type Company = $Result.DefaultSelection<Prisma.$CompanyPayload>
 /**
+ * Model License
+ * 
+ */
+export type License = $Result.DefaultSelection<Prisma.$LicensePayload>
+/**
  * Model Department
  * 
  */
@@ -113,7 +118,17 @@ export type DecimoPayment = $Result.DefaultSelection<Prisma.$DecimoPaymentPayloa
  * Enums
  */
 export namespace $Enums {
-  export const LegalParameterKey: {
+  export const LicensePlan: {
+  TRIAL: 'TRIAL',
+  STARTER: 'STARTER',
+  PROFESSIONAL: 'PROFESSIONAL',
+  ENTERPRISE: 'ENTERPRISE'
+};
+
+export type LicensePlan = (typeof LicensePlan)[keyof typeof LicensePlan]
+
+
+export const LegalParameterKey: {
   ss_empleado: 'ss_empleado',
   ss_patrono: 'ss_patrono',
   ss_decimo: 'ss_decimo',
@@ -308,6 +323,10 @@ export const SalaryChangeReason: {
 export type SalaryChangeReason = (typeof SalaryChangeReason)[keyof typeof SalaryChangeReason]
 
 }
+
+export type LicensePlan = $Enums.LicensePlan
+
+export const LicensePlan: typeof $Enums.LicensePlan
 
 export type LegalParameterKey = $Enums.LegalParameterKey
 
@@ -538,6 +557,16 @@ export class PrismaClient<
     * ```
     */
   get company(): Prisma.CompanyDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.license`: Exposes CRUD operations for the **License** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more Licenses
+    * const licenses = await prisma.license.findMany()
+    * ```
+    */
+  get license(): Prisma.LicenseDelegate<ExtArgs, ClientOptions>;
 
   /**
    * `prisma.department`: Exposes CRUD operations for the **Department** model.
@@ -1133,6 +1162,7 @@ export namespace Prisma {
     UserCompany: 'UserCompany',
     Person: 'Person',
     Company: 'Company',
+    License: 'License',
     Department: 'Department',
     SystemConfig: 'SystemConfig',
     Employee: 'Employee',
@@ -1166,7 +1196,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "user" | "userCompany" | "person" | "company" | "department" | "systemConfig" | "employee" | "employeeRecurringDeduction" | "payrollRun" | "payroll" | "deduction" | "allowance" | "attendanceRecord" | "leave" | "liquidacion" | "legalParameter" | "legalDecimoParameter" | "salaryHistory" | "decimoPayment"
+      modelProps: "user" | "userCompany" | "person" | "company" | "license" | "department" | "systemConfig" | "employee" | "employeeRecurringDeduction" | "payrollRun" | "payroll" | "deduction" | "allowance" | "attendanceRecord" | "leave" | "liquidacion" | "legalParameter" | "legalDecimoParameter" | "salaryHistory" | "decimoPayment"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -1463,6 +1493,80 @@ export namespace Prisma {
           count: {
             args: Prisma.CompanyCountArgs<ExtArgs>
             result: $Utils.Optional<CompanyCountAggregateOutputType> | number
+          }
+        }
+      }
+      License: {
+        payload: Prisma.$LicensePayload<ExtArgs>
+        fields: Prisma.LicenseFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.LicenseFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$LicensePayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.LicenseFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$LicensePayload>
+          }
+          findFirst: {
+            args: Prisma.LicenseFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$LicensePayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.LicenseFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$LicensePayload>
+          }
+          findMany: {
+            args: Prisma.LicenseFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$LicensePayload>[]
+          }
+          create: {
+            args: Prisma.LicenseCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$LicensePayload>
+          }
+          createMany: {
+            args: Prisma.LicenseCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.LicenseCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$LicensePayload>[]
+          }
+          delete: {
+            args: Prisma.LicenseDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$LicensePayload>
+          }
+          update: {
+            args: Prisma.LicenseUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$LicensePayload>
+          }
+          deleteMany: {
+            args: Prisma.LicenseDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.LicenseUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.LicenseUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$LicensePayload>[]
+          }
+          upsert: {
+            args: Prisma.LicenseUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$LicensePayload>
+          }
+          aggregate: {
+            args: Prisma.LicenseAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateLicense>
+          }
+          groupBy: {
+            args: Prisma.LicenseGroupByArgs<ExtArgs>
+            result: $Utils.Optional<LicenseGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.LicenseCountArgs<ExtArgs>
+            result: $Utils.Optional<LicenseCountAggregateOutputType> | number
           }
         }
       }
@@ -2676,6 +2780,7 @@ export namespace Prisma {
     userCompany?: UserCompanyOmit
     person?: PersonOmit
     company?: CompanyOmit
+    license?: LicenseOmit
     department?: DepartmentOmit
     systemConfig?: SystemConfigOmit
     employee?: EmployeeOmit
@@ -6545,8 +6650,20 @@ export namespace Prisma {
 
   export type AggregateCompany = {
     _count: CompanyCountAggregateOutputType | null
+    _avg: CompanyAvgAggregateOutputType | null
+    _sum: CompanySumAggregateOutputType | null
     _min: CompanyMinAggregateOutputType | null
     _max: CompanyMaxAggregateOutputType | null
+  }
+
+  export type CompanyAvgAggregateOutputType = {
+    maxUsers: number | null
+    maxEmployees: number | null
+  }
+
+  export type CompanySumAggregateOutputType = {
+    maxUsers: number | null
+    maxEmployees: number | null
   }
 
   export type CompanyMinAggregateOutputType = {
@@ -6559,6 +6676,8 @@ export namespace Prisma {
     ruc: string | null
     logoUrl: string | null
     isActive: boolean | null
+    maxUsers: number | null
+    maxEmployees: number | null
     createdAt: Date | null
     updatedAt: Date | null
     createdByUserId: string | null
@@ -6574,6 +6693,8 @@ export namespace Prisma {
     ruc: string | null
     logoUrl: string | null
     isActive: boolean | null
+    maxUsers: number | null
+    maxEmployees: number | null
     createdAt: Date | null
     updatedAt: Date | null
     createdByUserId: string | null
@@ -6589,12 +6710,24 @@ export namespace Prisma {
     ruc: number
     logoUrl: number
     isActive: number
+    maxUsers: number
+    maxEmployees: number
     createdAt: number
     updatedAt: number
     createdByUserId: number
     _all: number
   }
 
+
+  export type CompanyAvgAggregateInputType = {
+    maxUsers?: true
+    maxEmployees?: true
+  }
+
+  export type CompanySumAggregateInputType = {
+    maxUsers?: true
+    maxEmployees?: true
+  }
 
   export type CompanyMinAggregateInputType = {
     id?: true
@@ -6606,6 +6739,8 @@ export namespace Prisma {
     ruc?: true
     logoUrl?: true
     isActive?: true
+    maxUsers?: true
+    maxEmployees?: true
     createdAt?: true
     updatedAt?: true
     createdByUserId?: true
@@ -6621,6 +6756,8 @@ export namespace Prisma {
     ruc?: true
     logoUrl?: true
     isActive?: true
+    maxUsers?: true
+    maxEmployees?: true
     createdAt?: true
     updatedAt?: true
     createdByUserId?: true
@@ -6636,6 +6773,8 @@ export namespace Prisma {
     ruc?: true
     logoUrl?: true
     isActive?: true
+    maxUsers?: true
+    maxEmployees?: true
     createdAt?: true
     updatedAt?: true
     createdByUserId?: true
@@ -6680,6 +6819,18 @@ export namespace Prisma {
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
      * 
+     * Select which fields to average
+    **/
+    _avg?: CompanyAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: CompanySumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
      * Select which fields to find the minimum value
     **/
     _min?: CompanyMinAggregateInputType
@@ -6710,6 +6861,8 @@ export namespace Prisma {
     take?: number
     skip?: number
     _count?: CompanyCountAggregateInputType | true
+    _avg?: CompanyAvgAggregateInputType
+    _sum?: CompanySumAggregateInputType
     _min?: CompanyMinAggregateInputType
     _max?: CompanyMaxAggregateInputType
   }
@@ -6724,10 +6877,14 @@ export namespace Prisma {
     ruc: string | null
     logoUrl: string | null
     isActive: boolean
+    maxUsers: number
+    maxEmployees: number
     createdAt: Date
     updatedAt: Date
     createdByUserId: string | null
     _count: CompanyCountAggregateOutputType | null
+    _avg: CompanyAvgAggregateOutputType | null
+    _sum: CompanySumAggregateOutputType | null
     _min: CompanyMinAggregateOutputType | null
     _max: CompanyMaxAggregateOutputType | null
   }
@@ -6756,6 +6913,8 @@ export namespace Prisma {
     ruc?: boolean
     logoUrl?: boolean
     isActive?: boolean
+    maxUsers?: boolean
+    maxEmployees?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     createdByUserId?: boolean
@@ -6771,6 +6930,7 @@ export namespace Prisma {
     payrollRuns?: boolean | Company$payrollRunsArgs<ExtArgs>
     decimoPayments?: boolean | Company$decimoPaymentsArgs<ExtArgs>
     liquidaciones?: boolean | Company$liquidacionesArgs<ExtArgs>
+    license?: boolean | Company$licenseArgs<ExtArgs>
     _count?: boolean | CompanyCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["company"]>
 
@@ -6784,6 +6944,8 @@ export namespace Prisma {
     ruc?: boolean
     logoUrl?: boolean
     isActive?: boolean
+    maxUsers?: boolean
+    maxEmployees?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     createdByUserId?: boolean
@@ -6800,6 +6962,8 @@ export namespace Prisma {
     ruc?: boolean
     logoUrl?: boolean
     isActive?: boolean
+    maxUsers?: boolean
+    maxEmployees?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     createdByUserId?: boolean
@@ -6816,12 +6980,14 @@ export namespace Prisma {
     ruc?: boolean
     logoUrl?: boolean
     isActive?: boolean
+    maxUsers?: boolean
+    maxEmployees?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     createdByUserId?: boolean
   }
 
-  export type CompanyOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "code" | "name" | "address" | "phone" | "email" | "ruc" | "logoUrl" | "isActive" | "createdAt" | "updatedAt" | "createdByUserId", ExtArgs["result"]["company"]>
+  export type CompanyOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "code" | "name" | "address" | "phone" | "email" | "ruc" | "logoUrl" | "isActive" | "maxUsers" | "maxEmployees" | "createdAt" | "updatedAt" | "createdByUserId", ExtArgs["result"]["company"]>
   export type CompanyInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     LegalDecimoParameter?: boolean | Company$LegalDecimoParameterArgs<ExtArgs>
     legalParameters?: boolean | Company$legalParametersArgs<ExtArgs>
@@ -6835,6 +7001,7 @@ export namespace Prisma {
     payrollRuns?: boolean | Company$payrollRunsArgs<ExtArgs>
     decimoPayments?: boolean | Company$decimoPaymentsArgs<ExtArgs>
     liquidaciones?: boolean | Company$liquidacionesArgs<ExtArgs>
+    license?: boolean | Company$licenseArgs<ExtArgs>
     _count?: boolean | CompanyCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type CompanyIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -6859,6 +7026,7 @@ export namespace Prisma {
       payrollRuns: Prisma.$PayrollRunPayload<ExtArgs>[]
       decimoPayments: Prisma.$DecimoPaymentPayload<ExtArgs>[]
       liquidaciones: Prisma.$LiquidacionPayload<ExtArgs>[]
+      license: Prisma.$LicensePayload<ExtArgs> | null
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -6870,6 +7038,8 @@ export namespace Prisma {
       ruc: string | null
       logoUrl: string | null
       isActive: boolean
+      maxUsers: number
+      maxEmployees: number
       createdAt: Date
       updatedAt: Date
       createdByUserId: string | null
@@ -7279,6 +7449,7 @@ export namespace Prisma {
     payrollRuns<T extends Company$payrollRunsArgs<ExtArgs> = {}>(args?: Subset<T, Company$payrollRunsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PayrollRunPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     decimoPayments<T extends Company$decimoPaymentsArgs<ExtArgs> = {}>(args?: Subset<T, Company$decimoPaymentsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DecimoPaymentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     liquidaciones<T extends Company$liquidacionesArgs<ExtArgs> = {}>(args?: Subset<T, Company$liquidacionesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$LiquidacionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    license<T extends Company$licenseArgs<ExtArgs> = {}>(args?: Subset<T, Company$licenseArgs<ExtArgs>>): Prisma__LicenseClient<$Result.GetResult<Prisma.$LicensePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -7317,6 +7488,8 @@ export namespace Prisma {
     readonly ruc: FieldRef<"Company", 'String'>
     readonly logoUrl: FieldRef<"Company", 'String'>
     readonly isActive: FieldRef<"Company", 'Boolean'>
+    readonly maxUsers: FieldRef<"Company", 'Int'>
+    readonly maxEmployees: FieldRef<"Company", 'Int'>
     readonly createdAt: FieldRef<"Company", 'DateTime'>
     readonly updatedAt: FieldRef<"Company", 'DateTime'>
     readonly createdByUserId: FieldRef<"Company", 'String'>
@@ -7999,6 +8172,25 @@ export namespace Prisma {
   }
 
   /**
+   * Company.license
+   */
+  export type Company$licenseArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the License
+     */
+    select?: LicenseSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the License
+     */
+    omit?: LicenseOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: LicenseInclude<ExtArgs> | null
+    where?: LicenseWhereInput
+  }
+
+  /**
    * Company without action
    */
   export type CompanyDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -8014,6 +8206,1180 @@ export namespace Prisma {
      * Choose, which related nodes to fetch as well
      */
     include?: CompanyInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model License
+   */
+
+  export type AggregateLicense = {
+    _count: LicenseCountAggregateOutputType | null
+    _avg: LicenseAvgAggregateOutputType | null
+    _sum: LicenseSumAggregateOutputType | null
+    _min: LicenseMinAggregateOutputType | null
+    _max: LicenseMaxAggregateOutputType | null
+  }
+
+  export type LicenseAvgAggregateOutputType = {
+    maxUsers: number | null
+    maxEmployees: number | null
+  }
+
+  export type LicenseSumAggregateOutputType = {
+    maxUsers: number | null
+    maxEmployees: number | null
+  }
+
+  export type LicenseMinAggregateOutputType = {
+    id: string | null
+    companyId: string | null
+    plan: $Enums.LicensePlan | null
+    maxUsers: number | null
+    maxEmployees: number | null
+    startsAt: Date | null
+    expiresAt: Date | null
+    isActive: boolean | null
+    notes: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type LicenseMaxAggregateOutputType = {
+    id: string | null
+    companyId: string | null
+    plan: $Enums.LicensePlan | null
+    maxUsers: number | null
+    maxEmployees: number | null
+    startsAt: Date | null
+    expiresAt: Date | null
+    isActive: boolean | null
+    notes: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type LicenseCountAggregateOutputType = {
+    id: number
+    companyId: number
+    plan: number
+    maxUsers: number
+    maxEmployees: number
+    startsAt: number
+    expiresAt: number
+    isActive: number
+    notes: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type LicenseAvgAggregateInputType = {
+    maxUsers?: true
+    maxEmployees?: true
+  }
+
+  export type LicenseSumAggregateInputType = {
+    maxUsers?: true
+    maxEmployees?: true
+  }
+
+  export type LicenseMinAggregateInputType = {
+    id?: true
+    companyId?: true
+    plan?: true
+    maxUsers?: true
+    maxEmployees?: true
+    startsAt?: true
+    expiresAt?: true
+    isActive?: true
+    notes?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type LicenseMaxAggregateInputType = {
+    id?: true
+    companyId?: true
+    plan?: true
+    maxUsers?: true
+    maxEmployees?: true
+    startsAt?: true
+    expiresAt?: true
+    isActive?: true
+    notes?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type LicenseCountAggregateInputType = {
+    id?: true
+    companyId?: true
+    plan?: true
+    maxUsers?: true
+    maxEmployees?: true
+    startsAt?: true
+    expiresAt?: true
+    isActive?: true
+    notes?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type LicenseAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which License to aggregate.
+     */
+    where?: LicenseWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Licenses to fetch.
+     */
+    orderBy?: LicenseOrderByWithRelationInput | LicenseOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: LicenseWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Licenses from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Licenses.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned Licenses
+    **/
+    _count?: true | LicenseCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: LicenseAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: LicenseSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: LicenseMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: LicenseMaxAggregateInputType
+  }
+
+  export type GetLicenseAggregateType<T extends LicenseAggregateArgs> = {
+        [P in keyof T & keyof AggregateLicense]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateLicense[P]>
+      : GetScalarType<T[P], AggregateLicense[P]>
+  }
+
+
+
+
+  export type LicenseGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: LicenseWhereInput
+    orderBy?: LicenseOrderByWithAggregationInput | LicenseOrderByWithAggregationInput[]
+    by: LicenseScalarFieldEnum[] | LicenseScalarFieldEnum
+    having?: LicenseScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: LicenseCountAggregateInputType | true
+    _avg?: LicenseAvgAggregateInputType
+    _sum?: LicenseSumAggregateInputType
+    _min?: LicenseMinAggregateInputType
+    _max?: LicenseMaxAggregateInputType
+  }
+
+  export type LicenseGroupByOutputType = {
+    id: string
+    companyId: string
+    plan: $Enums.LicensePlan
+    maxUsers: number
+    maxEmployees: number
+    startsAt: Date
+    expiresAt: Date | null
+    isActive: boolean
+    notes: string | null
+    createdAt: Date
+    updatedAt: Date
+    _count: LicenseCountAggregateOutputType | null
+    _avg: LicenseAvgAggregateOutputType | null
+    _sum: LicenseSumAggregateOutputType | null
+    _min: LicenseMinAggregateOutputType | null
+    _max: LicenseMaxAggregateOutputType | null
+  }
+
+  type GetLicenseGroupByPayload<T extends LicenseGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<LicenseGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof LicenseGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], LicenseGroupByOutputType[P]>
+            : GetScalarType<T[P], LicenseGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type LicenseSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    companyId?: boolean
+    plan?: boolean
+    maxUsers?: boolean
+    maxEmployees?: boolean
+    startsAt?: boolean
+    expiresAt?: boolean
+    isActive?: boolean
+    notes?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    company?: boolean | CompanyDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["license"]>
+
+  export type LicenseSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    companyId?: boolean
+    plan?: boolean
+    maxUsers?: boolean
+    maxEmployees?: boolean
+    startsAt?: boolean
+    expiresAt?: boolean
+    isActive?: boolean
+    notes?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    company?: boolean | CompanyDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["license"]>
+
+  export type LicenseSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    companyId?: boolean
+    plan?: boolean
+    maxUsers?: boolean
+    maxEmployees?: boolean
+    startsAt?: boolean
+    expiresAt?: boolean
+    isActive?: boolean
+    notes?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    company?: boolean | CompanyDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["license"]>
+
+  export type LicenseSelectScalar = {
+    id?: boolean
+    companyId?: boolean
+    plan?: boolean
+    maxUsers?: boolean
+    maxEmployees?: boolean
+    startsAt?: boolean
+    expiresAt?: boolean
+    isActive?: boolean
+    notes?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type LicenseOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "companyId" | "plan" | "maxUsers" | "maxEmployees" | "startsAt" | "expiresAt" | "isActive" | "notes" | "createdAt" | "updatedAt", ExtArgs["result"]["license"]>
+  export type LicenseInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    company?: boolean | CompanyDefaultArgs<ExtArgs>
+  }
+  export type LicenseIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    company?: boolean | CompanyDefaultArgs<ExtArgs>
+  }
+  export type LicenseIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    company?: boolean | CompanyDefaultArgs<ExtArgs>
+  }
+
+  export type $LicensePayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "License"
+    objects: {
+      company: Prisma.$CompanyPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      companyId: string
+      plan: $Enums.LicensePlan
+      maxUsers: number
+      maxEmployees: number
+      startsAt: Date
+      expiresAt: Date | null
+      isActive: boolean
+      notes: string | null
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["license"]>
+    composites: {}
+  }
+
+  type LicenseGetPayload<S extends boolean | null | undefined | LicenseDefaultArgs> = $Result.GetResult<Prisma.$LicensePayload, S>
+
+  type LicenseCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<LicenseFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: LicenseCountAggregateInputType | true
+    }
+
+  export interface LicenseDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['License'], meta: { name: 'License' } }
+    /**
+     * Find zero or one License that matches the filter.
+     * @param {LicenseFindUniqueArgs} args - Arguments to find a License
+     * @example
+     * // Get one License
+     * const license = await prisma.license.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends LicenseFindUniqueArgs>(args: SelectSubset<T, LicenseFindUniqueArgs<ExtArgs>>): Prisma__LicenseClient<$Result.GetResult<Prisma.$LicensePayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one License that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {LicenseFindUniqueOrThrowArgs} args - Arguments to find a License
+     * @example
+     * // Get one License
+     * const license = await prisma.license.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends LicenseFindUniqueOrThrowArgs>(args: SelectSubset<T, LicenseFindUniqueOrThrowArgs<ExtArgs>>): Prisma__LicenseClient<$Result.GetResult<Prisma.$LicensePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first License that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {LicenseFindFirstArgs} args - Arguments to find a License
+     * @example
+     * // Get one License
+     * const license = await prisma.license.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends LicenseFindFirstArgs>(args?: SelectSubset<T, LicenseFindFirstArgs<ExtArgs>>): Prisma__LicenseClient<$Result.GetResult<Prisma.$LicensePayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first License that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {LicenseFindFirstOrThrowArgs} args - Arguments to find a License
+     * @example
+     * // Get one License
+     * const license = await prisma.license.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends LicenseFindFirstOrThrowArgs>(args?: SelectSubset<T, LicenseFindFirstOrThrowArgs<ExtArgs>>): Prisma__LicenseClient<$Result.GetResult<Prisma.$LicensePayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more Licenses that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {LicenseFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all Licenses
+     * const licenses = await prisma.license.findMany()
+     * 
+     * // Get first 10 Licenses
+     * const licenses = await prisma.license.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const licenseWithIdOnly = await prisma.license.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends LicenseFindManyArgs>(args?: SelectSubset<T, LicenseFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$LicensePayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a License.
+     * @param {LicenseCreateArgs} args - Arguments to create a License.
+     * @example
+     * // Create one License
+     * const License = await prisma.license.create({
+     *   data: {
+     *     // ... data to create a License
+     *   }
+     * })
+     * 
+     */
+    create<T extends LicenseCreateArgs>(args: SelectSubset<T, LicenseCreateArgs<ExtArgs>>): Prisma__LicenseClient<$Result.GetResult<Prisma.$LicensePayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many Licenses.
+     * @param {LicenseCreateManyArgs} args - Arguments to create many Licenses.
+     * @example
+     * // Create many Licenses
+     * const license = await prisma.license.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends LicenseCreateManyArgs>(args?: SelectSubset<T, LicenseCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many Licenses and returns the data saved in the database.
+     * @param {LicenseCreateManyAndReturnArgs} args - Arguments to create many Licenses.
+     * @example
+     * // Create many Licenses
+     * const license = await prisma.license.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many Licenses and only return the `id`
+     * const licenseWithIdOnly = await prisma.license.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends LicenseCreateManyAndReturnArgs>(args?: SelectSubset<T, LicenseCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$LicensePayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a License.
+     * @param {LicenseDeleteArgs} args - Arguments to delete one License.
+     * @example
+     * // Delete one License
+     * const License = await prisma.license.delete({
+     *   where: {
+     *     // ... filter to delete one License
+     *   }
+     * })
+     * 
+     */
+    delete<T extends LicenseDeleteArgs>(args: SelectSubset<T, LicenseDeleteArgs<ExtArgs>>): Prisma__LicenseClient<$Result.GetResult<Prisma.$LicensePayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one License.
+     * @param {LicenseUpdateArgs} args - Arguments to update one License.
+     * @example
+     * // Update one License
+     * const license = await prisma.license.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends LicenseUpdateArgs>(args: SelectSubset<T, LicenseUpdateArgs<ExtArgs>>): Prisma__LicenseClient<$Result.GetResult<Prisma.$LicensePayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more Licenses.
+     * @param {LicenseDeleteManyArgs} args - Arguments to filter Licenses to delete.
+     * @example
+     * // Delete a few Licenses
+     * const { count } = await prisma.license.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends LicenseDeleteManyArgs>(args?: SelectSubset<T, LicenseDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Licenses.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {LicenseUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many Licenses
+     * const license = await prisma.license.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends LicenseUpdateManyArgs>(args: SelectSubset<T, LicenseUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Licenses and returns the data updated in the database.
+     * @param {LicenseUpdateManyAndReturnArgs} args - Arguments to update many Licenses.
+     * @example
+     * // Update many Licenses
+     * const license = await prisma.license.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more Licenses and only return the `id`
+     * const licenseWithIdOnly = await prisma.license.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends LicenseUpdateManyAndReturnArgs>(args: SelectSubset<T, LicenseUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$LicensePayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one License.
+     * @param {LicenseUpsertArgs} args - Arguments to update or create a License.
+     * @example
+     * // Update or create a License
+     * const license = await prisma.license.upsert({
+     *   create: {
+     *     // ... data to create a License
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the License we want to update
+     *   }
+     * })
+     */
+    upsert<T extends LicenseUpsertArgs>(args: SelectSubset<T, LicenseUpsertArgs<ExtArgs>>): Prisma__LicenseClient<$Result.GetResult<Prisma.$LicensePayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of Licenses.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {LicenseCountArgs} args - Arguments to filter Licenses to count.
+     * @example
+     * // Count the number of Licenses
+     * const count = await prisma.license.count({
+     *   where: {
+     *     // ... the filter for the Licenses we want to count
+     *   }
+     * })
+    **/
+    count<T extends LicenseCountArgs>(
+      args?: Subset<T, LicenseCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], LicenseCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a License.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {LicenseAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends LicenseAggregateArgs>(args: Subset<T, LicenseAggregateArgs>): Prisma.PrismaPromise<GetLicenseAggregateType<T>>
+
+    /**
+     * Group by License.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {LicenseGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends LicenseGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: LicenseGroupByArgs['orderBy'] }
+        : { orderBy?: LicenseGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, LicenseGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetLicenseGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the License model
+   */
+  readonly fields: LicenseFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for License.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__LicenseClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    company<T extends CompanyDefaultArgs<ExtArgs> = {}>(args?: Subset<T, CompanyDefaultArgs<ExtArgs>>): Prisma__CompanyClient<$Result.GetResult<Prisma.$CompanyPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the License model
+   */
+  interface LicenseFieldRefs {
+    readonly id: FieldRef<"License", 'String'>
+    readonly companyId: FieldRef<"License", 'String'>
+    readonly plan: FieldRef<"License", 'LicensePlan'>
+    readonly maxUsers: FieldRef<"License", 'Int'>
+    readonly maxEmployees: FieldRef<"License", 'Int'>
+    readonly startsAt: FieldRef<"License", 'DateTime'>
+    readonly expiresAt: FieldRef<"License", 'DateTime'>
+    readonly isActive: FieldRef<"License", 'Boolean'>
+    readonly notes: FieldRef<"License", 'String'>
+    readonly createdAt: FieldRef<"License", 'DateTime'>
+    readonly updatedAt: FieldRef<"License", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * License findUnique
+   */
+  export type LicenseFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the License
+     */
+    select?: LicenseSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the License
+     */
+    omit?: LicenseOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: LicenseInclude<ExtArgs> | null
+    /**
+     * Filter, which License to fetch.
+     */
+    where: LicenseWhereUniqueInput
+  }
+
+  /**
+   * License findUniqueOrThrow
+   */
+  export type LicenseFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the License
+     */
+    select?: LicenseSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the License
+     */
+    omit?: LicenseOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: LicenseInclude<ExtArgs> | null
+    /**
+     * Filter, which License to fetch.
+     */
+    where: LicenseWhereUniqueInput
+  }
+
+  /**
+   * License findFirst
+   */
+  export type LicenseFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the License
+     */
+    select?: LicenseSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the License
+     */
+    omit?: LicenseOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: LicenseInclude<ExtArgs> | null
+    /**
+     * Filter, which License to fetch.
+     */
+    where?: LicenseWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Licenses to fetch.
+     */
+    orderBy?: LicenseOrderByWithRelationInput | LicenseOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Licenses.
+     */
+    cursor?: LicenseWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Licenses from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Licenses.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Licenses.
+     */
+    distinct?: LicenseScalarFieldEnum | LicenseScalarFieldEnum[]
+  }
+
+  /**
+   * License findFirstOrThrow
+   */
+  export type LicenseFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the License
+     */
+    select?: LicenseSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the License
+     */
+    omit?: LicenseOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: LicenseInclude<ExtArgs> | null
+    /**
+     * Filter, which License to fetch.
+     */
+    where?: LicenseWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Licenses to fetch.
+     */
+    orderBy?: LicenseOrderByWithRelationInput | LicenseOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Licenses.
+     */
+    cursor?: LicenseWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Licenses from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Licenses.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Licenses.
+     */
+    distinct?: LicenseScalarFieldEnum | LicenseScalarFieldEnum[]
+  }
+
+  /**
+   * License findMany
+   */
+  export type LicenseFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the License
+     */
+    select?: LicenseSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the License
+     */
+    omit?: LicenseOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: LicenseInclude<ExtArgs> | null
+    /**
+     * Filter, which Licenses to fetch.
+     */
+    where?: LicenseWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Licenses to fetch.
+     */
+    orderBy?: LicenseOrderByWithRelationInput | LicenseOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing Licenses.
+     */
+    cursor?: LicenseWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Licenses from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Licenses.
+     */
+    skip?: number
+    distinct?: LicenseScalarFieldEnum | LicenseScalarFieldEnum[]
+  }
+
+  /**
+   * License create
+   */
+  export type LicenseCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the License
+     */
+    select?: LicenseSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the License
+     */
+    omit?: LicenseOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: LicenseInclude<ExtArgs> | null
+    /**
+     * The data needed to create a License.
+     */
+    data: XOR<LicenseCreateInput, LicenseUncheckedCreateInput>
+  }
+
+  /**
+   * License createMany
+   */
+  export type LicenseCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many Licenses.
+     */
+    data: LicenseCreateManyInput | LicenseCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * License createManyAndReturn
+   */
+  export type LicenseCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the License
+     */
+    select?: LicenseSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the License
+     */
+    omit?: LicenseOmit<ExtArgs> | null
+    /**
+     * The data used to create many Licenses.
+     */
+    data: LicenseCreateManyInput | LicenseCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: LicenseIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * License update
+   */
+  export type LicenseUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the License
+     */
+    select?: LicenseSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the License
+     */
+    omit?: LicenseOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: LicenseInclude<ExtArgs> | null
+    /**
+     * The data needed to update a License.
+     */
+    data: XOR<LicenseUpdateInput, LicenseUncheckedUpdateInput>
+    /**
+     * Choose, which License to update.
+     */
+    where: LicenseWhereUniqueInput
+  }
+
+  /**
+   * License updateMany
+   */
+  export type LicenseUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update Licenses.
+     */
+    data: XOR<LicenseUpdateManyMutationInput, LicenseUncheckedUpdateManyInput>
+    /**
+     * Filter which Licenses to update
+     */
+    where?: LicenseWhereInput
+    /**
+     * Limit how many Licenses to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * License updateManyAndReturn
+   */
+  export type LicenseUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the License
+     */
+    select?: LicenseSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the License
+     */
+    omit?: LicenseOmit<ExtArgs> | null
+    /**
+     * The data used to update Licenses.
+     */
+    data: XOR<LicenseUpdateManyMutationInput, LicenseUncheckedUpdateManyInput>
+    /**
+     * Filter which Licenses to update
+     */
+    where?: LicenseWhereInput
+    /**
+     * Limit how many Licenses to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: LicenseIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * License upsert
+   */
+  export type LicenseUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the License
+     */
+    select?: LicenseSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the License
+     */
+    omit?: LicenseOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: LicenseInclude<ExtArgs> | null
+    /**
+     * The filter to search for the License to update in case it exists.
+     */
+    where: LicenseWhereUniqueInput
+    /**
+     * In case the License found by the `where` argument doesn't exist, create a new License with this data.
+     */
+    create: XOR<LicenseCreateInput, LicenseUncheckedCreateInput>
+    /**
+     * In case the License was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<LicenseUpdateInput, LicenseUncheckedUpdateInput>
+  }
+
+  /**
+   * License delete
+   */
+  export type LicenseDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the License
+     */
+    select?: LicenseSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the License
+     */
+    omit?: LicenseOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: LicenseInclude<ExtArgs> | null
+    /**
+     * Filter which License to delete.
+     */
+    where: LicenseWhereUniqueInput
+  }
+
+  /**
+   * License deleteMany
+   */
+  export type LicenseDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Licenses to delete
+     */
+    where?: LicenseWhereInput
+    /**
+     * Limit how many Licenses to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * License without action
+   */
+  export type LicenseDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the License
+     */
+    select?: LicenseSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the License
+     */
+    omit?: LicenseOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: LicenseInclude<ExtArgs> | null
   }
 
 
@@ -26684,12 +28050,31 @@ export namespace Prisma {
     ruc: 'ruc',
     logoUrl: 'logoUrl',
     isActive: 'isActive',
+    maxUsers: 'maxUsers',
+    maxEmployees: 'maxEmployees',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt',
     createdByUserId: 'createdByUserId'
   };
 
   export type CompanyScalarFieldEnum = (typeof CompanyScalarFieldEnum)[keyof typeof CompanyScalarFieldEnum]
+
+
+  export const LicenseScalarFieldEnum: {
+    id: 'id',
+    companyId: 'companyId',
+    plan: 'plan',
+    maxUsers: 'maxUsers',
+    maxEmployees: 'maxEmployees',
+    startsAt: 'startsAt',
+    expiresAt: 'expiresAt',
+    isActive: 'isActive',
+    notes: 'notes',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type LicenseScalarFieldEnum = (typeof LicenseScalarFieldEnum)[keyof typeof LicenseScalarFieldEnum]
 
 
   export const DepartmentScalarFieldEnum: {
@@ -27082,6 +28467,34 @@ export namespace Prisma {
 
 
   /**
+   * Reference to a field of type 'Int'
+   */
+  export type IntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int'>
+    
+
+
+  /**
+   * Reference to a field of type 'Int[]'
+   */
+  export type ListIntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int[]'>
+    
+
+
+  /**
+   * Reference to a field of type 'LicensePlan'
+   */
+  export type EnumLicensePlanFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'LicensePlan'>
+    
+
+
+  /**
+   * Reference to a field of type 'LicensePlan[]'
+   */
+  export type ListEnumLicensePlanFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'LicensePlan[]'>
+    
+
+
+  /**
    * Reference to a field of type 'Decimal'
    */
   export type DecimalFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Decimal'>
@@ -27148,20 +28561,6 @@ export namespace Prisma {
    * Reference to a field of type 'DeductionFrequency[]'
    */
   export type ListEnumDeductionFrequencyFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DeductionFrequency[]'>
-    
-
-
-  /**
-   * Reference to a field of type 'Int'
-   */
-  export type IntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int'>
-    
-
-
-  /**
-   * Reference to a field of type 'Int[]'
-   */
-  export type ListIntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int[]'>
     
 
 
@@ -27589,6 +28988,8 @@ export namespace Prisma {
     ruc?: StringNullableFilter<"Company"> | string | null
     logoUrl?: StringNullableFilter<"Company"> | string | null
     isActive?: BoolFilter<"Company"> | boolean
+    maxUsers?: IntFilter<"Company"> | number
+    maxEmployees?: IntFilter<"Company"> | number
     createdAt?: DateTimeFilter<"Company"> | Date | string
     updatedAt?: DateTimeFilter<"Company"> | Date | string
     createdByUserId?: StringNullableFilter<"Company"> | string | null
@@ -27604,6 +29005,7 @@ export namespace Prisma {
     payrollRuns?: PayrollRunListRelationFilter
     decimoPayments?: DecimoPaymentListRelationFilter
     liquidaciones?: LiquidacionListRelationFilter
+    license?: XOR<LicenseNullableScalarRelationFilter, LicenseWhereInput> | null
   }
 
   export type CompanyOrderByWithRelationInput = {
@@ -27616,6 +29018,8 @@ export namespace Prisma {
     ruc?: SortOrderInput | SortOrder
     logoUrl?: SortOrderInput | SortOrder
     isActive?: SortOrder
+    maxUsers?: SortOrder
+    maxEmployees?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     createdByUserId?: SortOrderInput | SortOrder
@@ -27631,6 +29035,7 @@ export namespace Prisma {
     payrollRuns?: PayrollRunOrderByRelationAggregateInput
     decimoPayments?: DecimoPaymentOrderByRelationAggregateInput
     liquidaciones?: LiquidacionOrderByRelationAggregateInput
+    license?: LicenseOrderByWithRelationInput
   }
 
   export type CompanyWhereUniqueInput = Prisma.AtLeast<{
@@ -27646,6 +29051,8 @@ export namespace Prisma {
     email?: StringNullableFilter<"Company"> | string | null
     logoUrl?: StringNullableFilter<"Company"> | string | null
     isActive?: BoolFilter<"Company"> | boolean
+    maxUsers?: IntFilter<"Company"> | number
+    maxEmployees?: IntFilter<"Company"> | number
     createdAt?: DateTimeFilter<"Company"> | Date | string
     updatedAt?: DateTimeFilter<"Company"> | Date | string
     createdByUserId?: StringNullableFilter<"Company"> | string | null
@@ -27661,6 +29068,7 @@ export namespace Prisma {
     payrollRuns?: PayrollRunListRelationFilter
     decimoPayments?: DecimoPaymentListRelationFilter
     liquidaciones?: LiquidacionListRelationFilter
+    license?: XOR<LicenseNullableScalarRelationFilter, LicenseWhereInput> | null
   }, "id" | "code" | "name" | "ruc">
 
   export type CompanyOrderByWithAggregationInput = {
@@ -27673,12 +29081,16 @@ export namespace Prisma {
     ruc?: SortOrderInput | SortOrder
     logoUrl?: SortOrderInput | SortOrder
     isActive?: SortOrder
+    maxUsers?: SortOrder
+    maxEmployees?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     createdByUserId?: SortOrderInput | SortOrder
     _count?: CompanyCountOrderByAggregateInput
+    _avg?: CompanyAvgOrderByAggregateInput
     _max?: CompanyMaxOrderByAggregateInput
     _min?: CompanyMinOrderByAggregateInput
+    _sum?: CompanySumOrderByAggregateInput
   }
 
   export type CompanyScalarWhereWithAggregatesInput = {
@@ -27694,9 +29106,98 @@ export namespace Prisma {
     ruc?: StringNullableWithAggregatesFilter<"Company"> | string | null
     logoUrl?: StringNullableWithAggregatesFilter<"Company"> | string | null
     isActive?: BoolWithAggregatesFilter<"Company"> | boolean
+    maxUsers?: IntWithAggregatesFilter<"Company"> | number
+    maxEmployees?: IntWithAggregatesFilter<"Company"> | number
     createdAt?: DateTimeWithAggregatesFilter<"Company"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"Company"> | Date | string
     createdByUserId?: StringNullableWithAggregatesFilter<"Company"> | string | null
+  }
+
+  export type LicenseWhereInput = {
+    AND?: LicenseWhereInput | LicenseWhereInput[]
+    OR?: LicenseWhereInput[]
+    NOT?: LicenseWhereInput | LicenseWhereInput[]
+    id?: StringFilter<"License"> | string
+    companyId?: StringFilter<"License"> | string
+    plan?: EnumLicensePlanFilter<"License"> | $Enums.LicensePlan
+    maxUsers?: IntFilter<"License"> | number
+    maxEmployees?: IntFilter<"License"> | number
+    startsAt?: DateTimeFilter<"License"> | Date | string
+    expiresAt?: DateTimeNullableFilter<"License"> | Date | string | null
+    isActive?: BoolFilter<"License"> | boolean
+    notes?: StringNullableFilter<"License"> | string | null
+    createdAt?: DateTimeFilter<"License"> | Date | string
+    updatedAt?: DateTimeFilter<"License"> | Date | string
+    company?: XOR<CompanyScalarRelationFilter, CompanyWhereInput>
+  }
+
+  export type LicenseOrderByWithRelationInput = {
+    id?: SortOrder
+    companyId?: SortOrder
+    plan?: SortOrder
+    maxUsers?: SortOrder
+    maxEmployees?: SortOrder
+    startsAt?: SortOrder
+    expiresAt?: SortOrderInput | SortOrder
+    isActive?: SortOrder
+    notes?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    company?: CompanyOrderByWithRelationInput
+  }
+
+  export type LicenseWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    companyId?: string
+    AND?: LicenseWhereInput | LicenseWhereInput[]
+    OR?: LicenseWhereInput[]
+    NOT?: LicenseWhereInput | LicenseWhereInput[]
+    plan?: EnumLicensePlanFilter<"License"> | $Enums.LicensePlan
+    maxUsers?: IntFilter<"License"> | number
+    maxEmployees?: IntFilter<"License"> | number
+    startsAt?: DateTimeFilter<"License"> | Date | string
+    expiresAt?: DateTimeNullableFilter<"License"> | Date | string | null
+    isActive?: BoolFilter<"License"> | boolean
+    notes?: StringNullableFilter<"License"> | string | null
+    createdAt?: DateTimeFilter<"License"> | Date | string
+    updatedAt?: DateTimeFilter<"License"> | Date | string
+    company?: XOR<CompanyScalarRelationFilter, CompanyWhereInput>
+  }, "id" | "companyId">
+
+  export type LicenseOrderByWithAggregationInput = {
+    id?: SortOrder
+    companyId?: SortOrder
+    plan?: SortOrder
+    maxUsers?: SortOrder
+    maxEmployees?: SortOrder
+    startsAt?: SortOrder
+    expiresAt?: SortOrderInput | SortOrder
+    isActive?: SortOrder
+    notes?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: LicenseCountOrderByAggregateInput
+    _avg?: LicenseAvgOrderByAggregateInput
+    _max?: LicenseMaxOrderByAggregateInput
+    _min?: LicenseMinOrderByAggregateInput
+    _sum?: LicenseSumOrderByAggregateInput
+  }
+
+  export type LicenseScalarWhereWithAggregatesInput = {
+    AND?: LicenseScalarWhereWithAggregatesInput | LicenseScalarWhereWithAggregatesInput[]
+    OR?: LicenseScalarWhereWithAggregatesInput[]
+    NOT?: LicenseScalarWhereWithAggregatesInput | LicenseScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"License"> | string
+    companyId?: StringWithAggregatesFilter<"License"> | string
+    plan?: EnumLicensePlanWithAggregatesFilter<"License"> | $Enums.LicensePlan
+    maxUsers?: IntWithAggregatesFilter<"License"> | number
+    maxEmployees?: IntWithAggregatesFilter<"License"> | number
+    startsAt?: DateTimeWithAggregatesFilter<"License"> | Date | string
+    expiresAt?: DateTimeNullableWithAggregatesFilter<"License"> | Date | string | null
+    isActive?: BoolWithAggregatesFilter<"License"> | boolean
+    notes?: StringNullableWithAggregatesFilter<"License"> | string | null
+    createdAt?: DateTimeWithAggregatesFilter<"License"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"License"> | Date | string
   }
 
   export type DepartmentWhereInput = {
@@ -29526,6 +31027,8 @@ export namespace Prisma {
     ruc?: string | null
     logoUrl?: string | null
     isActive?: boolean
+    maxUsers?: number
+    maxEmployees?: number
     createdAt?: Date | string
     updatedAt?: Date | string
     LegalDecimoParameter?: LegalDecimoParameterCreateNestedManyWithoutCompanyInput
@@ -29540,6 +31043,7 @@ export namespace Prisma {
     payrollRuns?: PayrollRunCreateNestedManyWithoutCompanyInput
     decimoPayments?: DecimoPaymentCreateNestedManyWithoutCompanyInput
     liquidaciones?: LiquidacionCreateNestedManyWithoutCompanyInput
+    license?: LicenseCreateNestedOneWithoutCompanyInput
   }
 
   export type CompanyUncheckedCreateInput = {
@@ -29552,6 +31056,8 @@ export namespace Prisma {
     ruc?: string | null
     logoUrl?: string | null
     isActive?: boolean
+    maxUsers?: number
+    maxEmployees?: number
     createdAt?: Date | string
     updatedAt?: Date | string
     createdByUserId?: string | null
@@ -29566,6 +31072,7 @@ export namespace Prisma {
     payrollRuns?: PayrollRunUncheckedCreateNestedManyWithoutCompanyInput
     decimoPayments?: DecimoPaymentUncheckedCreateNestedManyWithoutCompanyInput
     liquidaciones?: LiquidacionUncheckedCreateNestedManyWithoutCompanyInput
+    license?: LicenseUncheckedCreateNestedOneWithoutCompanyInput
   }
 
   export type CompanyUpdateInput = {
@@ -29578,6 +31085,8 @@ export namespace Prisma {
     ruc?: NullableStringFieldUpdateOperationsInput | string | null
     logoUrl?: NullableStringFieldUpdateOperationsInput | string | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
+    maxUsers?: IntFieldUpdateOperationsInput | number
+    maxEmployees?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     LegalDecimoParameter?: LegalDecimoParameterUpdateManyWithoutCompanyNestedInput
@@ -29592,6 +31101,7 @@ export namespace Prisma {
     payrollRuns?: PayrollRunUpdateManyWithoutCompanyNestedInput
     decimoPayments?: DecimoPaymentUpdateManyWithoutCompanyNestedInput
     liquidaciones?: LiquidacionUpdateManyWithoutCompanyNestedInput
+    license?: LicenseUpdateOneWithoutCompanyNestedInput
   }
 
   export type CompanyUncheckedUpdateInput = {
@@ -29604,6 +31114,8 @@ export namespace Prisma {
     ruc?: NullableStringFieldUpdateOperationsInput | string | null
     logoUrl?: NullableStringFieldUpdateOperationsInput | string | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
+    maxUsers?: IntFieldUpdateOperationsInput | number
+    maxEmployees?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     createdByUserId?: NullableStringFieldUpdateOperationsInput | string | null
@@ -29618,6 +31130,7 @@ export namespace Prisma {
     payrollRuns?: PayrollRunUncheckedUpdateManyWithoutCompanyNestedInput
     decimoPayments?: DecimoPaymentUncheckedUpdateManyWithoutCompanyNestedInput
     liquidaciones?: LiquidacionUncheckedUpdateManyWithoutCompanyNestedInput
+    license?: LicenseUncheckedUpdateOneWithoutCompanyNestedInput
   }
 
   export type CompanyCreateManyInput = {
@@ -29630,6 +31143,8 @@ export namespace Prisma {
     ruc?: string | null
     logoUrl?: string | null
     isActive?: boolean
+    maxUsers?: number
+    maxEmployees?: number
     createdAt?: Date | string
     updatedAt?: Date | string
     createdByUserId?: string | null
@@ -29645,6 +31160,8 @@ export namespace Prisma {
     ruc?: NullableStringFieldUpdateOperationsInput | string | null
     logoUrl?: NullableStringFieldUpdateOperationsInput | string | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
+    maxUsers?: IntFieldUpdateOperationsInput | number
+    maxEmployees?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -29659,9 +31176,108 @@ export namespace Prisma {
     ruc?: NullableStringFieldUpdateOperationsInput | string | null
     logoUrl?: NullableStringFieldUpdateOperationsInput | string | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
+    maxUsers?: IntFieldUpdateOperationsInput | number
+    maxEmployees?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     createdByUserId?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type LicenseCreateInput = {
+    id?: string
+    plan?: $Enums.LicensePlan
+    maxUsers?: number
+    maxEmployees?: number
+    startsAt?: Date | string
+    expiresAt?: Date | string | null
+    isActive?: boolean
+    notes?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    company: CompanyCreateNestedOneWithoutLicenseInput
+  }
+
+  export type LicenseUncheckedCreateInput = {
+    id?: string
+    companyId: string
+    plan?: $Enums.LicensePlan
+    maxUsers?: number
+    maxEmployees?: number
+    startsAt?: Date | string
+    expiresAt?: Date | string | null
+    isActive?: boolean
+    notes?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type LicenseUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    plan?: EnumLicensePlanFieldUpdateOperationsInput | $Enums.LicensePlan
+    maxUsers?: IntFieldUpdateOperationsInput | number
+    maxEmployees?: IntFieldUpdateOperationsInput | number
+    startsAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    expiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    company?: CompanyUpdateOneRequiredWithoutLicenseNestedInput
+  }
+
+  export type LicenseUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    companyId?: StringFieldUpdateOperationsInput | string
+    plan?: EnumLicensePlanFieldUpdateOperationsInput | $Enums.LicensePlan
+    maxUsers?: IntFieldUpdateOperationsInput | number
+    maxEmployees?: IntFieldUpdateOperationsInput | number
+    startsAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    expiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type LicenseCreateManyInput = {
+    id?: string
+    companyId: string
+    plan?: $Enums.LicensePlan
+    maxUsers?: number
+    maxEmployees?: number
+    startsAt?: Date | string
+    expiresAt?: Date | string | null
+    isActive?: boolean
+    notes?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type LicenseUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    plan?: EnumLicensePlanFieldUpdateOperationsInput | $Enums.LicensePlan
+    maxUsers?: IntFieldUpdateOperationsInput | number
+    maxEmployees?: IntFieldUpdateOperationsInput | number
+    startsAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    expiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type LicenseUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    companyId?: StringFieldUpdateOperationsInput | string
+    plan?: EnumLicensePlanFieldUpdateOperationsInput | $Enums.LicensePlan
+    maxUsers?: IntFieldUpdateOperationsInput | number
+    maxEmployees?: IntFieldUpdateOperationsInput | number
+    startsAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    expiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type DepartmentCreateInput = {
@@ -31746,6 +33362,17 @@ export namespace Prisma {
     _max?: NestedEnumPersonStatusFilter<$PrismaModel>
   }
 
+  export type IntFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel>
+    in?: number[] | ListIntFieldRefInput<$PrismaModel>
+    notIn?: number[] | ListIntFieldRefInput<$PrismaModel>
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntFilter<$PrismaModel> | number
+  }
+
   export type LegalDecimoParameterListRelationFilter = {
     every?: LegalDecimoParameterWhereInput
     some?: LegalDecimoParameterWhereInput
@@ -31811,6 +33438,11 @@ export namespace Prisma {
     none?: LiquidacionWhereInput
   }
 
+  export type LicenseNullableScalarRelationFilter = {
+    is?: LicenseWhereInput | null
+    isNot?: LicenseWhereInput | null
+  }
+
   export type LegalDecimoParameterOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
@@ -31861,9 +33493,16 @@ export namespace Prisma {
     ruc?: SortOrder
     logoUrl?: SortOrder
     isActive?: SortOrder
+    maxUsers?: SortOrder
+    maxEmployees?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     createdByUserId?: SortOrder
+  }
+
+  export type CompanyAvgOrderByAggregateInput = {
+    maxUsers?: SortOrder
+    maxEmployees?: SortOrder
   }
 
   export type CompanyMaxOrderByAggregateInput = {
@@ -31876,6 +33515,8 @@ export namespace Prisma {
     ruc?: SortOrder
     logoUrl?: SortOrder
     isActive?: SortOrder
+    maxUsers?: SortOrder
+    maxEmployees?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     createdByUserId?: SortOrder
@@ -31891,9 +33532,126 @@ export namespace Prisma {
     ruc?: SortOrder
     logoUrl?: SortOrder
     isActive?: SortOrder
+    maxUsers?: SortOrder
+    maxEmployees?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     createdByUserId?: SortOrder
+  }
+
+  export type CompanySumOrderByAggregateInput = {
+    maxUsers?: SortOrder
+    maxEmployees?: SortOrder
+  }
+
+  export type IntWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel>
+    in?: number[] | ListIntFieldRefInput<$PrismaModel>
+    notIn?: number[] | ListIntFieldRefInput<$PrismaModel>
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntWithAggregatesFilter<$PrismaModel> | number
+    _count?: NestedIntFilter<$PrismaModel>
+    _avg?: NestedFloatFilter<$PrismaModel>
+    _sum?: NestedIntFilter<$PrismaModel>
+    _min?: NestedIntFilter<$PrismaModel>
+    _max?: NestedIntFilter<$PrismaModel>
+  }
+
+  export type EnumLicensePlanFilter<$PrismaModel = never> = {
+    equals?: $Enums.LicensePlan | EnumLicensePlanFieldRefInput<$PrismaModel>
+    in?: $Enums.LicensePlan[] | ListEnumLicensePlanFieldRefInput<$PrismaModel>
+    notIn?: $Enums.LicensePlan[] | ListEnumLicensePlanFieldRefInput<$PrismaModel>
+    not?: NestedEnumLicensePlanFilter<$PrismaModel> | $Enums.LicensePlan
+  }
+
+  export type DateTimeNullableFilter<$PrismaModel = never> = {
+    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
+    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    not?: NestedDateTimeNullableFilter<$PrismaModel> | Date | string | null
+  }
+
+  export type LicenseCountOrderByAggregateInput = {
+    id?: SortOrder
+    companyId?: SortOrder
+    plan?: SortOrder
+    maxUsers?: SortOrder
+    maxEmployees?: SortOrder
+    startsAt?: SortOrder
+    expiresAt?: SortOrder
+    isActive?: SortOrder
+    notes?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type LicenseAvgOrderByAggregateInput = {
+    maxUsers?: SortOrder
+    maxEmployees?: SortOrder
+  }
+
+  export type LicenseMaxOrderByAggregateInput = {
+    id?: SortOrder
+    companyId?: SortOrder
+    plan?: SortOrder
+    maxUsers?: SortOrder
+    maxEmployees?: SortOrder
+    startsAt?: SortOrder
+    expiresAt?: SortOrder
+    isActive?: SortOrder
+    notes?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type LicenseMinOrderByAggregateInput = {
+    id?: SortOrder
+    companyId?: SortOrder
+    plan?: SortOrder
+    maxUsers?: SortOrder
+    maxEmployees?: SortOrder
+    startsAt?: SortOrder
+    expiresAt?: SortOrder
+    isActive?: SortOrder
+    notes?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type LicenseSumOrderByAggregateInput = {
+    maxUsers?: SortOrder
+    maxEmployees?: SortOrder
+  }
+
+  export type EnumLicensePlanWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.LicensePlan | EnumLicensePlanFieldRefInput<$PrismaModel>
+    in?: $Enums.LicensePlan[] | ListEnumLicensePlanFieldRefInput<$PrismaModel>
+    notIn?: $Enums.LicensePlan[] | ListEnumLicensePlanFieldRefInput<$PrismaModel>
+    not?: NestedEnumLicensePlanWithAggregatesFilter<$PrismaModel> | $Enums.LicensePlan
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumLicensePlanFilter<$PrismaModel>
+    _max?: NestedEnumLicensePlanFilter<$PrismaModel>
+  }
+
+  export type DateTimeNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
+    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    not?: NestedDateTimeNullableWithAggregatesFilter<$PrismaModel> | Date | string | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedDateTimeNullableFilter<$PrismaModel>
+    _max?: NestedDateTimeNullableFilter<$PrismaModel>
   }
 
   export type PersonListRelationFilter = {
@@ -31993,17 +33751,6 @@ export namespace Prisma {
     in?: $Enums.ContractType[] | ListEnumContractTypeFieldRefInput<$PrismaModel>
     notIn?: $Enums.ContractType[] | ListEnumContractTypeFieldRefInput<$PrismaModel>
     not?: NestedEnumContractTypeFilter<$PrismaModel> | $Enums.ContractType
-  }
-
-  export type DateTimeNullableFilter<$PrismaModel = never> = {
-    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
-    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
-    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
-    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    not?: NestedDateTimeNullableFilter<$PrismaModel> | Date | string | null
   }
 
   export type DeductionListRelationFilter = {
@@ -32175,20 +33922,6 @@ export namespace Prisma {
     _max?: NestedEnumContractTypeFilter<$PrismaModel>
   }
 
-  export type DateTimeNullableWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
-    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
-    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
-    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    not?: NestedDateTimeNullableWithAggregatesFilter<$PrismaModel> | Date | string | null
-    _count?: NestedIntNullableFilter<$PrismaModel>
-    _min?: NestedDateTimeNullableFilter<$PrismaModel>
-    _max?: NestedDateTimeNullableFilter<$PrismaModel>
-  }
-
   export type EnumDeductionFrequencyFilter<$PrismaModel = never> = {
     equals?: $Enums.DeductionFrequency | EnumDeductionFrequencyFieldRefInput<$PrismaModel>
     in?: $Enums.DeductionFrequency[] | ListEnumDeductionFrequencyFieldRefInput<$PrismaModel>
@@ -32298,17 +34031,6 @@ export namespace Prisma {
     _max?: NestedDecimalNullableFilter<$PrismaModel>
   }
 
-  export type IntFilter<$PrismaModel = never> = {
-    equals?: number | IntFieldRefInput<$PrismaModel>
-    in?: number[] | ListIntFieldRefInput<$PrismaModel>
-    notIn?: number[] | ListIntFieldRefInput<$PrismaModel>
-    lt?: number | IntFieldRefInput<$PrismaModel>
-    lte?: number | IntFieldRefInput<$PrismaModel>
-    gt?: number | IntFieldRefInput<$PrismaModel>
-    gte?: number | IntFieldRefInput<$PrismaModel>
-    not?: NestedIntFilter<$PrismaModel> | number
-  }
-
   export type EnumPayrollTypeFilter<$PrismaModel = never> = {
     equals?: $Enums.PayrollType | EnumPayrollTypeFieldRefInput<$PrismaModel>
     in?: $Enums.PayrollType[] | ListEnumPayrollTypeFieldRefInput<$PrismaModel>
@@ -32387,22 +34109,6 @@ export namespace Prisma {
     totalGross?: SortOrder
     totalNet?: SortOrder
     totalDeductions?: SortOrder
-  }
-
-  export type IntWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: number | IntFieldRefInput<$PrismaModel>
-    in?: number[] | ListIntFieldRefInput<$PrismaModel>
-    notIn?: number[] | ListIntFieldRefInput<$PrismaModel>
-    lt?: number | IntFieldRefInput<$PrismaModel>
-    lte?: number | IntFieldRefInput<$PrismaModel>
-    gt?: number | IntFieldRefInput<$PrismaModel>
-    gte?: number | IntFieldRefInput<$PrismaModel>
-    not?: NestedIntWithAggregatesFilter<$PrismaModel> | number
-    _count?: NestedIntFilter<$PrismaModel>
-    _avg?: NestedFloatFilter<$PrismaModel>
-    _sum?: NestedIntFilter<$PrismaModel>
-    _min?: NestedIntFilter<$PrismaModel>
-    _max?: NestedIntFilter<$PrismaModel>
   }
 
   export type EnumPayrollTypeWithAggregatesFilter<$PrismaModel = never> = {
@@ -33670,6 +35376,12 @@ export namespace Prisma {
     connect?: LiquidacionWhereUniqueInput | LiquidacionWhereUniqueInput[]
   }
 
+  export type LicenseCreateNestedOneWithoutCompanyInput = {
+    create?: XOR<LicenseCreateWithoutCompanyInput, LicenseUncheckedCreateWithoutCompanyInput>
+    connectOrCreate?: LicenseCreateOrConnectWithoutCompanyInput
+    connect?: LicenseWhereUniqueInput
+  }
+
   export type LegalDecimoParameterUncheckedCreateNestedManyWithoutCompanyInput = {
     create?: XOR<LegalDecimoParameterCreateWithoutCompanyInput, LegalDecimoParameterUncheckedCreateWithoutCompanyInput> | LegalDecimoParameterCreateWithoutCompanyInput[] | LegalDecimoParameterUncheckedCreateWithoutCompanyInput[]
     connectOrCreate?: LegalDecimoParameterCreateOrConnectWithoutCompanyInput | LegalDecimoParameterCreateOrConnectWithoutCompanyInput[]
@@ -33745,6 +35457,20 @@ export namespace Prisma {
     connectOrCreate?: LiquidacionCreateOrConnectWithoutCompanyInput | LiquidacionCreateOrConnectWithoutCompanyInput[]
     createMany?: LiquidacionCreateManyCompanyInputEnvelope
     connect?: LiquidacionWhereUniqueInput | LiquidacionWhereUniqueInput[]
+  }
+
+  export type LicenseUncheckedCreateNestedOneWithoutCompanyInput = {
+    create?: XOR<LicenseCreateWithoutCompanyInput, LicenseUncheckedCreateWithoutCompanyInput>
+    connectOrCreate?: LicenseCreateOrConnectWithoutCompanyInput
+    connect?: LicenseWhereUniqueInput
+  }
+
+  export type IntFieldUpdateOperationsInput = {
+    set?: number
+    increment?: number
+    decrement?: number
+    multiply?: number
+    divide?: number
   }
 
   export type LegalDecimoParameterUpdateManyWithoutCompanyNestedInput = {
@@ -33911,6 +35637,16 @@ export namespace Prisma {
     deleteMany?: LiquidacionScalarWhereInput | LiquidacionScalarWhereInput[]
   }
 
+  export type LicenseUpdateOneWithoutCompanyNestedInput = {
+    create?: XOR<LicenseCreateWithoutCompanyInput, LicenseUncheckedCreateWithoutCompanyInput>
+    connectOrCreate?: LicenseCreateOrConnectWithoutCompanyInput
+    upsert?: LicenseUpsertWithoutCompanyInput
+    disconnect?: LicenseWhereInput | boolean
+    delete?: LicenseWhereInput | boolean
+    connect?: LicenseWhereUniqueInput
+    update?: XOR<XOR<LicenseUpdateToOneWithWhereWithoutCompanyInput, LicenseUpdateWithoutCompanyInput>, LicenseUncheckedUpdateWithoutCompanyInput>
+  }
+
   export type LegalDecimoParameterUncheckedUpdateManyWithoutCompanyNestedInput = {
     create?: XOR<LegalDecimoParameterCreateWithoutCompanyInput, LegalDecimoParameterUncheckedCreateWithoutCompanyInput> | LegalDecimoParameterCreateWithoutCompanyInput[] | LegalDecimoParameterUncheckedCreateWithoutCompanyInput[]
     connectOrCreate?: LegalDecimoParameterCreateOrConnectWithoutCompanyInput | LegalDecimoParameterCreateOrConnectWithoutCompanyInput[]
@@ -34063,6 +35799,38 @@ export namespace Prisma {
     update?: LiquidacionUpdateWithWhereUniqueWithoutCompanyInput | LiquidacionUpdateWithWhereUniqueWithoutCompanyInput[]
     updateMany?: LiquidacionUpdateManyWithWhereWithoutCompanyInput | LiquidacionUpdateManyWithWhereWithoutCompanyInput[]
     deleteMany?: LiquidacionScalarWhereInput | LiquidacionScalarWhereInput[]
+  }
+
+  export type LicenseUncheckedUpdateOneWithoutCompanyNestedInput = {
+    create?: XOR<LicenseCreateWithoutCompanyInput, LicenseUncheckedCreateWithoutCompanyInput>
+    connectOrCreate?: LicenseCreateOrConnectWithoutCompanyInput
+    upsert?: LicenseUpsertWithoutCompanyInput
+    disconnect?: LicenseWhereInput | boolean
+    delete?: LicenseWhereInput | boolean
+    connect?: LicenseWhereUniqueInput
+    update?: XOR<XOR<LicenseUpdateToOneWithWhereWithoutCompanyInput, LicenseUpdateWithoutCompanyInput>, LicenseUncheckedUpdateWithoutCompanyInput>
+  }
+
+  export type CompanyCreateNestedOneWithoutLicenseInput = {
+    create?: XOR<CompanyCreateWithoutLicenseInput, CompanyUncheckedCreateWithoutLicenseInput>
+    connectOrCreate?: CompanyCreateOrConnectWithoutLicenseInput
+    connect?: CompanyWhereUniqueInput
+  }
+
+  export type EnumLicensePlanFieldUpdateOperationsInput = {
+    set?: $Enums.LicensePlan
+  }
+
+  export type NullableDateTimeFieldUpdateOperationsInput = {
+    set?: Date | string | null
+  }
+
+  export type CompanyUpdateOneRequiredWithoutLicenseNestedInput = {
+    create?: XOR<CompanyCreateWithoutLicenseInput, CompanyUncheckedCreateWithoutLicenseInput>
+    connectOrCreate?: CompanyCreateOrConnectWithoutLicenseInput
+    upsert?: CompanyUpsertWithoutLicenseInput
+    connect?: CompanyWhereUniqueInput
+    update?: XOR<XOR<CompanyUpdateToOneWithWhereWithoutLicenseInput, CompanyUpdateWithoutLicenseInput>, CompanyUncheckedUpdateWithoutLicenseInput>
   }
 
   export type CompanyCreateNestedOneWithoutDepartmentsInput = {
@@ -34263,10 +36031,6 @@ export namespace Prisma {
 
   export type EnumContractTypeFieldUpdateOperationsInput = {
     set?: $Enums.ContractType
-  }
-
-  export type NullableDateTimeFieldUpdateOperationsInput = {
-    set?: Date | string | null
   }
 
   export type UserUpdateOneWithoutEmployeeNestedInput = {
@@ -34555,14 +36319,6 @@ export namespace Prisma {
     connectOrCreate?: PayrollCreateOrConnectWithoutPayrollRunInput | PayrollCreateOrConnectWithoutPayrollRunInput[]
     createMany?: PayrollCreateManyPayrollRunInputEnvelope
     connect?: PayrollWhereUniqueInput | PayrollWhereUniqueInput[]
-  }
-
-  export type IntFieldUpdateOperationsInput = {
-    set?: number
-    increment?: number
-    decrement?: number
-    multiply?: number
-    divide?: number
   }
 
   export type EnumPayrollTypeFieldUpdateOperationsInput = {
@@ -35149,6 +36905,75 @@ export namespace Prisma {
     _max?: NestedEnumPersonStatusFilter<$PrismaModel>
   }
 
+  export type NestedIntWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel>
+    in?: number[] | ListIntFieldRefInput<$PrismaModel>
+    notIn?: number[] | ListIntFieldRefInput<$PrismaModel>
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntWithAggregatesFilter<$PrismaModel> | number
+    _count?: NestedIntFilter<$PrismaModel>
+    _avg?: NestedFloatFilter<$PrismaModel>
+    _sum?: NestedIntFilter<$PrismaModel>
+    _min?: NestedIntFilter<$PrismaModel>
+    _max?: NestedIntFilter<$PrismaModel>
+  }
+
+  export type NestedFloatFilter<$PrismaModel = never> = {
+    equals?: number | FloatFieldRefInput<$PrismaModel>
+    in?: number[] | ListFloatFieldRefInput<$PrismaModel>
+    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel>
+    lt?: number | FloatFieldRefInput<$PrismaModel>
+    lte?: number | FloatFieldRefInput<$PrismaModel>
+    gt?: number | FloatFieldRefInput<$PrismaModel>
+    gte?: number | FloatFieldRefInput<$PrismaModel>
+    not?: NestedFloatFilter<$PrismaModel> | number
+  }
+
+  export type NestedEnumLicensePlanFilter<$PrismaModel = never> = {
+    equals?: $Enums.LicensePlan | EnumLicensePlanFieldRefInput<$PrismaModel>
+    in?: $Enums.LicensePlan[] | ListEnumLicensePlanFieldRefInput<$PrismaModel>
+    notIn?: $Enums.LicensePlan[] | ListEnumLicensePlanFieldRefInput<$PrismaModel>
+    not?: NestedEnumLicensePlanFilter<$PrismaModel> | $Enums.LicensePlan
+  }
+
+  export type NestedDateTimeNullableFilter<$PrismaModel = never> = {
+    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
+    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    not?: NestedDateTimeNullableFilter<$PrismaModel> | Date | string | null
+  }
+
+  export type NestedEnumLicensePlanWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.LicensePlan | EnumLicensePlanFieldRefInput<$PrismaModel>
+    in?: $Enums.LicensePlan[] | ListEnumLicensePlanFieldRefInput<$PrismaModel>
+    notIn?: $Enums.LicensePlan[] | ListEnumLicensePlanFieldRefInput<$PrismaModel>
+    not?: NestedEnumLicensePlanWithAggregatesFilter<$PrismaModel> | $Enums.LicensePlan
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumLicensePlanFilter<$PrismaModel>
+    _max?: NestedEnumLicensePlanFilter<$PrismaModel>
+  }
+
+  export type NestedDateTimeNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
+    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    not?: NestedDateTimeNullableWithAggregatesFilter<$PrismaModel> | Date | string | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedDateTimeNullableFilter<$PrismaModel>
+    _max?: NestedDateTimeNullableFilter<$PrismaModel>
+  }
+
   export type NestedDecimalFilter<$PrismaModel = never> = {
     equals?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
     in?: Decimal[] | DecimalJsLike[] | number[] | string[] | ListDecimalFieldRefInput<$PrismaModel>
@@ -35179,17 +37004,6 @@ export namespace Prisma {
     in?: $Enums.ContractType[] | ListEnumContractTypeFieldRefInput<$PrismaModel>
     notIn?: $Enums.ContractType[] | ListEnumContractTypeFieldRefInput<$PrismaModel>
     not?: NestedEnumContractTypeFilter<$PrismaModel> | $Enums.ContractType
-  }
-
-  export type NestedDateTimeNullableFilter<$PrismaModel = never> = {
-    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
-    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
-    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
-    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    not?: NestedDateTimeNullableFilter<$PrismaModel> | Date | string | null
   }
 
   export type NestedDecimalWithAggregatesFilter<$PrismaModel = never> = {
@@ -35236,20 +37050,6 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedEnumContractTypeFilter<$PrismaModel>
     _max?: NestedEnumContractTypeFilter<$PrismaModel>
-  }
-
-  export type NestedDateTimeNullableWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
-    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
-    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
-    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    not?: NestedDateTimeNullableWithAggregatesFilter<$PrismaModel> | Date | string | null
-    _count?: NestedIntNullableFilter<$PrismaModel>
-    _min?: NestedDateTimeNullableFilter<$PrismaModel>
-    _max?: NestedDateTimeNullableFilter<$PrismaModel>
   }
 
   export type NestedEnumDeductionFrequencyFilter<$PrismaModel = never> = {
@@ -35308,33 +37108,6 @@ export namespace Prisma {
     in?: $Enums.PayrollRunStatus[] | ListEnumPayrollRunStatusFieldRefInput<$PrismaModel>
     notIn?: $Enums.PayrollRunStatus[] | ListEnumPayrollRunStatusFieldRefInput<$PrismaModel>
     not?: NestedEnumPayrollRunStatusFilter<$PrismaModel> | $Enums.PayrollRunStatus
-  }
-
-  export type NestedIntWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: number | IntFieldRefInput<$PrismaModel>
-    in?: number[] | ListIntFieldRefInput<$PrismaModel>
-    notIn?: number[] | ListIntFieldRefInput<$PrismaModel>
-    lt?: number | IntFieldRefInput<$PrismaModel>
-    lte?: number | IntFieldRefInput<$PrismaModel>
-    gt?: number | IntFieldRefInput<$PrismaModel>
-    gte?: number | IntFieldRefInput<$PrismaModel>
-    not?: NestedIntWithAggregatesFilter<$PrismaModel> | number
-    _count?: NestedIntFilter<$PrismaModel>
-    _avg?: NestedFloatFilter<$PrismaModel>
-    _sum?: NestedIntFilter<$PrismaModel>
-    _min?: NestedIntFilter<$PrismaModel>
-    _max?: NestedIntFilter<$PrismaModel>
-  }
-
-  export type NestedFloatFilter<$PrismaModel = never> = {
-    equals?: number | FloatFieldRefInput<$PrismaModel>
-    in?: number[] | ListFloatFieldRefInput<$PrismaModel>
-    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel>
-    lt?: number | FloatFieldRefInput<$PrismaModel>
-    lte?: number | FloatFieldRefInput<$PrismaModel>
-    gt?: number | FloatFieldRefInput<$PrismaModel>
-    gte?: number | FloatFieldRefInput<$PrismaModel>
-    not?: NestedFloatFilter<$PrismaModel> | number
   }
 
   export type NestedEnumPayrollTypeWithAggregatesFilter<$PrismaModel = never> = {
@@ -35598,6 +37371,8 @@ export namespace Prisma {
     ruc?: string | null
     logoUrl?: string | null
     isActive?: boolean
+    maxUsers?: number
+    maxEmployees?: number
     createdAt?: Date | string
     updatedAt?: Date | string
     LegalDecimoParameter?: LegalDecimoParameterCreateNestedManyWithoutCompanyInput
@@ -35611,6 +37386,7 @@ export namespace Prisma {
     payrollRuns?: PayrollRunCreateNestedManyWithoutCompanyInput
     decimoPayments?: DecimoPaymentCreateNestedManyWithoutCompanyInput
     liquidaciones?: LiquidacionCreateNestedManyWithoutCompanyInput
+    license?: LicenseCreateNestedOneWithoutCompanyInput
   }
 
   export type CompanyUncheckedCreateWithoutCreatedByInput = {
@@ -35623,6 +37399,8 @@ export namespace Prisma {
     ruc?: string | null
     logoUrl?: string | null
     isActive?: boolean
+    maxUsers?: number
+    maxEmployees?: number
     createdAt?: Date | string
     updatedAt?: Date | string
     LegalDecimoParameter?: LegalDecimoParameterUncheckedCreateNestedManyWithoutCompanyInput
@@ -35636,6 +37414,7 @@ export namespace Prisma {
     payrollRuns?: PayrollRunUncheckedCreateNestedManyWithoutCompanyInput
     decimoPayments?: DecimoPaymentUncheckedCreateNestedManyWithoutCompanyInput
     liquidaciones?: LiquidacionUncheckedCreateNestedManyWithoutCompanyInput
+    license?: LicenseUncheckedCreateNestedOneWithoutCompanyInput
   }
 
   export type CompanyCreateOrConnectWithoutCreatedByInput = {
@@ -35807,6 +37586,8 @@ export namespace Prisma {
     ruc?: StringNullableFilter<"Company"> | string | null
     logoUrl?: StringNullableFilter<"Company"> | string | null
     isActive?: BoolFilter<"Company"> | boolean
+    maxUsers?: IntFilter<"Company"> | number
+    maxEmployees?: IntFilter<"Company"> | number
     createdAt?: DateTimeFilter<"Company"> | Date | string
     updatedAt?: DateTimeFilter<"Company"> | Date | string
     createdByUserId?: StringNullableFilter<"Company"> | string | null
@@ -35973,6 +37754,8 @@ export namespace Prisma {
     ruc?: string | null
     logoUrl?: string | null
     isActive?: boolean
+    maxUsers?: number
+    maxEmployees?: number
     createdAt?: Date | string
     updatedAt?: Date | string
     LegalDecimoParameter?: LegalDecimoParameterCreateNestedManyWithoutCompanyInput
@@ -35986,6 +37769,7 @@ export namespace Prisma {
     payrollRuns?: PayrollRunCreateNestedManyWithoutCompanyInput
     decimoPayments?: DecimoPaymentCreateNestedManyWithoutCompanyInput
     liquidaciones?: LiquidacionCreateNestedManyWithoutCompanyInput
+    license?: LicenseCreateNestedOneWithoutCompanyInput
   }
 
   export type CompanyUncheckedCreateWithoutUsersInput = {
@@ -35998,6 +37782,8 @@ export namespace Prisma {
     ruc?: string | null
     logoUrl?: string | null
     isActive?: boolean
+    maxUsers?: number
+    maxEmployees?: number
     createdAt?: Date | string
     updatedAt?: Date | string
     createdByUserId?: string | null
@@ -36011,6 +37797,7 @@ export namespace Prisma {
     payrollRuns?: PayrollRunUncheckedCreateNestedManyWithoutCompanyInput
     decimoPayments?: DecimoPaymentUncheckedCreateNestedManyWithoutCompanyInput
     liquidaciones?: LiquidacionUncheckedCreateNestedManyWithoutCompanyInput
+    license?: LicenseUncheckedCreateNestedOneWithoutCompanyInput
   }
 
   export type CompanyCreateOrConnectWithoutUsersInput = {
@@ -36078,6 +37865,8 @@ export namespace Prisma {
     ruc?: NullableStringFieldUpdateOperationsInput | string | null
     logoUrl?: NullableStringFieldUpdateOperationsInput | string | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
+    maxUsers?: IntFieldUpdateOperationsInput | number
+    maxEmployees?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     LegalDecimoParameter?: LegalDecimoParameterUpdateManyWithoutCompanyNestedInput
@@ -36091,6 +37880,7 @@ export namespace Prisma {
     payrollRuns?: PayrollRunUpdateManyWithoutCompanyNestedInput
     decimoPayments?: DecimoPaymentUpdateManyWithoutCompanyNestedInput
     liquidaciones?: LiquidacionUpdateManyWithoutCompanyNestedInput
+    license?: LicenseUpdateOneWithoutCompanyNestedInput
   }
 
   export type CompanyUncheckedUpdateWithoutUsersInput = {
@@ -36103,6 +37893,8 @@ export namespace Prisma {
     ruc?: NullableStringFieldUpdateOperationsInput | string | null
     logoUrl?: NullableStringFieldUpdateOperationsInput | string | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
+    maxUsers?: IntFieldUpdateOperationsInput | number
+    maxEmployees?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     createdByUserId?: NullableStringFieldUpdateOperationsInput | string | null
@@ -36116,6 +37908,7 @@ export namespace Prisma {
     payrollRuns?: PayrollRunUncheckedUpdateManyWithoutCompanyNestedInput
     decimoPayments?: DecimoPaymentUncheckedUpdateManyWithoutCompanyNestedInput
     liquidaciones?: LiquidacionUncheckedUpdateManyWithoutCompanyNestedInput
+    license?: LicenseUncheckedUpdateOneWithoutCompanyNestedInput
   }
 
   export type DepartmentCreateWithoutPersonsInput = {
@@ -36779,6 +38572,37 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type LicenseCreateWithoutCompanyInput = {
+    id?: string
+    plan?: $Enums.LicensePlan
+    maxUsers?: number
+    maxEmployees?: number
+    startsAt?: Date | string
+    expiresAt?: Date | string | null
+    isActive?: boolean
+    notes?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type LicenseUncheckedCreateWithoutCompanyInput = {
+    id?: string
+    plan?: $Enums.LicensePlan
+    maxUsers?: number
+    maxEmployees?: number
+    startsAt?: Date | string
+    expiresAt?: Date | string | null
+    isActive?: boolean
+    notes?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type LicenseCreateOrConnectWithoutCompanyInput = {
+    where: LicenseWhereUniqueInput
+    create: XOR<LicenseCreateWithoutCompanyInput, LicenseUncheckedCreateWithoutCompanyInput>
+  }
+
   export type LegalDecimoParameterUpsertWithWhereUniqueWithoutCompanyInput = {
     where: LegalDecimoParameterWhereUniqueInput
     update: XOR<LegalDecimoParameterUpdateWithoutCompanyInput, LegalDecimoParameterUncheckedUpdateWithoutCompanyInput>
@@ -37213,6 +39037,171 @@ export namespace Prisma {
     updatedAt?: DateTimeFilter<"Liquidacion"> | Date | string
   }
 
+  export type LicenseUpsertWithoutCompanyInput = {
+    update: XOR<LicenseUpdateWithoutCompanyInput, LicenseUncheckedUpdateWithoutCompanyInput>
+    create: XOR<LicenseCreateWithoutCompanyInput, LicenseUncheckedCreateWithoutCompanyInput>
+    where?: LicenseWhereInput
+  }
+
+  export type LicenseUpdateToOneWithWhereWithoutCompanyInput = {
+    where?: LicenseWhereInput
+    data: XOR<LicenseUpdateWithoutCompanyInput, LicenseUncheckedUpdateWithoutCompanyInput>
+  }
+
+  export type LicenseUpdateWithoutCompanyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    plan?: EnumLicensePlanFieldUpdateOperationsInput | $Enums.LicensePlan
+    maxUsers?: IntFieldUpdateOperationsInput | number
+    maxEmployees?: IntFieldUpdateOperationsInput | number
+    startsAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    expiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type LicenseUncheckedUpdateWithoutCompanyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    plan?: EnumLicensePlanFieldUpdateOperationsInput | $Enums.LicensePlan
+    maxUsers?: IntFieldUpdateOperationsInput | number
+    maxEmployees?: IntFieldUpdateOperationsInput | number
+    startsAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    expiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type CompanyCreateWithoutLicenseInput = {
+    id?: string
+    code: string
+    name: string
+    address?: string | null
+    phone?: string | null
+    email?: string | null
+    ruc?: string | null
+    logoUrl?: string | null
+    isActive?: boolean
+    maxUsers?: number
+    maxEmployees?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    LegalDecimoParameter?: LegalDecimoParameterCreateNestedManyWithoutCompanyInput
+    legalParameters?: LegalParameterCreateNestedManyWithoutCompanyInput
+    createdBy?: UserCreateNestedOneWithoutCreatedCompaniesInput
+    departments?: DepartmentCreateNestedManyWithoutCompanyInput
+    users?: UserCompanyCreateNestedManyWithoutCompanyInput
+    employees?: EmployeeCreateNestedManyWithoutCompanyInput
+    payrolls?: PayrollCreateNestedManyWithoutCompanyInput
+    attendanceRecords?: AttendanceRecordCreateNestedManyWithoutCompanyInput
+    leaves?: LeaveCreateNestedManyWithoutCompanyInput
+    payrollRuns?: PayrollRunCreateNestedManyWithoutCompanyInput
+    decimoPayments?: DecimoPaymentCreateNestedManyWithoutCompanyInput
+    liquidaciones?: LiquidacionCreateNestedManyWithoutCompanyInput
+  }
+
+  export type CompanyUncheckedCreateWithoutLicenseInput = {
+    id?: string
+    code: string
+    name: string
+    address?: string | null
+    phone?: string | null
+    email?: string | null
+    ruc?: string | null
+    logoUrl?: string | null
+    isActive?: boolean
+    maxUsers?: number
+    maxEmployees?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    createdByUserId?: string | null
+    LegalDecimoParameter?: LegalDecimoParameterUncheckedCreateNestedManyWithoutCompanyInput
+    legalParameters?: LegalParameterUncheckedCreateNestedManyWithoutCompanyInput
+    departments?: DepartmentUncheckedCreateNestedManyWithoutCompanyInput
+    users?: UserCompanyUncheckedCreateNestedManyWithoutCompanyInput
+    employees?: EmployeeUncheckedCreateNestedManyWithoutCompanyInput
+    payrolls?: PayrollUncheckedCreateNestedManyWithoutCompanyInput
+    attendanceRecords?: AttendanceRecordUncheckedCreateNestedManyWithoutCompanyInput
+    leaves?: LeaveUncheckedCreateNestedManyWithoutCompanyInput
+    payrollRuns?: PayrollRunUncheckedCreateNestedManyWithoutCompanyInput
+    decimoPayments?: DecimoPaymentUncheckedCreateNestedManyWithoutCompanyInput
+    liquidaciones?: LiquidacionUncheckedCreateNestedManyWithoutCompanyInput
+  }
+
+  export type CompanyCreateOrConnectWithoutLicenseInput = {
+    where: CompanyWhereUniqueInput
+    create: XOR<CompanyCreateWithoutLicenseInput, CompanyUncheckedCreateWithoutLicenseInput>
+  }
+
+  export type CompanyUpsertWithoutLicenseInput = {
+    update: XOR<CompanyUpdateWithoutLicenseInput, CompanyUncheckedUpdateWithoutLicenseInput>
+    create: XOR<CompanyCreateWithoutLicenseInput, CompanyUncheckedCreateWithoutLicenseInput>
+    where?: CompanyWhereInput
+  }
+
+  export type CompanyUpdateToOneWithWhereWithoutLicenseInput = {
+    where?: CompanyWhereInput
+    data: XOR<CompanyUpdateWithoutLicenseInput, CompanyUncheckedUpdateWithoutLicenseInput>
+  }
+
+  export type CompanyUpdateWithoutLicenseInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    code?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    address?: NullableStringFieldUpdateOperationsInput | string | null
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    ruc?: NullableStringFieldUpdateOperationsInput | string | null
+    logoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    maxUsers?: IntFieldUpdateOperationsInput | number
+    maxEmployees?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    LegalDecimoParameter?: LegalDecimoParameterUpdateManyWithoutCompanyNestedInput
+    legalParameters?: LegalParameterUpdateManyWithoutCompanyNestedInput
+    createdBy?: UserUpdateOneWithoutCreatedCompaniesNestedInput
+    departments?: DepartmentUpdateManyWithoutCompanyNestedInput
+    users?: UserCompanyUpdateManyWithoutCompanyNestedInput
+    employees?: EmployeeUpdateManyWithoutCompanyNestedInput
+    payrolls?: PayrollUpdateManyWithoutCompanyNestedInput
+    attendanceRecords?: AttendanceRecordUpdateManyWithoutCompanyNestedInput
+    leaves?: LeaveUpdateManyWithoutCompanyNestedInput
+    payrollRuns?: PayrollRunUpdateManyWithoutCompanyNestedInput
+    decimoPayments?: DecimoPaymentUpdateManyWithoutCompanyNestedInput
+    liquidaciones?: LiquidacionUpdateManyWithoutCompanyNestedInput
+  }
+
+  export type CompanyUncheckedUpdateWithoutLicenseInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    code?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    address?: NullableStringFieldUpdateOperationsInput | string | null
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    ruc?: NullableStringFieldUpdateOperationsInput | string | null
+    logoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    maxUsers?: IntFieldUpdateOperationsInput | number
+    maxEmployees?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdByUserId?: NullableStringFieldUpdateOperationsInput | string | null
+    LegalDecimoParameter?: LegalDecimoParameterUncheckedUpdateManyWithoutCompanyNestedInput
+    legalParameters?: LegalParameterUncheckedUpdateManyWithoutCompanyNestedInput
+    departments?: DepartmentUncheckedUpdateManyWithoutCompanyNestedInput
+    users?: UserCompanyUncheckedUpdateManyWithoutCompanyNestedInput
+    employees?: EmployeeUncheckedUpdateManyWithoutCompanyNestedInput
+    payrolls?: PayrollUncheckedUpdateManyWithoutCompanyNestedInput
+    attendanceRecords?: AttendanceRecordUncheckedUpdateManyWithoutCompanyNestedInput
+    leaves?: LeaveUncheckedUpdateManyWithoutCompanyNestedInput
+    payrollRuns?: PayrollRunUncheckedUpdateManyWithoutCompanyNestedInput
+    decimoPayments?: DecimoPaymentUncheckedUpdateManyWithoutCompanyNestedInput
+    liquidaciones?: LiquidacionUncheckedUpdateManyWithoutCompanyNestedInput
+  }
+
   export type CompanyCreateWithoutDepartmentsInput = {
     id?: string
     code: string
@@ -37223,6 +39212,8 @@ export namespace Prisma {
     ruc?: string | null
     logoUrl?: string | null
     isActive?: boolean
+    maxUsers?: number
+    maxEmployees?: number
     createdAt?: Date | string
     updatedAt?: Date | string
     LegalDecimoParameter?: LegalDecimoParameterCreateNestedManyWithoutCompanyInput
@@ -37236,6 +39227,7 @@ export namespace Prisma {
     payrollRuns?: PayrollRunCreateNestedManyWithoutCompanyInput
     decimoPayments?: DecimoPaymentCreateNestedManyWithoutCompanyInput
     liquidaciones?: LiquidacionCreateNestedManyWithoutCompanyInput
+    license?: LicenseCreateNestedOneWithoutCompanyInput
   }
 
   export type CompanyUncheckedCreateWithoutDepartmentsInput = {
@@ -37248,6 +39240,8 @@ export namespace Prisma {
     ruc?: string | null
     logoUrl?: string | null
     isActive?: boolean
+    maxUsers?: number
+    maxEmployees?: number
     createdAt?: Date | string
     updatedAt?: Date | string
     createdByUserId?: string | null
@@ -37261,6 +39255,7 @@ export namespace Prisma {
     payrollRuns?: PayrollRunUncheckedCreateNestedManyWithoutCompanyInput
     decimoPayments?: DecimoPaymentUncheckedCreateNestedManyWithoutCompanyInput
     liquidaciones?: LiquidacionUncheckedCreateNestedManyWithoutCompanyInput
+    license?: LicenseUncheckedCreateNestedOneWithoutCompanyInput
   }
 
   export type CompanyCreateOrConnectWithoutDepartmentsInput = {
@@ -37331,6 +39326,8 @@ export namespace Prisma {
     ruc?: NullableStringFieldUpdateOperationsInput | string | null
     logoUrl?: NullableStringFieldUpdateOperationsInput | string | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
+    maxUsers?: IntFieldUpdateOperationsInput | number
+    maxEmployees?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     LegalDecimoParameter?: LegalDecimoParameterUpdateManyWithoutCompanyNestedInput
@@ -37344,6 +39341,7 @@ export namespace Prisma {
     payrollRuns?: PayrollRunUpdateManyWithoutCompanyNestedInput
     decimoPayments?: DecimoPaymentUpdateManyWithoutCompanyNestedInput
     liquidaciones?: LiquidacionUpdateManyWithoutCompanyNestedInput
+    license?: LicenseUpdateOneWithoutCompanyNestedInput
   }
 
   export type CompanyUncheckedUpdateWithoutDepartmentsInput = {
@@ -37356,6 +39354,8 @@ export namespace Prisma {
     ruc?: NullableStringFieldUpdateOperationsInput | string | null
     logoUrl?: NullableStringFieldUpdateOperationsInput | string | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
+    maxUsers?: IntFieldUpdateOperationsInput | number
+    maxEmployees?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     createdByUserId?: NullableStringFieldUpdateOperationsInput | string | null
@@ -37369,6 +39369,7 @@ export namespace Prisma {
     payrollRuns?: PayrollRunUncheckedUpdateManyWithoutCompanyNestedInput
     decimoPayments?: DecimoPaymentUncheckedUpdateManyWithoutCompanyNestedInput
     liquidaciones?: LiquidacionUncheckedUpdateManyWithoutCompanyNestedInput
+    license?: LicenseUncheckedUpdateOneWithoutCompanyNestedInput
   }
 
   export type PersonUpsertWithWhereUniqueWithoutDepartmentInput = {
@@ -37450,6 +39451,8 @@ export namespace Prisma {
     ruc?: string | null
     logoUrl?: string | null
     isActive?: boolean
+    maxUsers?: number
+    maxEmployees?: number
     createdAt?: Date | string
     updatedAt?: Date | string
     LegalDecimoParameter?: LegalDecimoParameterCreateNestedManyWithoutCompanyInput
@@ -37463,6 +39466,7 @@ export namespace Prisma {
     payrollRuns?: PayrollRunCreateNestedManyWithoutCompanyInput
     decimoPayments?: DecimoPaymentCreateNestedManyWithoutCompanyInput
     liquidaciones?: LiquidacionCreateNestedManyWithoutCompanyInput
+    license?: LicenseCreateNestedOneWithoutCompanyInput
   }
 
   export type CompanyUncheckedCreateWithoutEmployeesInput = {
@@ -37475,6 +39479,8 @@ export namespace Prisma {
     ruc?: string | null
     logoUrl?: string | null
     isActive?: boolean
+    maxUsers?: number
+    maxEmployees?: number
     createdAt?: Date | string
     updatedAt?: Date | string
     createdByUserId?: string | null
@@ -37488,6 +39494,7 @@ export namespace Prisma {
     payrollRuns?: PayrollRunUncheckedCreateNestedManyWithoutCompanyInput
     decimoPayments?: DecimoPaymentUncheckedCreateNestedManyWithoutCompanyInput
     liquidaciones?: LiquidacionUncheckedCreateNestedManyWithoutCompanyInput
+    license?: LicenseUncheckedCreateNestedOneWithoutCompanyInput
   }
 
   export type CompanyCreateOrConnectWithoutEmployeesInput = {
@@ -37917,6 +39924,8 @@ export namespace Prisma {
     ruc?: NullableStringFieldUpdateOperationsInput | string | null
     logoUrl?: NullableStringFieldUpdateOperationsInput | string | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
+    maxUsers?: IntFieldUpdateOperationsInput | number
+    maxEmployees?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     LegalDecimoParameter?: LegalDecimoParameterUpdateManyWithoutCompanyNestedInput
@@ -37930,6 +39939,7 @@ export namespace Prisma {
     payrollRuns?: PayrollRunUpdateManyWithoutCompanyNestedInput
     decimoPayments?: DecimoPaymentUpdateManyWithoutCompanyNestedInput
     liquidaciones?: LiquidacionUpdateManyWithoutCompanyNestedInput
+    license?: LicenseUpdateOneWithoutCompanyNestedInput
   }
 
   export type CompanyUncheckedUpdateWithoutEmployeesInput = {
@@ -37942,6 +39952,8 @@ export namespace Prisma {
     ruc?: NullableStringFieldUpdateOperationsInput | string | null
     logoUrl?: NullableStringFieldUpdateOperationsInput | string | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
+    maxUsers?: IntFieldUpdateOperationsInput | number
+    maxEmployees?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     createdByUserId?: NullableStringFieldUpdateOperationsInput | string | null
@@ -37955,6 +39967,7 @@ export namespace Prisma {
     payrollRuns?: PayrollRunUncheckedUpdateManyWithoutCompanyNestedInput
     decimoPayments?: DecimoPaymentUncheckedUpdateManyWithoutCompanyNestedInput
     liquidaciones?: LiquidacionUncheckedUpdateManyWithoutCompanyNestedInput
+    license?: LicenseUncheckedUpdateOneWithoutCompanyNestedInput
   }
 
   export type PayrollUpsertWithWhereUniqueWithoutEmployeeInput = {
@@ -38305,6 +40318,8 @@ export namespace Prisma {
     ruc?: string | null
     logoUrl?: string | null
     isActive?: boolean
+    maxUsers?: number
+    maxEmployees?: number
     createdAt?: Date | string
     updatedAt?: Date | string
     LegalDecimoParameter?: LegalDecimoParameterCreateNestedManyWithoutCompanyInput
@@ -38318,6 +40333,7 @@ export namespace Prisma {
     leaves?: LeaveCreateNestedManyWithoutCompanyInput
     decimoPayments?: DecimoPaymentCreateNestedManyWithoutCompanyInput
     liquidaciones?: LiquidacionCreateNestedManyWithoutCompanyInput
+    license?: LicenseCreateNestedOneWithoutCompanyInput
   }
 
   export type CompanyUncheckedCreateWithoutPayrollRunsInput = {
@@ -38330,6 +40346,8 @@ export namespace Prisma {
     ruc?: string | null
     logoUrl?: string | null
     isActive?: boolean
+    maxUsers?: number
+    maxEmployees?: number
     createdAt?: Date | string
     updatedAt?: Date | string
     createdByUserId?: string | null
@@ -38343,6 +40361,7 @@ export namespace Prisma {
     leaves?: LeaveUncheckedCreateNestedManyWithoutCompanyInput
     decimoPayments?: DecimoPaymentUncheckedCreateNestedManyWithoutCompanyInput
     liquidaciones?: LiquidacionUncheckedCreateNestedManyWithoutCompanyInput
+    license?: LicenseUncheckedCreateNestedOneWithoutCompanyInput
   }
 
   export type CompanyCreateOrConnectWithoutPayrollRunsInput = {
@@ -38441,6 +40460,8 @@ export namespace Prisma {
     ruc?: NullableStringFieldUpdateOperationsInput | string | null
     logoUrl?: NullableStringFieldUpdateOperationsInput | string | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
+    maxUsers?: IntFieldUpdateOperationsInput | number
+    maxEmployees?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     LegalDecimoParameter?: LegalDecimoParameterUpdateManyWithoutCompanyNestedInput
@@ -38454,6 +40475,7 @@ export namespace Prisma {
     leaves?: LeaveUpdateManyWithoutCompanyNestedInput
     decimoPayments?: DecimoPaymentUpdateManyWithoutCompanyNestedInput
     liquidaciones?: LiquidacionUpdateManyWithoutCompanyNestedInput
+    license?: LicenseUpdateOneWithoutCompanyNestedInput
   }
 
   export type CompanyUncheckedUpdateWithoutPayrollRunsInput = {
@@ -38466,6 +40488,8 @@ export namespace Prisma {
     ruc?: NullableStringFieldUpdateOperationsInput | string | null
     logoUrl?: NullableStringFieldUpdateOperationsInput | string | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
+    maxUsers?: IntFieldUpdateOperationsInput | number
+    maxEmployees?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     createdByUserId?: NullableStringFieldUpdateOperationsInput | string | null
@@ -38479,6 +40503,7 @@ export namespace Prisma {
     leaves?: LeaveUncheckedUpdateManyWithoutCompanyNestedInput
     decimoPayments?: DecimoPaymentUncheckedUpdateManyWithoutCompanyNestedInput
     liquidaciones?: LiquidacionUncheckedUpdateManyWithoutCompanyNestedInput
+    license?: LicenseUncheckedUpdateOneWithoutCompanyNestedInput
   }
 
   export type PayrollUpsertWithWhereUniqueWithoutPayrollRunInput = {
@@ -38611,6 +40636,8 @@ export namespace Prisma {
     ruc?: string | null
     logoUrl?: string | null
     isActive?: boolean
+    maxUsers?: number
+    maxEmployees?: number
     createdAt?: Date | string
     updatedAt?: Date | string
     LegalDecimoParameter?: LegalDecimoParameterCreateNestedManyWithoutCompanyInput
@@ -38624,6 +40651,7 @@ export namespace Prisma {
     payrollRuns?: PayrollRunCreateNestedManyWithoutCompanyInput
     decimoPayments?: DecimoPaymentCreateNestedManyWithoutCompanyInput
     liquidaciones?: LiquidacionCreateNestedManyWithoutCompanyInput
+    license?: LicenseCreateNestedOneWithoutCompanyInput
   }
 
   export type CompanyUncheckedCreateWithoutPayrollsInput = {
@@ -38636,6 +40664,8 @@ export namespace Prisma {
     ruc?: string | null
     logoUrl?: string | null
     isActive?: boolean
+    maxUsers?: number
+    maxEmployees?: number
     createdAt?: Date | string
     updatedAt?: Date | string
     createdByUserId?: string | null
@@ -38649,6 +40679,7 @@ export namespace Prisma {
     payrollRuns?: PayrollRunUncheckedCreateNestedManyWithoutCompanyInput
     decimoPayments?: DecimoPaymentUncheckedCreateNestedManyWithoutCompanyInput
     liquidaciones?: LiquidacionUncheckedCreateNestedManyWithoutCompanyInput
+    license?: LicenseUncheckedCreateNestedOneWithoutCompanyInput
   }
 
   export type CompanyCreateOrConnectWithoutPayrollsInput = {
@@ -38857,6 +40888,8 @@ export namespace Prisma {
     ruc?: NullableStringFieldUpdateOperationsInput | string | null
     logoUrl?: NullableStringFieldUpdateOperationsInput | string | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
+    maxUsers?: IntFieldUpdateOperationsInput | number
+    maxEmployees?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     LegalDecimoParameter?: LegalDecimoParameterUpdateManyWithoutCompanyNestedInput
@@ -38870,6 +40903,7 @@ export namespace Prisma {
     payrollRuns?: PayrollRunUpdateManyWithoutCompanyNestedInput
     decimoPayments?: DecimoPaymentUpdateManyWithoutCompanyNestedInput
     liquidaciones?: LiquidacionUpdateManyWithoutCompanyNestedInput
+    license?: LicenseUpdateOneWithoutCompanyNestedInput
   }
 
   export type CompanyUncheckedUpdateWithoutPayrollsInput = {
@@ -38882,6 +40916,8 @@ export namespace Prisma {
     ruc?: NullableStringFieldUpdateOperationsInput | string | null
     logoUrl?: NullableStringFieldUpdateOperationsInput | string | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
+    maxUsers?: IntFieldUpdateOperationsInput | number
+    maxEmployees?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     createdByUserId?: NullableStringFieldUpdateOperationsInput | string | null
@@ -38895,6 +40931,7 @@ export namespace Prisma {
     payrollRuns?: PayrollRunUncheckedUpdateManyWithoutCompanyNestedInput
     decimoPayments?: DecimoPaymentUncheckedUpdateManyWithoutCompanyNestedInput
     liquidaciones?: LiquidacionUncheckedUpdateManyWithoutCompanyNestedInput
+    license?: LicenseUncheckedUpdateOneWithoutCompanyNestedInput
   }
 
   export type DeductionUpsertWithWhereUniqueWithoutPayrollInput = {
@@ -39568,6 +41605,8 @@ export namespace Prisma {
     ruc?: string | null
     logoUrl?: string | null
     isActive?: boolean
+    maxUsers?: number
+    maxEmployees?: number
     createdAt?: Date | string
     updatedAt?: Date | string
     LegalDecimoParameter?: LegalDecimoParameterCreateNestedManyWithoutCompanyInput
@@ -39581,6 +41620,7 @@ export namespace Prisma {
     payrollRuns?: PayrollRunCreateNestedManyWithoutCompanyInput
     decimoPayments?: DecimoPaymentCreateNestedManyWithoutCompanyInput
     liquidaciones?: LiquidacionCreateNestedManyWithoutCompanyInput
+    license?: LicenseCreateNestedOneWithoutCompanyInput
   }
 
   export type CompanyUncheckedCreateWithoutAttendanceRecordsInput = {
@@ -39593,6 +41633,8 @@ export namespace Prisma {
     ruc?: string | null
     logoUrl?: string | null
     isActive?: boolean
+    maxUsers?: number
+    maxEmployees?: number
     createdAt?: Date | string
     updatedAt?: Date | string
     createdByUserId?: string | null
@@ -39606,6 +41648,7 @@ export namespace Prisma {
     payrollRuns?: PayrollRunUncheckedCreateNestedManyWithoutCompanyInput
     decimoPayments?: DecimoPaymentUncheckedCreateNestedManyWithoutCompanyInput
     liquidaciones?: LiquidacionUncheckedCreateNestedManyWithoutCompanyInput
+    license?: LicenseUncheckedCreateNestedOneWithoutCompanyInput
   }
 
   export type CompanyCreateOrConnectWithoutAttendanceRecordsInput = {
@@ -39709,6 +41752,8 @@ export namespace Prisma {
     ruc?: NullableStringFieldUpdateOperationsInput | string | null
     logoUrl?: NullableStringFieldUpdateOperationsInput | string | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
+    maxUsers?: IntFieldUpdateOperationsInput | number
+    maxEmployees?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     LegalDecimoParameter?: LegalDecimoParameterUpdateManyWithoutCompanyNestedInput
@@ -39722,6 +41767,7 @@ export namespace Prisma {
     payrollRuns?: PayrollRunUpdateManyWithoutCompanyNestedInput
     decimoPayments?: DecimoPaymentUpdateManyWithoutCompanyNestedInput
     liquidaciones?: LiquidacionUpdateManyWithoutCompanyNestedInput
+    license?: LicenseUpdateOneWithoutCompanyNestedInput
   }
 
   export type CompanyUncheckedUpdateWithoutAttendanceRecordsInput = {
@@ -39734,6 +41780,8 @@ export namespace Prisma {
     ruc?: NullableStringFieldUpdateOperationsInput | string | null
     logoUrl?: NullableStringFieldUpdateOperationsInput | string | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
+    maxUsers?: IntFieldUpdateOperationsInput | number
+    maxEmployees?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     createdByUserId?: NullableStringFieldUpdateOperationsInput | string | null
@@ -39747,6 +41795,7 @@ export namespace Prisma {
     payrollRuns?: PayrollRunUncheckedUpdateManyWithoutCompanyNestedInput
     decimoPayments?: DecimoPaymentUncheckedUpdateManyWithoutCompanyNestedInput
     liquidaciones?: LiquidacionUncheckedUpdateManyWithoutCompanyNestedInput
+    license?: LicenseUncheckedUpdateOneWithoutCompanyNestedInput
   }
 
   export type EmployeeCreateWithoutLeavesInput = {
@@ -39828,6 +41877,8 @@ export namespace Prisma {
     ruc?: string | null
     logoUrl?: string | null
     isActive?: boolean
+    maxUsers?: number
+    maxEmployees?: number
     createdAt?: Date | string
     updatedAt?: Date | string
     LegalDecimoParameter?: LegalDecimoParameterCreateNestedManyWithoutCompanyInput
@@ -39841,6 +41892,7 @@ export namespace Prisma {
     payrollRuns?: PayrollRunCreateNestedManyWithoutCompanyInput
     decimoPayments?: DecimoPaymentCreateNestedManyWithoutCompanyInput
     liquidaciones?: LiquidacionCreateNestedManyWithoutCompanyInput
+    license?: LicenseCreateNestedOneWithoutCompanyInput
   }
 
   export type CompanyUncheckedCreateWithoutLeavesInput = {
@@ -39853,6 +41905,8 @@ export namespace Prisma {
     ruc?: string | null
     logoUrl?: string | null
     isActive?: boolean
+    maxUsers?: number
+    maxEmployees?: number
     createdAt?: Date | string
     updatedAt?: Date | string
     createdByUserId?: string | null
@@ -39866,6 +41920,7 @@ export namespace Prisma {
     payrollRuns?: PayrollRunUncheckedCreateNestedManyWithoutCompanyInput
     decimoPayments?: DecimoPaymentUncheckedCreateNestedManyWithoutCompanyInput
     liquidaciones?: LiquidacionUncheckedCreateNestedManyWithoutCompanyInput
+    license?: LicenseUncheckedCreateNestedOneWithoutCompanyInput
   }
 
   export type CompanyCreateOrConnectWithoutLeavesInput = {
@@ -39969,6 +42024,8 @@ export namespace Prisma {
     ruc?: NullableStringFieldUpdateOperationsInput | string | null
     logoUrl?: NullableStringFieldUpdateOperationsInput | string | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
+    maxUsers?: IntFieldUpdateOperationsInput | number
+    maxEmployees?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     LegalDecimoParameter?: LegalDecimoParameterUpdateManyWithoutCompanyNestedInput
@@ -39982,6 +42039,7 @@ export namespace Prisma {
     payrollRuns?: PayrollRunUpdateManyWithoutCompanyNestedInput
     decimoPayments?: DecimoPaymentUpdateManyWithoutCompanyNestedInput
     liquidaciones?: LiquidacionUpdateManyWithoutCompanyNestedInput
+    license?: LicenseUpdateOneWithoutCompanyNestedInput
   }
 
   export type CompanyUncheckedUpdateWithoutLeavesInput = {
@@ -39994,6 +42052,8 @@ export namespace Prisma {
     ruc?: NullableStringFieldUpdateOperationsInput | string | null
     logoUrl?: NullableStringFieldUpdateOperationsInput | string | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
+    maxUsers?: IntFieldUpdateOperationsInput | number
+    maxEmployees?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     createdByUserId?: NullableStringFieldUpdateOperationsInput | string | null
@@ -40007,6 +42067,7 @@ export namespace Prisma {
     payrollRuns?: PayrollRunUncheckedUpdateManyWithoutCompanyNestedInput
     decimoPayments?: DecimoPaymentUncheckedUpdateManyWithoutCompanyNestedInput
     liquidaciones?: LiquidacionUncheckedUpdateManyWithoutCompanyNestedInput
+    license?: LicenseUncheckedUpdateOneWithoutCompanyNestedInput
   }
 
   export type EmployeeCreateWithoutLiquidacionesInput = {
@@ -40088,6 +42149,8 @@ export namespace Prisma {
     ruc?: string | null
     logoUrl?: string | null
     isActive?: boolean
+    maxUsers?: number
+    maxEmployees?: number
     createdAt?: Date | string
     updatedAt?: Date | string
     LegalDecimoParameter?: LegalDecimoParameterCreateNestedManyWithoutCompanyInput
@@ -40101,6 +42164,7 @@ export namespace Prisma {
     leaves?: LeaveCreateNestedManyWithoutCompanyInput
     payrollRuns?: PayrollRunCreateNestedManyWithoutCompanyInput
     decimoPayments?: DecimoPaymentCreateNestedManyWithoutCompanyInput
+    license?: LicenseCreateNestedOneWithoutCompanyInput
   }
 
   export type CompanyUncheckedCreateWithoutLiquidacionesInput = {
@@ -40113,6 +42177,8 @@ export namespace Prisma {
     ruc?: string | null
     logoUrl?: string | null
     isActive?: boolean
+    maxUsers?: number
+    maxEmployees?: number
     createdAt?: Date | string
     updatedAt?: Date | string
     createdByUserId?: string | null
@@ -40126,6 +42192,7 @@ export namespace Prisma {
     leaves?: LeaveUncheckedCreateNestedManyWithoutCompanyInput
     payrollRuns?: PayrollRunUncheckedCreateNestedManyWithoutCompanyInput
     decimoPayments?: DecimoPaymentUncheckedCreateNestedManyWithoutCompanyInput
+    license?: LicenseUncheckedCreateNestedOneWithoutCompanyInput
   }
 
   export type CompanyCreateOrConnectWithoutLiquidacionesInput = {
@@ -40229,6 +42296,8 @@ export namespace Prisma {
     ruc?: NullableStringFieldUpdateOperationsInput | string | null
     logoUrl?: NullableStringFieldUpdateOperationsInput | string | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
+    maxUsers?: IntFieldUpdateOperationsInput | number
+    maxEmployees?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     LegalDecimoParameter?: LegalDecimoParameterUpdateManyWithoutCompanyNestedInput
@@ -40242,6 +42311,7 @@ export namespace Prisma {
     leaves?: LeaveUpdateManyWithoutCompanyNestedInput
     payrollRuns?: PayrollRunUpdateManyWithoutCompanyNestedInput
     decimoPayments?: DecimoPaymentUpdateManyWithoutCompanyNestedInput
+    license?: LicenseUpdateOneWithoutCompanyNestedInput
   }
 
   export type CompanyUncheckedUpdateWithoutLiquidacionesInput = {
@@ -40254,6 +42324,8 @@ export namespace Prisma {
     ruc?: NullableStringFieldUpdateOperationsInput | string | null
     logoUrl?: NullableStringFieldUpdateOperationsInput | string | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
+    maxUsers?: IntFieldUpdateOperationsInput | number
+    maxEmployees?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     createdByUserId?: NullableStringFieldUpdateOperationsInput | string | null
@@ -40267,6 +42339,7 @@ export namespace Prisma {
     leaves?: LeaveUncheckedUpdateManyWithoutCompanyNestedInput
     payrollRuns?: PayrollRunUncheckedUpdateManyWithoutCompanyNestedInput
     decimoPayments?: DecimoPaymentUncheckedUpdateManyWithoutCompanyNestedInput
+    license?: LicenseUncheckedUpdateOneWithoutCompanyNestedInput
   }
 
   export type CompanyCreateWithoutLegalParametersInput = {
@@ -40279,6 +42352,8 @@ export namespace Prisma {
     ruc?: string | null
     logoUrl?: string | null
     isActive?: boolean
+    maxUsers?: number
+    maxEmployees?: number
     createdAt?: Date | string
     updatedAt?: Date | string
     LegalDecimoParameter?: LegalDecimoParameterCreateNestedManyWithoutCompanyInput
@@ -40292,6 +42367,7 @@ export namespace Prisma {
     payrollRuns?: PayrollRunCreateNestedManyWithoutCompanyInput
     decimoPayments?: DecimoPaymentCreateNestedManyWithoutCompanyInput
     liquidaciones?: LiquidacionCreateNestedManyWithoutCompanyInput
+    license?: LicenseCreateNestedOneWithoutCompanyInput
   }
 
   export type CompanyUncheckedCreateWithoutLegalParametersInput = {
@@ -40304,6 +42380,8 @@ export namespace Prisma {
     ruc?: string | null
     logoUrl?: string | null
     isActive?: boolean
+    maxUsers?: number
+    maxEmployees?: number
     createdAt?: Date | string
     updatedAt?: Date | string
     createdByUserId?: string | null
@@ -40317,6 +42395,7 @@ export namespace Prisma {
     payrollRuns?: PayrollRunUncheckedCreateNestedManyWithoutCompanyInput
     decimoPayments?: DecimoPaymentUncheckedCreateNestedManyWithoutCompanyInput
     liquidaciones?: LiquidacionUncheckedCreateNestedManyWithoutCompanyInput
+    license?: LicenseUncheckedCreateNestedOneWithoutCompanyInput
   }
 
   export type CompanyCreateOrConnectWithoutLegalParametersInput = {
@@ -40345,6 +42424,8 @@ export namespace Prisma {
     ruc?: NullableStringFieldUpdateOperationsInput | string | null
     logoUrl?: NullableStringFieldUpdateOperationsInput | string | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
+    maxUsers?: IntFieldUpdateOperationsInput | number
+    maxEmployees?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     LegalDecimoParameter?: LegalDecimoParameterUpdateManyWithoutCompanyNestedInput
@@ -40358,6 +42439,7 @@ export namespace Prisma {
     payrollRuns?: PayrollRunUpdateManyWithoutCompanyNestedInput
     decimoPayments?: DecimoPaymentUpdateManyWithoutCompanyNestedInput
     liquidaciones?: LiquidacionUpdateManyWithoutCompanyNestedInput
+    license?: LicenseUpdateOneWithoutCompanyNestedInput
   }
 
   export type CompanyUncheckedUpdateWithoutLegalParametersInput = {
@@ -40370,6 +42452,8 @@ export namespace Prisma {
     ruc?: NullableStringFieldUpdateOperationsInput | string | null
     logoUrl?: NullableStringFieldUpdateOperationsInput | string | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
+    maxUsers?: IntFieldUpdateOperationsInput | number
+    maxEmployees?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     createdByUserId?: NullableStringFieldUpdateOperationsInput | string | null
@@ -40383,6 +42467,7 @@ export namespace Prisma {
     payrollRuns?: PayrollRunUncheckedUpdateManyWithoutCompanyNestedInput
     decimoPayments?: DecimoPaymentUncheckedUpdateManyWithoutCompanyNestedInput
     liquidaciones?: LiquidacionUncheckedUpdateManyWithoutCompanyNestedInput
+    license?: LicenseUncheckedUpdateOneWithoutCompanyNestedInput
   }
 
   export type CompanyCreateWithoutLegalDecimoParameterInput = {
@@ -40395,6 +42480,8 @@ export namespace Prisma {
     ruc?: string | null
     logoUrl?: string | null
     isActive?: boolean
+    maxUsers?: number
+    maxEmployees?: number
     createdAt?: Date | string
     updatedAt?: Date | string
     legalParameters?: LegalParameterCreateNestedManyWithoutCompanyInput
@@ -40408,6 +42495,7 @@ export namespace Prisma {
     payrollRuns?: PayrollRunCreateNestedManyWithoutCompanyInput
     decimoPayments?: DecimoPaymentCreateNestedManyWithoutCompanyInput
     liquidaciones?: LiquidacionCreateNestedManyWithoutCompanyInput
+    license?: LicenseCreateNestedOneWithoutCompanyInput
   }
 
   export type CompanyUncheckedCreateWithoutLegalDecimoParameterInput = {
@@ -40420,6 +42508,8 @@ export namespace Prisma {
     ruc?: string | null
     logoUrl?: string | null
     isActive?: boolean
+    maxUsers?: number
+    maxEmployees?: number
     createdAt?: Date | string
     updatedAt?: Date | string
     createdByUserId?: string | null
@@ -40433,6 +42523,7 @@ export namespace Prisma {
     payrollRuns?: PayrollRunUncheckedCreateNestedManyWithoutCompanyInput
     decimoPayments?: DecimoPaymentUncheckedCreateNestedManyWithoutCompanyInput
     liquidaciones?: LiquidacionUncheckedCreateNestedManyWithoutCompanyInput
+    license?: LicenseUncheckedCreateNestedOneWithoutCompanyInput
   }
 
   export type CompanyCreateOrConnectWithoutLegalDecimoParameterInput = {
@@ -40461,6 +42552,8 @@ export namespace Prisma {
     ruc?: NullableStringFieldUpdateOperationsInput | string | null
     logoUrl?: NullableStringFieldUpdateOperationsInput | string | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
+    maxUsers?: IntFieldUpdateOperationsInput | number
+    maxEmployees?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     legalParameters?: LegalParameterUpdateManyWithoutCompanyNestedInput
@@ -40474,6 +42567,7 @@ export namespace Prisma {
     payrollRuns?: PayrollRunUpdateManyWithoutCompanyNestedInput
     decimoPayments?: DecimoPaymentUpdateManyWithoutCompanyNestedInput
     liquidaciones?: LiquidacionUpdateManyWithoutCompanyNestedInput
+    license?: LicenseUpdateOneWithoutCompanyNestedInput
   }
 
   export type CompanyUncheckedUpdateWithoutLegalDecimoParameterInput = {
@@ -40486,6 +42580,8 @@ export namespace Prisma {
     ruc?: NullableStringFieldUpdateOperationsInput | string | null
     logoUrl?: NullableStringFieldUpdateOperationsInput | string | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
+    maxUsers?: IntFieldUpdateOperationsInput | number
+    maxEmployees?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     createdByUserId?: NullableStringFieldUpdateOperationsInput | string | null
@@ -40499,6 +42595,7 @@ export namespace Prisma {
     payrollRuns?: PayrollRunUncheckedUpdateManyWithoutCompanyNestedInput
     decimoPayments?: DecimoPaymentUncheckedUpdateManyWithoutCompanyNestedInput
     liquidaciones?: LiquidacionUncheckedUpdateManyWithoutCompanyNestedInput
+    license?: LicenseUncheckedUpdateOneWithoutCompanyNestedInput
   }
 
   export type EmployeeCreateWithoutSalaryHistoryInput = {
@@ -40655,6 +42752,8 @@ export namespace Prisma {
     ruc?: string | null
     logoUrl?: string | null
     isActive?: boolean
+    maxUsers?: number
+    maxEmployees?: number
     createdAt?: Date | string
     updatedAt?: Date | string
     LegalDecimoParameter?: LegalDecimoParameterCreateNestedManyWithoutCompanyInput
@@ -40668,6 +42767,7 @@ export namespace Prisma {
     leaves?: LeaveCreateNestedManyWithoutCompanyInput
     payrollRuns?: PayrollRunCreateNestedManyWithoutCompanyInput
     liquidaciones?: LiquidacionCreateNestedManyWithoutCompanyInput
+    license?: LicenseCreateNestedOneWithoutCompanyInput
   }
 
   export type CompanyUncheckedCreateWithoutDecimoPaymentsInput = {
@@ -40680,6 +42780,8 @@ export namespace Prisma {
     ruc?: string | null
     logoUrl?: string | null
     isActive?: boolean
+    maxUsers?: number
+    maxEmployees?: number
     createdAt?: Date | string
     updatedAt?: Date | string
     createdByUserId?: string | null
@@ -40693,6 +42795,7 @@ export namespace Prisma {
     leaves?: LeaveUncheckedCreateNestedManyWithoutCompanyInput
     payrollRuns?: PayrollRunUncheckedCreateNestedManyWithoutCompanyInput
     liquidaciones?: LiquidacionUncheckedCreateNestedManyWithoutCompanyInput
+    license?: LicenseUncheckedCreateNestedOneWithoutCompanyInput
   }
 
   export type CompanyCreateOrConnectWithoutDecimoPaymentsInput = {
@@ -40721,6 +42824,8 @@ export namespace Prisma {
     ruc?: NullableStringFieldUpdateOperationsInput | string | null
     logoUrl?: NullableStringFieldUpdateOperationsInput | string | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
+    maxUsers?: IntFieldUpdateOperationsInput | number
+    maxEmployees?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     LegalDecimoParameter?: LegalDecimoParameterUpdateManyWithoutCompanyNestedInput
@@ -40734,6 +42839,7 @@ export namespace Prisma {
     leaves?: LeaveUpdateManyWithoutCompanyNestedInput
     payrollRuns?: PayrollRunUpdateManyWithoutCompanyNestedInput
     liquidaciones?: LiquidacionUpdateManyWithoutCompanyNestedInput
+    license?: LicenseUpdateOneWithoutCompanyNestedInput
   }
 
   export type CompanyUncheckedUpdateWithoutDecimoPaymentsInput = {
@@ -40746,6 +42852,8 @@ export namespace Prisma {
     ruc?: NullableStringFieldUpdateOperationsInput | string | null
     logoUrl?: NullableStringFieldUpdateOperationsInput | string | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
+    maxUsers?: IntFieldUpdateOperationsInput | number
+    maxEmployees?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     createdByUserId?: NullableStringFieldUpdateOperationsInput | string | null
@@ -40759,6 +42867,7 @@ export namespace Prisma {
     leaves?: LeaveUncheckedUpdateManyWithoutCompanyNestedInput
     payrollRuns?: PayrollRunUncheckedUpdateManyWithoutCompanyNestedInput
     liquidaciones?: LiquidacionUncheckedUpdateManyWithoutCompanyNestedInput
+    license?: LicenseUncheckedUpdateOneWithoutCompanyNestedInput
   }
 
   export type UserCompanyCreateManyUserInput = {
@@ -40775,6 +42884,8 @@ export namespace Prisma {
     ruc?: string | null
     logoUrl?: string | null
     isActive?: boolean
+    maxUsers?: number
+    maxEmployees?: number
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -40801,6 +42912,8 @@ export namespace Prisma {
     ruc?: NullableStringFieldUpdateOperationsInput | string | null
     logoUrl?: NullableStringFieldUpdateOperationsInput | string | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
+    maxUsers?: IntFieldUpdateOperationsInput | number
+    maxEmployees?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     LegalDecimoParameter?: LegalDecimoParameterUpdateManyWithoutCompanyNestedInput
@@ -40814,6 +42927,7 @@ export namespace Prisma {
     payrollRuns?: PayrollRunUpdateManyWithoutCompanyNestedInput
     decimoPayments?: DecimoPaymentUpdateManyWithoutCompanyNestedInput
     liquidaciones?: LiquidacionUpdateManyWithoutCompanyNestedInput
+    license?: LicenseUpdateOneWithoutCompanyNestedInput
   }
 
   export type CompanyUncheckedUpdateWithoutCreatedByInput = {
@@ -40826,6 +42940,8 @@ export namespace Prisma {
     ruc?: NullableStringFieldUpdateOperationsInput | string | null
     logoUrl?: NullableStringFieldUpdateOperationsInput | string | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
+    maxUsers?: IntFieldUpdateOperationsInput | number
+    maxEmployees?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     LegalDecimoParameter?: LegalDecimoParameterUncheckedUpdateManyWithoutCompanyNestedInput
@@ -40839,6 +42955,7 @@ export namespace Prisma {
     payrollRuns?: PayrollRunUncheckedUpdateManyWithoutCompanyNestedInput
     decimoPayments?: DecimoPaymentUncheckedUpdateManyWithoutCompanyNestedInput
     liquidaciones?: LiquidacionUncheckedUpdateManyWithoutCompanyNestedInput
+    license?: LicenseUncheckedUpdateOneWithoutCompanyNestedInput
   }
 
   export type CompanyUncheckedUpdateManyWithoutCreatedByInput = {
@@ -40851,6 +42968,8 @@ export namespace Prisma {
     ruc?: NullableStringFieldUpdateOperationsInput | string | null
     logoUrl?: NullableStringFieldUpdateOperationsInput | string | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
+    maxUsers?: IntFieldUpdateOperationsInput | number
+    maxEmployees?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }

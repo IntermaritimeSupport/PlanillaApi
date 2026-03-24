@@ -12,10 +12,18 @@ AdminRouter.use(requireRole(['GLOBAL_ADMIN']));
 
 AdminRouter.get('/stats',    adminController.getStats.bind(adminController));
 AdminRouter.get('/companies', adminController.getCompanies.bind(adminController));
+AdminRouter.get('/companies/:id', adminController.getCompany.bind(adminController));
 AdminRouter.post('/companies', adminController.createCompany.bind(adminController));
+AdminRouter.put('/companies/:id', adminController.updateCompany.bind(adminController));
 AdminRouter.patch('/companies/:id/toggle', adminController.toggleCompany.bind(adminController));
 AdminRouter.post('/companies/:id/super-admin', adminController.assignSuperAdmin.bind(adminController));
-AdminRouter.get('/users',    adminController.getUsers.bind(adminController));
-AdminRouter.get('/licenses', adminController.getLicenses.bind(adminController));
+AdminRouter.post('/companies/:id/super-admin-assign', adminController.assignExistingUser.bind(adminController));
+AdminRouter.get('/users',          adminController.getUsers.bind(adminController));
+AdminRouter.post('/users',         adminController.createUser.bind(adminController));
+AdminRouter.get('/users/search',   adminController.searchUserByEmail.bind(adminController));
+AdminRouter.get('/users/:id',      adminController.getUser.bind(adminController));
+AdminRouter.put('/users/:id',      adminController.updateUser.bind(adminController));
+AdminRouter.get('/licenses',       adminController.getLicenses.bind(adminController));
+AdminRouter.put('/licenses/:companyId', adminController.upsertLicense.bind(adminController));
 
 export default AdminRouter;

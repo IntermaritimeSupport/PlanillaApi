@@ -65,6 +65,8 @@ model Company {
   ruc             String?  @unique
   logoUrl         String?
   isActive        Boolean  @default(true)
+  maxUsers        Int      @default(10)
+  maxEmployees    Int      @default(50)
   createdAt       DateTime @default(now())
   updatedAt       DateTime @updatedAt
   createdByUserId String?
@@ -80,6 +82,30 @@ model Company {
   payrollRuns           PayrollRun[]
   decimoPayments        DecimoPayment[]
   liquidaciones         Liquidacion[]
+  license               License?
+}
+
+enum LicensePlan {
+  TRIAL
+  STARTER
+  PROFESSIONAL
+  ENTERPRISE
+}
+
+model License {
+  id           String      @id @default(uuid())
+  companyId    String      @unique
+  plan         LicensePlan @default(TRIAL)
+  maxUsers     Int         @default(5)
+  maxEmployees Int         @default(20)
+  startsAt     DateTime    @default(now())
+  expiresAt    DateTime?
+  isActive     Boolean     @default(true)
+  notes        String?
+  createdAt    DateTime    @default(now())
+  updatedAt    DateTime    @updatedAt
+
+  company Company @relation(fields: [companyId], references: [id], onDelete: Cascade)
 }
 
 model Department {
