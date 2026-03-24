@@ -2,6 +2,7 @@
 import { Router } from 'express';
 import { CompanyController } from '../controllers/CompaniesController.js';
 import { verifyJWT } from '../middlewares/AuthMiddleware.js';
+import { requireRole } from '../middlewares/authGuards.js';
 
 const CompaniesRouter = Router();
 const companyController = new CompanyController();
@@ -9,6 +10,7 @@ const companyController = new CompanyController();
 CompaniesRouter.use(verifyJWT);
 
 // POST routes
+CompaniesRouter.post('/setup', companyController.setup.bind(companyController));
 CompaniesRouter.post('/create', companyController.Create.bind(companyController));
 CompaniesRouter.post('/:id/disassociate-users', companyController.disassociateUsers.bind(companyController));
 
@@ -24,6 +26,6 @@ CompaniesRouter.get('/:id', companyController.get.bind(companyController));
 CompaniesRouter.put('/:id', companyController.Edit.bind(companyController));
 
 // DELETE routes
-CompaniesRouter.delete('/:id', companyController.Delete.bind(companyController));
+CompaniesRouter.delete('/:id', requireRole(['SUPER_ADMIN','GLOBAL_ADMIN']), companyController.Delete.bind(companyController));
 
 export default CompaniesRouter;

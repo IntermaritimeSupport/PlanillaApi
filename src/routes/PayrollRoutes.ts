@@ -6,7 +6,7 @@ import { LeaveController } from '../controllers/LeaveController.js';
 import { EmailController } from '../controllers/EmailController.js';
 import { LiquidacionController } from '../controllers/LiquidacionController.js';
 import { verifyJWT } from '../middlewares/AuthMiddleware.js';
-import { requireActiveCompany } from '../middlewares/authGuards.js';
+import { requireActiveCompany, requireRole } from '../middlewares/authGuards.js';
 
 const PayrollRouter = Router();
 
@@ -28,7 +28,7 @@ PayrollRouter.post('/employees', (req, res) => employeeController.create(req, re
 PayrollRouter.get('/employees', (req, res) => employeeController.getAll(req, res));
 PayrollRouter.get('/employees/:id', (req, res) => employeeController.getById(req, res));
 PayrollRouter.put('/employees/:id', (req, res) => employeeController.update(req, res));
-PayrollRouter.delete('/employees/:id', (req, res) => employeeController.delete(req, res));
+PayrollRouter.delete('/employees/:id', requireRole(['SUPER_ADMIN','GLOBAL_ADMIN']), (req, res) => employeeController.delete(req, res));
 
 // ============================================
 // PAYROLL ROUTES

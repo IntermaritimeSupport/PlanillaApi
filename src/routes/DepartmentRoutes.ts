@@ -2,7 +2,7 @@
 import { Router } from 'express';
 import { DepartmentController } from '../controllers/DepartmentController.js';
 import { verifyJWT } from '../middlewares/AuthMiddleware.js';
-import { requireActiveCompany } from '../middlewares/authGuards.js';
+import { requireActiveCompany, requireRole } from '../middlewares/authGuards.js';
 
 const DepartmentRouter = Router();
 const departmentController = new DepartmentController();
@@ -14,6 +14,6 @@ DepartmentRouter.post('/create', departmentController.Create.bind(departmentCont
 DepartmentRouter.get('/all', departmentController.getAll.bind(departmentController));
 DepartmentRouter.get('/:id', departmentController.get.bind(departmentController));
 DepartmentRouter.put('/:id', departmentController.Edit.bind(departmentController));
-DepartmentRouter.delete('/:id', departmentController.Delete.bind(departmentController));
+DepartmentRouter.delete('/:id', requireRole(['SUPER_ADMIN','GLOBAL_ADMIN']), departmentController.Delete.bind(departmentController));
 
 export default DepartmentRouter;

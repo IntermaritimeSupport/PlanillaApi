@@ -23,7 +23,10 @@ AdminRouter.post('/users',         adminController.createUser.bind(adminControll
 AdminRouter.get('/users/search',   adminController.searchUserByEmail.bind(adminController));
 AdminRouter.get('/users/:id',      adminController.getUser.bind(adminController));
 AdminRouter.put('/users/:id',      adminController.updateUser.bind(adminController));
-AdminRouter.get('/licenses',       adminController.getLicenses.bind(adminController));
-AdminRouter.put('/licenses/:companyId', adminController.upsertLicense.bind(adminController));
+AdminRouter.delete('/users/:id',   adminController.deleteUser.bind(adminController));
+AdminRouter.delete('/companies/:id', adminController.deleteCompany.bind(adminController));
+AdminRouter.get('/licenses',                    adminController.getLicenses.bind(adminController));
+AdminRouter.post('/licenses/check-expired',     adminController.checkExpiredLicenses.bind(adminController));
+AdminRouter.put('/licenses/:userId',            adminController.upsertLicense.bind(adminController));
 
 export default AdminRouter;

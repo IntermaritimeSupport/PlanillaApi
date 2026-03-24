@@ -618,4 +618,29 @@ export class UserController {
       });
     }
   }
+
+  // GET /api/users/my-license — licencia del usuario autenticado con uso real
+  async getMyLicense(req: Request, res: Response) {
+    try {
+      const userId = (req as any).userId as string;
+      const user = await prisma.user.findUnique({
+        where: { id: userId },
+        include: {
+          license: true,
+          companies: { include: { company: { include: { _count: { select: { users: true } } } } } },
+        },
+      });
+      if (!user) return res.status(404).json({ error: 'Usuario no encontrado.' });
+
+      const companyCount = user.companies.length;
+      const totalUsers = user.companies.reduce((sum, uc) => sum + (uc.company._count?.users ?? 0), 0);
+
+      return res.json({
+        license: user.license,
+        usage: { companyCount, totalUsers },
+      });
+    } catch (error: unknown) {
+      return res.status(500).json({ error: 'Error al obtener la licencia.', details: error instanceof Error ? error.message : String(error) });
+    }
+  }
 }

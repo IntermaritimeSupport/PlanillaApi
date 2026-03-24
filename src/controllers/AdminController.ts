@@ -52,7 +52,6 @@ export class AdminController {
       const companies = await prisma.company.findMany({
         include: {
           _count: { select: { employees: true, users: true } },
-          license: true,
         },
         orderBy: { createdAt: 'desc' },
       });
@@ -67,7 +66,6 @@ export class AdminController {
         isActive: c.isActive,
         createdAt: c.createdAt,
         _count: { employees: c._count.employees, users: c._count.users },
-        license: c.license ?? null,
       }));
 
       return res.json(result);
@@ -409,10 +407,15 @@ export class AdminController {
         });
       }
 
-      // Crear perfil de persona
-      const lastPerson = await prisma.person.findFirst({ orderBy: { userCode: 'desc' } });
-      const match = lastPerson?.userCode?.match(/\d+$/);
-      const next = match ? parseInt(match[0], 10) + 1 : 1;
+      // Crear perfil de persona con userCode único
+      const allCodes = await prisma.person.findMany({
+        select: { userCode: true },
+        where: { userCode: { startsWith: 'USR' } },
+      });
+      const maxNum = allCodes.reduce((max, p) => {
+        const n = parseInt(p.userCode?.replace('USR', '') ?? '0', 10);
+        return isNaN(n) ? max : Math.max(max, n);
+      }, 0);
       await prisma.person.create({
         data: {
           userId:       user.id,
@@ -420,7 +423,7 @@ export class AdminController {
           lastName:     '',
           fullName:     username,
           contactEmail: email.toLowerCase(),
-          userCode:     `USR${String(next).padStart(4, '0')}`,
+          userCode:     `USR${String(maxNum + 1).padStart(4, '0')}`,
           status:       'Activo',
         },
       });
@@ -433,27 +436,69 @@ export class AdminController {
     }
   }
 
-  // GET /api/admin/licenses
+  // DELETE /api/admin/companies/:id
+  async deleteCompany(req: Request, res: Response) {
+    try {
+      const { id } = req.params;
+      const company = await prisma.company.findUnique({ where: { id } });
+      if (!company) return res.status(404).json({ error: 'Empresa no encontrada.' });
+      await prisma.company.delete({ where: { id } });
+      return res.json({ ok: true });
+    } catch (error: unknown) {
+      return res.status(500).json({ error: 'Error al eliminar empresa.', details: error instanceof Error ? error.message : String(error) });
+    }
+  }
+
+  // DELETE /api/admin/users/:id
+  async deleteUser(req: Request, res: Response) {
+    try {
+      const { id } = req.params;
+      const user = await prisma.user.findUnique({ where: { id } });
+      if (!user) return res.status(404).json({ error: 'Usuario no encontrado.' });
+      await prisma.user.delete({ where: { id } });
+      return res.json({ ok: true });
+    } catch (error: unknown) {
+      return res.status(500).json({ error: 'Error al eliminar usuario.', details: error instanceof Error ? error.message : String(error) });
+    }
+  }
+
+  // GET /api/admin/licenses — lista de SUPER_ADMINs con su licencia y uso real
   async getLicenses(req: Request, res: Response) {
     try {
-      const companies = await prisma.company.findMany({
+      const users = await prisma.user.findMany({
+        where: { role: { in: ['SUPER_ADMIN'] } },
         include: {
-          _count: { select: { employees: true, users: true } },
           license: true,
+          companies: {
+            include: {
+              company: {
+                include: { _count: { select: { employees: true, users: true } } },
+              },
+            },
+          },
+          person: { select: { firstName: true, lastName: true } },
         },
         orderBy: { createdAt: 'desc' },
       });
 
-      const result = companies.map((c) => ({
-        companyId:     c.id,
-        companyName:   c.name,
-        companyCode:   c.code,
-        isActive:      c.isActive,
-        createdAt:     c.createdAt,
-        employeeCount: c._count.employees,
-        userCount:     c._count.users,
-        license:       c.license ?? null,
-      }));
+      const result = users.map((u) => {
+        const companyCount = u.companies.length;
+        const totalEmployees = u.companies.reduce((s, uc) => s + uc.company._count.employees, 0);
+        const totalUsers = u.companies.reduce((s, uc) => s + uc.company._count.users, 0);
+        return {
+          userId:       u.id,
+          username:     u.username,
+          email:        u.email,
+          fullName:     u.person ? `${u.person.firstName ?? ''} ${u.person.lastName ?? ''}`.trim() : u.username,
+          isActive:     u.isActive,
+          createdAt:    u.createdAt,
+          companyCount,
+          totalEmployees,
+          totalUsers,
+          companies:    u.companies.map(uc => ({ id: uc.company.id, name: uc.company.name, code: uc.company.code, isActive: uc.company.isActive })),
+          license:      u.license ?? null,
+        };
+      });
 
       return res.json(result);
     } catch (error: unknown) {
@@ -461,41 +506,103 @@ export class AdminController {
     }
   }
 
-  // PUT /api/admin/licenses/:companyId — crear o actualizar licencia de una empresa
+  // PUT /api/admin/licenses/:userId — crear o actualizar licencia de un SUPER_ADMIN
   async upsertLicense(req: Request, res: Response) {
     try {
-      const { companyId } = req.params;
-      const { plan, maxUsers, maxEmployees, startsAt, expiresAt, isActive, notes } = req.body;
+      const { userId } = req.params;
+      const { plan, maxCompanies, maxUsers, maxEmployees, startsAt, expiresAt, isActive, notes } = req.body;
 
-      const company = await prisma.company.findUnique({ where: { id: companyId } });
-      if (!company) return res.status(404).json({ error: 'Empresa no encontrada.' });
+      const user = await prisma.user.findUnique({ where: { id: userId } });
+      if (!user) return res.status(404).json({ error: 'Usuario no encontrado.' });
 
-      const license = await prisma.license.upsert({
-        where:  { companyId },
-        update: {
-          ...(plan         !== undefined && { plan }),
-          ...(maxUsers     !== undefined && { maxUsers: Number(maxUsers) }),
-          ...(maxEmployees !== undefined && { maxEmployees: Number(maxEmployees) }),
-          ...(startsAt     !== undefined && { startsAt: new Date(startsAt) }),
-          ...(expiresAt    !== undefined && { expiresAt: expiresAt ? new Date(expiresAt) : null }),
-          ...(isActive     !== undefined && { isActive }),
-          ...(notes        !== undefined && { notes: notes || null }),
-        },
-        create: {
-          companyId,
-          plan:         plan         ?? 'TRIAL',
-          maxUsers:     maxUsers     ? Number(maxUsers)     : 5,
-          maxEmployees: maxEmployees ? Number(maxEmployees) : 20,
-          startsAt:     startsAt     ? new Date(startsAt)   : new Date(),
-          expiresAt:    expiresAt    ? new Date(expiresAt)  : null,
-          isActive:     isActive     ?? true,
-          notes:        notes        || null,
-        },
-      });
+      const expDate = expiresAt ? new Date(expiresAt) : null;
+      const licenseActive = isActive !== undefined ? Boolean(isActive) : true;
+      const isExpired = expDate ? expDate < new Date() : false;
+      // Si la licencia se desactiva o vence → desactivar todas sus empresas
+      const shouldDeactivate = !licenseActive || isExpired;
 
-      return res.json(license);
+      const companyIds = shouldDeactivate
+        ? (await prisma.userCompany.findMany({ where: { userId }, select: { companyId: true } })).map(uc => uc.companyId)
+        : [];
+
+      const ops: any[] = [
+        prisma.license.upsert({
+          where:  { userId },
+          update: {
+            ...(plan         !== undefined && { plan }),
+            ...(maxCompanies !== undefined && { maxCompanies: Number(maxCompanies) }),
+            ...(maxUsers     !== undefined && { maxUsers: Number(maxUsers) }),
+            ...(maxEmployees !== undefined && { maxEmployees: Number(maxEmployees) }),
+            ...(startsAt     !== undefined && { startsAt: new Date(startsAt) }),
+            ...(expiresAt    !== undefined && { expiresAt: expDate }),
+            ...(isActive     !== undefined && { isActive: licenseActive }),
+            ...(notes        !== undefined && { notes: notes || null }),
+          },
+          create: {
+            userId,
+            plan:         plan         ?? 'TRIAL',
+            maxCompanies: maxCompanies ? Number(maxCompanies) : 1,
+            maxUsers:     maxUsers     ? Number(maxUsers)     : 5,
+            maxEmployees: maxEmployees ? Number(maxEmployees) : 20,
+            startsAt:     startsAt     ? new Date(startsAt)   : new Date(),
+            expiresAt:    expDate,
+            isActive:     licenseActive,
+            notes:        notes || null,
+          },
+        }),
+      ];
+
+      if (companyIds.length > 0) {
+        ops.push(
+          prisma.company.updateMany({ where: { id: { in: companyIds } }, data: { isActive: false } })
+        );
+      } else if (licenseActive && !isExpired) {
+        // Reactivar empresas si la licencia se reactiva
+        ops.push(
+          prisma.company.updateMany({
+            where: { id: { in: (await prisma.userCompany.findMany({ where: { userId }, select: { companyId: true } })).map(uc => uc.companyId) } },
+            data: { isActive: true },
+          })
+        );
+      }
+
+      const [license] = await prisma.$transaction(ops);
+      return res.json({ ...license, companiesDeactivated: companyIds.length });
     } catch (error: unknown) {
       return res.status(500).json({ error: 'Error al guardar licencia.', details: error instanceof Error ? error.message : String(error) });
+    }
+  }
+
+  // POST /api/admin/licenses/check-expired — desactivar usuarios/empresas con licencia vencida
+  async checkExpiredLicenses(req: Request, res: Response) {
+    try {
+      const now = new Date();
+
+      const expired = await prisma.license.findMany({
+        where: { isActive: true, expiresAt: { not: null, lt: now } },
+        select: { userId: true },
+      });
+
+      if (expired.length === 0) return res.json({ deactivated: 0 });
+
+      const userIds = expired.map(l => l.userId);
+
+      // Obtener companyIds de esos usuarios
+      const userCompanies = await prisma.userCompany.findMany({
+        where: { userId: { in: userIds } },
+        select: { companyId: true },
+      });
+      const companyIds = userCompanies.map(uc => uc.companyId);
+
+      await prisma.$transaction([
+        prisma.license.updateMany({ where: { userId: { in: userIds } }, data: { isActive: false } }),
+        prisma.user.updateMany({ where: { id: { in: userIds } }, data: { isActive: false } }),
+        ...(companyIds.length > 0 ? [prisma.company.updateMany({ where: { id: { in: companyIds } }, data: { isActive: false } })] : []),
+      ]);
+
+      return res.json({ deactivated: userIds.length, userIds, companyIds });
+    } catch (error: unknown) {
+      return res.status(500).json({ error: 'Error al verificar licencias vencidas.', details: error instanceof Error ? error.message : String(error) });
     }
   }
 

@@ -78,7 +78,8 @@ export function getCompanyFilter(
   if (isGlobalAdmin(req)) {
     return requestedCompanyId ?? undefined;
   }
-  return req.userCompanyId ?? requestedCompanyId;
+  // SUPER_ADMIN puede tener múltiples empresas: respetar el companyId explícito del query
+  return requestedCompanyId ?? req.userCompanyId;
 }
 
 /**

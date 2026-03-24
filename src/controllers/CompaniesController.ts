@@ -5,6 +5,83 @@ import prisma from '../../lib/prisma.js';
 
 export class CompanyController {
 
+  /**
+   * POST /api/companies/setup
+   * Onboarding: crea empresa + departamentos seleccionados + vincula al usuario autenticado.
+   * Pensado para SUPER_ADMIN recién registrado sin empresa.
+   */
+  async setup(req: Request & { userId?: string }, res: Response) {
+    try {
+      const userId = req.userId;
+      if (!userId) return res.status(401).json({ error: 'No autenticado.' });
+
+      const { name, ruc, email, phone, address, departments: deptNames } = req.body;
+      if (!name?.trim()) return res.status(400).json({ error: 'El nombre de la empresa es obligatorio.' });
+
+      // Verificar que el usuario no tenga ya una empresa
+      const existing = await prisma.userCompany.findFirst({ where: { userId } });
+      if (existing) return res.status(409).json({ error: 'El usuario ya tiene una empresa asignada.' });
+
+      const companyCode = await generateNextCompanyCode(prisma);
+
+      const company = await prisma.$transaction(async (tx) => {
+        // Crear empresa
+        const c = await tx.company.create({
+          data: {
+            code: companyCode,
+            name: name.trim(),
+            ruc:     ruc     || null,
+            email:   email   || null,
+            phone:   phone   || null,
+            address: address || null,
+            isActive: true,
+            createdBy: { connect: { id: userId } },
+          },
+        });
+
+        // Vincular usuario a empresa
+        await tx.userCompany.create({ data: { userId, companyId: c.id } });
+
+        // Actualizar Person con companyId si existe
+        await tx.person.updateMany({ where: { userId }, data: { companyId: c.id } });
+
+        // Parámetros legales por defecto (Panamá)
+        await tx.legalParameter.createMany({
+          data: [
+            { key: 'ss_empleado',      name: 'Seguro Social - Empleado',       type: 'employee', category: 'social_security', percentage: 9.75,  companyId: c.id, status: 'active', effectiveDate: new Date(), description: 'Cuota regular de SS para empleados' },
+            { key: 'ss_patrono',       name: 'Seguro Social - Patrono',        type: 'employer', category: 'social_security', percentage: 13.25, companyId: c.id, status: 'active', effectiveDate: new Date(), description: 'Cuota patronal de SS' },
+            { key: 'ss_decimo',        name: 'SS - XIII Mes Empleado',         type: 'employee', category: 'social_security', percentage: 7.25,  companyId: c.id, status: 'active', effectiveDate: new Date(), description: 'Cuota SS décimo tercer mes' },
+            { key: 'ss_decimo_patrono',name: 'SS - XIII Mes Patrono',          type: 'employer', category: 'social_security', percentage: 10.75, companyId: c.id, status: 'active', effectiveDate: new Date(), description: 'Cuota patronal décimo tercer mes' },
+            { key: 'se_empleado',      name: 'Seguro Educativo - Empleado',    type: 'employee', category: 'educational_insurance',    percentage: 1.25,  companyId: c.id, status: 'active', effectiveDate: new Date(), description: 'Seguro educativo empleado' },
+            { key: 'se_patrono',       name: 'Seguro Educativo - Patrono',     type: 'employer', category: 'educational_insurance',    percentage: 1.50,  companyId: c.id, status: 'active', effectiveDate: new Date(), description: 'Seguro educativo patrono' },
+          ],
+          skipDuplicates: true,
+        });
+
+        // Crear departamentos seleccionados
+        const depts = Array.isArray(deptNames) && deptNames.length > 0 ? deptNames : [];
+        if (depts.length > 0) {
+          await tx.department.createMany({
+            data: depts.map((dName: string) => ({
+              name: dName.trim(),
+              isActive: true,
+              companyId: c.id,
+            })),
+            skipDuplicates: true,
+          });
+        }
+
+        return c;
+      });
+
+      return res.status(201).json(company);
+    } catch (error: unknown) {
+      const msg = error instanceof Error ? error.message : String(error);
+      if ((error as any)?.code === 'P2002') return res.status(409).json({ error: 'Ya existe una empresa con ese nombre o código.' });
+      return res.status(500).json({ error: 'Error al crear empresa.', details: msg });
+    }
+  }
+
  async Create(req: Request, res: Response) {
         try {
             const { name, address, phone, email, ruc, logoUrl, createdByUserId } = req.body;
@@ -369,31 +446,45 @@ export class CompanyController {
      * @param req Express Request with optional user context
      * @param res Express Response
      */
-    async getAll(req: Request, res: Response, next: NextFunction) {
+    async getAll(req: Request & { userId?: string; userRole?: string }, res: Response, next: NextFunction) {
         try {
-            const companies = await prisma.company.findMany({
-                include: {
-                    _count: {
-                        select: {
-                            users: true,
-                        }
-                    },
-                    departments: {
-                        select: {
-                            id: true,
-                            name: true,
-                            description: true,
-                            isActive: true,
-                            companyId: true,
-                        },
+            const userRole = req.userRole;
+            const userId   = req.userId;
+
+            const include = {
+                _count: { select: { users: true } },
+                departments: {
+                    select: {
+                        id: true, name: true, description: true,
+                        isActive: true, companyId: true,
                     },
                 },
-                orderBy: {
-                    name: 'asc',
-                }
+            };
+
+            // GLOBAL_ADMIN → todas las empresas
+            if (userRole === 'GLOBAL_ADMIN') {
+                const companies = await prisma.company.findMany({ include, orderBy: { name: 'asc' } });
+                return res.json(companies);
+            }
+
+            // Otros roles → solo sus empresas asignadas via UserCompany
+            if (!userId) return res.status(401).json({ error: 'No autenticado.' });
+
+            const user = await prisma.user.findUnique({
+                where: { id: userId },
+                select: { companies: { select: { companyId: true } } },
             });
-            res.json(companies);
-        } catch (error: any) {
+
+            if (!user || user.companies.length === 0) return res.json([]);
+
+            const companyIds = user.companies.map(uc => uc.companyId);
+            const companies = await prisma.company.findMany({
+                where: { id: { in: companyIds } },
+                include,
+                orderBy: { name: 'asc' },
+            });
+            return res.json(companies);
+        } catch (error: unknown) {
             console.error('Error al obtener las compañías:', error);
             res.status(500).json({ error: 'Error interno del servidor al obtener las compañías.' });
             next(error);

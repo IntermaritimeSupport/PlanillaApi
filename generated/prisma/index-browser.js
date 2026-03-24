@@ -173,8 +173,9 @@ exports.Prisma.CompanyScalarFieldEnum = {
 
 exports.Prisma.LicenseScalarFieldEnum = {
   id: 'id',
-  companyId: 'companyId',
+  userId: 'userId',
   plan: 'plan',
+  maxCompanies: 'maxCompanies',
   maxUsers: 'maxUsers',
   maxEmployees: 'maxEmployees',
   startsAt: 'startsAt',

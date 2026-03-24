@@ -21,6 +21,7 @@ model User {
 
   companies        UserCompany[]
   createdCompanies Company[]     @relation("CompanyCreatedBy")
+  license          License?
   person           Person?
   employee         Employee?     @relation("EmployeeUser")
 }
@@ -82,7 +83,6 @@ model Company {
   payrollRuns          PayrollRun[]
   decimoPayments       DecimoPayment[]
   liquidaciones        Liquidacion[]
-  license              License?
 }
 
 enum LicensePlan {
@@ -94,8 +94,9 @@ enum LicensePlan {
 
 model License {
   id           String      @id @default(uuid())
-  companyId    String      @unique
+  userId       String      @unique
   plan         LicensePlan @default(TRIAL)
+  maxCompanies Int         @default(1)
   maxUsers     Int         @default(5)
   maxEmployees Int         @default(20)
   startsAt     DateTime    @default(now())
@@ -105,7 +106,7 @@ model License {
   createdAt    DateTime    @default(now())
   updatedAt    DateTime    @updatedAt
 
-  company Company @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 model Department {

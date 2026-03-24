@@ -2,7 +2,7 @@ import { Router } from 'express';
 import multer from 'multer';
 import { EmployeeController } from '../controllers/EmployeeController.js';
 import { verifyJWT } from '../middlewares/AuthMiddleware.js';
-import { requireActiveCompany } from '../middlewares/authGuards.js';
+import { requireActiveCompany, requireRole } from '../middlewares/authGuards.js';
 
 const EmployeeRouter = Router();
 const employeeController = new EmployeeController();
@@ -37,7 +37,7 @@ EmployeeRouter.get('/employees', (req, res) => employeeController.getAll(req, re
 EmployeeRouter.get('/employees/:id/salary-history', (req, res) => employeeController.getSalaryHistory(req, res));
 EmployeeRouter.get('/employees/:id', (req, res) => employeeController.getById(req, res));
 EmployeeRouter.put('/employees/:id', (req, res) => employeeController.update(req, res));
-EmployeeRouter.delete('/employees/:id', (req, res) => employeeController.delete(req, res));
+EmployeeRouter.delete('/employees/:id', requireRole(['SUPER_ADMIN','GLOBAL_ADMIN']), (req, res) => employeeController.delete(req, res));
 EmployeeRouter.put('/employees/:id/status', (req, res) => employeeController.updateStatus(req, res));
 EmployeeRouter.get('/employees/company/:companyId/summary', (req, res) => employeeController.getCompanySummary(req, res));
 
