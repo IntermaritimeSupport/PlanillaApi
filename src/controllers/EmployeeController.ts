@@ -168,6 +168,17 @@ export class EmployeeController {
             },
           },
           recurringDeductions: true,
+          salaryHistory: {
+            orderBy: { effectiveDate: 'asc' },
+            select: {
+              id: true,
+              previousSalary: true,
+              newSalary: true,
+              previousType: true,
+              newType: true,
+              effectiveDate: true,
+            },
+          },
         },
         orderBy: { createdAt: 'desc' },
       });
