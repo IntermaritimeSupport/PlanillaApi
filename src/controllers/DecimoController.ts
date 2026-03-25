@@ -112,6 +112,51 @@ export class DecimoController {
     }
   }
 
+  // GET /api/payroll/decimo/history/all?companyId=
+  async getAllYearsHistory(req: Request, res: Response) {
+    try {
+      const { companyId } = req.query;
+      if (!companyId) return res.status(400).json({ error: 'companyId es requerido.' });
+
+      const payments = await prisma.decimoPayment.findMany({
+        where: { companyId: companyId as string },
+        orderBy: [{ year: 'desc' }, { partida: 'asc' }],
+      });
+
+      // Agrupar por año
+      const byYear: Record<number, typeof payments> = {};
+      for (const p of payments) {
+        if (!byYear[p.year]) byYear[p.year] = [];
+        byYear[p.year].push(p);
+      }
+
+      const years = Object.keys(byYear)
+        .map(Number)
+        .sort((a, b) => b - a)
+        .map((y) => {
+          const yPayments = byYear[y];
+          const partidas = [1, 2, 3].map((n) => {
+            const pago = yPayments.find((p) => p.partida === n);
+            return {
+              partida: n,
+              status: pago ? 'PAID' : 'PENDING',
+              paymentId: pago?.id ?? null,
+              paymentDate: pago?.paymentDate ?? null,
+              totalAmount: pago ? Number(pago.totalAmount) : null,
+              notes: pago?.notes ?? null,
+            };
+          });
+          const paidCount = yPayments.length;
+          const totalPaid = yPayments.reduce((s, p) => s + Number(p.totalAmount), 0);
+          return { year: y, partidas, paidCount, totalPaid };
+        });
+
+      return res.status(200).json({ companyId, years });
+    } catch (error: unknown) {
+      return res.status(500).json({ error: 'Error al obtener historial de décimos.', details: error instanceof Error ? error.message : String(error) });
+    }
+  }
+
   // DELETE /api/payroll/decimo/pay/:id
   async deletePayment(req: Request, res: Response) {
     try {

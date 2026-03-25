@@ -9,6 +9,14 @@ const decimoController = new DecimoController();
 DecimoRouter.use(verifyJWT);
 
 /**
+ * GET /api/payroll/decimo/history/all?companyId=
+ * Historial completo de todos los años
+ */
+DecimoRouter.get('/decimo/history/all', (req, res) =>
+  decimoController.getAllYearsHistory(req, res)
+);
+
+/**
  * GET /api/payroll/decimo/history?companyId=&year=
  * Obtener historial de pagos del décimo tercer mes (3 partidas)
  */
