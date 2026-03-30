@@ -18,5 +18,6 @@ UserRouter.get('/profile/:id', userController.getProfile.bind(userController));
 UserRouter.get('/full', userController.getAllWithPerson.bind(userController));
 UserRouter.get('/full/:companyCode', requireActiveCompany, userController.getAllUserByCompanyId.bind(userController));
 UserRouter.get('/my-license', userController.getMyLicense.bind(userController));
+UserRouter.post('/my-companies', userController.createMyCompany.bind(userController));
 
 export default UserRouter;

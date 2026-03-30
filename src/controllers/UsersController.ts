@@ -627,20 +627,92 @@ export class UserController {
         where: { id: userId },
         include: {
           license: true,
-          companies: { include: { company: { include: { _count: { select: { users: true } } } } } },
+          companies: {
+            include: {
+              company: {
+                include: { _count: { select: { users: true, employees: true } } },
+              },
+            },
+          },
         },
       });
       if (!user) return res.status(404).json({ error: 'Usuario no encontrado.' });
 
-      const companyCount = user.companies.length;
-      const totalUsers = user.companies.reduce((sum, uc) => sum + (uc.company._count?.users ?? 0), 0);
+      const companyCount    = user.companies.length;
+      const totalUsers      = user.companies.reduce((s, uc) => s + (uc.company._count?.users ?? 0), 0);
+      const totalEmployees  = user.companies.reduce((s, uc) => s + (uc.company._count?.employees ?? 0), 0);
+      const companies       = user.companies.map(uc => ({
+        id:            uc.company.id,
+        name:          uc.company.name,
+        code:          uc.company.code,
+        isActive:      uc.company.isActive,
+        userCount:     uc.company._count?.users ?? 0,
+        employeeCount: uc.company._count?.employees ?? 0,
+      }));
 
       return res.json({
         license: user.license,
-        usage: { companyCount, totalUsers },
+        usage: { companyCount, totalUsers, totalEmployees },
+        companies,
       });
     } catch (error: unknown) {
       return res.status(500).json({ error: 'Error al obtener la licencia.', details: error instanceof Error ? error.message : String(error) });
+    }
+  }
+
+  // POST /api/users/my-companies — SUPER_ADMIN crea empresa nueva dentro de sus límites de licencia
+  async createMyCompany(req: Request, res: Response) {
+    try {
+      const userId = (req as any).userId as string;
+      const { name, ruc, email, phone, address } = req.body;
+
+      if (!name) return res.status(400).json({ error: 'El nombre de la empresa es obligatorio.' });
+
+      // Verificar licencia y límites
+      const user = await prisma.user.findUnique({
+        where: { id: userId },
+        include: {
+          license: true,
+          companies: { select: { companyId: true } },
+        },
+      });
+      if (!user) return res.status(404).json({ error: 'Usuario no encontrado.' });
+
+      const license = user.license;
+      if (!license || !license.isActive) {
+        return res.status(403).json({ error: 'No tienes una licencia activa para crear empresas.' });
+      }
+      if (license.expiresAt && license.expiresAt < new Date()) {
+        return res.status(403).json({ error: 'Tu licencia ha expirado. Contacta al administrador.' });
+      }
+      if (user.companies.length >= license.maxCompanies) {
+        return res.status(403).json({
+          error: `Tu licencia permite un máximo de ${license.maxCompanies} empresa${license.maxCompanies !== 1 ? 's' : ''}. Ya tienes ${user.companies.length}.`,
+        });
+      }
+
+      // Generar código único
+      const last = await prisma.company.findFirst({ orderBy: { code: 'desc' } });
+      const match = last?.code?.match(/\d+$/);
+      const next = match ? parseInt(match[0], 10) + 1 : 1;
+      const code = `CO${String(next).padStart(3, '0')}`;
+
+      // Crear empresa y vincular al usuario en transacción
+      const [company] = await prisma.$transaction([
+        prisma.company.create({
+          data: { code, name, ruc: ruc || null, email: email || null, phone: phone || null, address: address || null, isActive: true },
+        }),
+      ]);
+
+      await prisma.userCompany.create({ data: { userId, companyId: company.id } });
+
+      return res.status(201).json({ company });
+    } catch (error: unknown) {
+      const msg = error instanceof Error ? error.message : String(error);
+      if ((error as any)?.code === 'P2002') {
+        return res.status(409).json({ error: 'Ya existe una empresa con ese nombre o RUC.' });
+      }
+      return res.status(500).json({ error: 'Error al crear la empresa.', details: msg });
     }
   }
 }
