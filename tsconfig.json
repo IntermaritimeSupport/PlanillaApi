@@ -16,6 +16,6 @@
     "types": ["node"],
     "lib": ["ESNext"]
   },
-  "include": ["src/**/*.ts", "prisma/**/*", "lib/**/*", "prisma/script/**/*", "test-db.ts"],
-  "exclude": ["node_modules"]
+  "include": ["src/**/*.ts", "prisma/**/*", "lib/**/*", "prisma/script/**/*"],
+  "exclude": ["node_modules", "test-db.ts"]
 }
