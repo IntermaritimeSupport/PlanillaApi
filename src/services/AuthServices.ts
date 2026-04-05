@@ -2,6 +2,9 @@
 import bcrypt from 'bcryptjs';
 import { prisma } from '../../lib/prisma.js';
 import { User, UserRole } from '../../generated/prisma/client.js';
+import { sendPasswordResetEmail } from '../utils/mailer.js';
+
+const resetCodes = new Map<string, { code: string; expires: Date }>();
 
 // Tipo para la respuesta de login (sin datos sensibles)
 interface LoginResponse {
@@ -155,6 +158,36 @@ export class AuthService {
       console.error('Error al registrar usuario:', error.message);
       throw new Error('No se pudo registrar el usuario. Por favor, inténtalo de nuevo.');
     }
+  }
+
+    async forgotPassword(email: string): Promise<void> {
+    const user = await prisma.user.findUnique({ where: { email }, select: { id: true, username: true, isActive: true } });
+    // Always return success to avoid email enumeration
+    if (!user || !user.isActive) return;
+
+    const code = Math.random().toString(36).substring(2, 8).toUpperCase();
+    const expires = new Date(Date.now() + 15 * 60 * 1000); // 15 minutes
+    resetCodes.set(email.toLowerCase(), { code, expires });
+
+    await sendPasswordResetEmail(email, user.username, code);
+  }
+
+  async resetPassword(email: string, code: string, newPassword: string): Promise<void> {
+    if (!email || !code || !newPassword) {
+      throw new Error('Email, code and new password are required.');
+    }
+    if (newPassword.length < 8) {
+      throw new Error('Password must be at least 8 characters.');
+    }
+
+    const entry = resetCodes.get(email.toLowerCase());
+    if (!entry || entry.code !== code.toUpperCase() || entry.expires < new Date()) {
+      throw new Error('Invalid or expired reset code.');
+    }
+
+    const hashedPassword = await bcrypt.hash(newPassword, 10);
+    await prisma.user.update({ where: { email }, data: { password: hashedPassword } });
+    resetCodes.delete(email.toLowerCase());
   }
 
   // Método útil para obtener datos del usuario sin la contraseña

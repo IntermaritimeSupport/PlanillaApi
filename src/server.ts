@@ -13,7 +13,6 @@ import UserRouter from './routes/UserRoutes.js';
 import CompaniesRouter from './routes/CompaniesRoutes.js';
 import { errorMiddleware } from './middlewares/errorHandler.js';
 import PayrollRouter from './routes/PayrollRoutes.js';
-import SystemRouter from './routes/SystemConfigRoutes.js';
 import EmployeeRouter from './routes/EmployeeRoutes.js';
 import SeedRouter from './routes/SeedRoutes.js';
 import legalParameterRouter from './routes/LegalParameterRoutes.js';
